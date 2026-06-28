@@ -14,6 +14,7 @@ from reconcile import reconcile
 from research_runner import (
     build_signal_variants,
     evaluate_variants,
+    _regime_mask,
     slice_bars_window,
     slice_research_window,
     synthetic_history,
@@ -213,6 +214,29 @@ def test_research_runner_slices_paper_account_window():
     assert sliced_bars["AAA"].index.min() >= pd.Timestamp(start)
 
 
+def test_regime_mask_blocks_market_stress():
+    idx = pd.bdate_range("2024-01-01", periods=3)
+    features = pd.DataFrame(
+        {
+            "close": [100, 98, 97],
+            "sma_20": [101, 100, 99],
+            "sma_50": [100, 100, 100],
+            "sma_200": [95, 95, 95],
+            "mom_126_21": [0.1, 0.1, 0.1],
+            "drawdown_63": [-0.02, -0.08, -0.12],
+            "rvol_20": [0.15, 0.20, 0.30],
+        },
+        index=idx,
+    )
+    cfg = TradingConfig.from_env()
+    cfg.regime.require_above_sma_50 = False
+    cfg.regime.require_sma_20_above_sma_50 = False
+    cfg.regime.max_benchmark_drawdown_63 = 0.10
+    cfg.regime.max_benchmark_rvol_20 = 0.25
+    mask = _regime_mask(features, cfg)
+    assert mask.tolist() == [True, True, False]
+
+
 def test_trailing_stop_backtest_holds_until_stop():
     idx = pd.bdate_range("2024-01-01", periods=5)
     bars = {
@@ -270,6 +294,35 @@ def test_dynamic_trailing_stop_uses_realized_volatility():
     )
     assert result.entry_events == 1
     assert result.stop_events == 0
+
+
+def test_stop_backtest_throttle_trims_existing_positions():
+    idx = pd.bdate_range("2024-01-01", periods=6)
+    bars = {
+        "AAA": pd.DataFrame(
+            {
+                "open": [100, 100, 80, 80, 80, 80],
+                "high": [100, 100, 80, 80, 80, 80],
+                "low": [100, 100, 80, 80, 80, 80],
+                "close": [100, 100, 80, 80, 80, 80],
+                "volume": 1_000_000,
+            },
+            index=idx,
+        )
+    }
+    signal = pd.DataFrame({"AAA": [1, 1, 1, 1, 1, 1]}, index=idx)
+    result = run_trailing_stop_backtest(
+        bars,
+        signal,
+        StopBacktestConfig(
+            cost_bps=0,
+            max_positions=1,
+            trail_percent=50.0,
+            throttle_drawdown_pct=0.05,
+            throttle_scale=0.5,
+        ),
+    )
+    assert result.weights.iloc[3]["AAA"] <= 0.51
 
 
 def test_research_runner_stop_aware_mode():
@@ -351,7 +404,9 @@ def test_robustness_runner_smoke_synthetic():
         synthetic=True,
         stop_aware=True,
         dynamic_trail=True,
+        variants_filter=["v4_regime_quality_risk"],
     )
     assert not summary.empty
     assert not detail.empty
     assert meta["source"] == "synthetic"
+    assert set(detail["variant"]) == {"v4_regime_quality_risk"}

@@ -209,7 +209,8 @@ def compute_stats(returns: pd.Series, turnover: pd.Series) -> dict:
     """Standard performance diagnostics. Annualization assumes 252 trading days."""
     if returns.empty or returns.std() == 0:
         return {"error": "no return variation"}
-    ann_ret = (1 + returns).prod() ** (252 / len(returns)) - 1
+    total_multiple = (1 + returns).prod()
+    ann_ret = total_multiple ** (252 / len(returns)) - 1 if total_multiple > 0 else np.nan
     ann_vol = returns.std() * np.sqrt(252)
     sharpe = ann_ret / ann_vol if ann_vol > 0 else np.nan
     downside = returns[returns < 0].std() * np.sqrt(252)

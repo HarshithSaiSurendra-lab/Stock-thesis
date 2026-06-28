@@ -235,10 +235,14 @@ def _regime_mask(benchmark_features: pd.DataFrame, cfg: TradingConfig) -> pd.Ser
     mask = pd.Series(True, index=benchmark_features.index)
     if cfg.regime.require_above_sma_50:
         mask &= benchmark_features["close"] > benchmark_features["sma_50"]
+    if cfg.regime.require_above_sma_200:
+        mask &= benchmark_features["close"] > benchmark_features["sma_200"]
     if cfg.regime.require_sma_20_above_sma_50:
         mask &= benchmark_features["sma_20"] > benchmark_features["sma_50"]
     if cfg.regime.require_positive_momentum:
         mask &= benchmark_features["mom_126_21"] > 0
+    mask &= benchmark_features["drawdown_63"] >= -cfg.regime.max_benchmark_drawdown_63
+    mask &= benchmark_features["rvol_20"] <= cfg.regime.max_benchmark_rvol_20
     return mask.fillna(False)
 
 

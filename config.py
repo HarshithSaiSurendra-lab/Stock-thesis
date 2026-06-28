@@ -92,14 +92,17 @@ class RegimeConfig:
     enabled: bool = True
     benchmark_symbol: str = "SPY"
     require_above_sma_50: bool = True
+    require_above_sma_200: bool = True
     require_sma_20_above_sma_50: bool = True
     require_positive_momentum: bool = True
+    max_benchmark_drawdown_63: float = 0.10
+    max_benchmark_rvol_20: float = 0.25
 
 
 @dataclass
 class RiskConfig:
-    max_entry_rvol: float = 0.45
-    target_position_rvol: float = 0.15
+    max_entry_rvol: float = 0.35
+    target_position_rvol: float = 0.12
     min_vol_scale: float = 0.25
     max_vol_scale: float = 1.00
     max_quote_spread_pct: float = 0.005
@@ -123,7 +126,7 @@ class NotifierConfig:
 class RunConfig:
     timezone: str = "America/New_York"
     decision_time: str = "16:15"
-    data_lookback_days: int = 220
+    data_lookback_days: int = 320
     market_data_feed: str = "iex"
     market_data_adjustment: str = "raw"
 
@@ -206,12 +209,15 @@ class TradingConfig:
                 enabled=_env_int("REGIME_FILTER_ENABLED", 1) == 1,
                 benchmark_symbol=_env_str("REGIME_BENCHMARK_SYMBOL", "SPY"),
                 require_above_sma_50=_env_int("REGIME_REQUIRE_ABOVE_SMA_50", 1) == 1,
+                require_above_sma_200=_env_int("REGIME_REQUIRE_ABOVE_SMA_200", 1) == 1,
                 require_sma_20_above_sma_50=_env_int("REGIME_REQUIRE_SMA_20_ABOVE_SMA_50", 1) == 1,
                 require_positive_momentum=_env_int("REGIME_REQUIRE_POSITIVE_MOMENTUM", 1) == 1,
+                max_benchmark_drawdown_63=_env_float("REGIME_MAX_BENCHMARK_DRAWDOWN_63", 0.10),
+                max_benchmark_rvol_20=_env_float("REGIME_MAX_BENCHMARK_RVOL_20", 0.25),
             ),
             risk=RiskConfig(
-                max_entry_rvol=_env_float("MAX_ENTRY_RVOL", 0.45),
-                target_position_rvol=_env_float("TARGET_POSITION_RVOL", 0.15),
+                max_entry_rvol=_env_float("MAX_ENTRY_RVOL", 0.35),
+                target_position_rvol=_env_float("TARGET_POSITION_RVOL", 0.12),
                 min_vol_scale=_env_float("MIN_VOL_SCALE", 0.25),
                 max_vol_scale=_env_float("MAX_VOL_SCALE", 1.00),
                 max_quote_spread_pct=_env_float("MAX_QUOTE_SPREAD_PCT", 0.005),
@@ -228,7 +234,7 @@ class TradingConfig:
             run=RunConfig(
                 timezone=_env_str("TRADING_TIMEZONE", "America/New_York"),
                 decision_time=_env_str("DECISION_TIME", "16:15"),
-                data_lookback_days=_env_int("DATA_LOOKBACK_DAYS", 220),
+                data_lookback_days=_env_int("DATA_LOOKBACK_DAYS", 320),
                 market_data_feed=_env_str("MARKET_DATA_FEED", "iex"),
                 market_data_adjustment=_env_str("MARKET_DATA_ADJUSTMENT", "raw"),
             ),

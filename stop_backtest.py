@@ -152,6 +152,21 @@ def run_trailing_stop_backtest(
             traded_notional += notional
             shares[symbol] = target_shares
 
+        if cfg.stop_only_exits and throttle < 1.0:
+            current_notional = float((shares * open_px.fillna(0.0)).sum())
+            target_notional = max(equity_open * cfg.gross_leverage * throttle, 0.0)
+            if current_notional > target_notional:
+                trim_factor = target_notional / current_notional if current_notional > 0 else 0.0
+                for symbol in symbols:
+                    qty = float(shares[symbol])
+                    if qty <= 0:
+                        continue
+                    price = float(open_px.get(symbol, np.nan))
+                    trade_to(symbol, qty * trim_factor, price)
+                    if shares[symbol] <= 0:
+                        trail_high[symbol] = np.nan
+                        trail_frac[symbol] = np.nan
+
         if cfg.stop_only_exits:
             open_count = int((shares > 0).sum())
             candidates = desired[desired > 0].sort_values(ascending=False)

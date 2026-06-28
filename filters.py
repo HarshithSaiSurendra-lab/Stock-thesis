@@ -37,16 +37,33 @@ def market_regime(broker, cfg: TradingConfig) -> RegimeResult:
 
     checks = {
         "above_sma_50": bool(latest["close"] > latest["sma_50"]),
+        "above_sma_200": bool(latest["close"] > latest["sma_200"]),
         "sma_20_above_sma_50": bool(latest["sma_20"] > latest["sma_50"]),
         "positive_momentum": bool(latest["mom_126_21"] > 0),
+        "benchmark_drawdown_63": float(latest["drawdown_63"]),
+        "benchmark_rvol_20": float(latest["rvol_20"]),
+        "drawdown_ok": bool(latest["drawdown_63"] >= -cfg.regime.max_benchmark_drawdown_63),
+        "volatility_ok": bool(latest["rvol_20"] <= cfg.regime.max_benchmark_rvol_20),
     }
     failures = []
     if cfg.regime.require_above_sma_50 and not checks["above_sma_50"]:
         failures.append("benchmark below 50-day average")
+    if cfg.regime.require_above_sma_200 and not checks["above_sma_200"]:
+        failures.append("benchmark below 200-day average")
     if cfg.regime.require_sma_20_above_sma_50 and not checks["sma_20_above_sma_50"]:
         failures.append("short trend below medium trend")
     if cfg.regime.require_positive_momentum and not checks["positive_momentum"]:
         failures.append("benchmark momentum negative")
+    if not checks["drawdown_ok"]:
+        failures.append(
+            f"benchmark 63-day drawdown {checks['benchmark_drawdown_63']:.1%} "
+            f"below cap -{cfg.regime.max_benchmark_drawdown_63:.1%}"
+        )
+    if not checks["volatility_ok"]:
+        failures.append(
+            f"benchmark realized volatility {checks['benchmark_rvol_20']:.1%} "
+            f"above cap {cfg.regime.max_benchmark_rvol_20:.1%}"
+        )
 
     return RegimeResult(
         ok=not failures,

@@ -35,6 +35,10 @@ def _parse_csv_dates(value: str) -> list[str]:
     return [item.strip() for item in value.split(",") if item.strip()]
 
 
+def _parse_csv_strings(value: str) -> list[str]:
+    return [item.strip() for item in value.split(",") if item.strip()]
+
+
 def robustness_score(row: dict) -> float:
     annual = float(row.get("annual_return") or 0.0)
     drawdown = abs(float(row.get("max_drawdown") or 0.0))
@@ -113,6 +117,8 @@ def run_robustness(
     dynamic_trail_vol_multiple: float = 3.0,
     min_trail_percent: float = 6.0,
     max_trail_percent: float = 15.0,
+    variants_filter: list[str] | None = None,
+    n_splits: int = 0,
 ) -> tuple[pd.DataFrame, pd.DataFrame, dict]:
     symbols = tuple(dict.fromkeys((*cfg.universe.seed_symbols, cfg.regime.benchmark_symbol)))
     earliest = min(start_dates)
@@ -133,6 +139,11 @@ def run_robustness(
             ),
         )
         prices, variants = build_signal_variants(data, local_cfg)
+        if variants_filter:
+            wanted = set(variants_filter)
+            variants = {name: sig for name, sig in variants.items() if name in wanted}
+            if not variants:
+                raise ValueError(f"no requested variants found: {sorted(wanted)}")
         for max_positions, rebalance_every, start_date in product(
             max_positions_values, rebalance_values, start_dates
         ):
@@ -146,7 +157,7 @@ def run_robustness(
                 cost_bps=cost_bps,
                 max_positions=max_positions,
                 rebalance_every=rebalance_every,
-                n_splits=4,
+                n_splits=n_splits,
                 initial_capital=initial_capital,
                 throttle_drawdown_pct=throttle_drawdown_pct,
                 throttle_scale=throttle_scale,
@@ -198,6 +209,8 @@ def run_robustness(
         "dynamic_trail": dynamic_trail,
         "trail_percent": trail_percent,
         "stop_only_exits": stop_only_exits,
+        "variants_filter": variants_filter,
+        "n_splits": n_splits,
     }
     return summary, detail, meta
 
@@ -246,6 +259,10 @@ def main() -> int:
     parser.add_argument("--dynamic-trail-vol-multiple", type=float, default=3.0)
     parser.add_argument("--min-trail-percent", type=float, default=6.0)
     parser.add_argument("--max-trail-percent", type=float, default=15.0)
+    parser.add_argument("--variants", default="", help="comma-separated variant names to evaluate")
+    parser.add_argument("--splits", type=int, default=0, help="walk-forward folds per grid cell")
+    parser.add_argument("--summary-csv", default="", help="optional path for summary CSV")
+    parser.add_argument("--detail-csv", default="", help="optional path for detail CSV")
     parser.add_argument("--top", type=int, default=12)
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
@@ -273,7 +290,14 @@ def main() -> int:
         dynamic_trail_vol_multiple=args.dynamic_trail_vol_multiple,
         min_trail_percent=args.min_trail_percent,
         max_trail_percent=args.max_trail_percent,
+        variants_filter=_parse_csv_strings(args.variants) if args.variants else None,
+        n_splits=args.splits,
     )
+
+    if args.summary_csv:
+        summary.to_csv(args.summary_csv, index=False)
+    if args.detail_csv:
+        detail.to_csv(args.detail_csv, index=False)
 
     if args.json:
         print(

@@ -131,6 +131,12 @@ def realized_vol(close: pd.Series, window: int = 20) -> pd.Series:
     return log_ret.rolling(window, min_periods=window).std() * np.sqrt(252)
 
 
+def rolling_drawdown(close: pd.Series, window: int = 63) -> pd.Series:
+    """Drawdown from the rolling high over `window` bars."""
+    high_water = close.rolling(window, min_periods=window).max()
+    return close / high_water - 1.0
+
+
 def momentum(close: pd.Series, lookback: int = 126, skip: int = 21) -> pd.Series:
     """
     Cross-sectional momentum signal: return over `lookback` days, but skipping
@@ -151,6 +157,7 @@ def build_feature_frame(df: pd.DataFrame) -> pd.DataFrame:
     feats["ret_1d"] = df["close"].pct_change()
     feats["sma_20"] = sma(df["close"], 20)
     feats["sma_50"] = sma(df["close"], 50)
+    feats["sma_200"] = sma(df["close"], 200)
     feats["ema_12"] = ema(df["close"], 12)
     feats["rsi_14"] = rsi(df["close"], 14)
     feats["obv"] = obv(df)
@@ -160,6 +167,7 @@ def build_feature_frame(df: pd.DataFrame) -> pd.DataFrame:
     feats["kvo_signal"] = kvo_sig
     feats["kvo_hist"] = kvo_line - kvo_sig
     feats["rvol_20"] = realized_vol(df["close"], 20)
+    feats["drawdown_63"] = rolling_drawdown(df["close"], 63)
     feats["mom_126_21"] = momentum(df["close"], 126, 21)
     # Normalized OBV/WAD slopes (raw cumulative levels aren't comparable across symbols)
     feats["obv_slope_20"] = feats["obv"].diff(20) / df["volume"].rolling(20).mean()
