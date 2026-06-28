@@ -137,6 +137,11 @@ def rolling_drawdown(close: pd.Series, window: int = 63) -> pd.Series:
     return close / high_water - 1.0
 
 
+def trailing_return(close: pd.Series, window: int = 63) -> pd.Series:
+    """Simple trailing return over `window` bars."""
+    return close / close.shift(window) - 1.0
+
+
 def momentum(close: pd.Series, lookback: int = 126, skip: int = 21) -> pd.Series:
     """
     Cross-sectional momentum signal: return over `lookback` days, but skipping
@@ -168,6 +173,7 @@ def build_feature_frame(df: pd.DataFrame) -> pd.DataFrame:
     feats["kvo_hist"] = kvo_line - kvo_sig
     feats["rvol_20"] = realized_vol(df["close"], 20)
     feats["drawdown_63"] = rolling_drawdown(df["close"], 63)
+    feats["ret_63"] = trailing_return(df["close"], 63)
     feats["mom_126_21"] = momentum(df["close"], 126, 21)
     # Normalized OBV/WAD slopes (raw cumulative levels aren't comparable across symbols)
     feats["obv_slope_20"] = feats["obv"].diff(20) / df["volume"].rolling(20).mean()

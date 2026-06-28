@@ -252,6 +252,12 @@ def build_signal_variants(data: ResearchData, cfg: TradingConfig) -> tuple[pd.Da
     base = pd.DataFrame(index=prices.index, columns=symbols, dtype=float)
     quality = pd.DataFrame(index=prices.index, columns=symbols, dtype=float)
     risk_adjusted = pd.DataFrame(index=prices.index, columns=symbols, dtype=float)
+    benchmark_symbol = cfg.regime.benchmark_symbol
+    benchmark_ret_63 = (
+        features[benchmark_symbol]["ret_63"]
+        if benchmark_symbol in features and "ret_63" in features[benchmark_symbol]
+        else pd.Series(np.nan, index=prices.index)
+    )
 
     for symbol in symbols:
         feats = features[symbol]
@@ -263,9 +269,13 @@ def build_signal_variants(data: ResearchData, cfg: TradingConfig) -> tuple[pd.Da
         quality[symbol] = scores.where(active & (tq >= cfg.signals.min_trend_quality), 0.0)
         scales = feats["rvol_20"].map(lambda rvol: volatility_scale(float(rvol), cfg))
         risk_ok = feats["rvol_20"] <= cfg.risk.max_entry_rvol
-        risk_adjusted[symbol] = (quality[symbol] * scales).where(risk_ok, 0.0)
+        if cfg.signals.min_relative_strength_63 <= -9:
+            relative_ok = pd.Series(True, index=feats.index)
+        else:
+            relative_strength = feats["ret_63"] - benchmark_ret_63.reindex(feats.index)
+            relative_ok = relative_strength >= cfg.signals.min_relative_strength_63
+        risk_adjusted[symbol] = (quality[symbol] * scales).where(risk_ok & relative_ok, 0.0)
 
-    benchmark_symbol = cfg.regime.benchmark_symbol
     if benchmark_symbol in features:
         regime = _regime_mask(features[benchmark_symbol], cfg)
     else:

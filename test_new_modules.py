@@ -22,6 +22,7 @@ from research_runner import (
 from robustness_runner import run_robustness, summarize_grid
 from signal import composite_signal, trend_quality_score
 from stop_backtest import StopBacktestConfig, run_trailing_stop_backtest
+from strategy_runner import StrategyState
 from universe import select_universe
 
 
@@ -145,6 +146,19 @@ def test_reconcile_detects_mismatch(tmp_path=None):
     res = reconcile(FakeBroker(), FakeMemory(), cfg)
     assert not res["ok"]
     assert any("live:AAPL" in msg for msg in res["discrepancies"])
+
+
+def test_strategy_state_preserves_positions_across_days():
+    state = StrategyState(
+        trading_day="2024-01-01",
+        submitted_today=["AAPL"],
+        expected_positions={"paper": {"AAPL": {"qty": 1}}, "live": {"AAPL": {"qty": 1}}},
+        open_entries={"AAPL": {"qty": 1}},
+    )
+    state.start_day("2024-01-02")
+    assert state.submitted_today == []
+    assert state.expected_positions["paper"]["AAPL"]["qty"] == 1
+    assert state.open_entries["AAPL"]["qty"] == 1
 
 
 def test_research_runner_builds_variants():
@@ -354,6 +368,7 @@ def test_robustness_runner_summarizes_grid():
             "variant": "v4",
             "max_entry_rvol": 0.55,
             "target_position_rvol": 0.20,
+            "min_relative_strength_63": 0.0,
             "max_positions": 5,
             "rebalance_every": 5,
             "throttle_drawdown_pct": 0.05,
@@ -370,6 +385,7 @@ def test_robustness_runner_summarizes_grid():
             "variant": "v4",
             "max_entry_rvol": 0.55,
             "target_position_rvol": 0.20,
+            "min_relative_strength_63": 0.0,
             "max_positions": 5,
             "rebalance_every": 5,
             "throttle_drawdown_pct": 0.05,
@@ -397,6 +413,7 @@ def test_robustness_runner_smoke_synthetic():
         start_dates=["2025-01-01"],
         max_entry_rvols=[0.55],
         target_position_rvols=[0.20],
+        min_relative_strengths=[0.0],
         max_positions_values=[2],
         rebalance_values=[5],
         initial_capital=1000,
@@ -405,8 +422,12 @@ def test_robustness_runner_smoke_synthetic():
         stop_aware=True,
         dynamic_trail=True,
         variants_filter=["v4_regime_quality_risk"],
+        benchmarks=["SPY", "QQQ"],
     )
     assert not summary.empty
     assert not detail.empty
     assert meta["source"] == "synthetic"
     assert set(detail["variant"]) == {"v4_regime_quality_risk"}
+    assert "excess_vs_spy" in detail.columns
+    assert "excess_vs_qqq" in detail.columns
+    assert "avg_excess_vs_spy" in summary.columns

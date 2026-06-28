@@ -64,7 +64,7 @@ class UniverseConfig:
 @dataclass
 class SizingConfig:
     max_position_pct: float = 0.50
-    target_n_positions: int = 3
+    target_n_positions: int = 5
 
 
 @dataclass
@@ -85,6 +85,7 @@ class SignalConfig:
     overbought_mfi: float = 80.0
     min_trend_quality: float = 3.0
     min_momentum: float = 0.0
+    min_relative_strength_63: float = -999.0
 
 
 @dataclass
@@ -101,7 +102,7 @@ class RegimeConfig:
 
 @dataclass
 class RiskConfig:
-    max_entry_rvol: float = 0.35
+    max_entry_rvol: float = 0.55
     target_position_rvol: float = 0.12
     min_vol_scale: float = 0.25
     max_vol_scale: float = 1.00
@@ -187,7 +188,7 @@ class TradingConfig:
             universe=universe,
             sizing=SizingConfig(
                 max_position_pct=_env_float("MAX_POSITION_PCT", 0.50),
-                target_n_positions=_env_int("TARGET_N_POSITIONS", 3),
+                target_n_positions=_env_int("TARGET_N_POSITIONS", 5),
             ),
             exits=ExitConfig(
                 trail_percent=_env_float("TRAIL_PERCENT", 8.0),
@@ -204,6 +205,7 @@ class TradingConfig:
                 overbought_mfi=_env_float("OVERBOUGHT_MFI", 80.0),
                 min_trend_quality=_env_float("MIN_TREND_QUALITY", 3.0),
                 min_momentum=_env_float("MIN_MOMENTUM", 0.0),
+                min_relative_strength_63=_env_float("MIN_RELATIVE_STRENGTH_63", -999.0),
             ),
             regime=RegimeConfig(
                 enabled=_env_int("REGIME_FILTER_ENABLED", 1) == 1,
@@ -216,7 +218,7 @@ class TradingConfig:
                 max_benchmark_rvol_20=_env_float("REGIME_MAX_BENCHMARK_RVOL_20", 0.25),
             ),
             risk=RiskConfig(
-                max_entry_rvol=_env_float("MAX_ENTRY_RVOL", 0.35),
+                max_entry_rvol=_env_float("MAX_ENTRY_RVOL", 0.55),
                 target_position_rvol=_env_float("TARGET_POSITION_RVOL", 0.12),
                 min_vol_scale=_env_float("MIN_VOL_SCALE", 0.25),
                 max_vol_scale=_env_float("MAX_VOL_SCALE", 1.00),

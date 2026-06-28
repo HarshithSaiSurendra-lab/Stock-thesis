@@ -51,8 +51,6 @@ class StrategyState:
         if self.trading_day != day:
             self.trading_day = day
             self.submitted_today = []
-            self.expected_positions = {"paper": {}, "live": {}}
-            self.open_entries = {}
 
 
 def _latest_row(features: pd.DataFrame) -> Optional[pd.Series]:
@@ -174,6 +172,13 @@ def run_daily(
         state.save(cfg.paths.strategy_state_path)
         return summary
 
+    benchmark_row = None
+    benchmark_frame = fetch_symbol_frame(broker, cfg.regime.benchmark_symbol, cfg)
+    if benchmark_frame is not None and not benchmark_frame.empty:
+        benchmark_features = build_feature_frame(benchmark_frame)
+        benchmark_features = benchmark_features.assign(close=benchmark_frame["close"])
+        benchmark_row = _latest_row(benchmark_features)
+
     universe = select_universe(broker, cfg)
     candidates = []
     orders_preview = []
@@ -200,6 +205,19 @@ def run_daily(
             continue
         if float(row.get("mom_126_21", 0.0)) < cfg.signals.min_momentum:
             continue
+        relative_strength = float("nan")
+        if benchmark_row is not None and cfg.signals.min_relative_strength_63 > -9:
+            relative_strength = float(row.get("ret_63", float("nan"))) - float(
+                benchmark_row.get("ret_63", float("nan"))
+            )
+            if pd.isna(relative_strength) or relative_strength < cfg.signals.min_relative_strength_63:
+                log.info(
+                    "skipping %s: 63-day relative strength %.2f%% below %.2f%%",
+                    symbol,
+                    relative_strength * 100 if not pd.isna(relative_strength) else float("nan"),
+                    cfg.signals.min_relative_strength_63 * 100,
+                )
+                continue
         if float(quality) < cfg.signals.min_trend_quality:
             continue
         ok_downside, downside_reason = downside_ok(row, quote, cfg)
@@ -221,6 +239,7 @@ def run_daily(
                 "direction": direction,
                 "score": float(score),
                 "trend_quality": float(quality),
+                "relative_strength_63": relative_strength,
                 "row": row,
                 "quote": quote,
                 "last_price": last_price,
