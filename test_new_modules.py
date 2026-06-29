@@ -22,7 +22,14 @@ from research_runner import (
 from robustness_runner import run_robustness, summarize_grid
 from signal import composite_signal, trend_quality_score
 from stop_backtest import StopBacktestConfig, run_trailing_stop_backtest
-from strategy_runner import StrategyState
+from strategy_runner import (
+    StrategyState,
+    _position_payload_for_validation,
+    _positions_notional,
+    _quote_with_spread_pct,
+    _strategy_equity,
+    _strategy_owned_symbols,
+)
 from universe import select_universe
 
 
@@ -159,6 +166,40 @@ def test_strategy_state_preserves_positions_across_days():
     assert state.submitted_today == []
     assert state.expected_positions["paper"]["AAPL"]["qty"] == 1
     assert state.open_entries["AAPL"]["qty"] == 1
+
+
+def test_strategy_equity_caps_to_strategy_capital():
+    cfg = TradingConfig.from_env()
+    cfg.sizing.strategy_capital = 1_000
+    assert _strategy_equity(cfg, 100_000) == 1_000
+    assert _strategy_equity(cfg, 500) == 500
+    assert _strategy_equity(cfg, None) == 1_000
+
+
+def test_strategy_notional_counts_only_managed_symbols():
+    state = StrategyState(
+        open_entries={"AAPL": {"qty": 1}},
+        expected_positions={"paper": {"MSFT": {"qty": 1}}, "live": {}},
+    )
+    owned = _strategy_owned_symbols(state)
+    positions = {
+        "AAPL": {"notional": 300},
+        "MSFT": {"notional": 200},
+        "TSLA": {"notional": 5_000},
+    }
+    assert owned == {"AAPL", "MSFT"}
+    assert _positions_notional(positions, owned) == 500
+    payload = _position_payload_for_validation(positions, owned)
+    assert set(payload) == {"AAPL", "MSFT"}
+    assert payload["AAPL"]["notional"] == 300
+
+
+def test_invalid_quote_is_rejected_before_entry():
+    assert _quote_with_spread_pct({"bid": 0.0, "ask": 100.0, "spread": 100.0}) is None
+    assert _quote_with_spread_pct({"bid": 101.0, "ask": 100.0, "spread": -1.0}) is None
+    quote = _quote_with_spread_pct({"bid": 99.9, "ask": 100.0, "spread": 0.1})
+    assert quote is not None
+    assert quote["spread_pct"] < 0.01
 
 
 def test_research_runner_builds_variants():

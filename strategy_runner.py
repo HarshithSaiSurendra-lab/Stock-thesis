@@ -72,10 +72,22 @@ def _quote_with_spread_pct(quote: Optional[dict]) -> Optional[dict]:
     if quote is None:
         return None
     out = dict(quote)
-    mid = (float(out.get("bid", 0.0)) + float(out.get("ask", 0.0))) / 2
+    bid = float(out.get("bid", 0.0) or 0.0)
+    ask = float(out.get("ask", 0.0) or 0.0)
+    if bid <= 0 or ask <= 0 or ask < bid:
+        return None
+    mid = (bid + ask) / 2
     if "spread_pct" not in out and mid > 0:
         out["spread_pct"] = float(out.get("spread", 0.0)) / mid
     return out
+
+
+def _entry_price(quote: Optional[dict], row: pd.Series) -> float:
+    if quote is not None:
+        ask = float(quote.get("ask", 0.0) or 0.0)
+        if ask > 0:
+            return ask
+    return float(row["close"])
 
 
 def _decision_snapshot(symbol: str, direction: str, row: pd.Series, quote: Optional[dict]) -> SignalSnapshot:
@@ -134,6 +146,42 @@ def _close_price_from_quote(quote: Optional[dict], side: str) -> float:
     return _fill_price(quote, side)
 
 
+def _strategy_equity(cfg: TradingConfig, broker_equity: Optional[float]) -> float:
+    configured = float(cfg.sizing.strategy_capital)
+    if broker_equity is None or broker_equity <= 0:
+        return configured
+    return min(configured, float(broker_equity))
+
+
+def _strategy_owned_symbols(state: StrategyState) -> set[str]:
+    symbols = set(state.open_entries)
+    for leg in ("paper", "live"):
+        symbols.update(state.expected_positions.get(leg, {}).keys())
+    return symbols
+
+
+def _positions_notional(positions: dict, symbols: Optional[set[str]] = None) -> float:
+    total = 0.0
+    for symbol, payload in positions.items():
+        if symbols is not None and symbol not in symbols:
+            continue
+        try:
+            total += abs(float(payload.get("notional", 0.0)))
+        except (TypeError, ValueError):
+            continue
+    return total
+
+
+def _position_payload_for_validation(positions: dict, symbols: Optional[set[str]] = None) -> dict:
+    out = {}
+    for symbol, payload in positions.items():
+        if symbols is not None and symbol not in symbols:
+            continue
+        notional = abs(float(payload.get("notional", 0.0) or 0.0))
+        out[symbol] = dict(payload, notional=notional)
+    return out
+
+
 def run_daily(
     broker,
     guardian,
@@ -153,6 +201,18 @@ def run_daily(
             "date": today,
             "status": "halted",
             "reason": guardian.state.halt_reason,
+            "orders": [],
+        }
+        state.last_run_ts = datetime.now(timezone.utc).isoformat()
+        state.save(cfg.paths.strategy_state_path)
+        return summary
+
+    market_open = broker.is_market_open() if hasattr(broker, "is_market_open") else True
+    if not dry_run and not market_open:
+        summary = {
+            "date": today,
+            "status": "market_closed",
+            "reason": "regular market is closed; real submissions are blocked",
             "orders": [],
         }
         state.last_run_ts = datetime.now(timezone.utc).isoformat()
@@ -182,28 +242,43 @@ def run_daily(
     universe = select_universe(broker, cfg)
     candidates = []
     orders_preview = []
+    skipped = []
 
     for symbol in universe:
         if symbol in state.submitted_today:
+            skipped.append({"symbol": symbol, "stage": "dedupe", "reason": "already submitted today"})
             continue
         frame = fetch_symbol_frame(broker, symbol, cfg)
         if frame is None or frame.empty:
+            skipped.append({"symbol": symbol, "stage": "data", "reason": "market data unavailable"})
             continue
         features = build_feature_frame(frame)
         features = features.assign(close=frame["close"], volume=frame["volume"])
         row = _latest_row(features)
         if row is None or pd.isna(row.get("close", float("nan"))):
+            skipped.append({"symbol": symbol, "stage": "indicators", "reason": "latest indicators unavailable"})
             continue
 
-        direction = composite_signal(features).dropna().iloc[-1]
-        score = composite_score(features).dropna().iloc[-1]
+        direction_series = composite_signal(features).dropna()
+        score_series = composite_score(features).dropna()
+        quality_series = trend_quality_score(features).dropna()
+        if direction_series.empty or score_series.empty or quality_series.empty:
+            skipped.append({"symbol": symbol, "stage": "signal", "reason": "signal unavailable"})
+            continue
+        direction = direction_series.iloc[-1]
+        score = score_series.iloc[-1]
         quote = _quote_with_spread_pct(broker.paper.latest_quote(symbol) or broker.live.latest_quote(symbol))
+        if quote is None:
+            skipped.append({"symbol": symbol, "stage": "risk", "reason": "valid quote unavailable"})
+            continue
         snap = _decision_snapshot(symbol, direction, row, quote)
-        quality = trend_quality_score(features).dropna().iloc[-1]
+        quality = quality_series.iloc[-1]
 
         if pd.isna(snap.rsi) or pd.isna(snap.mfi) or pd.isna(snap.momentum):
+            skipped.append({"symbol": symbol, "stage": "indicators", "reason": "required indicators unavailable"})
             continue
         if float(row.get("mom_126_21", 0.0)) < cfg.signals.min_momentum:
+            skipped.append({"symbol": symbol, "stage": "signal", "reason": "momentum below minimum"})
             continue
         relative_strength = float("nan")
         if benchmark_row is not None and cfg.signals.min_relative_strength_63 > -9:
@@ -211,28 +286,33 @@ def run_daily(
                 benchmark_row.get("ret_63", float("nan"))
             )
             if pd.isna(relative_strength) or relative_strength < cfg.signals.min_relative_strength_63:
-                log.info(
-                    "skipping %s: 63-day relative strength %.2f%% below %.2f%%",
-                    symbol,
-                    relative_strength * 100 if not pd.isna(relative_strength) else float("nan"),
-                    cfg.signals.min_relative_strength_63 * 100,
+                reason = (
+                    f"63-day relative strength "
+                    f"{relative_strength * 100 if not pd.isna(relative_strength) else float('nan'):.2f}% "
+                    f"below {cfg.signals.min_relative_strength_63 * 100:.2f}%"
                 )
+                skipped.append({"symbol": symbol, "stage": "signal", "reason": reason})
+                log.info("skipping %s: %s", symbol, reason)
                 continue
         if float(quality) < cfg.signals.min_trend_quality:
+            skipped.append({"symbol": symbol, "stage": "signal", "reason": "trend quality below minimum"})
             continue
         ok_downside, downside_reason = downside_ok(row, quote, cfg)
         if not ok_downside:
+            skipped.append({"symbol": symbol, "stage": "risk", "reason": downside_reason})
             log.info("skipping %s: %s", symbol, downside_reason)
             continue
         warning = memory.flag_if_repeating_loss(snap)
         if warning:
+            skipped.append({"symbol": symbol, "stage": "memory", "reason": warning})
             log.info(warning)
             continue
 
         if direction == "no_trade":
+            skipped.append({"symbol": symbol, "stage": "signal", "reason": "no trade signal"})
             continue
 
-        last_price = float(quote["ask"] if quote else row["close"])
+        last_price = _entry_price(quote, row)
         candidates.append(
             {
                 "symbol": symbol,
@@ -250,8 +330,19 @@ def run_daily(
     candidates.sort(key=lambda item: (item["score"], item["trend_quality"]), reverse=True)
     selected = candidates[: cfg.sizing.target_n_positions]
 
-    equity = broker.paper.equity() or broker.live.equity() or cfg.paper.starting_capital
-    target_notional = equity / max(len(selected), 1)
+    paper_equity = broker.paper.equity()
+    live_equity = broker.live.equity()
+    account_equity = paper_equity or live_equity or cfg.paper.starting_capital
+    equity = _strategy_equity(cfg, account_equity)
+    paper_positions = broker.paper.positions()
+    live_positions = broker.live.positions()
+    strategy_symbols = _strategy_owned_symbols(state)
+    existing_strategy_notional = _positions_notional(paper_positions, strategy_symbols)
+    max_deployed = equity * cfg.sizing.max_deployed_pct
+    remaining_budget = max(0.0, max_deployed - existing_strategy_notional)
+    blocked_symbols = set(state.open_entries) | set(paper_positions) | set(live_positions)
+    eligible_new_count = len([item for item in selected if item["symbol"] not in blocked_symbols])
+    target_notional = remaining_budget / max(eligible_new_count, 1)
 
     for item in selected:
         symbol = item["symbol"]
@@ -260,13 +351,34 @@ def run_daily(
         row = item["row"]
         snap = item["snapshot"]
         if symbol in state.open_entries:
+            skipped.append({"symbol": symbol, "stage": "sizing", "reason": "already open"})
+            continue
+        if symbol in paper_positions or symbol in live_positions:
+            skipped.append(
+                {
+                    "symbol": symbol,
+                    "stage": "sizing",
+                    "reason": "untracked existing broker position; not mixing strategy and manual lots",
+                }
+            )
             continue
 
         price_for_sizing = item["last_price"] or float(row["close"])
         capped_notional = min(target_notional, equity * cfg.sizing.max_position_pct)
-        capped_notional *= volatility_scale(float(row.get("rvol_20", float("nan"))), cfg)
+        vol_scale = volatility_scale(float(row.get("rvol_20", float("nan"))), cfg)
+        capped_notional *= vol_scale
         qty = max(0, math.floor(capped_notional / max(price_for_sizing, 0.01)))
+        intended_notional = qty * price_for_sizing
         if qty <= 0:
+            skipped.append(
+                {
+                    "symbol": symbol,
+                    "stage": "sizing",
+                    "reason": "calculated whole-share quantity is zero",
+                    "price": round(price_for_sizing, 2),
+                    "target_notional": round(capped_notional, 2),
+                }
+            )
             continue
 
         side = _side_for_signal(direction)
@@ -274,16 +386,24 @@ def run_daily(
         paper_ok, paper_reason = guardian.validate_order(
             order,
             last_price=price_for_sizing,
-            equity=broker.paper.equity() or equity,
-            positions=broker.paper.positions(),
+            equity=equity,
+            positions=_position_payload_for_validation(paper_positions, strategy_symbols | {symbol}),
         )
         live_ok, live_reason = guardian.validate_order(
             order,
             last_price=price_for_sizing,
-            equity=broker.live.equity() or equity,
-            positions=broker.live.positions(),
+            equity=equity,
+            positions=_position_payload_for_validation(live_positions, strategy_symbols | {symbol}),
         )
         if not paper_ok or not live_ok:
+            skipped.append(
+                {
+                    "symbol": symbol,
+                    "stage": "guardian",
+                    "reason": f"paper={paper_reason}; live={live_reason}",
+                    "intended_notional": round(intended_notional, 2),
+                }
+            )
             log.info("order rejected for %s: paper=%s live=%s", symbol, paper_reason, live_reason)
             continue
 
@@ -291,12 +411,19 @@ def run_daily(
         live_fill = _entry_price_from_result(None, price_for_sizing, quote, side)
 
         if dry_run:
+            trail_percent = _trail_percent_for_row(row, cfg)
             orders_preview.append(
                 {
                     "symbol": symbol,
                     "direction": direction,
+                    "score": item["score"],
                     "trend_quality": item["trend_quality"],
-                    "volatility_scale": volatility_scale(float(row.get("rvol_20", float("nan"))), cfg),
+                    "relative_strength_63": item["relative_strength_63"],
+                    "last_price": round(price_for_sizing, 2),
+                    "target_notional": round(capped_notional, 2),
+                    "intended_notional": round(intended_notional, 2),
+                    "volatility_scale": vol_scale,
+                    "trail_percent": trail_percent,
                     "order": order,
                     "dry_run": True,
                 }
@@ -352,8 +479,13 @@ def run_daily(
             {
                 "symbol": symbol,
                 "direction": direction,
+                "score": item["score"],
                 "trend_quality": item["trend_quality"],
-                "volatility_scale": volatility_scale(float(row.get("rvol_20", float("nan"))), cfg),
+                "relative_strength_63": item["relative_strength_63"],
+                "last_price": round(price_for_sizing, 2),
+                "target_notional": round(capped_notional, 2),
+                "intended_notional": round(intended_notional, 2),
+                "volatility_scale": vol_scale,
                 "trail_percent": trail_percent,
                 "order": order,
                 "decision_id": decision_id,
@@ -404,8 +536,30 @@ def run_daily(
             "date": today,
             "status": "dry_run",
             "regime": regime.__dict__,
+            "budget": {
+                "strategy_capital": cfg.sizing.strategy_capital,
+                "account_equity": account_equity,
+                "sizing_equity": equity,
+                "max_deployed": round(max_deployed, 2),
+                "existing_notional": round(existing_strategy_notional, 2),
+                "remaining_budget": round(remaining_budget, 2),
+                "target_positions": cfg.sizing.target_n_positions,
+                "max_position_pct": cfg.sizing.max_position_pct,
+            },
+            "candidates": [
+                {
+                    "symbol": item["symbol"],
+                    "direction": item["direction"],
+                    "score": item["score"],
+                    "trend_quality": item["trend_quality"],
+                    "relative_strength_63": item["relative_strength_63"],
+                    "last_price": round(item["last_price"], 2),
+                }
+                for item in candidates
+            ],
             "selected": [item["symbol"] for item in selected],
             "orders": orders_preview,
+            "skipped": skipped,
         }
 
     state.last_run_ts = datetime.now(timezone.utc).isoformat()
@@ -422,8 +576,17 @@ def run_daily(
         "date": today,
         "status": "ok" if reconcile_result["ok"] else "needs_attention",
         "regime": regime.__dict__,
+        "budget": {
+            "strategy_capital": cfg.sizing.strategy_capital,
+            "account_equity": account_equity,
+            "sizing_equity": equity,
+            "max_deployed": round(max_deployed, 2),
+            "existing_notional": round(existing_strategy_notional, 2),
+            "remaining_budget": round(remaining_budget, 2),
+        },
         "selected": [item["symbol"] for item in selected],
         "orders": orders_preview,
+        "skipped": skipped,
         "summary": summary,
         "broker": status,
         "reconcile": reconcile_result,

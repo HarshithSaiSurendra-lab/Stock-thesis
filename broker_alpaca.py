@@ -28,6 +28,9 @@ from __future__ import annotations
 import os
 import json
 import logging
+import urllib.error
+import urllib.parse
+import urllib.request
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -85,11 +88,6 @@ class AlpacaLeg:
         self._key_state.setdefault("floor_tripped", False)
         self._key_state.setdefault("starting_capital", cfg.starting_capital)
 
-        if not _ALPACA_AVAILABLE:
-            self.client = None
-            self.data = None
-            return
-
         if cfg.mode == "paper":
             key = os.environ.get("ALPACA_PAPER_KEY")
             secret = os.environ.get("ALPACA_PAPER_SECRET")
@@ -104,6 +102,15 @@ class AlpacaLeg:
             self.cfg.enabled = False
             return
 
+        self._api_key = key
+        self._api_secret = secret
+        self._base_url = self.PAPER_URL if cfg.mode == "paper" else self.LIVE_URL
+
+        if not _ALPACA_AVAILABLE:
+            self.client = None
+            self.data = None
+            return
+
         self.client = TradingClient(key, secret, paper=(cfg.mode == "paper"))
         self.data = StockHistoricalDataClient(key, secret)
 
@@ -111,10 +118,39 @@ class AlpacaLeg:
     def _key_state(self) -> dict:
         return self.state.setdefault(self.cfg.mode, {})
 
+    def _rest_json(
+        self,
+        method: str,
+        url: str,
+        payload: Optional[dict] = None,
+        timeout: int = 30,
+    ) -> dict | list:
+        headers = {
+            "APCA-API-KEY-ID": self._api_key,
+            "APCA-API-SECRET-KEY": self._api_secret,
+            "Content-Type": "application/json",
+        }
+        data = json.dumps(payload).encode("utf-8") if payload is not None else None
+        req = urllib.request.Request(url, data=data, headers=headers, method=method)
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as response:
+                raw = response.read().decode("utf-8")
+        except urllib.error.HTTPError as exc:
+            body = exc.read().decode("utf-8", errors="replace")
+            raise RuntimeError(f"alpaca {method} {url} failed: {exc.code} {body}") from exc
+        return json.loads(raw) if raw else {}
+
     # ---- account state -----------------------------------------------------
     def equity(self) -> Optional[float]:
-        if not self.client:
+        if not self.cfg.enabled:
             return None
+        if not self.client:
+            try:
+                payload = self._rest_json("GET", f"{self._base_url}/v2/account")
+                return float(payload["equity"])
+            except Exception as e:
+                log.error(f"[{self.cfg.mode}] REST equity fetch failed: {e}")
+                return None
         try:
             return float(self.client.get_account().equity)
         except Exception as e:
@@ -122,8 +158,22 @@ class AlpacaLeg:
             return None
 
     def positions(self) -> dict:
-        if not self.client:
+        if not self.cfg.enabled:
             return {}
+        if not self.client:
+            try:
+                out = {}
+                for p in self._rest_json("GET", f"{self._base_url}/v2/positions"):
+                    out[p["symbol"]] = {
+                        "qty": float(p["qty"]),
+                        "notional": float(p["market_value"]),
+                        "avg_entry": float(p["avg_entry_price"]),
+                        "unrealized_pl": float(p["unrealized_pl"]),
+                    }
+                return out
+            except Exception as e:
+                log.error(f"[{self.cfg.mode}] REST positions fetch failed: {e}")
+                return {}
         try:
             out = {}
             for p in self.client.get_all_positions():
@@ -137,6 +187,22 @@ class AlpacaLeg:
         except Exception as e:
             log.error(f"[{self.cfg.mode}] positions fetch failed: {e}")
             return {}
+
+    def is_market_open(self) -> Optional[bool]:
+        if not self.cfg.enabled:
+            return None
+        if not self.client:
+            try:
+                payload = self._rest_json("GET", f"{self._base_url}/v2/clock")
+                return bool(payload.get("is_open"))
+            except Exception as e:
+                log.error(f"[{self.cfg.mode}] REST clock fetch failed: {e}")
+                return None
+        try:
+            return bool(self.client.get_clock().is_open)
+        except Exception as e:
+            log.error(f"[{self.cfg.mode}] clock fetch failed: {e}")
+            return None
 
     # ---- the capital floor -------------------------------------------------
     def floor_tripped(self) -> bool:
@@ -168,7 +234,14 @@ class AlpacaLeg:
         return False
 
     def _liquidate_all(self) -> None:
+        if not self.cfg.enabled:
+            return
         if not self.client:
+            try:
+                self._rest_json("DELETE", f"{self._base_url}/v2/positions?cancel_orders=true")
+                log.critical(f"[{self.cfg.mode}] ALL POSITIONS LIQUIDATED")
+            except Exception as e:
+                log.critical(f"[{self.cfg.mode}] REST LIQUIDATION FAILED: {e} — manual action needed")
             return
         try:
             self.client.close_all_positions(cancel_orders=True)
@@ -178,8 +251,21 @@ class AlpacaLeg:
 
     # ---- market data (shared logic; both legs can quote) -------------------
     def latest_quote(self, symbol: str) -> Optional[dict]:
-        if not self.data:
+        if not self.cfg.enabled:
             return None
+        if not self.data:
+            try:
+                feed = os.environ.get("MARKET_DATA_FEED", "iex")
+                params = urllib.parse.urlencode({"feed": feed})
+                url = f"https://data.alpaca.markets/v2/stocks/{symbol}/quotes/latest?{params}"
+                payload = self._rest_json("GET", url)
+                q = payload["quote"]
+                bid = float(q.get("bp", 0.0))
+                ask = float(q.get("ap", 0.0))
+                return {"bid": bid, "ask": ask, "spread": ask - bid}
+            except Exception as e:
+                log.error(f"[{self.cfg.mode}] REST quote failed for {symbol}: {e}")
+                return None
         try:
             req = StockLatestQuoteRequest(symbol_or_symbols=symbol)
             q = self.data.get_stock_latest_quote(req)[symbol]
@@ -191,7 +277,7 @@ class AlpacaLeg:
 
     # ---- order placement ---------------------------------------------------
     def can_trade(self) -> bool:
-        if not self.cfg.enabled or not self.client:
+        if not self.cfg.enabled:
             return False
         if self.cfg.mode == "live" and self.check_floor():
             return False
@@ -218,6 +304,24 @@ class AlpacaLeg:
                 return None
 
         try:
+            if not self.client:
+                payload = {
+                    "symbol": order["symbol"],
+                    "qty": str(order["qty"]),
+                    "side": order["side"],
+                    "type": order["order_type"],
+                    "time_in_force": "day",
+                }
+                if order["order_type"] == "limit":
+                    payload["limit_price"] = str(order["limit_price"])
+                result = self._rest_json("POST", f"{self._base_url}/v2/orders", payload)
+                return {
+                    "id": str(result.get("id")),
+                    "symbol": order["symbol"],
+                    "status": str(result.get("status")),
+                    "submitted": order,
+                }
+
             side = OrderSide.BUY if order["side"] == "buy" else OrderSide.SELL
             if order["order_type"] == "limit":
                 req = LimitOrderRequest(
@@ -241,6 +345,18 @@ class AlpacaLeg:
         if not self.can_trade():
             return None
         try:
+            if not self.client:
+                payload = {
+                    "symbol": symbol,
+                    "qty": str(qty),
+                    "side": "sell",
+                    "type": "trailing_stop",
+                    "time_in_force": "gtc",
+                    "trail_percent": str(trail_pct),
+                }
+                result = self._rest_json("POST", f"{self._base_url}/v2/orders", payload)
+                return {"id": str(result.get("id")), "symbol": symbol, "trail_pct": trail_pct}
+
             req = TrailingStopOrderRequest(
                 symbol=symbol, qty=qty, side=OrderSide.SELL,
                 time_in_force=TimeInForce.GTC, trail_percent=trail_pct,
@@ -308,12 +424,19 @@ class DualBroker:
         return {
             "paper": {"equity": self.paper.equity(),
                       "can_trade": self.paper.can_trade(),
+                      "market_open": self.paper.is_market_open(),
                       "positions": len(self.paper.positions())},
             "live": {"equity": self.live.equity(),
                      "can_trade": self.live.can_trade(),
+                     "market_open": self.live.is_market_open(),
                      "floor_tripped": self.live.floor_tripped(),
                      "positions": len(self.live.positions())},
         }
+
+    def is_market_open(self) -> bool:
+        paper_open = self.paper.is_market_open()
+        live_open = self.live.is_market_open()
+        return bool(paper_open or live_open)
 
 
 if __name__ == "__main__":

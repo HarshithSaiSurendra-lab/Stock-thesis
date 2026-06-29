@@ -65,6 +65,8 @@ class UniverseConfig:
 class SizingConfig:
     max_position_pct: float = 0.50
     target_n_positions: int = 5
+    strategy_capital: float = 1_000.0
+    max_deployed_pct: float = 1.00
 
 
 @dataclass
@@ -189,6 +191,8 @@ class TradingConfig:
             sizing=SizingConfig(
                 max_position_pct=_env_float("MAX_POSITION_PCT", 0.50),
                 target_n_positions=_env_int("TARGET_N_POSITIONS", 5),
+                strategy_capital=_env_float("STRATEGY_CAPITAL", 1_000.0),
+                max_deployed_pct=_env_float("MAX_DEPLOYED_PCT", 1.00),
             ),
             exits=ExitConfig(
                 trail_percent=_env_float("TRAIL_PERCENT", 8.0),

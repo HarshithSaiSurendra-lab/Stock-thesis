@@ -1,7 +1,12 @@
 from __future__ import annotations
 
+import json
 import logging
+import os
+import urllib.parse
+import urllib.request
 from dataclasses import dataclass
+from datetime import datetime, timedelta, timezone
 from types import SimpleNamespace
 from typing import Iterable, Optional
 
@@ -77,9 +82,54 @@ def _candidate_symbols(broker, cfg: TradingConfig) -> list[str]:
     return list(cfg.universe.seed_symbols)
 
 
-def _daily_bars(data_client, symbol: str, lookback_days: int) -> Optional[pd.DataFrame]:
-    if data_client is None:
+def _rest_daily_bars(symbol: str, lookback_days: int, cfg: TradingConfig) -> Optional[pd.DataFrame]:
+    key = os.getenv("ALPACA_PAPER_KEY") or os.getenv("ALPACA_LIVE_KEY")
+    secret = os.getenv("ALPACA_PAPER_SECRET") or os.getenv("ALPACA_LIVE_SECRET")
+    if not key or not secret:
         return None
+    end = datetime.now(timezone.utc)
+    start = end - timedelta(days=max(int(lookback_days * 2), lookback_days + 30))
+    params = {
+        "symbols": symbol,
+        "timeframe": "1Day",
+        "start": start.isoformat().replace("+00:00", "Z"),
+        "end": end.isoformat().replace("+00:00", "Z"),
+        "adjustment": cfg.run.market_data_adjustment,
+        "feed": cfg.run.market_data_feed,
+        "limit": str(max(lookback_days, 100)),
+    }
+    url = f"https://data.alpaca.markets/v2/stocks/bars?{urllib.parse.urlencode(params)}"
+    req = urllib.request.Request(
+        url,
+        headers={
+            "APCA-API-KEY-ID": key,
+            "APCA-API-SECRET-KEY": secret,
+        },
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=30) as response:
+            payload = json.loads(response.read().decode("utf-8"))
+    except Exception as exc:
+        log.debug("REST bar fetch failed for %s: %s", symbol, exc)
+        return None
+    rows = payload.get("bars", {}).get(symbol, [])
+    if not rows:
+        return None
+    return pd.DataFrame(
+        {
+            "open": [bar["o"] for bar in rows],
+            "high": [bar["h"] for bar in rows],
+            "low": [bar["l"] for bar in rows],
+            "close": [bar["c"] for bar in rows],
+            "volume": [bar["v"] for bar in rows],
+        },
+        index=pd.to_datetime([bar["t"] for bar in rows]).tz_convert(None),
+    ).sort_index()
+
+
+def _daily_bars(data_client, symbol: str, lookback_days: int, cfg: Optional[TradingConfig] = None) -> Optional[pd.DataFrame]:
+    if data_client is None:
+        return _rest_daily_bars(symbol, lookback_days, cfg) if cfg is not None else None
     try:
         if _ALPACA_AVAILABLE:
             req = StockBarsRequest(symbol_or_symbols=symbol, timeframe=TimeFrame.Day, limit=lookback_days)
@@ -111,7 +161,7 @@ def select_universe(broker, cfg: TradingConfig) -> list[str]:
     data_client = getattr(broker.paper, "data", None) or getattr(broker.live, "data", None)
 
     for symbol in candidates:
-        bars = _daily_bars(data_client, symbol, cfg.universe.lookback_days)
+        bars = _daily_bars(data_client, symbol, cfg.universe.lookback_days, cfg)
         if bars is None or bars.empty:
             continue
         needed = {"open", "high", "low", "close", "volume"}
@@ -138,7 +188,7 @@ def select_universe(broker, cfg: TradingConfig) -> list[str]:
 
 def fetch_symbol_frame(broker, symbol: str, cfg: TradingConfig) -> Optional[pd.DataFrame]:
     data_client = getattr(broker.paper, "data", None) or getattr(broker.live, "data", None)
-    bars = _daily_bars(data_client, symbol, cfg.run.data_lookback_days)
+    bars = _daily_bars(data_client, symbol, cfg.run.data_lookback_days, cfg)
     if bars is None or bars.empty:
         return None
     return bars
