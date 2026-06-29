@@ -87,7 +87,7 @@ class SignalConfig:
     overbought_mfi: float = 80.0
     min_trend_quality: float = 3.0
     min_momentum: float = 0.0
-    min_relative_strength_63: float = -999.0
+    min_relative_strength_63: float = 0.0
 
 
 @dataclass
@@ -98,6 +98,10 @@ class RegimeConfig:
     require_above_sma_200: bool = True
     require_sma_20_above_sma_50: bool = True
     require_positive_momentum: bool = True
+    require_breadth: bool = False
+    min_universe_above_sma_50: float = 0.45
+    min_universe_above_sma_200: float = 0.40
+    min_universe_positive_momentum: float = 0.40
     max_benchmark_drawdown_63: float = 0.10
     max_benchmark_rvol_20: float = 0.25
 
@@ -212,7 +216,7 @@ class TradingConfig:
                 overbought_mfi=_env_float("OVERBOUGHT_MFI", 80.0),
                 min_trend_quality=_env_float("MIN_TREND_QUALITY", 3.0),
                 min_momentum=_env_float("MIN_MOMENTUM", 0.0),
-                min_relative_strength_63=_env_float("MIN_RELATIVE_STRENGTH_63", -999.0),
+                min_relative_strength_63=_env_float("MIN_RELATIVE_STRENGTH_63", 0.0),
             ),
             regime=RegimeConfig(
                 enabled=_env_int("REGIME_FILTER_ENABLED", 1) == 1,
@@ -221,6 +225,10 @@ class TradingConfig:
                 require_above_sma_200=_env_int("REGIME_REQUIRE_ABOVE_SMA_200", 1) == 1,
                 require_sma_20_above_sma_50=_env_int("REGIME_REQUIRE_SMA_20_ABOVE_SMA_50", 1) == 1,
                 require_positive_momentum=_env_int("REGIME_REQUIRE_POSITIVE_MOMENTUM", 1) == 1,
+                require_breadth=_env_int("REGIME_REQUIRE_BREADTH", 0) == 1,
+                min_universe_above_sma_50=_env_float("REGIME_MIN_UNIVERSE_ABOVE_SMA_50", 0.45),
+                min_universe_above_sma_200=_env_float("REGIME_MIN_UNIVERSE_ABOVE_SMA_200", 0.40),
+                min_universe_positive_momentum=_env_float("REGIME_MIN_UNIVERSE_POSITIVE_MOMENTUM", 0.40),
                 max_benchmark_drawdown_63=_env_float("REGIME_MAX_BENCHMARK_DRAWDOWN_63", 0.10),
                 max_benchmark_rvol_20=_env_float("REGIME_MAX_BENCHMARK_RVOL_20", 0.25),
             ),

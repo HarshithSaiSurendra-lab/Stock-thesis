@@ -17,7 +17,7 @@ from indicators import build_feature_frame
 from memory import SignalSnapshot, TradeMemory
 from notifier import Notifier, format_daily
 from reconcile import reconcile
-from signal import composite_signal, composite_score, trend_quality_score
+from trade_signal import composite_signal, composite_score, trend_quality_score
 from universe import fetch_symbol_frame, select_universe
 
 log = logging.getLogger("strategy")
@@ -246,6 +246,130 @@ def _nullable_float(value) -> Optional[float]:
     return None if pd.isna(out) else out
 
 
+def _relative_strength_63(row: pd.Series, benchmark_row: Optional[pd.Series]) -> float:
+    if benchmark_row is None:
+        return float("nan")
+    symbol_ret = _safe_float(row.get("ret_63"), float("nan"))
+    benchmark_ret = _safe_float(benchmark_row.get("ret_63"), float("nan"))
+    if pd.isna(symbol_ret) or pd.isna(benchmark_ret):
+        return float("nan")
+    return symbol_ret - benchmark_ret
+
+
+def _ratio_from_rows(rows: list[pd.Series], predicate) -> Optional[float]:
+    valid = 0
+    passed = 0
+    for row in rows:
+        try:
+            ok = predicate(row)
+        except (TypeError, ValueError):
+            ok = None
+        if ok is None:
+            continue
+        valid += 1
+        if ok:
+            passed += 1
+    if valid == 0:
+        return None
+    return passed / valid
+
+
+def _breadth_report(rows: list[pd.Series], cfg: TradingConfig) -> dict:
+    def above_sma(row: pd.Series, key: str) -> Optional[bool]:
+        close = _safe_float(row.get("close"), float("nan"))
+        sma = _safe_float(row.get(key), float("nan"))
+        if pd.isna(close) or pd.isna(sma):
+            return None
+        return close > sma
+
+    def positive_momentum(row: pd.Series) -> Optional[bool]:
+        momentum = _safe_float(row.get("mom_126_21"), float("nan"))
+        if pd.isna(momentum):
+            return None
+        return momentum > 0
+
+    above_50 = _ratio_from_rows(rows, lambda row: above_sma(row, "sma_50"))
+    above_200 = _ratio_from_rows(rows, lambda row: above_sma(row, "sma_200"))
+    positive_mom = _ratio_from_rows(rows, positive_momentum)
+    thresholds = {
+        "above_sma_50_pct": cfg.regime.min_universe_above_sma_50,
+        "above_sma_200_pct": cfg.regime.min_universe_above_sma_200,
+        "positive_momentum_pct": cfg.regime.min_universe_positive_momentum,
+    }
+    values = {
+        "above_sma_50_pct": above_50,
+        "above_sma_200_pct": above_200,
+        "positive_momentum_pct": positive_mom,
+    }
+    failures = []
+    for key, threshold in thresholds.items():
+        value = values[key]
+        if value is None:
+            failures.append(f"{key} unavailable")
+        elif value < threshold:
+            failures.append(f"{key} {value:.1%} below {threshold:.1%}")
+    ok = not failures
+    return {
+        "enabled": cfg.regime.require_breadth,
+        "ok": ok,
+        "would_block": bool(cfg.regime.require_breadth and not ok),
+        "reason": "ok" if ok else "; ".join(failures),
+        "sample_size": len(rows),
+        "above_sma_50_pct": _nullable_float(above_50),
+        "above_sma_200_pct": _nullable_float(above_200),
+        "positive_momentum_pct": _nullable_float(positive_mom),
+        "minimums": thresholds,
+    }
+
+
+def _skip_summary(skipped: list[dict]) -> dict:
+    counts: dict[str, int] = {}
+    for item in skipped:
+        key = f"{item.get('stage', 'unknown')}: {item.get('reason', 'unknown')}"
+        counts[key] = counts.get(key, 0) + 1
+    return dict(sorted(counts.items(), key=lambda pair: (-pair[1], pair[0])))
+
+
+def _decision_table(candidates: list[dict], selected: list[dict], orders_preview: list[dict], limit: int = 12) -> list[dict]:
+    selected_symbols = {item["symbol"] for item in selected}
+    orders_by_symbol = {
+        item["symbol"]: item
+        for item in orders_preview
+        if item.get("symbol") and item.get("direction") != "exit"
+    }
+    rows = []
+    for item in candidates[:limit]:
+        symbol = item["symbol"]
+        order_preview = orders_by_symbol.get(symbol)
+        report = _decision_report_item(item)
+        action = "candidate"
+        if symbol in selected_symbols:
+            action = "selected_blocked"
+        if order_preview is not None:
+            action = "order"
+        order = order_preview.get("order", {}) if order_preview else {}
+        rows.append(
+            {
+                "symbol": symbol,
+                "action": action,
+                "direction": report["direction"],
+                "decision_score": report["decision_score"],
+                "signal_score": report["signal_score"],
+                "trend_quality": report["trend_quality"],
+                "relative_strength_63": report["relative_strength_63"],
+                "momentum_126_21": report["momentum_126_21"],
+                "rvol_20": report["rvol_20"],
+                "spread_pct": report["spread_pct"],
+                "last_price": report["last_price"],
+                "target_notional": order_preview.get("target_notional") if order_preview else None,
+                "intended_notional": order_preview.get("intended_notional") if order_preview else None,
+                "qty": order.get("qty"),
+                "order_type": order.get("order_type"),
+            }
+        )
+    return rows
+
+
 def run_daily(
     broker,
     guardian,
@@ -307,6 +431,7 @@ def run_daily(
     candidates = []
     orders_preview = []
     skipped = []
+    breadth_rows = []
 
     for symbol in universe:
         if symbol in state.submitted_today:
@@ -322,6 +447,7 @@ def run_daily(
         if row is None or pd.isna(row.get("close", float("nan"))):
             skipped.append({"symbol": symbol, "stage": "indicators", "reason": "latest indicators unavailable"})
             continue
+        breadth_rows.append(row)
 
         direction_series = composite_signal(features).dropna()
         score_series = composite_score(features).dropna()
@@ -343,11 +469,8 @@ def run_daily(
         if float(row.get("mom_126_21", 0.0)) < cfg.signals.min_momentum:
             skipped.append({"symbol": symbol, "stage": "signal", "reason": "momentum below minimum"})
             continue
-        relative_strength = float("nan")
-        if benchmark_row is not None and cfg.signals.min_relative_strength_63 > -9:
-            relative_strength = float(row.get("ret_63", float("nan"))) - float(
-                benchmark_row.get("ret_63", float("nan"))
-            )
+        relative_strength = _relative_strength_63(row, benchmark_row)
+        if cfg.signals.min_relative_strength_63 > -9:
             if pd.isna(relative_strength) or relative_strength < cfg.signals.min_relative_strength_63:
                 reason = (
                     f"63-day relative strength "
@@ -399,6 +522,25 @@ def run_daily(
         )
 
     candidates.sort(key=lambda item: (item["decision_score"], item["score"], item["trend_quality"]), reverse=True)
+    breadth = _breadth_report(breadth_rows, cfg)
+    if not dry_run and cfg.regime.require_breadth and not breadth["ok"]:
+        summary = {
+            "date": today,
+            "status": "breadth_blocked",
+            "reason": breadth["reason"],
+            "regime": regime.__dict__,
+            "breadth": breadth,
+            "candidates": [_decision_report_item(item) for item in candidates],
+            "decision_report": [_decision_report_item(item) for item in candidates],
+            "decision_table": _decision_table(candidates, [], []),
+            "skip_summary": _skip_summary(skipped),
+            "selected": [],
+            "orders": [],
+            "skipped": skipped,
+        }
+        state.last_run_ts = datetime.now(timezone.utc).isoformat()
+        state.save(cfg.paths.strategy_state_path)
+        return summary
     selected = candidates[: cfg.sizing.target_n_positions]
 
     paper_equity = broker.paper.equity()
@@ -609,6 +751,7 @@ def run_daily(
             "date": today,
             "status": "dry_run",
             "regime": regime.__dict__,
+            "breadth": breadth,
             "budget": {
                 "strategy_capital": cfg.sizing.strategy_capital,
                 "account_equity": account_equity,
@@ -623,6 +766,8 @@ def run_daily(
                 _decision_report_item(item) for item in candidates
             ],
             "decision_report": [_decision_report_item(item) for item in candidates],
+            "decision_table": _decision_table(candidates, selected, orders_preview),
+            "skip_summary": _skip_summary(skipped),
             "selected": [item["symbol"] for item in selected],
             "orders": orders_preview,
             "skipped": skipped,
@@ -642,6 +787,7 @@ def run_daily(
         "date": today,
         "status": "ok" if reconcile_result["ok"] else "needs_attention",
         "regime": regime.__dict__,
+        "breadth": breadth,
         "budget": {
             "strategy_capital": cfg.sizing.strategy_capital,
             "account_equity": account_equity,
@@ -651,6 +797,8 @@ def run_daily(
             "remaining_budget": round(remaining_budget, 2),
         },
         "decision_report": [_decision_report_item(item) for item in candidates],
+        "decision_table": _decision_table(candidates, selected, orders_preview),
+        "skip_summary": _skip_summary(skipped),
         "selected": [item["symbol"] for item in selected],
         "orders": orders_preview,
         "skipped": skipped,

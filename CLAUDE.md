@@ -206,7 +206,7 @@ unless you pass it; the spec assumes you do.
 
 ## Signal definition
 The signal rule is in HANDOFF_SPEC §5. It's a **stub** that Codex should
-implement in a separate `signal.py` module:
+implement in a separate `trade_signal.py` module:
 ```python
 def composite_signal(features: pd.DataFrame) -> pd.Series:
     # returns 'strong_up', 'mild_up', 'no_trade' per row

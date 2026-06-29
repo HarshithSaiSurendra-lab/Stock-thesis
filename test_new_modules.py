@@ -20,14 +20,17 @@ from research_runner import (
     synthetic_history,
 )
 from robustness_runner import run_robustness, summarize_grid
-from signal import composite_signal, trend_quality_score
+from trade_signal import composite_signal, trend_quality_score
 from stop_backtest import StopBacktestConfig, run_trailing_stop_backtest
 from strategy_runner import (
     StrategyState,
+    _breadth_report,
     _decision_rank,
+    _decision_table,
     _position_payload_for_validation,
     _positions_notional,
     _quote_with_spread_pct,
+    _relative_strength_63,
     _strategy_equity,
     _strategy_owned_symbols,
 )
@@ -239,6 +242,64 @@ def test_decision_rank_rewards_stronger_cleaner_setup():
     )
     assert strong_rank["decision_score"] > weak_rank["decision_score"]
     assert strong_rank["components"]["spread"] > weak_rank["components"]["spread"]
+
+
+def test_relative_strength_is_computed_without_hard_filter():
+    row = pd.Series({"ret_63": 0.12})
+    benchmark_row = pd.Series({"ret_63": 0.05})
+    assert round(_relative_strength_63(row, benchmark_row), 4) == 0.07
+    assert pd.isna(_relative_strength_63(row, None))
+
+
+def test_breadth_report_tracks_universe_health():
+    cfg = TradingConfig.from_env()
+    cfg.regime.min_universe_above_sma_50 = 0.60
+    cfg.regime.min_universe_above_sma_200 = 0.60
+    cfg.regime.min_universe_positive_momentum = 0.60
+    rows = [
+        pd.Series({"close": 110, "sma_50": 100, "sma_200": 90, "mom_126_21": 0.10}),
+        pd.Series({"close": 95, "sma_50": 100, "sma_200": 90, "mom_126_21": 0.05}),
+        pd.Series({"close": 120, "sma_50": 100, "sma_200": 90, "mom_126_21": -0.02}),
+    ]
+    report = _breadth_report(rows, cfg)
+    assert report["ok"]
+    assert round(report["above_sma_50_pct"], 4) == 0.6667
+    assert round(report["positive_momentum_pct"], 4) == 0.6667
+
+    cfg.regime.require_breadth = True
+    cfg.regime.min_universe_positive_momentum = 0.80
+    report = _breadth_report(rows, cfg)
+    assert not report["ok"]
+    assert report["would_block"]
+    assert "positive_momentum_pct" in report["reason"]
+
+
+def test_decision_table_summarizes_order_context():
+    cfg = TradingConfig.from_env()
+    row = pd.Series({"close": 100.0, "volume": 2_000_000, "mom_126_21": 0.20, "rvol_20": 0.20})
+    quote = {"bid": 99.99, "ask": 100.0, "spread": 0.01, "spread_pct": 0.0001}
+    rank = _decision_rank(row, quote, score=5.0, quality=5.0, relative_strength=0.08, cfg=cfg)
+    candidate = {
+        "symbol": "AAA",
+        "direction": "mild_up",
+        "score": 5.0,
+        "trend_quality": 5.0,
+        "decision_score": rank["decision_score"],
+        "rank": rank,
+        "relative_strength_63": 0.08,
+        "last_price": 100.0,
+    }
+    order = {
+        "symbol": "AAA",
+        "direction": "mild_up",
+        "target_notional": 500.0,
+        "intended_notional": 400.0,
+        "order": {"qty": 4, "order_type": "limit"},
+    }
+    table = _decision_table([candidate], [candidate], [order])
+    assert table[0]["action"] == "order"
+    assert table[0]["qty"] == 4
+    assert table[0]["relative_strength_63"] == 0.08
 
 
 def test_bar_cache_round_trips(tmp_path=None):

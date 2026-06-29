@@ -17,7 +17,7 @@ from backtest import BacktestConfig, run_backtest, walk_forward_splits
 from config import TradingConfig
 from filters import volatility_scale
 from indicators import build_feature_frame
-from signal import composite_score, composite_signal, trend_quality_score
+from trade_signal import composite_score, composite_signal, trend_quality_score
 from stop_backtest import StopBacktestConfig, run_trailing_stop_backtest
 
 log = logging.getLogger("research")
