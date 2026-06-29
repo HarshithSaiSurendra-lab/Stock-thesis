@@ -7,6 +7,7 @@ import urllib.parse
 import urllib.request
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 from types import SimpleNamespace
 from typing import Iterable, Optional
 
@@ -127,9 +128,55 @@ def _rest_daily_bars(symbol: str, lookback_days: int, cfg: TradingConfig) -> Opt
     ).sort_index()
 
 
+def _cache_path(symbol: str, lookback_days: int, cfg: TradingConfig) -> Path:
+    safe_symbol = "".join(ch for ch in symbol.upper() if ch.isalnum() or ch in ("-", "_"))
+    name = (
+        f"{safe_symbol}_{lookback_days}_"
+        f"{cfg.run.market_data_feed}_{cfg.run.market_data_adjustment}.csv"
+    )
+    return Path(cfg.run.bar_cache_dir) / name
+
+
+def _read_cached_bars(symbol: str, lookback_days: int, cfg: TradingConfig) -> Optional[pd.DataFrame]:
+    if not cfg.run.bar_cache_enabled:
+        return None
+    path = _cache_path(symbol, lookback_days, cfg)
+    if not path.exists():
+        return None
+    age_hours = (datetime.now(timezone.utc).timestamp() - path.stat().st_mtime) / 3600
+    if age_hours > cfg.run.bar_cache_max_age_hours:
+        return None
+    try:
+        frame = pd.read_csv(path, index_col=0, parse_dates=True)
+    except Exception as exc:
+        log.debug("bar cache read failed for %s: %s", symbol, exc)
+        return None
+    needed = {"open", "high", "low", "close", "volume"}
+    if frame.empty or not needed.issubset(frame.columns):
+        return None
+    return frame.sort_index()
+
+
+def _write_cached_bars(symbol: str, lookback_days: int, cfg: TradingConfig, frame: pd.DataFrame) -> None:
+    if not cfg.run.bar_cache_enabled or frame is None or frame.empty:
+        return
+    path = _cache_path(symbol, lookback_days, cfg)
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        frame.tail(max(lookback_days, 100)).to_csv(path)
+    except Exception as exc:
+        log.debug("bar cache write failed for %s: %s", symbol, exc)
+
+
 def _daily_bars(data_client, symbol: str, lookback_days: int, cfg: Optional[TradingConfig] = None) -> Optional[pd.DataFrame]:
+    cached = _read_cached_bars(symbol, lookback_days, cfg) if cfg is not None else None
+    if cached is not None:
+        return cached
     if data_client is None:
-        return _rest_daily_bars(symbol, lookback_days, cfg) if cfg is not None else None
+        frame = _rest_daily_bars(symbol, lookback_days, cfg) if cfg is not None else None
+        if frame is not None and cfg is not None:
+            _write_cached_bars(symbol, lookback_days, cfg, frame)
+        return frame
     try:
         if _ALPACA_AVAILABLE:
             req = StockBarsRequest(symbol_or_symbols=symbol, timeframe=TimeFrame.Day, limit=lookback_days)
@@ -146,6 +193,8 @@ def _daily_bars(data_client, symbol: str, lookback_days: int, cfg: Optional[Trad
                 rename[cols[wanted]] = wanted
         if rename:
             frame = frame.rename(columns=rename)
+        if cfg is not None:
+            _write_cached_bars(symbol, lookback_days, cfg, frame)
         return frame
     except Exception as exc:
         log.debug("bar fetch failed for %s: %s", symbol, exc)

@@ -24,13 +24,14 @@ from signal import composite_signal, trend_quality_score
 from stop_backtest import StopBacktestConfig, run_trailing_stop_backtest
 from strategy_runner import (
     StrategyState,
+    _decision_rank,
     _position_payload_for_validation,
     _positions_notional,
     _quote_with_spread_pct,
     _strategy_equity,
     _strategy_owned_symbols,
 )
-from universe import select_universe
+from universe import _read_cached_bars, _write_cached_bars, select_universe
 
 
 def test_signal_prefers_trend_and_volume():
@@ -200,6 +201,67 @@ def test_invalid_quote_is_rejected_before_entry():
     quote = _quote_with_spread_pct({"bid": 99.9, "ask": 100.0, "spread": 0.1})
     assert quote is not None
     assert quote["spread_pct"] < 0.01
+
+
+def test_decision_rank_rewards_stronger_cleaner_setup():
+    cfg = TradingConfig.from_env()
+    strong = pd.Series(
+        {
+            "close": 100.0,
+            "volume": 2_000_000,
+            "mom_126_21": 0.20,
+            "rvol_20": 0.20,
+        }
+    )
+    weak = pd.Series(
+        {
+            "close": 100.0,
+            "volume": 80_000,
+            "mom_126_21": 0.02,
+            "rvol_20": 0.50,
+        }
+    )
+    strong_rank = _decision_rank(
+        strong,
+        {"bid": 99.99, "ask": 100.0, "spread": 0.01, "spread_pct": 0.0001},
+        score=5.0,
+        quality=5.0,
+        relative_strength=0.08,
+        cfg=cfg,
+    )
+    weak_rank = _decision_rank(
+        weak,
+        {"bid": 99.5, "ask": 100.0, "spread": 0.5, "spread_pct": 0.005},
+        score=4.0,
+        quality=3.0,
+        relative_strength=-0.02,
+        cfg=cfg,
+    )
+    assert strong_rank["decision_score"] > weak_rank["decision_score"]
+    assert strong_rank["components"]["spread"] > weak_rank["components"]["spread"]
+
+
+def test_bar_cache_round_trips(tmp_path=None):
+    if tmp_path is None:
+        tmp_path = Path(tempfile.mkdtemp())
+    cfg = TradingConfig.from_env()
+    cfg.run.bar_cache_dir = str(tmp_path / "bars")
+    cfg.run.bar_cache_enabled = True
+    idx = pd.bdate_range("2024-01-01", periods=3)
+    frame = pd.DataFrame(
+        {
+            "open": [10, 11, 12],
+            "high": [11, 12, 13],
+            "low": [9, 10, 11],
+            "close": [10.5, 11.5, 12.5],
+            "volume": [1000, 1100, 1200],
+        },
+        index=idx,
+    )
+    _write_cached_bars("AAA", 320, cfg, frame)
+    cached = _read_cached_bars("AAA", 320, cfg)
+    assert cached is not None
+    assert cached["close"].tolist() == frame["close"].tolist()
 
 
 def test_research_runner_builds_variants():

@@ -182,6 +182,70 @@ def _position_payload_for_validation(positions: dict, symbols: Optional[set[str]
     return out
 
 
+def _safe_float(value, default: float = 0.0) -> float:
+    try:
+        out = float(value)
+    except (TypeError, ValueError):
+        return default
+    return out if math.isfinite(out) else default
+
+
+def _clamp(value: float, low: float = 0.0, high: float = 1.0) -> float:
+    return max(low, min(high, value))
+
+
+def _decision_rank(row: pd.Series, quote: dict, score: float, quality: float, relative_strength: float, cfg: TradingConfig) -> dict:
+    momentum = _safe_float(row.get("mom_126_21"), 0.0)
+    rvol = _safe_float(row.get("rvol_20"), cfg.risk.max_entry_rvol)
+    spread_pct = _safe_float(quote.get("spread_pct"), 1.0)
+    dollar_volume = _safe_float(row.get("close"), 0.0) * _safe_float(row.get("volume"), 0.0)
+    rel_strength = None if pd.isna(relative_strength) else _safe_float(relative_strength)
+    rel_component = 0.0 if rel_strength is None else _clamp((rel_strength + 0.05) / 0.20) * 1.5
+
+    components = {
+        "signal": _safe_float(score),
+        "trend": _safe_float(quality) * 0.8,
+        "momentum": _clamp(momentum / 0.30) * 2.0,
+        "relative_strength": rel_component,
+        "volatility": _clamp(1.0 - (rvol / max(cfg.risk.max_entry_rvol, 0.01))) * 1.25,
+        "spread": _clamp(1.0 - (spread_pct / max(cfg.risk.max_quote_spread_pct, 0.0001))),
+        "liquidity": _clamp(math.log10(max(dollar_volume, 1.0) / max(cfg.universe.min_dollar_volume, 1.0)) / 2.0),
+    }
+    decision_score = sum(components.values())
+    return {
+        "decision_score": decision_score,
+        "components": components,
+        "dollar_volume": dollar_volume,
+        "spread_pct": spread_pct,
+        "rvol_20": rvol,
+        "momentum_126_21": momentum,
+    }
+
+
+def _decision_report_item(item: dict) -> dict:
+    return {
+        "symbol": item["symbol"],
+        "direction": item["direction"],
+        "decision_score": round(item["decision_score"], 3),
+        "signal_score": round(item["score"], 3),
+        "trend_quality": round(item["trend_quality"], 3),
+        "momentum_126_21": round(item["rank"]["momentum_126_21"], 4),
+        "relative_strength_63": (
+            None if pd.isna(item["relative_strength_63"]) else round(item["relative_strength_63"], 4)
+        ),
+        "rvol_20": round(item["rank"]["rvol_20"], 4),
+        "spread_pct": round(item["rank"]["spread_pct"], 5),
+        "dollar_volume": round(item["rank"]["dollar_volume"], 2),
+        "last_price": round(item["last_price"], 2),
+        "components": {k: round(v, 3) for k, v in item["rank"]["components"].items()},
+    }
+
+
+def _nullable_float(value) -> Optional[float]:
+    out = _safe_float(value, float("nan"))
+    return None if pd.isna(out) else out
+
+
 def run_daily(
     broker,
     guardian,
@@ -267,14 +331,13 @@ def run_daily(
             continue
         direction = direction_series.iloc[-1]
         score = score_series.iloc[-1]
-        quote = _quote_with_spread_pct(broker.paper.latest_quote(symbol) or broker.live.latest_quote(symbol))
-        if quote is None:
-            skipped.append({"symbol": symbol, "stage": "risk", "reason": "valid quote unavailable"})
-            continue
-        snap = _decision_snapshot(symbol, direction, row, quote)
         quality = quality_series.iloc[-1]
 
-        if pd.isna(snap.rsi) or pd.isna(snap.mfi) or pd.isna(snap.momentum):
+        if (
+            pd.isna(row.get("rsi_14", float("nan")))
+            or pd.isna(row.get("mfi_14", float("nan")))
+            or pd.isna(row.get("mom_126_21", float("nan")))
+        ):
             skipped.append({"symbol": symbol, "stage": "indicators", "reason": "required indicators unavailable"})
             continue
         if float(row.get("mom_126_21", 0.0)) < cfg.signals.min_momentum:
@@ -297,6 +360,11 @@ def run_daily(
         if float(quality) < cfg.signals.min_trend_quality:
             skipped.append({"symbol": symbol, "stage": "signal", "reason": "trend quality below minimum"})
             continue
+        quote = _quote_with_spread_pct(broker.paper.latest_quote(symbol) or broker.live.latest_quote(symbol))
+        if quote is None:
+            skipped.append({"symbol": symbol, "stage": "risk", "reason": "valid quote unavailable"})
+            continue
+        snap = _decision_snapshot(symbol, direction, row, quote)
         ok_downside, downside_reason = downside_ok(row, quote, cfg)
         if not ok_downside:
             skipped.append({"symbol": symbol, "stage": "risk", "reason": downside_reason})
@@ -313,12 +381,15 @@ def run_daily(
             continue
 
         last_price = _entry_price(quote, row)
+        rank = _decision_rank(row, quote, float(score), float(quality), relative_strength, cfg)
         candidates.append(
             {
                 "symbol": symbol,
                 "direction": direction,
                 "score": float(score),
                 "trend_quality": float(quality),
+                "decision_score": rank["decision_score"],
+                "rank": rank,
                 "relative_strength_63": relative_strength,
                 "row": row,
                 "quote": quote,
@@ -327,7 +398,7 @@ def run_daily(
             }
         )
 
-    candidates.sort(key=lambda item: (item["score"], item["trend_quality"]), reverse=True)
+    candidates.sort(key=lambda item: (item["decision_score"], item["score"], item["trend_quality"]), reverse=True)
     selected = candidates[: cfg.sizing.target_n_positions]
 
     paper_equity = broker.paper.equity()
@@ -416,9 +487,10 @@ def run_daily(
                 {
                     "symbol": symbol,
                     "direction": direction,
+                    "decision_score": item["decision_score"],
                     "score": item["score"],
                     "trend_quality": item["trend_quality"],
-                    "relative_strength_63": item["relative_strength_63"],
+                    "relative_strength_63": _nullable_float(item["relative_strength_63"]),
                     "last_price": round(price_for_sizing, 2),
                     "target_notional": round(capped_notional, 2),
                     "intended_notional": round(intended_notional, 2),
@@ -479,9 +551,10 @@ def run_daily(
             {
                 "symbol": symbol,
                 "direction": direction,
+                "decision_score": item["decision_score"],
                 "score": item["score"],
                 "trend_quality": item["trend_quality"],
-                "relative_strength_63": item["relative_strength_63"],
+                "relative_strength_63": _nullable_float(item["relative_strength_63"]),
                 "last_price": round(price_for_sizing, 2),
                 "target_notional": round(capped_notional, 2),
                 "intended_notional": round(intended_notional, 2),
@@ -547,16 +620,9 @@ def run_daily(
                 "max_position_pct": cfg.sizing.max_position_pct,
             },
             "candidates": [
-                {
-                    "symbol": item["symbol"],
-                    "direction": item["direction"],
-                    "score": item["score"],
-                    "trend_quality": item["trend_quality"],
-                    "relative_strength_63": item["relative_strength_63"],
-                    "last_price": round(item["last_price"], 2),
-                }
-                for item in candidates
+                _decision_report_item(item) for item in candidates
             ],
+            "decision_report": [_decision_report_item(item) for item in candidates],
             "selected": [item["symbol"] for item in selected],
             "orders": orders_preview,
             "skipped": skipped,
@@ -584,6 +650,7 @@ def run_daily(
             "existing_notional": round(existing_strategy_notional, 2),
             "remaining_budget": round(remaining_budget, 2),
         },
+        "decision_report": [_decision_report_item(item) for item in candidates],
         "selected": [item["symbol"] for item in selected],
         "orders": orders_preview,
         "skipped": skipped,

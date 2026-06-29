@@ -132,6 +132,9 @@ class RunConfig:
     data_lookback_days: int = 320
     market_data_feed: str = "iex"
     market_data_adjustment: str = "raw"
+    bar_cache_enabled: bool = True
+    bar_cache_dir: str = "./.cache/bars"
+    bar_cache_max_age_hours: float = 18.0
 
 
 @dataclass
@@ -243,6 +246,9 @@ class TradingConfig:
                 data_lookback_days=_env_int("DATA_LOOKBACK_DAYS", 320),
                 market_data_feed=_env_str("MARKET_DATA_FEED", "iex"),
                 market_data_adjustment=_env_str("MARKET_DATA_ADJUSTMENT", "raw"),
+                bar_cache_enabled=_env_int("BAR_CACHE_ENABLED", 1) == 1,
+                bar_cache_dir=_env_str("BAR_CACHE_DIR", "./.cache/bars"),
+                bar_cache_max_age_hours=_env_float("BAR_CACHE_MAX_AGE_HOURS", 18.0),
             ),
             paths=PathConfig(
                 broker_state_path=_env_str("BROKER_STATE_PATH", "./broker_state.json"),
