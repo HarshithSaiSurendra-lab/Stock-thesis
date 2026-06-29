@@ -6,6 +6,25 @@ from pathlib import Path
 from typing import Tuple
 
 
+DEFAULT_SEED_SYMBOLS: Tuple[str, ...] = (
+    "AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "META", "TSLA", "JPM",
+    "UNH", "XOM", "LLY", "AVGO", "COST", "PG", "HD", "MA", "V", "ADBE",
+    "CRM", "PEP", "AMD", "NFLX", "KO", "PFE", "ORCL", "INTC", "CSCO",
+    "MRK", "BAC", "WMT", "ABBV", "JNJ", "TMO", "DHR", "ABT", "AMGN",
+    "ISRG", "BMY", "GILD", "VRTX", "REGN", "MDT", "SYK", "CVX", "COP",
+    "SLB", "EOG", "MPC", "PSX", "VLO", "OXY", "HAL", "GS", "MS", "WFC",
+    "C", "AXP", "BLK", "SCHW", "PNC", "USB", "COF", "SPGI", "CME",
+    "ICE", "CB", "QCOM", "TXN", "AMAT", "MU", "NOW", "SNOW", "PANW",
+    "CRWD", "IBM", "DIS", "CMCSA", "TMUS", "VZ", "T", "MCD", "NKE",
+    "SBUX", "LOW", "BKNG", "TJX", "CMG", "MAR", "GM", "F", "ORLY",
+    "PM", "MO", "MDLZ", "CL", "KMB", "GE", "CAT", "HON", "BA", "UPS",
+    "RTX", "LMT", "DE", "UNP", "ETN", "EMR", "MMM", "NEE", "DUK",
+    "SO", "EXC", "AEP", "SRE", "XEL", "D", "PEG", "LIN", "APD",
+    "SHW", "ECL", "FCX", "NUE", "DOW", "DD", "PLD", "AMT", "EQIX",
+    "O", "SPG", "WELL", "PSA", "CCI",
+)
+
+
 def load_dotenv(path: str = ".env") -> None:
     """
     Minimal .env loader for local secrets. Existing environment variables win.
@@ -51,14 +70,7 @@ class UniverseConfig:
     universe_source: str = "seed"
     max_candidates: int = 200
     lookback_days: int = 60
-    seed_symbols: Tuple[str, ...] = field(
-        default_factory=lambda: (
-            "AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "META", "TSLA", "JPM",
-            "UNH", "XOM", "LLY", "AVGO", "COST", "PG", "HD", "MA", "V", "ADBE",
-            "CRM", "PEP", "AMD", "NFLX", "KO", "PFE", "ORCL", "INTC", "CSCO",
-            "MRK", "BAC", "WMT",
-        )
-    )
+    seed_symbols: Tuple[str, ...] = field(default_factory=lambda: DEFAULT_SEED_SYMBOLS)
 
 
 @dataclass
@@ -87,6 +99,13 @@ class SignalConfig:
     overbought_mfi: float = 80.0
     min_trend_quality: float = 3.0
     min_momentum: float = 0.0
+    min_relative_strength_63: float = 0.0
+    min_decision_score: float = 10.25
+
+
+@dataclass
+class SectorConfig:
+    enabled: bool = True
     min_relative_strength_63: float = 0.0
 
 
@@ -139,6 +158,8 @@ class RunConfig:
     bar_cache_enabled: bool = True
     bar_cache_dir: str = "./.cache/bars"
     bar_cache_max_age_hours: float = 18.0
+    decision_log_enabled: bool = True
+    decision_log_dir: str = "./.cache/decision_logs"
 
 
 @dataclass
@@ -157,6 +178,7 @@ class TradingConfig:
     sizing: SizingConfig = field(default_factory=SizingConfig)
     exits: ExitConfig = field(default_factory=ExitConfig)
     signals: SignalConfig = field(default_factory=SignalConfig)
+    sector: SectorConfig = field(default_factory=SectorConfig)
     regime: RegimeConfig = field(default_factory=RegimeConfig)
     risk: RiskConfig = field(default_factory=RiskConfig)
     paper: AccountConfig = field(default_factory=AccountConfig)
@@ -187,9 +209,7 @@ class TradingConfig:
             seed_symbols=_csv_tuple(
                 _env_str(
                     "UNIVERSE_SEED_SYMBOLS",
-                    "AAPL,MSFT,NVDA,AMZN,GOOGL,META,TSLA,JPM,UNH,XOM,LLY,AVGO,"
-                    "COST,PG,HD,MA,V,ADBE,CRM,PEP,AMD,NFLX,KO,PFE,ORCL,INTC,CSCO,"
-                    "MRK,BAC,WMT",
+                    ",".join(DEFAULT_SEED_SYMBOLS),
                 )
             ),
         )
@@ -217,6 +237,11 @@ class TradingConfig:
                 min_trend_quality=_env_float("MIN_TREND_QUALITY", 3.0),
                 min_momentum=_env_float("MIN_MOMENTUM", 0.0),
                 min_relative_strength_63=_env_float("MIN_RELATIVE_STRENGTH_63", 0.0),
+                min_decision_score=_env_float("MIN_DECISION_SCORE", 10.25),
+            ),
+            sector=SectorConfig(
+                enabled=_env_int("SECTOR_RELATIVE_STRENGTH_ENABLED", 1) == 1,
+                min_relative_strength_63=_env_float("MIN_SECTOR_RELATIVE_STRENGTH_63", 0.0),
             ),
             regime=RegimeConfig(
                 enabled=_env_int("REGIME_FILTER_ENABLED", 1) == 1,
@@ -257,6 +282,8 @@ class TradingConfig:
                 bar_cache_enabled=_env_int("BAR_CACHE_ENABLED", 1) == 1,
                 bar_cache_dir=_env_str("BAR_CACHE_DIR", "./.cache/bars"),
                 bar_cache_max_age_hours=_env_float("BAR_CACHE_MAX_AGE_HOURS", 18.0),
+                decision_log_enabled=_env_int("DECISION_LOG_ENABLED", 1) == 1,
+                decision_log_dir=_env_str("DECISION_LOG_DIR", "./.cache/decision_logs"),
             ),
             paths=PathConfig(
                 broker_state_path=_env_str("BROKER_STATE_PATH", "./broker_state.json"),

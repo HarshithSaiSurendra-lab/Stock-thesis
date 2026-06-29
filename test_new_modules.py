@@ -20,6 +20,7 @@ from research_runner import (
     synthetic_history,
 )
 from robustness_runner import run_robustness, summarize_grid
+from sector_map import sector_benchmark_for, sector_benchmarks_for
 from trade_signal import composite_signal, trend_quality_score
 from stop_backtest import StopBacktestConfig, run_trailing_stop_backtest
 from strategy_runner import (
@@ -33,6 +34,7 @@ from strategy_runner import (
     _relative_strength_63,
     _strategy_equity,
     _strategy_owned_symbols,
+    _write_decision_log,
 )
 from universe import _read_cached_bars, _write_cached_bars, select_universe
 
@@ -230,6 +232,7 @@ def test_decision_rank_rewards_stronger_cleaner_setup():
         score=5.0,
         quality=5.0,
         relative_strength=0.08,
+        sector_relative_strength=0.06,
         cfg=cfg,
     )
     weak_rank = _decision_rank(
@@ -238,10 +241,12 @@ def test_decision_rank_rewards_stronger_cleaner_setup():
         score=4.0,
         quality=3.0,
         relative_strength=-0.02,
+        sector_relative_strength=-0.03,
         cfg=cfg,
     )
     assert strong_rank["decision_score"] > weak_rank["decision_score"]
     assert strong_rank["components"]["spread"] > weak_rank["components"]["spread"]
+    assert strong_rank["components"]["sector_relative_strength"] > weak_rank["components"]["sector_relative_strength"]
 
 
 def test_relative_strength_is_computed_without_hard_filter():
@@ -278,7 +283,15 @@ def test_decision_table_summarizes_order_context():
     cfg = TradingConfig.from_env()
     row = pd.Series({"close": 100.0, "volume": 2_000_000, "mom_126_21": 0.20, "rvol_20": 0.20})
     quote = {"bid": 99.99, "ask": 100.0, "spread": 0.01, "spread_pct": 0.0001}
-    rank = _decision_rank(row, quote, score=5.0, quality=5.0, relative_strength=0.08, cfg=cfg)
+    rank = _decision_rank(
+        row,
+        quote,
+        score=5.0,
+        quality=5.0,
+        relative_strength=0.08,
+        sector_relative_strength=0.06,
+        cfg=cfg,
+    )
     candidate = {
         "symbol": "AAA",
         "direction": "mild_up",
@@ -287,6 +300,8 @@ def test_decision_table_summarizes_order_context():
         "decision_score": rank["decision_score"],
         "rank": rank,
         "relative_strength_63": 0.08,
+        "sector_benchmark": "XLK",
+        "sector_relative_strength_63": 0.06,
         "last_price": 100.0,
     }
     order = {
@@ -300,6 +315,25 @@ def test_decision_table_summarizes_order_context():
     assert table[0]["action"] == "order"
     assert table[0]["qty"] == 4
     assert table[0]["relative_strength_63"] == 0.08
+    assert table[0]["sector_benchmark"] == "XLK"
+
+
+def test_sector_benchmark_mapping_is_deduped():
+    assert sector_benchmark_for("AAPL") == "XLK"
+    assert sector_benchmarks_for(("AAPL", "MSFT", "PFE")) == ("XLK", "XLV")
+
+
+def test_decision_log_writes_non_secret_summary(tmp_path=None):
+    if tmp_path is None:
+        tmp_path = Path(tempfile.mkdtemp())
+    cfg = TradingConfig.from_env()
+    cfg.run.decision_log_enabled = True
+    cfg.run.decision_log_dir = str(tmp_path / "decision_logs")
+    summary = {"date": "2026-01-01", "status": "dry_run", "orders": []}
+    _write_decision_log(summary, cfg)
+    files = list((tmp_path / "decision_logs").glob("*.json"))
+    assert len(files) == 1
+    assert "dry_run" in files[0].name
 
 
 def test_bar_cache_round_trips(tmp_path=None):

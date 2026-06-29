@@ -17,6 +17,7 @@ from indicators import build_feature_frame
 from memory import SignalSnapshot, TradeMemory
 from notifier import Notifier, format_daily
 from reconcile import reconcile
+from sector_map import sector_benchmark_for, sector_benchmarks_for
 from trade_signal import composite_signal, composite_score, trend_quality_score
 from universe import fetch_symbol_frame, select_universe
 
@@ -194,19 +195,32 @@ def _clamp(value: float, low: float = 0.0, high: float = 1.0) -> float:
     return max(low, min(high, value))
 
 
-def _decision_rank(row: pd.Series, quote: dict, score: float, quality: float, relative_strength: float, cfg: TradingConfig) -> dict:
+def _decision_rank(
+    row: pd.Series,
+    quote: dict,
+    score: float,
+    quality: float,
+    relative_strength: float,
+    sector_relative_strength: float,
+    cfg: TradingConfig,
+) -> dict:
     momentum = _safe_float(row.get("mom_126_21"), 0.0)
     rvol = _safe_float(row.get("rvol_20"), cfg.risk.max_entry_rvol)
     spread_pct = _safe_float(quote.get("spread_pct"), 1.0)
     dollar_volume = _safe_float(row.get("close"), 0.0) * _safe_float(row.get("volume"), 0.0)
     rel_strength = None if pd.isna(relative_strength) else _safe_float(relative_strength)
+    sector_rel_strength = None if pd.isna(sector_relative_strength) else _safe_float(sector_relative_strength)
     rel_component = 0.0 if rel_strength is None else _clamp((rel_strength + 0.05) / 0.20) * 1.5
+    sector_rel_component = (
+        0.0 if sector_rel_strength is None else _clamp((sector_rel_strength + 0.03) / 0.15) * 1.0
+    )
 
     components = {
         "signal": _safe_float(score),
         "trend": _safe_float(quality) * 0.8,
         "momentum": _clamp(momentum / 0.30) * 2.0,
         "relative_strength": rel_component,
+        "sector_relative_strength": sector_rel_component,
         "volatility": _clamp(1.0 - (rvol / max(cfg.risk.max_entry_rvol, 0.01))) * 1.25,
         "spread": _clamp(1.0 - (spread_pct / max(cfg.risk.max_quote_spread_pct, 0.0001))),
         "liquidity": _clamp(math.log10(max(dollar_volume, 1.0) / max(cfg.universe.min_dollar_volume, 1.0)) / 2.0),
@@ -219,6 +233,7 @@ def _decision_rank(row: pd.Series, quote: dict, score: float, quality: float, re
         "spread_pct": spread_pct,
         "rvol_20": rvol,
         "momentum_126_21": momentum,
+        "sector_relative_strength_63": sector_relative_strength,
     }
 
 
@@ -232,6 +247,10 @@ def _decision_report_item(item: dict) -> dict:
         "momentum_126_21": round(item["rank"]["momentum_126_21"], 4),
         "relative_strength_63": (
             None if pd.isna(item["relative_strength_63"]) else round(item["relative_strength_63"], 4)
+        ),
+        "sector_benchmark": item.get("sector_benchmark"),
+        "sector_relative_strength_63": (
+            None if pd.isna(item["sector_relative_strength_63"]) else round(item["sector_relative_strength_63"], 4)
         ),
         "rvol_20": round(item["rank"]["rvol_20"], 4),
         "spread_pct": round(item["rank"]["spread_pct"], 5),
@@ -357,6 +376,8 @@ def _decision_table(candidates: list[dict], selected: list[dict], orders_preview
                 "signal_score": report["signal_score"],
                 "trend_quality": report["trend_quality"],
                 "relative_strength_63": report["relative_strength_63"],
+                "sector_benchmark": report["sector_benchmark"],
+                "sector_relative_strength_63": report["sector_relative_strength_63"],
                 "momentum_126_21": report["momentum_126_21"],
                 "rvol_20": report["rvol_20"],
                 "spread_pct": report["spread_pct"],
@@ -368,6 +389,29 @@ def _decision_table(candidates: list[dict], selected: list[dict], orders_preview
             }
         )
     return rows
+
+
+def _latest_feature_row_for_symbol(broker, symbol: str, cfg: TradingConfig) -> Optional[pd.Series]:
+    frame = fetch_symbol_frame(broker, symbol, cfg)
+    if frame is None or frame.empty:
+        return None
+    features = build_feature_frame(frame)
+    features = features.assign(close=frame["close"], volume=frame.get("volume"))
+    return _latest_row(features)
+
+
+def _write_decision_log(summary: dict, cfg: TradingConfig) -> None:
+    if not cfg.run.decision_log_enabled:
+        return
+    try:
+        log_dir = Path(cfg.run.decision_log_dir)
+        log_dir.mkdir(parents=True, exist_ok=True)
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+        status = str(summary.get("status", "unknown")).replace("/", "_")
+        path = log_dir / f"{summary.get('date', 'unknown')}_{status}_{stamp}.json"
+        path.write_text(json.dumps(summary, indent=2, default=str))
+    except Exception as exc:
+        log.debug("decision log write failed: %s", exc)
 
 
 def run_daily(
@@ -391,6 +435,7 @@ def run_daily(
             "reason": guardian.state.halt_reason,
             "orders": [],
         }
+        _write_decision_log(summary, cfg)
         state.last_run_ts = datetime.now(timezone.utc).isoformat()
         state.save(cfg.paths.strategy_state_path)
         return summary
@@ -403,6 +448,7 @@ def run_daily(
             "reason": "regular market is closed; real submissions are blocked",
             "orders": [],
         }
+        _write_decision_log(summary, cfg)
         state.last_run_ts = datetime.now(timezone.utc).isoformat()
         state.save(cfg.paths.strategy_state_path)
         return summary
@@ -416,6 +462,7 @@ def run_daily(
             "regime": regime.__dict__,
             "orders": [],
         }
+        _write_decision_log(summary, cfg)
         state.last_run_ts = datetime.now(timezone.utc).isoformat()
         state.save(cfg.paths.strategy_state_path)
         return summary
@@ -428,6 +475,12 @@ def run_daily(
         benchmark_row = _latest_row(benchmark_features)
 
     universe = select_universe(broker, cfg)
+    sector_rows = {}
+    if cfg.sector.enabled:
+        for sector_symbol in sector_benchmarks_for(tuple(universe)):
+            row = _latest_feature_row_for_symbol(broker, sector_symbol, cfg)
+            if row is not None:
+                sector_rows[sector_symbol] = row
     candidates = []
     orders_preview = []
     skipped = []
@@ -480,6 +533,18 @@ def run_daily(
                 skipped.append({"symbol": symbol, "stage": "signal", "reason": reason})
                 log.info("skipping %s: %s", symbol, reason)
                 continue
+        sector_benchmark = sector_benchmark_for(symbol) if cfg.sector.enabled else None
+        sector_relative_strength = _relative_strength_63(row, sector_rows.get(sector_benchmark))
+        if sector_benchmark and cfg.sector.min_relative_strength_63 > -9:
+            if pd.isna(sector_relative_strength) or sector_relative_strength < cfg.sector.min_relative_strength_63:
+                reason = (
+                    f"63-day sector relative strength "
+                    f"{sector_relative_strength * 100 if not pd.isna(sector_relative_strength) else float('nan'):.2f}% "
+                    f"vs {sector_benchmark} below {cfg.sector.min_relative_strength_63 * 100:.2f}%"
+                )
+                skipped.append({"symbol": symbol, "stage": "signal", "reason": reason})
+                log.info("skipping %s: %s", symbol, reason)
+                continue
         if float(quality) < cfg.signals.min_trend_quality:
             skipped.append({"symbol": symbol, "stage": "signal", "reason": "trend quality below minimum"})
             continue
@@ -504,7 +569,23 @@ def run_daily(
             continue
 
         last_price = _entry_price(quote, row)
-        rank = _decision_rank(row, quote, float(score), float(quality), relative_strength, cfg)
+        rank = _decision_rank(
+            row,
+            quote,
+            float(score),
+            float(quality),
+            relative_strength,
+            sector_relative_strength,
+            cfg,
+        )
+        if rank["decision_score"] < cfg.signals.min_decision_score:
+            reason = (
+                f"decision score {rank['decision_score']:.2f} "
+                f"below minimum {cfg.signals.min_decision_score:.2f}"
+            )
+            skipped.append({"symbol": symbol, "stage": "signal", "reason": reason})
+            log.info("skipping %s: %s", symbol, reason)
+            continue
         candidates.append(
             {
                 "symbol": symbol,
@@ -514,6 +595,8 @@ def run_daily(
                 "decision_score": rank["decision_score"],
                 "rank": rank,
                 "relative_strength_63": relative_strength,
+                "sector_benchmark": sector_benchmark,
+                "sector_relative_strength_63": sector_relative_strength,
                 "row": row,
                 "quote": quote,
                 "last_price": last_price,
@@ -538,6 +621,7 @@ def run_daily(
             "orders": [],
             "skipped": skipped,
         }
+        _write_decision_log(summary, cfg)
         state.last_run_ts = datetime.now(timezone.utc).isoformat()
         state.save(cfg.paths.strategy_state_path)
         return summary
@@ -747,7 +831,7 @@ def run_daily(
         state.expected_positions["live"].pop(symbol, None)
 
     if dry_run:
-        return {
+        summary = {
             "date": today,
             "status": "dry_run",
             "regime": regime.__dict__,
@@ -772,6 +856,8 @@ def run_daily(
             "orders": orders_preview,
             "skipped": skipped,
         }
+        _write_decision_log(summary, cfg)
+        return summary
 
     state.last_run_ts = datetime.now(timezone.utc).isoformat()
     state.save(cfg.paths.strategy_state_path)
@@ -783,7 +869,7 @@ def run_daily(
     title, body = format_daily(summary, status)
     Notifier(cfg).send(title, body)
 
-    return {
+    summary = {
         "date": today,
         "status": "ok" if reconcile_result["ok"] else "needs_attention",
         "regime": regime.__dict__,
@@ -806,3 +892,5 @@ def run_daily(
         "broker": status,
         "reconcile": reconcile_result,
     }
+    _write_decision_log(summary, cfg)
+    return summary
