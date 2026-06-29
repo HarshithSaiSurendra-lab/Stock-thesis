@@ -10,7 +10,7 @@ from broker_alpaca import BrokerConfig, DualBroker
 from config import TradingConfig
 from guardian import Guardian, GuardianConfig, TelegramAlerter
 from memory import TradeMemory
-from strategy_runner import run_daily
+from strategy_runner import _strategy_equity, run_daily
 
 
 def build_components(cfg: TradingConfig):
@@ -23,6 +23,11 @@ def build_components(cfg: TradingConfig):
         )
     )
     memory = TradeMemory(cfg.paths.memory_db_path)
+
+    def guarded_account() -> dict:
+        account_equity = broker.paper.equity() or broker.live.equity() or cfg.paper.starting_capital
+        return {"equity": _strategy_equity(cfg, account_equity)}
+
     guardian = Guardian(
         GuardianConfig(
             kill_switch_path=cfg.paths.kill_switch_path,
@@ -30,7 +35,7 @@ def build_components(cfg: TradingConfig):
             alert_log_path=cfg.paths.alert_log_path,
             max_position_pct=cfg.sizing.max_position_pct,
         ),
-        get_account=lambda: {"equity": broker.live.equity() or broker.paper.equity() or cfg.live.starting_capital},
+        get_account=guarded_account,
         last_data_ts=lambda: time.time(),
         alerter=TelegramAlerter(
             cfg.paths.alert_log_path,
