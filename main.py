@@ -10,7 +10,8 @@ from broker_alpaca import BrokerConfig, DualBroker
 from config import TradingConfig
 from guardian import Guardian, GuardianConfig, TelegramAlerter
 from memory import TradeMemory
-from strategy_runner import _strategy_equity, run_daily
+from session_router import run_routed
+from strategy_runner import _strategy_equity
 
 
 def build_components(cfg: TradingConfig):
@@ -25,7 +26,7 @@ def build_components(cfg: TradingConfig):
     memory = TradeMemory(cfg.paths.memory_db_path)
 
     def guarded_account() -> dict:
-        account_equity = broker.paper.equity() or broker.live.equity() or cfg.paper.starting_capital
+        account_equity = broker.paper.equity() or broker.live.equity() or cfg.sizing.strategy_capital
         return {"equity": _strategy_equity(cfg, account_equity)}
 
     guardian = Guardian(
@@ -49,14 +50,20 @@ def build_components(cfg: TradingConfig):
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Run the daily stock thesis loop")
+    parser = argparse.ArgumentParser(description="Run the stock thesis loop")
     parser.add_argument("--dry-run", action="store_true", help="build orders without submitting")
+    parser.add_argument(
+        "--mode",
+        choices=("auto", "regular", "after-hours"),
+        default="auto",
+        help="route by session or force a specific engine",
+    )
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO)
     cfg = TradingConfig.from_env()
     broker, guardian, memory = build_components(cfg)
-    result = run_daily(broker, guardian, memory, cfg, dry_run=args.dry_run)
+    result = run_routed(broker, guardian, memory, cfg, dry_run=args.dry_run, mode=args.mode)
     print(json.dumps(result, indent=2, default=str))
     return 0
 

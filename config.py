@@ -24,6 +24,10 @@ DEFAULT_SEED_SYMBOLS: Tuple[str, ...] = (
     "O", "SPG", "WELL", "PSA", "CCI",
 )
 
+DEFAULT_AFTER_HOURS_SYMBOLS: Tuple[str, ...] = (
+    "SPY", "QQQ", "AAPL", "MSFT", "NVDA", "AMZN", "META", "GOOGL", "TSLA", "AVGO",
+)
+
 
 def load_dotenv(path: str = ".env") -> None:
     """
@@ -110,6 +114,28 @@ class SectorConfig:
 
 
 @dataclass
+class AfterHoursConfig:
+    enabled: bool = True
+    allow_real_orders: bool = False
+    submit_live: bool = False
+    symbols: Tuple[str, ...] = field(default_factory=lambda: DEFAULT_AFTER_HOURS_SYMBOLS)
+    target_n_positions: int = 2
+    position_scale: float = 0.20
+    min_dollar_volume: float = 50_000_000.0
+    max_spread_pct: float = 0.003
+    max_quote_age_seconds: int = 120
+    min_after_hours_move_pct: float = 0.0025
+    max_after_hours_move_pct: float = 0.04
+    min_decision_score: float = 10.75
+    min_trend_quality: float = 3.5
+    min_momentum: float = 0.0
+    min_relative_strength_63: float = 0.0
+    limit_offset_pct: float = 0.001
+    stale_order_seconds: int = 300
+    time_in_force: str = "day"
+
+
+@dataclass
 class RegimeConfig:
     enabled: bool = True
     benchmark_symbol: str = "SPY"
@@ -179,6 +205,7 @@ class TradingConfig:
     exits: ExitConfig = field(default_factory=ExitConfig)
     signals: SignalConfig = field(default_factory=SignalConfig)
     sector: SectorConfig = field(default_factory=SectorConfig)
+    after_hours: AfterHoursConfig = field(default_factory=AfterHoursConfig)
     regime: RegimeConfig = field(default_factory=RegimeConfig)
     risk: RiskConfig = field(default_factory=RiskConfig)
     paper: AccountConfig = field(default_factory=AccountConfig)
@@ -242,6 +269,28 @@ class TradingConfig:
             sector=SectorConfig(
                 enabled=_env_int("SECTOR_RELATIVE_STRENGTH_ENABLED", 1) == 1,
                 min_relative_strength_63=_env_float("MIN_SECTOR_RELATIVE_STRENGTH_63", 0.0),
+            ),
+            after_hours=AfterHoursConfig(
+                enabled=_env_int("AFTER_HOURS_ENABLED", 1) == 1,
+                allow_real_orders=_env_int("ALLOW_AFTER_HOURS", 0) == 1,
+                submit_live=_env_int("AFTER_HOURS_SUBMIT_LIVE", 0) == 1,
+                symbols=_csv_tuple(
+                    _env_str("AFTER_HOURS_SYMBOLS", ",".join(DEFAULT_AFTER_HOURS_SYMBOLS))
+                ),
+                target_n_positions=_env_int("AFTER_HOURS_TARGET_N_POSITIONS", 2),
+                position_scale=_env_float("AFTER_HOURS_POSITION_SCALE", 0.20),
+                min_dollar_volume=_env_float("AFTER_HOURS_MIN_DOLLAR_VOLUME", 50_000_000.0),
+                max_spread_pct=_env_float("AFTER_HOURS_MAX_SPREAD_PCT", 0.003),
+                max_quote_age_seconds=_env_int("AFTER_HOURS_MAX_QUOTE_AGE_SECONDS", 120),
+                min_after_hours_move_pct=_env_float("AFTER_HOURS_MIN_MOVE_PCT", 0.0025),
+                max_after_hours_move_pct=_env_float("AFTER_HOURS_MAX_MOVE_PCT", 0.04),
+                min_decision_score=_env_float("AFTER_HOURS_MIN_DECISION_SCORE", 10.75),
+                min_trend_quality=_env_float("AFTER_HOURS_MIN_TREND_QUALITY", 3.5),
+                min_momentum=_env_float("AFTER_HOURS_MIN_MOMENTUM", 0.0),
+                min_relative_strength_63=_env_float("AFTER_HOURS_MIN_RELATIVE_STRENGTH_63", 0.0),
+                limit_offset_pct=_env_float("AFTER_HOURS_LIMIT_OFFSET_PCT", 0.001),
+                stale_order_seconds=_env_int("AFTER_HOURS_STALE_ORDER_SECONDS", 300),
+                time_in_force=_env_str("AFTER_HOURS_TIME_IN_FORCE", "day"),
             ),
             regime=RegimeConfig(
                 enabled=_env_int("REGIME_FILTER_ENABLED", 1) == 1,

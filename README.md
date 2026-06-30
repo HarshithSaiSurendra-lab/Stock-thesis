@@ -133,6 +133,29 @@ spread → limit regardless (never pay the spread).
 never in chat. Set `ALPACA_PAPER_KEY/SECRET` and `ALPACA_LIVE_KEY/SECRET`.
 A leg with missing keys disables itself gracefully instead of crashing.
 
+## Session router and after-hours engine
+
+`main.py` now routes by session:
+- Regular market open -> the normal daily strategy.
+- 4:00-8:00 p.m. ET -> the after-hours specialist.
+- Premarket/weekend/closed -> no orders.
+
+Force either engine while testing:
+
+```bash
+python3 main.py --dry-run --mode regular
+python3 main.py --dry-run --mode after-hours
+```
+
+The after-hours engine is deliberately stricter than the normal-hours strategy:
+limit orders only, `extended_hours=true`, smaller sizing, mega-liquid symbols,
+fresh quotes, tight spreads, an after-hours move filter, and the same regime /
+trend / relative-strength quality checks. It does not attach trailing stops or
+brackets, because those protections are not available the same way after hours.
+
+Real after-hours submissions are locked unless `ALLOW_AFTER_HOURS=1`. Live
+after-hours submission is separately locked behind `AFTER_HOURS_SUBMIT_LIVE=1`.
+
 ## Memory / trade journal (`memory.py`)
 
 Continuous memory, retrieval before action, deliberate (not real-time) learning.

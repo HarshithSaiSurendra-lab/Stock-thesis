@@ -75,6 +75,41 @@ class BrokerConfig:
     state_path: str = "./broker_state.json"
 
 
+def _normalized_order_options(order: dict) -> dict:
+    time_in_force = str(order.get("time_in_force", "day")).lower()
+    extended_hours = bool(order.get("extended_hours", False))
+    order_type = str(order.get("order_type", "")).lower()
+    if extended_hours:
+        if order_type != "limit":
+            raise ValueError("extended-hours orders must be limit orders")
+        if time_in_force not in {"day", "gtc"}:
+            raise ValueError("extended-hours orders require day or gtc time_in_force")
+    return {"time_in_force": time_in_force, "extended_hours": extended_hours}
+
+
+def _rest_order_payload(order: dict, options: Optional[dict] = None) -> dict:
+    options = options or _normalized_order_options(order)
+    payload = {
+        "symbol": order["symbol"],
+        "qty": str(order["qty"]),
+        "side": order["side"],
+        "type": order["order_type"],
+        "time_in_force": options["time_in_force"],
+    }
+    if order["order_type"] == "limit":
+        payload["limit_price"] = str(order["limit_price"])
+    if options["extended_hours"]:
+        payload["extended_hours"] = True
+    return payload
+
+
+def _time_in_force_enum(value: str):
+    normalized = value.lower()
+    if normalized == "gtc":
+        return TimeInForce.GTC
+    return TimeInForce.DAY
+
+
 class AlpacaLeg:
     """One account (paper or live) wrapped with the capital floor."""
 
@@ -262,15 +297,19 @@ class AlpacaLeg:
                 q = payload["quote"]
                 bid = float(q.get("bp", 0.0))
                 ask = float(q.get("ap", 0.0))
-                return {"bid": bid, "ask": ask, "spread": ask - bid}
+                timestamp = q.get("t")
+                return {"bid": bid, "ask": ask, "spread": ask - bid, "timestamp": timestamp}
             except Exception as e:
                 log.error(f"[{self.cfg.mode}] REST quote failed for {symbol}: {e}")
                 return None
         try:
             req = StockLatestQuoteRequest(symbol_or_symbols=symbol)
             q = self.data.get_stock_latest_quote(req)[symbol]
+            timestamp = getattr(q, "timestamp", None)
+            timestamp = timestamp.isoformat() if hasattr(timestamp, "isoformat") else timestamp
             return {"bid": float(q.bid_price), "ask": float(q.ask_price),
-                    "spread": float(q.ask_price) - float(q.bid_price)}
+                    "spread": float(q.ask_price) - float(q.bid_price),
+                    "timestamp": timestamp}
         except Exception as e:
             log.error(f"[{self.cfg.mode}] quote failed for {symbol}: {e}")
             return None
@@ -285,12 +324,14 @@ class AlpacaLeg:
 
     def submit(self, order: dict) -> Optional[dict]:
         """
-        order = {symbol, side, qty, order_type: 'market'|'limit', limit_price?}
+        order = {symbol, side, qty, order_type: 'market'|'limit', limit_price?,
+                 time_in_force?, extended_hours?}
         Enforces the single-position cap before sending.
         """
         if not self.can_trade():
             log.warning(f"[{self.cfg.mode}] submit blocked (disabled or floor)")
             return None
+        order_options = _normalized_order_options(order)
 
         # position cap check (buys only)
         if order["side"] == "buy":
@@ -304,16 +345,8 @@ class AlpacaLeg:
                 return None
 
         try:
-            if not self.client:
-                payload = {
-                    "symbol": order["symbol"],
-                    "qty": str(order["qty"]),
-                    "side": order["side"],
-                    "type": order["order_type"],
-                    "time_in_force": "day",
-                }
-                if order["order_type"] == "limit":
-                    payload["limit_price"] = str(order["limit_price"])
+            if not self.client or order_options["extended_hours"]:
+                payload = _rest_order_payload(order, order_options)
                 result = self._rest_json("POST", f"{self._base_url}/v2/orders", payload)
                 return {
                     "id": str(result.get("id")),
@@ -326,12 +359,13 @@ class AlpacaLeg:
             if order["order_type"] == "limit":
                 req = LimitOrderRequest(
                     symbol=order["symbol"], qty=order["qty"], side=side,
-                    time_in_force=TimeInForce.DAY, limit_price=order["limit_price"],
+                    time_in_force=_time_in_force_enum(order_options["time_in_force"]),
+                    limit_price=order["limit_price"],
                 )
             else:
                 req = MarketOrderRequest(
                     symbol=order["symbol"], qty=order["qty"], side=side,
-                    time_in_force=TimeInForce.DAY,
+                    time_in_force=_time_in_force_enum(order_options["time_in_force"]),
                 )
             result = self.client.submit_order(req)
             return {"id": str(result.id), "symbol": order["symbol"],

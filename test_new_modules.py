@@ -4,10 +4,14 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 import tempfile
+from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 
 import pandas as pd
 
+from after_hours import _after_hours_quote_ok, _build_after_hours_order
 from backtest import BacktestConfig, run_backtest
+from broker_alpaca import _normalized_order_options, _rest_order_payload
 from config import TradingConfig
 from filters import downside_ok, volatility_scale
 from reconcile import reconcile
@@ -21,6 +25,7 @@ from research_runner import (
 )
 from robustness_runner import run_robustness, summarize_grid
 from sector_map import sector_benchmark_for, sector_benchmarks_for
+from session_router import classify_session
 from trade_signal import composite_signal, trend_quality_score
 from stop_backtest import StopBacktestConfig, run_trailing_stop_backtest
 from strategy_runner import (
@@ -357,6 +362,99 @@ def test_bar_cache_round_trips(tmp_path=None):
     cached = _read_cached_bars("AAA", 320, cfg)
     assert cached is not None
     assert cached["close"].tolist() == frame["close"].tolist()
+
+
+def test_after_hours_order_is_limit_extended_hours():
+    cfg = TradingConfig.from_env()
+    cfg.after_hours.limit_offset_pct = 0.001
+    cfg.after_hours.time_in_force = "day"
+    quote = {"bid": 100.00, "ask": 100.20, "spread": 0.20, "spread_pct": 0.001998}
+    order = _build_after_hours_order("AAPL", 2, quote, cfg)
+    assert order["order_type"] == "limit"
+    assert order["extended_hours"] is True
+    assert order["time_in_force"] == "day"
+    assert order["limit_price"] <= quote["ask"]
+
+    options = _normalized_order_options(order)
+    payload = _rest_order_payload(order, options)
+    assert payload["extended_hours"] is True
+    assert payload["type"] == "limit"
+    assert payload["time_in_force"] == "day"
+
+
+def test_extended_hours_market_order_is_rejected():
+    bad_order = {
+        "symbol": "AAPL",
+        "side": "buy",
+        "qty": 1,
+        "order_type": "market",
+        "extended_hours": True,
+    }
+    try:
+        _normalized_order_options(bad_order)
+    except ValueError as exc:
+        assert "limit orders" in str(exc)
+    else:
+        raise AssertionError("extended-hours market order should be rejected")
+
+
+def test_after_hours_quote_gate_rejects_wide_and_stale_quotes():
+    cfg = TradingConfig.from_env()
+    cfg.after_hours.max_spread_pct = 0.003
+    cfg.after_hours.max_quote_age_seconds = 120
+    now = datetime(2026, 6, 29, 21, 30, tzinfo=timezone.utc)
+    good_quote = {
+        "bid": 100.00,
+        "ask": 100.20,
+        "spread": 0.20,
+        "timestamp": (now - timedelta(seconds=30)).isoformat(),
+    }
+    ok, reason, quote = _after_hours_quote_ok(good_quote, cfg, now)
+    assert ok, reason
+    assert quote["age_seconds"] == 30
+
+    wide = dict(good_quote, ask=101.00, spread=1.0)
+    ok, reason, _ = _after_hours_quote_ok(wide, cfg, now)
+    assert not ok
+    assert "spread" in reason
+
+    stale = dict(good_quote, timestamp=(now - timedelta(seconds=500)).isoformat())
+    ok, reason, _ = _after_hours_quote_ok(stale, cfg, now)
+    assert not ok
+    assert "quote age" in reason
+
+
+def test_session_router_classifies_regular_after_hours_and_closed():
+    cfg = TradingConfig.from_env()
+    cfg.run.timezone = "America/New_York"
+
+    class FakeBroker:
+        def __init__(self, open_: bool):
+            self.open = open_
+
+        def is_market_open(self):
+            return self.open
+
+    regular = classify_session(
+        FakeBroker(True),
+        cfg,
+        datetime(2026, 6, 29, 10, 0, tzinfo=ZoneInfo("America/New_York")),
+    )
+    assert regular.session == "regular"
+
+    after_hours = classify_session(
+        FakeBroker(False),
+        cfg,
+        datetime(2026, 6, 29, 17, 0, tzinfo=ZoneInfo("America/New_York")),
+    )
+    assert after_hours.session == "after_hours"
+
+    premarket = classify_session(
+        FakeBroker(False),
+        cfg,
+        datetime(2026, 6, 29, 8, 0, tzinfo=ZoneInfo("America/New_York")),
+    )
+    assert premarket.session == "closed"
 
 
 def test_research_runner_builds_variants():
