@@ -17,8 +17,8 @@ from strategy_runner import _strategy_equity
 def build_components(cfg: TradingConfig):
     broker = DualBroker(
         BrokerConfig(
-            paper=BrokerAccountConfig("paper", cfg.paper.starting_capital, cfg.paper.floor_pct, True),
-            live=BrokerAccountConfig("live", cfg.live.starting_capital, cfg.live.floor_pct, True),
+            paper=BrokerAccountConfig("paper", cfg.paper.starting_capital, cfg.paper.floor_pct, cfg.paper.enabled),
+            live=BrokerAccountConfig("live", cfg.live.starting_capital, cfg.live.floor_pct, cfg.live.enabled),
             max_position_pct=cfg.sizing.max_position_pct,
             state_path=cfg.paths.broker_state_path,
         )

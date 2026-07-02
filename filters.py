@@ -5,6 +5,7 @@ from dataclasses import dataclass
 import pandas as pd
 
 from config import TradingConfig
+from execution_quality import quote_age_seconds, quote_mid
 from indicators import build_feature_frame
 from universe import fetch_symbol_frame
 
@@ -91,11 +92,19 @@ def downside_ok(row: pd.Series, quote: dict | None, cfg: TradingConfig) -> tuple
         return False, f"realized volatility {rvol:.1%} above cap {cfg.risk.max_entry_rvol:.1%}"
 
     if quote is not None:
-        mid = (quote.get("bid", 0.0) + quote.get("ask", 0.0)) / 2
+        mid = quote_mid(quote)
         spread_pct = quote.get("spread_pct")
         if spread_pct is None and mid > 0:
             spread_pct = quote.get("spread", 0.0) / mid
         if spread_pct is not None and spread_pct > cfg.risk.max_quote_spread_pct:
             return False, f"spread {spread_pct:.2%} above cap {cfg.risk.max_quote_spread_pct:.2%}"
+        age = quote_age_seconds(quote)
+        if age is not None and age > cfg.risk.max_quote_age_seconds:
+            return False, f"quote age {age:.0f}s above cap {cfg.risk.max_quote_age_seconds}s"
+        close = float(row.get("close", float("nan")))
+        if not pd.isna(close) and close > 0 and mid > 0:
+            gap_pct = abs(mid / close - 1.0)
+            if gap_pct > cfg.risk.max_entry_gap_pct:
+                return False, f"entry gap {gap_pct:.2%} above cap {cfg.risk.max_entry_gap_pct:.2%}"
 
     return True, "ok"

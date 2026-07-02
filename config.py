@@ -158,12 +158,15 @@ class RiskConfig:
     min_vol_scale: float = 0.25
     max_vol_scale: float = 1.00
     max_quote_spread_pct: float = 0.005
+    max_quote_age_seconds: int = 120
+    max_entry_gap_pct: float = 0.04
 
 
 @dataclass
 class AccountConfig:
     starting_capital: float = 1_000.0
     floor_pct: float = 0.80
+    enabled: bool = True
 
 
 @dataclass
@@ -194,6 +197,7 @@ class PathConfig:
     strategy_state_path: str = "./strategy_state.json"
     guardian_state_path: str = "./guardian_state.json"
     memory_db_path: str = "./trade_memory.db"
+    execution_journal_db_path: str = "./execution_journal.db"
     alert_log_path: str = "./alerts.log"
     kill_switch_path: str = "./KILL_SWITCH"
 
@@ -312,14 +316,18 @@ class TradingConfig:
                 min_vol_scale=_env_float("MIN_VOL_SCALE", 0.25),
                 max_vol_scale=_env_float("MAX_VOL_SCALE", 1.00),
                 max_quote_spread_pct=_env_float("MAX_QUOTE_SPREAD_PCT", 0.005),
+                max_quote_age_seconds=_env_int("MAX_QUOTE_AGE_SECONDS", 120),
+                max_entry_gap_pct=_env_float("MAX_ENTRY_GAP_PCT", 0.04),
             ),
             paper=AccountConfig(
                 starting_capital=_env_float("PAPER_STARTING_CAPITAL", 1_000.0),
                 floor_pct=_env_float("PAPER_FLOOR_PCT", 0.80),
+                enabled=True,
             ),
             live=AccountConfig(
                 starting_capital=_env_float("LIVE_STARTING_CAPITAL", 1_000.0),
                 floor_pct=_env_float("LIVE_FLOOR_PCT", 0.80),
+                enabled=_env_int("ALLOW_LIVE", 0) == 1,
             ),
             notifier=notifier,
             run=RunConfig(
@@ -339,6 +347,7 @@ class TradingConfig:
                 strategy_state_path=_env_str("STRATEGY_STATE_PATH", "./strategy_state.json"),
                 guardian_state_path=_env_str("GUARDIAN_STATE_PATH", "./guardian_state.json"),
                 memory_db_path=_env_str("MEMORY_DB_PATH", "./trade_memory.db"),
+                execution_journal_db_path=_env_str("EXECUTION_JOURNAL_DB_PATH", "./execution_journal.db"),
                 alert_log_path=_env_str("ALERT_LOG_PATH", "./alerts.log"),
                 kill_switch_path=_env_str("KILL_SWITCH_PATH", "./KILL_SWITCH"),
             ),
@@ -350,6 +359,7 @@ class TradingConfig:
             self.paths.strategy_state_path,
             self.paths.guardian_state_path,
             self.paths.memory_db_path,
+            self.paths.execution_journal_db_path,
             self.paths.alert_log_path,
         ):
             p = Path(path)

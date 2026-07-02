@@ -10,6 +10,7 @@ broker_state.json
 guardian_state.json
 strategy_state.json
 trade_memory.db
+execution_journal.db
 
 robustness_*.csv
 research_*.csv

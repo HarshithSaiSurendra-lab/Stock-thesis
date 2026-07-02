@@ -1,7 +1,11 @@
 from __future__ import annotations
 
 import json
+import os
+import sqlite3
+from contextlib import redirect_stdout
 from dataclasses import dataclass
+from io import StringIO
 from pathlib import Path
 import tempfile
 from datetime import datetime, timedelta, timezone
@@ -13,6 +17,8 @@ from after_hours import _after_hours_quote_ok, _build_after_hours_order
 from backtest import BacktestConfig, run_backtest
 from broker_alpaca import _normalized_order_options, _rest_order_payload
 from config import TradingConfig
+from deploy_check import main as deploy_check_main
+from execution_journal import ExecutionJournal
 from filters import downside_ok, volatility_scale
 from reconcile import reconcile
 from research_runner import (
@@ -77,6 +83,24 @@ def test_downside_filter_and_volatility_scale():
     too_hot = pd.Series({"rvol_20": 0.80})
     ok, _ = downside_ok(too_hot, {"bid": 99.9, "ask": 100.0, "spread": 0.1}, cfg)
     assert not ok
+
+    cfg.risk.max_quote_age_seconds = 120
+    cfg.risk.max_entry_gap_pct = 0.04
+    row_with_close = pd.Series({"rvol_20": 0.20, "close": 100.0})
+    stale_quote = {
+        "bid": 99.9,
+        "ask": 100.0,
+        "spread": 0.1,
+        "timestamp": "2000-01-01T00:00:00+00:00",
+    }
+    ok, reason = downside_ok(row_with_close, stale_quote, cfg)
+    assert not ok
+    assert "quote age" in reason
+
+    gapped_quote = {"bid": 109.9, "ask": 110.0, "spread": 0.1}
+    ok, reason = downside_ok(row_with_close, gapped_quote, cfg)
+    assert not ok
+    assert "entry gap" in reason
 
 
 def test_universe_filters_by_liquidity(tmp_path=None):
@@ -185,6 +209,37 @@ def test_strategy_equity_caps_to_strategy_capital():
     assert _strategy_equity(cfg, 100_000) == 1_000
     assert _strategy_equity(cfg, 500) == 500
     assert _strategy_equity(cfg, None) == 1_000
+
+
+def test_live_leg_is_locked_by_default():
+    old_allow_live = os.environ.pop("ALLOW_LIVE", None)
+    try:
+        cfg = TradingConfig.from_env()
+        assert cfg.live.enabled is False
+        os.environ["ALLOW_LIVE"] = "1"
+        cfg = TradingConfig.from_env()
+        assert cfg.live.enabled is True
+    finally:
+        if old_allow_live is None:
+            os.environ.pop("ALLOW_LIVE", None)
+        else:
+            os.environ["ALLOW_LIVE"] = old_allow_live
+
+
+def test_deploy_check_blocks_live_unlock(tmp_path=None):
+    old_env = {key: os.environ.get(key) for key in ("ALLOW_LIVE", "ALPACA_PAPER_KEY", "ALPACA_PAPER_SECRET")}
+    try:
+        os.environ["ALLOW_LIVE"] = "1"
+        os.environ["ALPACA_PAPER_KEY"] = "paper-key"
+        os.environ["ALPACA_PAPER_SECRET"] = "paper-secret"
+        with redirect_stdout(StringIO()):
+            assert deploy_check_main() == 1
+    finally:
+        for key, value in old_env.items():
+            if value is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = value
 
 
 def test_strategy_notional_counts_only_managed_symbols():
@@ -339,6 +394,97 @@ def test_decision_log_writes_non_secret_summary(tmp_path=None):
     files = list((tmp_path / "decision_logs").glob("*.json"))
     assert len(files) == 1
     assert "dry_run" in files[0].name
+
+
+def test_execution_journal_logs_decision_trail(tmp_path=None):
+    if tmp_path is None:
+        tmp_path = Path(tempfile.mkdtemp())
+    db_path = tmp_path / "execution_journal.db"
+    journal = ExecutionJournal(str(db_path))
+    summary = {
+        "date": "2026-07-01",
+        "status": "after_hours_dry_run",
+        "session": "after_hours",
+        "regime": {"ok": True, "symbol": "SPY"},
+        "decision_report": [
+            {
+                "symbol": "PFE",
+                "direction": "mild_up",
+                "decision_score": 10.91,
+                "signal_score": 4.5,
+                "trend_quality": 4.5,
+                "after_hours_score": 11.25,
+                "after_hours_move_pct": 0.006,
+                "relative_strength_63": 0.02,
+                "sector_benchmark": "XLV",
+                "sector_relative_strength_63": 0.01,
+                "momentum_126_21": 0.11,
+                "rvol_20": 0.19,
+                "spread_pct": 0.0012,
+                "dollar_volume": 80_000_000,
+                "last_price": 25.15,
+                "quote_age_seconds": 22.0,
+            }
+        ],
+        "selected": ["PFE"],
+        "orders": [
+            {
+                "symbol": "PFE",
+                "decision_score": 10.91,
+                "after_hours_score": 11.25,
+                "after_hours_move_pct": 0.006,
+                "target_notional": 250.0,
+                "intended_notional": 226.35,
+                "quote_age_seconds": 22.0,
+                "order": {
+                    "symbol": "PFE",
+                    "side": "buy",
+                    "qty": 9,
+                    "order_type": "limit",
+                    "limit_price": 25.14,
+                    "time_in_force": "day",
+                    "extended_hours": True,
+                },
+                "dry_run": True,
+            }
+        ],
+        "skipped": [
+            {
+                "symbol": "AAPL",
+                "stage": "risk",
+                "reason": "spread 1.00% above cap 0.30%",
+                "quote": {
+                    "bid": 100.0,
+                    "ask": 101.0,
+                    "spread_pct": 0.00995,
+                    "age_seconds": 31.0,
+                },
+            }
+        ],
+    }
+
+    journal.log_summary(summary)
+    day = journal.day_summary("2026-07-01", "after_hours")
+    assert day["counts"]["run_summary"] == 1
+    assert day["counts"]["order_candidate"] == 1
+    assert day["counts"]["order_preview"] == 1
+    assert day["counts"]["skipped"] == 1
+    assert day["skip_summary"][0]["stage"] == "risk"
+    assert "spread" in day["skip_summary"][0]["reason"]
+
+    with sqlite3.connect(db_path) as conn:
+        conn.row_factory = sqlite3.Row
+        skipped = conn.execute(
+            "SELECT * FROM execution_events WHERE action = 'skipped'"
+        ).fetchone()
+        order = conn.execute(
+            "SELECT * FROM execution_events WHERE action = 'order_preview'"
+        ).fetchone()
+    assert round(skipped["spread_pct"], 5) == 0.00995
+    assert skipped["quote_age_seconds"] == 31.0
+    assert order["qty"] == 9
+    assert order["limit_price"] == 25.14
+    assert order["extended_hours"] == 1
 
 
 def test_bar_cache_round_trips(tmp_path=None):

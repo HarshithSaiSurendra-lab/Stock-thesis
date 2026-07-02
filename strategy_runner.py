@@ -12,6 +12,7 @@ import pandas as pd
 
 from broker_alpaca import decide_order_type
 from config import TradingConfig
+from execution_journal import ExecutionJournal
 from filters import downside_ok, market_regime, volatility_scale
 from indicators import build_feature_frame
 from memory import SignalSnapshot, TradeMemory
@@ -414,6 +415,14 @@ def _write_decision_log(summary: dict, cfg: TradingConfig) -> None:
         log.debug("decision log write failed: %s", exc)
 
 
+def _write_strategy_outputs(summary: dict, cfg: TradingConfig) -> None:
+    _write_decision_log(summary, cfg)
+    try:
+        ExecutionJournal(cfg.paths.execution_journal_db_path).log_summary(summary)
+    except Exception as exc:
+        log.debug("execution journal write failed: %s", exc)
+
+
 def run_daily(
     broker,
     guardian,
@@ -435,7 +444,7 @@ def run_daily(
             "reason": guardian.state.halt_reason,
             "orders": [],
         }
-        _write_decision_log(summary, cfg)
+        _write_strategy_outputs(summary, cfg)
         state.last_run_ts = datetime.now(timezone.utc).isoformat()
         state.save(cfg.paths.strategy_state_path)
         return summary
@@ -448,7 +457,7 @@ def run_daily(
             "reason": "regular market is closed; real submissions are blocked",
             "orders": [],
         }
-        _write_decision_log(summary, cfg)
+        _write_strategy_outputs(summary, cfg)
         state.last_run_ts = datetime.now(timezone.utc).isoformat()
         state.save(cfg.paths.strategy_state_path)
         return summary
@@ -462,7 +471,7 @@ def run_daily(
             "regime": regime.__dict__,
             "orders": [],
         }
-        _write_decision_log(summary, cfg)
+        _write_strategy_outputs(summary, cfg)
         state.last_run_ts = datetime.now(timezone.utc).isoformat()
         state.save(cfg.paths.strategy_state_path)
         return summary
@@ -555,7 +564,7 @@ def run_daily(
         snap = _decision_snapshot(symbol, direction, row, quote)
         ok_downside, downside_reason = downside_ok(row, quote, cfg)
         if not ok_downside:
-            skipped.append({"symbol": symbol, "stage": "risk", "reason": downside_reason})
+            skipped.append({"symbol": symbol, "stage": "risk", "reason": downside_reason, "quote": quote})
             log.info("skipping %s: %s", symbol, downside_reason)
             continue
         warning = memory.flag_if_repeating_loss(snap)
@@ -621,7 +630,7 @@ def run_daily(
             "orders": [],
             "skipped": skipped,
         }
-        _write_decision_log(summary, cfg)
+        _write_strategy_outputs(summary, cfg)
         state.last_run_ts = datetime.now(timezone.utc).isoformat()
         state.save(cfg.paths.strategy_state_path)
         return summary
@@ -856,7 +865,7 @@ def run_daily(
             "orders": orders_preview,
             "skipped": skipped,
         }
-        _write_decision_log(summary, cfg)
+        _write_strategy_outputs(summary, cfg)
         return summary
 
     state.last_run_ts = datetime.now(timezone.utc).isoformat()
@@ -892,5 +901,5 @@ def run_daily(
         "broker": status,
         "reconcile": reconcile_result,
     }
-    _write_decision_log(summary, cfg)
+    _write_strategy_outputs(summary, cfg)
     return summary

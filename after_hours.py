@@ -8,6 +8,9 @@ from typing import Optional
 import pandas as pd
 
 from config import TradingConfig
+from execution_journal import ExecutionJournal
+from execution_quality import quote_age_seconds as _quote_age_seconds
+from execution_quality import quote_mid as _quote_mid
 from filters import market_regime
 from indicators import build_feature_frame
 from memory import TradeMemory
@@ -36,33 +39,13 @@ from universe import fetch_symbol_frame
 log = logging.getLogger("after_hours")
 
 
-def _parse_quote_timestamp(value) -> Optional[datetime]:
-    if value is None:
-        return None
-    if isinstance(value, datetime):
-        return value if value.tzinfo else value.replace(tzinfo=timezone.utc)
-    if isinstance(value, str):
-        try:
-            cleaned = value.replace("Z", "+00:00")
-            parsed = datetime.fromisoformat(cleaned)
-            return parsed if parsed.tzinfo else parsed.replace(tzinfo=timezone.utc)
-        except ValueError:
-            return None
-    return None
-
-
-def _quote_age_seconds(quote: dict, now: Optional[datetime] = None) -> Optional[float]:
-    ts = _parse_quote_timestamp(quote.get("timestamp") or quote.get("t"))
-    if ts is None:
-        return None
-    now = now or datetime.now(timezone.utc)
-    if now.tzinfo is None:
-        now = now.replace(tzinfo=timezone.utc)
-    return max(0.0, (now - ts.astimezone(timezone.utc)).total_seconds())
-
-
-def _quote_mid(quote: dict) -> float:
-    return (float(quote["bid"]) + float(quote["ask"])) / 2
+def _write_after_hours_outputs(summary: dict, cfg: TradingConfig) -> None:
+    summary.setdefault("session", "after_hours")
+    _write_decision_log(summary, cfg)
+    try:
+        ExecutionJournal(cfg.paths.execution_journal_db_path).log_summary(summary)
+    except Exception as exc:
+        log.debug("execution journal write failed: %s", exc)
 
 
 def _after_hours_limit_price(quote: dict, cfg: TradingConfig) -> float:
@@ -150,7 +133,7 @@ def run_after_hours(
             "reason": "AFTER_HOURS_ENABLED is off",
             "orders": [],
         }
-        _write_decision_log(summary, cfg)
+        _write_after_hours_outputs(summary, cfg)
         return summary
     if not dry_run and not cfg.after_hours.allow_real_orders:
         summary = {
@@ -159,7 +142,7 @@ def run_after_hours(
             "reason": "real after-hours submissions require ALLOW_AFTER_HOURS=1",
             "orders": [],
         }
-        _write_decision_log(summary, cfg)
+        _write_after_hours_outputs(summary, cfg)
         return summary
 
     safety_ok = guardian.can_trade()
@@ -170,7 +153,7 @@ def run_after_hours(
             "reason": guardian.state.halt_reason,
             "orders": [],
         }
-        _write_decision_log(summary, cfg)
+        _write_after_hours_outputs(summary, cfg)
         return summary
 
     regime = market_regime(broker, cfg)
@@ -183,7 +166,7 @@ def run_after_hours(
             "regime": regime.__dict__,
             "orders": [],
         }
-        _write_decision_log(summary, cfg)
+        _write_after_hours_outputs(summary, cfg)
         return summary
 
     benchmark_row = None
@@ -223,7 +206,7 @@ def run_after_hours(
             now,
         )
         if not quote_ok or quote is None:
-            skipped.append({"symbol": symbol, "stage": "risk", "reason": quote_reason})
+            skipped.append({"symbol": symbol, "stage": "risk", "reason": quote_reason, "quote": quote})
             log.info("skipping %s: %s", symbol, quote_reason)
             continue
 
@@ -241,6 +224,8 @@ def run_after_hours(
                         f"after-hours move {ah_move:.2%} below "
                         f"{cfg.after_hours.min_after_hours_move_pct:.2%}"
                     ),
+                    "after_hours_move_pct": ah_move,
+                    "quote": quote,
                 }
             )
             continue
@@ -253,6 +238,8 @@ def run_after_hours(
                         f"after-hours move {ah_move:.2%} above chase cap "
                         f"{cfg.after_hours.max_after_hours_move_pct:.2%}"
                     ),
+                    "after_hours_move_pct": ah_move,
+                    "quote": quote,
                 }
             )
             continue
@@ -543,5 +530,5 @@ def run_after_hours(
         "skip_summary": _skip_summary(skipped),
         "skipped": skipped,
     }
-    _write_decision_log(summary, cfg)
+    _write_after_hours_outputs(summary, cfg)
     return summary

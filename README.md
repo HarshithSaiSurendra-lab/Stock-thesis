@@ -130,8 +130,9 @@ market (take the move); mild signal → limit at bid (let it come to you); wide
 spread → limit regardless (never pay the spread).
 
 **Paper/live switch & keys:** keys come from env vars only — never hardcoded,
-never in chat. Set `ALPACA_PAPER_KEY/SECRET` and `ALPACA_LIVE_KEY/SECRET`.
-A leg with missing keys disables itself gracefully instead of crashing.
+never in chat. Paper uses `ALPACA_PAPER_KEY/SECRET`. Live stays disabled unless
+`ALLOW_LIVE=1`, even if `ALPACA_LIVE_KEY/SECRET` exist. A leg with missing or
+disabled keys disables itself gracefully instead of crashing.
 
 ## Session router and after-hours engine
 
@@ -143,9 +144,14 @@ A leg with missing keys disables itself gracefully instead of crashing.
 Force either engine while testing:
 
 ```bash
+python3 deploy_check.py
 python3 main.py --dry-run --mode regular
 python3 main.py --dry-run --mode after-hours
 ```
+
+For today's paper deployment, keep `ALLOW_LIVE=0` and `ALLOW_AFTER_HOURS=0`.
+Run one dry-run first, inspect `orders`, then run the same mode without
+`--dry-run` only when you intend to place paper orders.
 
 The after-hours engine is deliberately stricter than the normal-hours strategy:
 limit orders only, `extended_hours=true`, smaller sizing, mega-liquid symbols,
@@ -155,6 +161,27 @@ brackets, because those protections are not available the same way after hours.
 
 Real after-hours submissions are locked unless `ALLOW_AFTER_HOURS=1`. Live
 after-hours submission is separately locked behind `AFTER_HOURS_SUBMIT_LIVE=1`.
+
+## Execution journal (`execution_journal.py`)
+
+Every regular-hours and after-hours run writes a structured local SQLite trail to
+`execution_journal.db` by default. This is separate from the JSON decision logs:
+the JSON files are good for reading one run, while the journal is for later
+analysis across many runs.
+
+It records run summaries, candidates, selected/order-preview rows, skipped
+symbols, spread, quote age, sizing, limit price, order status/fill fields when
+available, and the exact skip reason. The DB is ignored by git because it is
+runtime evidence, not source code.
+
+Quick local summary:
+
+```bash
+python3 - <<'PY'
+from execution_journal import ExecutionJournal
+print(ExecutionJournal("./execution_journal.db").day_summary())
+PY
+```
 
 ## Memory / trade journal (`memory.py`)
 
