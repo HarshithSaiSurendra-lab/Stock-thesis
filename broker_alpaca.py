@@ -403,7 +403,8 @@ class AlpacaLeg:
 
 
 def decide_order_type(signal_direction: str, quote: Optional[dict],
-                      max_spread_pct: float = 0.005) -> dict:
+                      max_spread_pct: float = 0.005,
+                      side: str = "buy") -> dict:
     """
     The market-vs-limit hybrid logic.
 
@@ -413,24 +414,42 @@ def decide_order_type(signal_direction: str, quote: Optional[dict],
         the bid so we don't overpay, accepting we might not fill.
       - If the spread is too wide, prefer LIMIT regardless (don't pay the spread).
 
-    Returns {order_type, limit_price?} given the live quote.
+    Returns {order_type, limit_price?} given the live quote. Unsafe or missing
+    quotes fail closed instead of silently becoming market orders.
     """
+    if side not in {"buy", "sell"}:
+        return {"order_type": "skip", "reason": "invalid_side"}
+
     if quote is None:
-        return {"order_type": "market"}  # no quote -> simplest path
+        return {"order_type": "skip", "reason": "missing_quote"}
 
-    mid = (quote["bid"] + quote["ask"]) / 2
-    spread_pct = quote["spread"] / mid if mid > 0 else 1.0
+    try:
+        bid = float(quote["bid"])
+        ask = float(quote["ask"])
+    except (KeyError, TypeError, ValueError):
+        return {"order_type": "skip", "reason": "invalid_quote"}
+    if bid <= 0 or ask <= 0 or ask < bid:
+        return {"order_type": "skip", "reason": "invalid_quote"}
 
-    # wide spread -> never cross it at market; bid a limit
+    mid = (bid + ask) / 2
+    spread_pct = (ask - bid) / mid if mid > 0 else 1.0
+    passive_price = bid if side == "buy" else ask
+
+    # Wide spread -> never cross it at market; quote on the passive side.
     if spread_pct > max_spread_pct:
-        return {"order_type": "limit", "limit_price": round(quote["bid"], 2)}
+        return {"order_type": "limit", "limit_price": round(passive_price, 2)}
 
-    if signal_direction == "strong_up":
-        # conviction + tight spread -> take it at market
+    urgent = (
+        side == "buy" and signal_direction == "strong_up"
+    ) or (
+        side == "sell" and signal_direction == "strong_down"
+    )
+    if urgent:
+        # Conviction + tight spread -> take it at market.
         return {"order_type": "market"}
 
-    # mild/uncertain signal -> limit at the bid, let the market come to us
-    return {"order_type": "limit", "limit_price": round(quote["bid"], 2)}
+    # Mild/uncertain signal -> passive limit, accepting that it may not fill.
+    return {"order_type": "limit", "limit_price": round(passive_price, 2)}
 
 
 class DualBroker:
