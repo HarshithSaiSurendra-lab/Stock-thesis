@@ -69,11 +69,22 @@ committed — `.env` is git-ignored. Keys live only in the local `.env`.
   client is built with an explicit proxy + trust_env=False because the
   VM's NO_PROXY ([::1] entries) makes httpx choke at construction.
   Smoke-test script `llm_smoke_test.py` (Haiku + Sonnet + Fable on one
-  short TEST excerpt, a few cents) — NOT run yet: needs the Anthropic
-  API key via the secure vault. 8 new provider tests; full suite
+  short TEST excerpt, a few cents). 8 new provider tests; full suite
   60/60 passes. Still NOT imported by the order path. Pushed to GitHub
   branch `agentic-p0` at remote commit 2fd4528 (tree verified identical
   to local), local branch reset to match; 60/60 tests pass after reset.
+- Anthropic connected via Secure Vault 2026-11-17 (custom.anthropic,
+  key in `x-api-key` header, host api.anthropic.com). Connector doc +
+  helper at `~/workspace/custom-connectors/custom.anthropic/`
+  (`bin/anthropic_api.py`, Messages API via surrogate, no key ever
+  printed). Smoke test RUN 2026-11-17 on the $11.77 balance via the
+  stored credential: Haiku +0.60 (conf 0.80, $0.0001), Sonnet +0.50
+  (conf 0.60, $0.0017), Fable +0.50 (conf 0.65, $0.0107) — all three
+  agree on the TEST excerpt (not a real filing, not a signal). Total
+  $0.0124, ledger `.cache/llm_spend.json` Nov 2026 = $0.012397.
+  First attempt timed out in the egress proxy tunnel (60s); immediate
+  retry returned in ~1s — treat proxy timeouts as unconfirmed, check
+  ledger/cache before retrying a scored call.
 - Real-data backtest on Alpaca history: technical-only vs technical+LLM,
   walk-forward, 1x and 2x costs, vs SPY buy-and-hold / equal-weight.
   Record the holdout calendar dates at acquisition; never change after.

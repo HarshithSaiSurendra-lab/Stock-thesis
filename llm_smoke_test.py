@@ -14,6 +14,7 @@ Usage:  .venv/bin/python llm_smoke_test.py
 """
 from __future__ import annotations
 
+import json
 import os
 import sys
 from pathlib import Path
@@ -21,6 +22,50 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from llm_sentiment import AnthropicProvider, SpendCapExceeded  # noqa: E402
+
+# Surrogate client: talks to Anthropic through the stored custom.anthropic
+# credential (Secure Vault). The real key is never read here — the helper
+# swaps in a surrogate that authd exchanges for the real key on the
+# approved request to api.anthropic.com. This adapter makes the helper
+# look like the SDK client AnthropicProvider expects (messages.create
+# returning .content blocks with .text and .usage with token counts).
+
+
+class _SurrogateMessages:
+    def __init__(self):
+        sys.path.insert(0, "/home/hatch/workspace/custom-connectors/custom.anthropic/bin")
+        from anthropic_api import call_messages
+
+        self._call = call_messages
+
+    def create(self, model, max_tokens, system, messages):
+        from types import SimpleNamespace
+
+        user_text = "\n".join(
+            m.get("content", "") if isinstance(m, dict) else str(m) for m in messages
+        )
+        status, payload = self._call(model, system, user_text, max_tokens)
+        if status != 200:
+            raise RuntimeError(f"Anthropic API returned {status}: {json.dumps(payload)[:400]}")
+        blocks = [
+            SimpleNamespace(text=b.get("text", ""))
+            for b in payload.get("content", [])
+            if b.get("type") == "text"
+        ]
+        usage = payload.get("usage", {})
+        return SimpleNamespace(
+            content=blocks,
+            usage=SimpleNamespace(
+                input_tokens=int(usage.get("input_tokens", 0)),
+                output_tokens=int(usage.get("output_tokens", 0)),
+            ),
+        )
+
+
+class _SurrogateClient:
+    def __init__(self):
+        self.messages = _SurrogateMessages()
+
 
 # TEST excerpt only — a short, invented filing paragraph. It exists to
 # prove the API key, JSON parsing, cost logging and caps work. It is
@@ -52,15 +97,20 @@ def _load_dotenv() -> None:
 def main() -> int:
     _load_dotenv()
     api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+    use_surrogate = False
     if not api_key:
-        print("ANTHROPIC_API_KEY is not set (env or .env). No calls made.")
-        print("Create a key at platform.claude.com > Settings > API keys,")
-        print("then add it via the secure vault — never paste it in chat.")
-        return 2
+        # No key in env/.env — use the stored Secure Vault credential
+        # (custom.anthropic) through the surrogate client instead.
+        use_surrogate = True
+        api_key = "sk-ant-surrogate"  # placeholder; the real key is swapped in by authd
     total_cost = 0.0
     for role in ("screen", "adjudicate", "audit"):
         provider = AnthropicProvider(
-            api_key, role=role, run_cap_usd=1.0, monthly_cap_usd=10.0
+            api_key,
+            role=role,
+            run_cap_usd=1.0,
+            monthly_cap_usd=10.0,
+            client=_SurrogateClient() if use_surrogate else None,
         )
         try:
             result = provider.score("TEST", "2026-11-17", DOCS, TEST_EXCERPT)
