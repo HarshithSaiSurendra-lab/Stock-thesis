@@ -71,7 +71,9 @@ committed — `.env` is git-ignored. Keys live only in the local `.env`.
   Smoke-test script `llm_smoke_test.py` (Haiku + Sonnet + Fable on one
   short TEST excerpt, a few cents) — NOT run yet: needs the Anthropic
   API key via the secure vault. 8 new provider tests; full suite
-  60/60 passes. Still NOT imported by the order path.
+  60/60 passes. Still NOT imported by the order path. Pushed to GitHub
+  branch `agentic-p0` at remote commit 2fd4528 (tree verified identical
+  to local), local branch reset to match; 60/60 tests pass after reset.
 - Real-data backtest on Alpaca history: technical-only vs technical+LLM,
   walk-forward, 1x and 2x costs, vs SPY buy-and-hold / equal-weight.
   Record the holdout calendar dates at acquisition; never change after.
