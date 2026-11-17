@@ -52,17 +52,43 @@ committed — `.env` is git-ignored. Keys live only in the local `.env`.
   single-cell synthetic rerun (v1, 2024-01-01) was +20.1%, −23.2% max
   drawdown — one synthetic window, not evidence.
 
+## Done — 2026-11-17
+
+- API funding research (verified live, Nov 2026): user has Claude Pro +
+  ChatGPT Plus, neither includes API credits. Anthropic funded first:
+  $10 added 2026-11-17, balance $11.77. OpenAI $5 in week 2, after the
+  Claude pipeline works. $15 month 1. Methodology agreed: Haiku 5.5
+  screens, Sonnet 5.5 adjudicates, Fable 5.2 audits a 5-10% sample only
+  (NOT the daily model), GPT-6.1 Sol second opinion. Full page:
+  "LLM API Funding and Models" artifact.
+- Real Anthropic provider wired into `llm_sentiment.py`
+  (`AnthropicProvider`, roles screen/adjudicate/audit, pinned model IDs
+  + Nov 2026 prices, strict-JSON parsing, ~40k-token excerpt trim,
+  disk cache by document hash, per-run $1.00 + monthly $10.00 spend cap
+  in code with a JSON ledger). SDK `anthropic>=1,<3` (2.9.0 installed);
+  client is built with an explicit proxy + trust_env=False because the
+  VM's NO_PROXY ([::1] entries) makes httpx choke at construction.
+  Smoke-test script `llm_smoke_test.py` (Haiku + Sonnet + Fable on one
+  short TEST excerpt, a few cents) — NOT run yet: needs the Anthropic
+  API key via the secure vault. 8 new provider tests; full suite
+  60/60 passes. Still NOT imported by the order path.
+- Real-data backtest on Alpaca history: technical-only vs technical+LLM,
+  walk-forward, 1x and 2x costs, vs SPY buy-and-hold / equal-weight.
+  Record the holdout calendar dates at acquisition; never change after.
+  (Blocked on the smoke test + a real filing excerpt source.)
+
 ## Next
 
-1. Real-data backtest on Alpaca history: technical-only vs technical+LLM,
+1. Anthropic API key via secure vault, then run `llm_smoke_test.py`
+   (expect a few cents) and verify cost logging + caps.
+2. Real-data backtest on Alpaca history: technical-only vs technical+LLM,
    walk-forward, 1x and 2x costs, vs SPY buy-and-hold / equal-weight.
    Record the holdout calendar dates at acquisition; never change after.
-2. Decide the point-in-time dataset source (Alpaca history is a first
+3. Decide the point-in-time dataset source (Alpaca history is a first
    pass with disclosed limits — current universe, raw adjustment — not
    survivorship-free evidence).
-3. Anthropic / OpenAI API keys + spend cap in code, only after the
-   technical base shows something worth adding LLM sentiment to.
-4. P1 exact-once order lifecycle, then P2 paper soak.
+4. OpenAI API key ($5, week 2) + GPT-6.1 Sol second-opinion adapter.
+5. P1 exact-once order lifecycle, then P2 paper soak.
 
 ## How to revert
 
