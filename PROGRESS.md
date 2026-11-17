@@ -109,3 +109,37 @@ committed — `.env` is git-ignored. Keys live only in the local `.env`.
 - To the P0 checkpoint (this branch's first commits): see `git log agentic-p0`
 - Never force-push to `main`. Milestones land on `main` only after their
   exit gate passes and the user approves.
+
+## 2026-11-17 — First real-data backtest: exp-technical-only-v1 (FAILED P0 gate, honestly)
+
+- Driver: `run_real_backtest.py` (research-only, not imported by order path).
+  Fetched Alpaca IEX history for 134 symbols (133 seed + SPY), cached to
+  `.cache/backtest_data/` (git-ignored), window 2024-01-02..2026-11-13
+  (721 trading days). Fixed two driver bugs along the way: tz-aware Alpaca
+  timestamps vs tz-naive slicers, and SPY being excluded from the
+  universe-only price panel used for baselines.
+- Holdout recorded in `experiments/holdout_dates.json` (never change):
+  train 2024-01-02..2026-08-17 (658 days), holdout 2026-08-18..2026-11-13
+  (63 days). Full results: `experiments/results/exp-technical-only-v1.json`.
+- RESULT — the technical signal has NO edge on this data. Train, 10bps:
+  v4 (best) -25.9% return, Sharpe -0.74, max DD -32.5%, 1,057 trades;
+  v1 -28.5%, Sharpe -0.67, 1,673 trades. Walk-forward median Sharpe
+  ~-0.94, 0/4 positive folds. Baselines over the same window: SPY
+  buy-and-hold +63.5%, equal-weight universe +48.0%. At 20bps costs it is
+  much worse (v4 -51.4%, Sharpe -1.64, max DD -53.8%).
+- Holdout (untouched), 10bps: all variants -4.3% to -6.7% (SPY -1.7%,
+  equal-weight +1.7%). At 20bps: -8.5% to -11.2%.
+- Reading: high turnover (1,000+ trades) + negative Sharpe in every fold
+  means the composite is not a tradeable signal as-is — costs eat it and
+  the signal itself underperforms even before costs. This is exactly what
+  P0 is for: do NOT paper-trade this signal, do NOT add LLM sentiment on
+  top of it yet (the LLM leg would be dressing up a losing base).
+- Next per PROJECT_STATUS P0: fix the signal FIRST (diagnose why — e.g.
+  entry timing vs 1-bar lag, rebalance churn, regime filter behaviour;
+  v2 and v3 were identical, so the trend-quality filter never binds),
+  then re-run as a NEW registered experiment. exp-technical-plus-llm-v1
+  still unrun: it needs historical point-in-time 10-K/10-Q excerpts,
+  which do not exist yet — scoring later filings would be lookahead.
+- Limits (unchanged): IEX feed, RAW adjustment, CURRENT universe —
+  not survivorship-free, not point-in-time with delistings. First-pass
+  only, not P0 evidence on its own.

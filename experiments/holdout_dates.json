@@ -1,0 +1,14 @@
+{
+  "definition": "final 63 trading days of the acquired Alpaca IEX/raw dataset",
+  "train_start": "2024-01-02",
+  "train_end": "2026-08-17",
+  "holdout_start": "2026-08-18",
+  "holdout_end": "2026-11-13",
+  "holdout_trading_days": 63,
+  "window_start": "2024-01-02",
+  "window_end": "2026-11-13",
+  "source": "alpaca-cached",
+  "market_data_feed": "iex",
+  "market_data_adjustment": "raw",
+  "note": "Recorded at first real-data backtest, 2026-11-17. Must never change."
+}
