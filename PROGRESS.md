@@ -143,3 +143,10 @@ committed — `.env` is git-ignored. Keys live only in the local `.env`.
 - Limits (unchanged): IEX feed, RAW adjustment, CURRENT universe —
   not survivorship-free, not point-in-time with delistings. First-pass
   only, not P0 evidence on its own.
+
+## Experiment log (Google Sheet)
+- Human-readable log: "Stock-thesis experiment log"
+  https://docs.google.com/spreadsheets/d/1bJdCrPm2licM-arLLdIck2zAq15gWfa6ZNjrk14h3G4/edit
+  (Sheet1 = results by variant/window/cost, Holdout = frozen dates,
+  Notes = limits + next steps). Source of truth stays the repo JSON
+  (experiments/results/) + this file; add one row-set per future experiment.
