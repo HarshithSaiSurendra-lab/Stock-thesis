@@ -179,7 +179,20 @@ def _daily_bars(data_client, symbol: str, lookback_days: int, cfg: Optional[Trad
         return frame
     try:
         if _ALPACA_AVAILABLE:
-            req = StockBarsRequest(symbol_or_symbols=symbol, timeframe=TimeFrame.Day, limit=lookback_days)
+            # IEX free plan: an explicit `end` at/near now is treated as a
+            # recent-SIP query and rejected ("subscription does not permit
+            # querying recent SIP data"), and a request with no start at all
+            # returns only the latest bar. Passing a start date with no end
+            # returns the full window (verified 2026-11-16: 275 bars for SPY).
+            start = datetime.now(timezone.utc) - timedelta(
+                days=max(int(lookback_days * 2), lookback_days + 30)
+            )
+            req = StockBarsRequest(
+                symbol_or_symbols=symbol,
+                timeframe=TimeFrame.Day,
+                start=start,
+                limit=lookback_days,
+            )
         else:
             req = SimpleNamespace(symbol_or_symbols=symbol, timeframe="1Day", limit=lookback_days)
         response = data_client.get_stock_bars(req)
