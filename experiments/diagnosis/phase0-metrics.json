@@ -1,0 +1,481 @@
+{
+  "window": {
+    "train_start": "2024-01-02",
+    "train_end": "2026-08-17",
+    "days": 657
+  },
+  "filter_binding": {
+    "min_trend_quality": 3.0,
+    "active_signal_days": 23318,
+    "active_days_with_tq_below_threshold": 27,
+    "frac_active_below_threshold": 0.0012,
+    "mild_up_days": 14301,
+    "mild_up_days_with_tq_below_threshold": 27
+  },
+  "regime": {
+    "frac_days_allowed": 0.624,
+    "frac_days_blocked": 0.376
+  },
+  "variants": {
+    "v1_composite": {
+      "total_return_gross_0bps": 0.3981,
+      "total_return_net_10bps": -0.2838,
+      "total_return_net_20bps": -0.6334,
+      "cost_drag_10bps": 0.6819,
+      "cost_drag_20bps": 1.0315,
+      "sharpe_gross": 0.76,
+      "sharpe_net_10bps": -0.664,
+      "max_drawdown_net_10bps": -0.4009,
+      "sharpe": -0.617,
+      "deflated_sharpe": 0.0,
+      "sharpe_null_max": 0.062,
+      "n_trials": 8,
+      "alpha_annual": -0.1192,
+      "beta": 0.037,
+      "r_squared": 0.001,
+      "information_ratio": -1.331,
+      "tracking_error_annual": 0.2362,
+      "t_stat_mean_return": -1.0,
+      "mean_return_annual_ci95": [
+        -0.3312,
+        0.1079
+      ],
+      "total_cost_frac_of_capital": 0.6687,
+      "total_cost_usd_on_1000": 668.67,
+      "avg_cost_bps_per_day": 10.18,
+      "trades": {
+        "n_trades": 1665,
+        "win_rate": 0.46,
+        "expectancy_per_trade": -0.00018,
+        "expectancy_per_trade_bps": -1.78,
+        "avg_win": 0.00386,
+        "avg_loss": -0.00362,
+        "profit_factor": 0.909,
+        "avg_holding_days": 1.96,
+        "median_holding_days": 1.0,
+        "max_holding_days": 16,
+        "trades_per_month": 53.22
+      },
+      "mean_gross_exposure": 0.998,
+      "frac_days_fully_invested": 0.998,
+      "frac_days_in_cash": 0.002,
+      "mean_positions_held": 4.98,
+      "per_symbol": {
+        "top_winners": [
+          {
+            "symbol": "CAT",
+            "gross_pnl_frac": 0.0428,
+            "days_held": 87
+          },
+          {
+            "symbol": "C",
+            "gross_pnl_frac": 0.045,
+            "days_held": 95
+          },
+          {
+            "symbol": "AMZN",
+            "gross_pnl_frac": 0.0488,
+            "days_held": 124
+          },
+          {
+            "symbol": "DOW",
+            "gross_pnl_frac": 0.0602,
+            "days_held": 15
+          },
+          {
+            "symbol": "AMAT",
+            "gross_pnl_frac": 0.1421,
+            "days_held": 98
+          }
+        ],
+        "top_losers": [
+          {
+            "symbol": "FCX",
+            "gross_pnl_frac": -0.0638,
+            "days_held": 28
+          },
+          {
+            "symbol": "BA",
+            "gross_pnl_frac": -0.0498,
+            "days_held": 48
+          },
+          {
+            "symbol": "ADBE",
+            "gross_pnl_frac": -0.0445,
+            "days_held": 19
+          },
+          {
+            "symbol": "SRE",
+            "gross_pnl_frac": -0.035,
+            "days_held": 4
+          },
+          {
+            "symbol": "BLK",
+            "gross_pnl_frac": -0.0295,
+            "days_held": 78
+          }
+        ],
+        "symbols_with_positive_gross": 66,
+        "symbols_with_negative_gross": 52,
+        "symbols_ever_held": 118
+      },
+      "regime_split_gross_daily_mean": {
+        "allowed_days": 0.00048,
+        "blocked_days": 0.00073,
+        "n_allowed": 410,
+        "n_blocked": 247
+      },
+      "lag_diagnostic_lookahead_only": {
+        "total_return_gross_no_lag": 0.639,
+        "total_return_gross_1bar_lag": 0.3981,
+        "lag_cost": 0.2409,
+        "warning": "NO-LAG RUN USES FUTURE SIGNALS. Diagnostic only \u2014 never a result."
+      }
+    },
+    "v2_regime": {
+      "total_return_gross_0bps": 0.1792,
+      "total_return_net_10bps": -0.2711,
+      "total_return_net_20bps": -0.5497,
+      "cost_drag_10bps": 0.4503,
+      "cost_drag_20bps": 0.7289,
+      "sharpe_gross": 0.366,
+      "sharpe_net_10bps": -0.64,
+      "max_drawdown_net_10bps": -0.3903,
+      "sharpe": -0.591,
+      "deflated_sharpe": 0.0,
+      "sharpe_null_max": 0.064,
+      "n_trials": 8,
+      "alpha_annual": -0.0987,
+      "beta": -0.033,
+      "r_squared": 0.001,
+      "information_ratio": -1.275,
+      "tracking_error_annual": 0.2416,
+      "t_stat_mean_return": -0.95,
+      "mean_return_annual_ci95": [
+        -0.3219,
+        0.1112
+      ],
+      "total_cost_frac_of_capital": 0.4808,
+      "total_cost_usd_on_1000": 480.8,
+      "avg_cost_bps_per_day": 7.32,
+      "trades": {
+        "n_trades": 1202,
+        "win_rate": 0.458,
+        "expectancy_per_trade": -0.00023,
+        "expectancy_per_trade_bps": -2.35,
+        "avg_win": 0.00404,
+        "avg_loss": -0.00385,
+        "profit_factor": 0.887,
+        "avg_holding_days": 2.72,
+        "median_holding_days": 1.0,
+        "max_holding_days": 92,
+        "trades_per_month": 38.42
+      },
+      "mean_gross_exposure": 0.998,
+      "frac_days_fully_invested": 0.998,
+      "frac_days_in_cash": 0.002,
+      "mean_positions_held": 4.99,
+      "per_symbol": {
+        "top_winners": [
+          {
+            "symbol": "MPC",
+            "gross_pnl_frac": 0.0298,
+            "days_held": 7
+          },
+          {
+            "symbol": "DIS",
+            "gross_pnl_frac": 0.0327,
+            "days_held": 11
+          },
+          {
+            "symbol": "CB",
+            "gross_pnl_frac": 0.0437,
+            "days_held": 43
+          },
+          {
+            "symbol": "AEP",
+            "gross_pnl_frac": 0.0676,
+            "days_held": 289
+          },
+          {
+            "symbol": "AMAT",
+            "gross_pnl_frac": 0.1472,
+            "days_held": 60
+          }
+        ],
+        "top_losers": [
+          {
+            "symbol": "ABT",
+            "gross_pnl_frac": -0.0541,
+            "days_held": 272
+          },
+          {
+            "symbol": "BA",
+            "gross_pnl_frac": -0.049,
+            "days_held": 26
+          },
+          {
+            "symbol": "ADBE",
+            "gross_pnl_frac": -0.041,
+            "days_held": 263
+          },
+          {
+            "symbol": "SRE",
+            "gross_pnl_frac": -0.0379,
+            "days_held": 1
+          },
+          {
+            "symbol": "ABBV",
+            "gross_pnl_frac": -0.0371,
+            "days_held": 287
+          }
+        ],
+        "symbols_with_positive_gross": 55,
+        "symbols_with_negative_gross": 52,
+        "symbols_ever_held": 107
+      },
+      "regime_split_gross_daily_mean": {
+        "allowed_days": 0.00042,
+        "blocked_days": 0.00013,
+        "n_allowed": 410,
+        "n_blocked": 247
+      },
+      "lag_diagnostic_lookahead_only": {
+        "total_return_gross_no_lag": 0.2514,
+        "total_return_gross_1bar_lag": 0.1792,
+        "lag_cost": 0.0722,
+        "warning": "NO-LAG RUN USES FUTURE SIGNALS. Diagnostic only \u2014 never a result."
+      }
+    },
+    "v3_regime_trend_quality": {
+      "total_return_gross_0bps": 0.1792,
+      "total_return_net_10bps": -0.2711,
+      "total_return_net_20bps": -0.5497,
+      "cost_drag_10bps": 0.4503,
+      "cost_drag_20bps": 0.7289,
+      "sharpe_gross": 0.366,
+      "sharpe_net_10bps": -0.64,
+      "max_drawdown_net_10bps": -0.3903,
+      "sharpe": -0.591,
+      "deflated_sharpe": 0.0,
+      "sharpe_null_max": 0.064,
+      "n_trials": 8,
+      "alpha_annual": -0.0987,
+      "beta": -0.033,
+      "r_squared": 0.001,
+      "information_ratio": -1.275,
+      "tracking_error_annual": 0.2416,
+      "t_stat_mean_return": -0.95,
+      "mean_return_annual_ci95": [
+        -0.3219,
+        0.1112
+      ],
+      "total_cost_frac_of_capital": 0.4808,
+      "total_cost_usd_on_1000": 480.8,
+      "avg_cost_bps_per_day": 7.32,
+      "trades": {
+        "n_trades": 1202,
+        "win_rate": 0.458,
+        "expectancy_per_trade": -0.00023,
+        "expectancy_per_trade_bps": -2.35,
+        "avg_win": 0.00404,
+        "avg_loss": -0.00385,
+        "profit_factor": 0.887,
+        "avg_holding_days": 2.72,
+        "median_holding_days": 1.0,
+        "max_holding_days": 92,
+        "trades_per_month": 38.42
+      },
+      "mean_gross_exposure": 0.998,
+      "frac_days_fully_invested": 0.998,
+      "frac_days_in_cash": 0.002,
+      "mean_positions_held": 4.99,
+      "per_symbol": {
+        "top_winners": [
+          {
+            "symbol": "MPC",
+            "gross_pnl_frac": 0.0298,
+            "days_held": 7
+          },
+          {
+            "symbol": "DIS",
+            "gross_pnl_frac": 0.0327,
+            "days_held": 11
+          },
+          {
+            "symbol": "CB",
+            "gross_pnl_frac": 0.0437,
+            "days_held": 43
+          },
+          {
+            "symbol": "AEP",
+            "gross_pnl_frac": 0.0676,
+            "days_held": 289
+          },
+          {
+            "symbol": "AMAT",
+            "gross_pnl_frac": 0.1472,
+            "days_held": 60
+          }
+        ],
+        "top_losers": [
+          {
+            "symbol": "ABT",
+            "gross_pnl_frac": -0.0541,
+            "days_held": 272
+          },
+          {
+            "symbol": "BA",
+            "gross_pnl_frac": -0.049,
+            "days_held": 26
+          },
+          {
+            "symbol": "ADBE",
+            "gross_pnl_frac": -0.041,
+            "days_held": 263
+          },
+          {
+            "symbol": "SRE",
+            "gross_pnl_frac": -0.0379,
+            "days_held": 1
+          },
+          {
+            "symbol": "ABBV",
+            "gross_pnl_frac": -0.0371,
+            "days_held": 287
+          }
+        ],
+        "symbols_with_positive_gross": 55,
+        "symbols_with_negative_gross": 52,
+        "symbols_ever_held": 107
+      },
+      "regime_split_gross_daily_mean": {
+        "allowed_days": 0.00042,
+        "blocked_days": 0.00013,
+        "n_allowed": 410,
+        "n_blocked": 247
+      },
+      "lag_diagnostic_lookahead_only": {
+        "total_return_gross_no_lag": 0.2514,
+        "total_return_gross_1bar_lag": 0.1792,
+        "lag_cost": 0.0722,
+        "warning": "NO-LAG RUN USES FUTURE SIGNALS. Diagnostic only \u2014 never a result."
+      }
+    },
+    "v4_regime_quality_risk": {
+      "total_return_gross_0bps": 0.1386,
+      "total_return_net_10bps": -0.2525,
+      "total_return_net_20bps": -0.5095,
+      "cost_drag_10bps": 0.3911,
+      "cost_drag_20bps": 0.6481,
+      "sharpe_gross": 0.348,
+      "sharpe_net_10bps": -0.721,
+      "max_drawdown_net_10bps": -0.3252,
+      "sharpe": -0.689,
+      "deflated_sharpe": 0.0,
+      "sharpe_null_max": 0.064,
+      "n_trials": 8,
+      "alpha_annual": -0.0943,
+      "beta": -0.033,
+      "r_squared": 0.001,
+      "information_ratio": -1.386,
+      "tracking_error_annual": 0.219,
+      "t_stat_mean_return": -1.11,
+      "mean_return_annual_ci95": [
+        -0.2786,
+        0.0769
+      ],
+      "total_cost_frac_of_capital": 0.4208,
+      "total_cost_usd_on_1000": 420.8,
+      "avg_cost_bps_per_day": 6.4,
+      "trades": {
+        "n_trades": 1052,
+        "win_rate": 0.475,
+        "expectancy_per_trade": -0.00026,
+        "expectancy_per_trade_bps": -2.62,
+        "avg_win": 0.00313,
+        "avg_loss": -0.00333,
+        "profit_factor": 0.85,
+        "avg_holding_days": 3.09,
+        "median_holding_days": 1.0,
+        "max_holding_days": 90,
+        "trades_per_month": 33.63
+      },
+      "mean_gross_exposure": 0.998,
+      "frac_days_fully_invested": 0.998,
+      "frac_days_in_cash": 0.002,
+      "mean_positions_held": 4.99,
+      "per_symbol": {
+        "top_winners": [
+          {
+            "symbol": "SYK",
+            "gross_pnl_frac": 0.0255,
+            "days_held": 8
+          },
+          {
+            "symbol": "AXP",
+            "gross_pnl_frac": 0.0295,
+            "days_held": 8
+          },
+          {
+            "symbol": "WMT",
+            "gross_pnl_frac": 0.0303,
+            "days_held": 27
+          },
+          {
+            "symbol": "JNJ",
+            "gross_pnl_frac": 0.0317,
+            "days_held": 41
+          },
+          {
+            "symbol": "AEP",
+            "gross_pnl_frac": 0.0421,
+            "days_held": 267
+          }
+        ],
+        "top_losers": [
+          {
+            "symbol": "ABT",
+            "gross_pnl_frac": -0.0417,
+            "days_held": 255
+          },
+          {
+            "symbol": "MDT",
+            "gross_pnl_frac": -0.0306,
+            "days_held": 20
+          },
+          {
+            "symbol": "EQIX",
+            "gross_pnl_frac": -0.0229,
+            "days_held": 28
+          },
+          {
+            "symbol": "CL",
+            "gross_pnl_frac": -0.0193,
+            "days_held": 35
+          },
+          {
+            "symbol": "ABBV",
+            "gross_pnl_frac": -0.0162,
+            "days_held": 262
+          }
+        ],
+        "symbols_with_positive_gross": 69,
+        "symbols_with_negative_gross": 50,
+        "symbols_ever_held": 119
+      },
+      "regime_split_gross_daily_mean": {
+        "allowed_days": 0.00029,
+        "blocked_days": 0.00016,
+        "n_allowed": 410,
+        "n_blocked": 247
+      },
+      "lag_diagnostic_lookahead_only": {
+        "total_return_gross_no_lag": 0.2509,
+        "total_return_gross_1bar_lag": 0.1386,
+        "lag_cost": 0.1123,
+        "warning": "NO-LAG RUN USES FUTURE SIGNALS. Diagnostic only \u2014 never a result."
+      }
+    }
+  }
+}

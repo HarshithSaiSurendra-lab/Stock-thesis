@@ -150,3 +150,29 @@ committed — `.env` is git-ignored. Keys live only in the local `.env`.
   (Sheet1 = results by variant/window/cost, Holdout = frozen dates,
   Notes = limits + next steps). Source of truth stays the repo JSON
   (experiments/results/) + this file; add one row-set per future experiment.
+
+## 2026-11-17 — Phase 0 diagnosis DONE (train only, holdout untouched)
+
+- New metrics module `diagnostics.py` (gross vs net, per-trade
+  expectancy/profit factor, Deflated Sharpe, alpha/beta, information
+  ratio, t-stat, per-symbol attribution, regime splits, exposure) +
+  `test_diagnostics.py` (8 tests). Full suite now 68/68.
+- Driver `diagnose_phase0.py`; numbers in
+  `experiments/diagnosis/phase0-metrics.json`, write-up in
+  `experiments/diagnosis/phase0-diagnosis.md`, Sheet tab
+  "Phase 0 diagnosis".
+- HEADLINE: signal is gross-positive (+39.8% v1, Sharpe 0.76) but
+  costs destroy it (net −28.4% at 10bps; $668.67 per $1,000 paid in
+  costs). Median hold 1 day; expectancy −1.78 to −2.62 bps/trade.
+  Deflated Sharpe 0.0 for all variants; alpha −9.4% to −11.9%/yr,
+  beta ~0. Trend-quality filter binds on 0.12% of active days
+  (v2==v3 by construction). 1-bar lag costs 7–24 gross pts
+  (lookahead diagnostic only). Regime filter blocks v1's better days.
+  Losses broad across symbols, not one name.
+- Ranked fixes: (1) cut turnover — min hold / weekly rebalance;
+  (2) strong_up only / higher bar; (3) raise tq threshold to ≥4.0
+  or delete the filter; (4) regime as sizing dial; (5) hold longer
+  to amortise lag; (6) execution fixes may not suffice — gross edge
+  itself is weak (DSR 0.0), LLM leg may be needed after.
+- Next: register exp-technical-v2 with fixes 1–3, run on train,
+  then check the frozen holdout. Kill rule stands.
