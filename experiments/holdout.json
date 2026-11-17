@@ -1,0 +1,12 @@
+{
+  "acquired_range": null,
+  "benchmark": "SPY buy-and-hold and equal-weight universe",
+  "cost_model": {
+    "base": "1x modelled spread + slippage",
+    "stress": "2x"
+  },
+  "definition": "final 63 trading days of the acquired point-in-time, adjusted OHLCV dataset (with delistings and point-in-time universe membership)",
+  "frozen_at": "2026-11-16T21:09:29.203363+00:00",
+  "horizon": "daily decisions, 1-bar lag between target and held weights",
+  "status": "frozen"
+}
