@@ -176,3 +176,55 @@ committed — `.env` is git-ignored. Keys live only in the local `.env`.
   itself is weak (DSR 0.0), LLM leg may be needed after.
 - Next: register exp-technical-v2 with fixes 1–3, run on train,
   then check the frozen holdout. Kill rule stands.
+
+## 2026-11-18 — exp-technical-v2: fixes worked mechanically, signal still has no edge — GATE FAILED, variant dropped
+
+- User approved building v2 2026-11-18. Registered in
+  `experiments/registry.jsonl` BEFORE running (hypothesis, params,
+  exit gate: train net10 > 0, holdout net10 > 0 and > SPY, train
+  Deflated Sharpe ≥ 0.95 with n_trials=10, holdout net20 > 0).
+- Design (fixes 1–3 only): strong_up signals only, trend-quality
+  threshold raised to ≥ 4.0, weekly rebalancing (every 5 days) +
+  5-day minimum holding period. Regime mask kept identical to
+  v2_regime (unchanged); 1-bar lag kept; plain engine, no trailing
+  stops (same as v1). New code: `min_hold_days` on BacktestConfig
+  (`backtest.py`, enforced on held weights), `build_v2_signal` +
+  `_v2_active_labels` (`research_runner.py`, threaded through
+  `evaluate_variants`), driver `run_v2_backtest.py`, 7 new tests in
+  `test_v2.py`. Full suite 75/75. Results:
+  `experiments/results/exp-technical-v2.json`.
+- TRAIN (658 days), 10bps: return −14.0%, Sharpe −0.16, max DD
+  −49.8%, 364 trades (v1: 1,673), walk-forward median Sharpe −0.23,
+  1/4 positive folds. At 20bps: −25.6%, Sharpe −0.31, 0/4 folds.
+  Baselines: SPY +63.5%, equal-weight +48.0%.
+- HOLDOUT (63 days), 10bps: return −3.4%, Sharpe −0.73, max DD
+  −7.8%, 46 trades. At 20bps: −5.0%. Baselines: SPY −1.7%,
+  equal-weight +1.7%.
+- What the fixes DID do: costs fell $668.67 → $144.80 per $1,000
+  (−78%), median hold 1 day → 5.0 days, expectancy −1.78..−2.62 →
+  −0.54 bps/trade, profit factor 0.85–0.91 → 0.99, cost drag 68.2 →
+  13.4 pts, avg turnover 0.73 → 0.22/day. Max gross exposure stayed
+  1.0 — the min-hold rule never pushed leverage over 1.0.
+- What they did NOT do: the gross edge vanished. v1 gross +39.8% →
+  v2 gross −0.6% on train (−1.8% holdout). The mild_up signals were
+  carrying essentially all of v1's gross return; dropping them
+  removed the edge, not just the churn. Only 88 of 9,031 strong_up
+  days (0.97%) fall below tq 4.0, so the threshold barely bites —
+  the selectivity change is almost entirely strong-only. Train
+  Deflated Sharpe 0.044, alpha +2.9%/yr (vs v1 −11.9%) but
+  t-stat −0.01, 95% CI [−42%, +42%] — statistically nothing.
+  Holdout alpha −12.4%/yr, DSR 0.0. Max drawdown got WORSE on train
+  (−49.8% vs v1 −40.1% / v4 −32.5%): fewer, longer-held names
+  concentrate single-name swings (AVGO −26.6% gross over 90 days;
+  one winner, DD +36.3% in 20 days).
+- GATE: FAIL on all four sub-gates (train net10 negative, holdout
+  net10 negative and below SPY, DSR 0.044 < 0.95, holdout net20
+  negative). Per the kill rule, exp-technical-v2 is DROPPED — not
+  rescued by raising risk. This confirms Phase 0 fix-hypothesis #6:
+  execution fixes do not suffice; the gross edge itself was weak.
+- Consequence: the technical composite as built has no tradeable
+  edge in either form (churny v1 or selective v2). The edge, if
+  there is one, has to come from the LLM sentiment leg
+  (exp-technical-plus-llm-v1) — which still needs the point-in-time
+  10-K/10-Q dataset decision before it can run. No paper trading
+  of either technical variant; no live money; ALLOW_LIVE stays 0.

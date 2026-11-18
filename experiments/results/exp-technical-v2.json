@@ -1,0 +1,529 @@
+{
+  "experiment_id": "exp-technical-v2",
+  "run_date": "2026-11-18",
+  "meta": {
+    "source": "alpaca-cached",
+    "symbols": 133,
+    "symbols_with_data": [
+      "AAPL",
+      "ABBV",
+      "ABT",
+      "ADBE",
+      "AEP",
+      "AMAT",
+      "AMD",
+      "AMGN",
+      "AMT",
+      "AMZN",
+      "APD",
+      "AVGO",
+      "AXP",
+      "BA",
+      "BAC",
+      "BKNG",
+      "BLK",
+      "BMY",
+      "C",
+      "CAT",
+      "CB",
+      "CCI",
+      "CL",
+      "CMCSA",
+      "CME",
+      "CMG",
+      "COF",
+      "COP",
+      "COST",
+      "CRM",
+      "CRWD",
+      "CSCO",
+      "CVX",
+      "D",
+      "DD",
+      "DE",
+      "DHR",
+      "DIS",
+      "DOW",
+      "DUK",
+      "ECL",
+      "EMR",
+      "EOG",
+      "EQIX",
+      "ETN",
+      "EXC",
+      "F",
+      "FCX",
+      "GE",
+      "GILD",
+      "GM",
+      "GOOGL",
+      "GS",
+      "HAL",
+      "HD",
+      "HON",
+      "IBM",
+      "ICE",
+      "INTC",
+      "ISRG",
+      "JNJ",
+      "JPM",
+      "KMB",
+      "KO",
+      "LIN",
+      "LLY",
+      "LMT",
+      "LOW",
+      "MA",
+      "MAR",
+      "MCD",
+      "MDLZ",
+      "MDT",
+      "META",
+      "MMM",
+      "MO",
+      "MPC",
+      "MRK",
+      "MS",
+      "MSFT",
+      "MU",
+      "NEE",
+      "NFLX",
+      "NKE",
+      "NOW",
+      "NUE",
+      "NVDA",
+      "O",
+      "ORCL",
+      "ORLY",
+      "OXY",
+      "PANW",
+      "PEG",
+      "PEP",
+      "PFE",
+      "PG",
+      "PLD",
+      "PM",
+      "PNC",
+      "PSA",
+      "PSX",
+      "QCOM",
+      "REGN",
+      "RTX",
+      "SBUX",
+      "SCHW",
+      "SHW",
+      "SLB",
+      "SNOW",
+      "SO",
+      "SPG",
+      "SPGI",
+      "SPY",
+      "SRE",
+      "SYK",
+      "T",
+      "TJX",
+      "TMO",
+      "TMUS",
+      "TSLA",
+      "TXN",
+      "UNH",
+      "UNP",
+      "UPS",
+      "USB",
+      "V",
+      "VLO",
+      "VRTX",
+      "VZ",
+      "WELL",
+      "WFC",
+      "WMT",
+      "XEL",
+      "XOM"
+    ],
+    "market_data_feed": "iex",
+    "market_data_adjustment": "raw",
+    "initial_capital": 1000.0,
+    "max_positions": 5,
+    "rebalance_every": 5,
+    "min_hold_days": 5,
+    "parameters": {
+      "min_decision_score": 10.25,
+      "target_n_positions": 5,
+      "trail_percent": 8.0,
+      "min_hold_days": 5,
+      "rebalance_every": 5,
+      "min_trend_quality": 4.0,
+      "strong_only": true,
+      "regime_mask": "same as v2_regime (unchanged)"
+    }
+  },
+  "holdout": {
+    "cost_10bps": [
+      {
+        "variant": "v2",
+        "start_equity": 1000.0,
+        "ending_equity": 966.02,
+        "pnl": -33.98,
+        "total_return": -0.034,
+        "annual_return": -0.1291,
+        "annual_vol": 0.1781,
+        "sharpe": -0.725,
+        "sortino": -1.0,
+        "max_drawdown": -0.0778,
+        "hit_rate": 0.4921,
+        "avg_daily_turnover": 0.2603,
+        "n_days": 63,
+        "trades": 46,
+        "wf_median_sharpe": null,
+        "wf_positive_folds": 0,
+        "wf_folds": 0
+      }
+    ],
+    "cost_20bps": [
+      {
+        "variant": "v2",
+        "start_equity": 1000.0,
+        "ending_equity": 950.23,
+        "pnl": -49.77,
+        "total_return": -0.0498,
+        "annual_return": -0.1847,
+        "annual_vol": 0.1796,
+        "sharpe": -1.028,
+        "sortino": -1.41,
+        "max_drawdown": -0.0845,
+        "hit_rate": 0.4921,
+        "avg_daily_turnover": 0.2603,
+        "n_days": 63,
+        "trades": 46,
+        "wf_median_sharpe": null,
+        "wf_positive_folds": 0,
+        "wf_folds": 0
+      }
+    ],
+    "baselines_no_cost": {
+      "spy_buy_and_hold": {
+        "total_return": -0.017,
+        "annual_return": -0.0665,
+        "annual_vol": 0.1455,
+        "sharpe": -0.457,
+        "sortino": -0.545,
+        "max_drawdown": -0.0592,
+        "hit_rate": 0.4444,
+        "avg_daily_turnover": 0.0,
+        "n_days": 63.0
+      },
+      "equal_weight_universe": {
+        "total_return": 0.0165,
+        "annual_return": 0.0678,
+        "annual_vol": 0.1133,
+        "sharpe": 0.598,
+        "sortino": 0.756,
+        "max_drawdown": -0.0448,
+        "hit_rate": 0.5238,
+        "avg_daily_turnover": 0.0,
+        "n_days": 63.0
+      }
+    },
+    "extended": {
+      "total_return_gross_0bps": -0.018,
+      "total_return_net_10bps": -0.034,
+      "total_return_net_20bps": -0.0498,
+      "cost_drag_10bps": 0.016,
+      "cost_drag_20bps": 0.0318,
+      "sharpe_gross": -0.395,
+      "sharpe_net_10bps": -0.725,
+      "sharpe_net_20bps": -1.028,
+      "max_drawdown_net_10bps": -0.0778,
+      "max_drawdown_net_20bps": -0.0845,
+      "sharpe": -0.688,
+      "deflated_sharpe": 0.0,
+      "sharpe_null_max": 0.178,
+      "n_trials": 10,
+      "alpha_annual": -0.1241,
+      "beta": -0.026,
+      "r_squared": 0.0,
+      "information_ratio": -0.277,
+      "tracking_error_annual": 0.2324,
+      "t_stat_mean_return": -0.34,
+      "mean_return_annual_ci95": [
+        -0.8208,
+        0.5757
+      ],
+      "total_cost_frac_of_capital": 0.0164,
+      "total_cost_usd_on_1000": 16.4,
+      "avg_cost_bps_per_day": 2.6,
+      "trades": {
+        "n_trades": 41,
+        "win_rate": 0.463,
+        "expectancy_per_trade": -0.00084,
+        "expectancy_per_trade_bps": -8.43,
+        "avg_win": 0.00544,
+        "avg_loss": -0.00627,
+        "profit_factor": 0.749,
+        "avg_holding_days": 6.71,
+        "median_holding_days": 5.0,
+        "max_holding_days": 25,
+        "trades_per_month": 13.67
+      },
+      "mean_gross_exposure": 0.984,
+      "frac_days_fully_invested": 0.984,
+      "frac_days_in_cash": 0.016,
+      "mean_positions_held": 4.92,
+      "max_gross_exposure": 1.0,
+      "per_symbol": {
+        "top_winners": [
+          {
+            "symbol": "VLO",
+            "gross_pnl_frac": 0.0102,
+            "days_held": 5
+          },
+          {
+            "symbol": "LLY",
+            "gross_pnl_frac": 0.0105,
+            "days_held": 5
+          },
+          {
+            "symbol": "AAPL",
+            "gross_pnl_frac": 0.0141,
+            "days_held": 32
+          },
+          {
+            "symbol": "AMD",
+            "gross_pnl_frac": 0.0166,
+            "days_held": 5
+          },
+          {
+            "symbol": "ABBV",
+            "gross_pnl_frac": 0.0174,
+            "days_held": 42
+          }
+        ],
+        "top_losers": [
+          {
+            "symbol": "DHR",
+            "gross_pnl_frac": -0.0147,
+            "days_held": 20
+          },
+          {
+            "symbol": "UNP",
+            "gross_pnl_frac": -0.0138,
+            "days_held": 5
+          },
+          {
+            "symbol": "ADBE",
+            "gross_pnl_frac": -0.0135,
+            "days_held": 17
+          },
+          {
+            "symbol": "CMG",
+            "gross_pnl_frac": -0.0127,
+            "days_held": 5
+          },
+          {
+            "symbol": "AVGO",
+            "gross_pnl_frac": -0.0088,
+            "days_held": 5
+          }
+        ],
+        "symbols_with_positive_gross": 13,
+        "symbols_with_negative_gross": 15,
+        "symbols_ever_held": 28
+      }
+    }
+  },
+  "limits": [
+    "IEX feed, RAW adjustment, CURRENT universe (seed symbols as of Nov 2026).",
+    "NOT survivorship-free, NOT point-in-time with delistings.",
+    "First-pass backtest only; not P0 evidence on its own.",
+    "LLM comparison not run: no historical point-in-time filing excerpts yet.",
+    "Holdout dates were already observed for v1, so the v2 holdout check is a confirmation, not a pristine out-of-sample test."
+  ],
+  "filter_binding": {
+    "min_trend_quality": 4.0,
+    "strong_up_days_train": 9031,
+    "strong_up_days_with_tq_below_4": 88,
+    "frac_strong_below_threshold": 0.0097
+  },
+  "train": {
+    "cost_10bps": [
+      {
+        "variant": "v2",
+        "start_equity": 1000.0,
+        "ending_equity": 859.94,
+        "pnl": -140.06,
+        "total_return": -0.1401,
+        "annual_return": -0.0562,
+        "annual_vol": 0.3477,
+        "sharpe": -0.161,
+        "sortino": -0.215,
+        "max_drawdown": -0.4979,
+        "hit_rate": 0.5061,
+        "avg_daily_turnover": 0.2201,
+        "n_days": 658,
+        "trades": 364,
+        "wf_median_sharpe": -0.226,
+        "wf_positive_folds": 1,
+        "wf_folds": 4
+      }
+    ],
+    "cost_20bps": [
+      {
+        "variant": "v2",
+        "start_equity": 1000.0,
+        "ending_equity": 743.85,
+        "pnl": -256.15,
+        "total_return": -0.2562,
+        "annual_return": -0.1071,
+        "annual_vol": 0.3479,
+        "sharpe": -0.308,
+        "sortino": -0.414,
+        "max_drawdown": -0.5521,
+        "hit_rate": 0.4924,
+        "avg_daily_turnover": 0.2201,
+        "n_days": 658,
+        "trades": 364,
+        "wf_median_sharpe": -0.467,
+        "wf_positive_folds": 0,
+        "wf_folds": 4
+      }
+    ],
+    "baselines_no_cost": {
+      "spy_buy_and_hold": {
+        "total_return": 0.6348,
+        "annual_return": 0.2071,
+        "annual_vol": 0.1578,
+        "sharpe": 1.313,
+        "sortino": 1.726,
+        "max_drawdown": -0.19,
+        "hit_rate": 0.5669,
+        "avg_daily_turnover": 0.0,
+        "n_days": 658.0
+      },
+      "equal_weight_universe": {
+        "total_return": 0.4802,
+        "annual_return": 0.1621,
+        "annual_vol": 0.1299,
+        "sharpe": 1.247,
+        "sortino": 1.623,
+        "max_drawdown": -0.1628,
+        "hit_rate": 0.5653,
+        "avg_daily_turnover": 0.0,
+        "n_days": 658.0
+      }
+    },
+    "extended": {
+      "total_return_gross_0bps": -0.0061,
+      "total_return_net_10bps": -0.1401,
+      "total_return_net_20bps": -0.2562,
+      "cost_drag_10bps": 0.134,
+      "cost_drag_20bps": 0.2501,
+      "sharpe_gross": -0.007,
+      "sharpe_net_10bps": -0.161,
+      "sharpe_net_20bps": -0.308,
+      "max_drawdown_net_10bps": -0.4979,
+      "max_drawdown_net_20bps": -0.5521,
+      "sharpe": -0.005,
+      "deflated_sharpe": 0.044,
+      "sharpe_null_max": 0.063,
+      "n_trials": 10,
+      "alpha_annual": 0.0288,
+      "beta": -0.152,
+      "r_squared": 0.005,
+      "information_ratio": -0.517,
+      "tracking_error_annual": 0.3916,
+      "t_stat_mean_return": -0.01,
+      "mean_return_annual_ci95": [
+        -0.4235,
+        0.42
+      ],
+      "total_cost_frac_of_capital": 0.1448,
+      "total_cost_usd_on_1000": 144.8,
+      "avg_cost_bps_per_day": 2.2,
+      "trades": {
+        "n_trades": 359,
+        "win_rate": 0.485,
+        "expectancy_per_trade": -5e-05,
+        "expectancy_per_trade_bps": -0.54,
+        "avg_win": 0.01036,
+        "avg_loss": -0.00985,
+        "profit_factor": 0.989,
+        "avg_holding_days": 9.07,
+        "median_holding_days": 5.0,
+        "max_holding_days": 95,
+        "trades_per_month": 11.46
+      },
+      "mean_gross_exposure": 0.998,
+      "frac_days_fully_invested": 0.998,
+      "frac_days_in_cash": 0.002,
+      "mean_positions_held": 4.97,
+      "max_gross_exposure": 1.0,
+      "per_symbol": {
+        "top_winners": [
+          {
+            "symbol": "AEP",
+            "gross_pnl_frac": 0.0446,
+            "days_held": 280
+          },
+          {
+            "symbol": "COF",
+            "gross_pnl_frac": 0.0463,
+            "days_held": 55
+          },
+          {
+            "symbol": "C",
+            "gross_pnl_frac": 0.0531,
+            "days_held": 47
+          },
+          {
+            "symbol": "AMAT",
+            "gross_pnl_frac": 0.0632,
+            "days_held": 80
+          },
+          {
+            "symbol": "DD",
+            "gross_pnl_frac": 0.3632,
+            "days_held": 20
+          }
+        ],
+        "top_losers": [
+          {
+            "symbol": "AVGO",
+            "gross_pnl_frac": -0.266,
+            "days_held": 90
+          },
+          {
+            "symbol": "CMG",
+            "gross_pnl_frac": -0.1951,
+            "days_held": 15
+          },
+          {
+            "symbol": "ABT",
+            "gross_pnl_frac": -0.0402,
+            "days_held": 275
+          },
+          {
+            "symbol": "CVX",
+            "gross_pnl_frac": -0.0381,
+            "days_held": 25
+          },
+          {
+            "symbol": "NVDA",
+            "gross_pnl_frac": -0.0356,
+            "days_held": 5
+          }
+        ],
+        "symbols_with_positive_gross": 41,
+        "symbols_with_negative_gross": 42,
+        "symbols_ever_held": 83
+      }
+    }
+  },
+  "gate": {
+    "a_train_net10_positive": false,
+    "b_holdout_net10_positive_and_beats_spy": false,
+    "c_train_dsr_ge_0_95": false,
+    "d_holdout_net20_positive": false,
+    "spy_holdout_return": -0.017,
+    "pass": false
+  }
+}

@@ -290,6 +290,47 @@ def build_signal_variants(data: ResearchData, cfg: TradingConfig) -> tuple[pd.Da
     return prices[symbols], variants
 
 
+V2_MIN_TREND_QUALITY = 4.0
+
+
+def _v2_active_labels(features: pd.DataFrame) -> pd.Series:
+    """v2 eligibility for one symbol's feature frame: strong_up label
+    AND trend-quality >= 4.0. Mild_up never qualifies, and a strong_up
+    with trend-quality 3.0-3.9 does not qualify either — that is the
+    fix for the dead filter (v2==v3 in Phase 0)."""
+    labels = composite_signal(features)
+    tq = trend_quality_score(features)
+    return (labels == "strong_up") & (tq >= V2_MIN_TREND_QUALITY)
+
+
+def build_v2_signal(data: ResearchData, cfg: TradingConfig) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """exp-technical-v2 signal panel (registered 2026-11-18).
+
+    Phase 0 fixes 1-3, nothing else:
+      - strong_up signals only (no mild_up entries),
+      - trend-quality threshold raised to >= 4.0 (strong_up already
+        requires clean_trend at >= 3.0; 4.0 is the change that makes
+        the filter actually discriminate),
+      - regime mask kept IDENTICAL to v2_regime (unchanged), so a
+        v2 vs v2_regime comparison isolates fixes 1-3.
+    Turnover controls (weekly rebalance + 5-day min hold) live in the
+    backtest config, not the signal. The 1-bar lag is applied by the
+    engine. No trailing stops (plain engine, same as v1).
+    """
+    prices, features = _feature_panels(data)
+    symbols = [symbol for symbol in prices.columns if symbol != cfg.regime.benchmark_symbol]
+    panel = pd.DataFrame(index=prices.index, columns=symbols, dtype=float)
+    for symbol in symbols:
+        feats = features[symbol]
+        scores = composite_score(feats)
+        active = _v2_active_labels(feats)
+        panel[symbol] = scores.where(active, 0.0)
+    if cfg.regime.benchmark_symbol in features:
+        regime = _regime_mask(features[cfg.regime.benchmark_symbol], cfg)
+        panel = panel.where(regime, 0.0)
+    return prices[symbols], panel
+
+
 def slice_research_window(
     prices: pd.DataFrame,
     variants: dict[str, pd.DataFrame],
@@ -358,6 +399,7 @@ def evaluate_variants(
     dynamic_trail_vol_multiple: float = 3.0,
     min_trail_percent: float = 6.0,
     max_trail_percent: float = 15.0,
+    min_hold_days: int = 1,
 ) -> pd.DataFrame:
     rows = []
     for name, signal in variants.items():
@@ -386,6 +428,7 @@ def evaluate_variants(
                 long_only=True,
                 max_positions=max_positions,
                 rebalance_every=rebalance_every,
+                min_hold_days=min_hold_days,
                 throttle_drawdown_pct=throttle_drawdown_pct,
                 throttle_scale=throttle_scale,
                 halt_drawdown_pct=halt_drawdown_pct,

@@ -36,10 +36,40 @@ class BacktestConfig:
     gross_leverage: float = 1.0    # total gross exposure (1.0 = fully invested)
     vol_target: float | None = None  # if set, scale exposure to this annual vol
     rebalance_every: int = 1       # trading days between rebalances (1 = daily)
+    min_hold_days: int = 1         # minimum days a position must be held once entered (1 = no-op)
     throttle_drawdown_pct: float | None = None  # e.g. 0.05 means scale down after -5%
     throttle_scale: float = 0.50
     halt_drawdown_pct: float | None = None      # e.g. 0.10 means no exposure after -10%
     halt_scale: float = 0.0
+
+
+def _enforce_min_hold(held_w: pd.DataFrame, min_hold_days: int) -> pd.DataFrame:
+    """
+    Minimum holding period, enforced on held (post-lag) weights: a
+    symbol that enters the portfolio may not exit until it has been
+    held for at least min_hold_days. min_hold_days <= 1 is a no-op and
+    preserves all existing behaviour. With weekly rebalancing
+    (rebalance_every=5) this is nearly redundant by construction —
+    positions can only change on rebalance days, 5 days apart — but it
+    is enforced explicitly so the guarantee holds on any rebalance
+    grid. A held symbol is kept at its previous day's weight until
+    the minimum has elapsed.
+    """
+    if min_hold_days <= 1 or held_w.empty:
+        return held_w
+    w = held_w.copy()
+    entry_day: dict[str, int] = {}
+    for i in range(len(w)):
+        for j, symbol in enumerate(w.columns):
+            current = float(w.iat[i, j])
+            if current > 0:
+                entry_day.setdefault(symbol, i)
+            elif symbol in entry_day:
+                if i - entry_day[symbol] < min_hold_days:
+                    w.iat[i, j] = float(w.iat[i - 1, j])
+                else:
+                    del entry_day[symbol]
+    return w
 
 
 @dataclass
@@ -125,6 +155,7 @@ def run_backtest(
 
     target_w = signal_to_weights(signal, cfg)
     held_w = _lag_weights(target_w)          # <-- look-ahead guard
+    held_w = _enforce_min_hold(held_w, cfg.min_hold_days)
 
     if cfg.throttle_drawdown_pct is not None or cfg.halt_drawdown_pct is not None:
         net_ret, held_w, weight_change = _run_path_dependent_backtest(held_w, fwd_ret, cfg)
