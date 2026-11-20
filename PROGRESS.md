@@ -261,3 +261,73 @@ committed — `.env` is git-ignored. Keys live only in the local `.env`.
 - **Ready for Phase 2**: `exp-technical-plus-llm-v1` (the registered
   LLM test) can now run against this dataset. NOT run yet — dataset
   build only, per the task. No paper trading; no live money.
+
+## Done — 2026-11-20
+
+- **Phase 2 RUN — `exp-technical-plus-llm-v1` COMPLETE. GATE VERDICT: FAIL.
+  Variant DROPPED per the kill rule. No paper trading of this variant.**
+  Results in `experiments/results/exp-technical-plus-llm-v1.json`;
+  registry record `exp-technical-plus-llm-v1-results` (status `failed`).
+  - Headline pair v4 vs v4+LLM, holdout 2026-08-18..2026-11-13:
+    net 10bps base −4.33% vs LLM −4.71% (SG1 fail), net 20bps base
+    −8.45% vs LLM −8.85% (SG2 fail), net 10bps LLM −4.71% < 0 (SG3
+    fail). All three sub-gates failed.
+  - Train v4+LLM improved markedly (−15.55% vs −25.86% base;
+    gross +27.0% vs +12.9%, expectancy −1.43 vs −2.62 bps/trade),
+    but the effect did NOT carry to the holdout (holdout gross −0.39%
+    vs −0.03% base; expectancy −4.14 vs −3.81 bps/trade). The holdout
+    sentiment was stale by construction (latest pre-holdout filing
+    carried forward up to ~3 months) — the recorded limitation is the
+    likely cause: the LLM edge needs fresh filings to manifest.
+  - Supporting pairs (not gates) all improved slightly on the holdout:
+    v1 −4.46% → −3.60% (+0.86pp), v2/v3 −6.69% → −5.71% (+0.98pp) at
+    10bps; same direction at 20bps. All remain deeply negative.
+    On train the LLM hurt v1/v2/v3 (−28.51% → −37.55%; −27.25% →
+    −35.13%). The effect is inconsistent across variants and windows.
+  - Diagnostics (10bps): Deflated Sharpe 0.0 everywhere (n_trials=18);
+    holdout v4+LLM alpha vs SPY −17.5%/yr, beta 0.15, IR −0.62;
+    train v4+LLM cost drag $408.00 per $1,000 (gross +27.0% still
+    nets −15.55%). Baselines: train SPY +63.48%, EW +48.02%;
+    holdout SPY −1.70%, EW +1.65%. Nothing here beats SPY.
+  - Scoring: 1,166 in-scope filings (Haiku screen; 795 new, 171
+    cached, 0 failed); Sonnet adjudicated the top 104 by relevance
+    (Haiku conf ≥ 0.6, worst-case est $4.9968 within the $5.00
+    budget). Only 58 of the 104 actually contribute (both confidences
+    ≥ 0.6, agreement ≥ 0.7, same sign). LLM adjustment applied on
+    4,294 of 71,608 active (symbol, day) cells (6.0%); contribution
+    mean +0.477 (models lean positive: Haiku mean +0.267, Sonnet
+    +0.304). Haiku–Sonnet mean agreement 0.918; 6 sign disagreements.
+- **Spend: $8.888873 total, under the $10 hard cap** (ledger $8.870839
+  + $0.018034 off-ledger validation). Haiku $3.300814, Sonnet
+  $5.557628. **Sonnet sub-budget BREACHED by $0.5576** ($5.5576 vs
+  $5.00): the chars/4 token estimate undercounts SEC filing text by
+  ~36% (mean actual Sonnet input 25,998 tokens vs 19,026 estimated;
+  ~2.9 chars/token, not 4). The $10 cap held; the gate verdict is
+  unaffected. Future runs must use a ~2.9 chars/token estimate (or a
+  real tokenizer count) for the Sonnet budget.
+- **Run notes (process)**: the run was interrupted once by a runtime
+  restart mid-Haiku (~371 filings scored); resumed from the per-role
+  score files + ledger-based already-spent accounting with $0
+  double-billing (cached re-reads). Two driver bugs found and fixed
+  during the run: (1) cache hits were re-adding their original cost to
+  the run total; (2) the Haiku/Sonnet passes shared one incremental
+  scores file and resume expected the final wrapped structure — now
+  per-role files (`...-scores-haiku.json`, `...-scores-sonnet.json`)
+  with a `_load_scores()` helper. (3) `score_pass` read
+  `input_tokens`/`output_tokens` but the provider returns
+  `tokens_in`/`tokens_out`, so the printed token totals were 0 —
+  fixed in code; the results JSON token counts were corrected
+  post-run from the scores files (Haiku 31,467,471 in / 308,101 out;
+  Sonnet 2,703,744 in / 15,014 out) with a correction note in the
+  JSON. Also: the first registry amendment recording was wiped by the
+  dataset build agent's post-push `git reset --hard`; the identical
+  amendment was re-recorded and then committed (141a214) before the
+  resumed run scored anything. Full test suite 112/112 passes.
+- **Amendment recorded before scoring**
+  (`exp-technical-plus-llm-v1-amendment-1`): Haiku 5.5 screen / Sonnet
+  5.5 adjudicate replaces the registered Fable/ChatGPT leg (OpenAI
+  adapter not built, $5 top-up never approved; Fable audit-only).
+  Agreement is within one model family, not independent models —
+  recorded as a caveat on the verdict. No Fable audit run. No
+  holdout-window filing scored. No paper trading; no live money;
+  ALLOW_LIVE stays 0.

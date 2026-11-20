@@ -1,0 +1,1006 @@
+{
+  "experiment_id": "exp-technical-plus-llm-v1",
+  "amendment": "exp-technical-plus-llm-v1-amendment-1",
+  "run_date": "2026-11-20",
+  "run_started_utc": "2026-11-20T04:03:57.677470+00:00",
+  "meta": {
+    "source": "Alpaca IEX, 2024-01-02..2026-11-13, 134 symbols",
+    "train_window": "2024-01-02..2026-08-17",
+    "holdout_window": "2026-08-18..2026-11-13 (final 63 trading days)",
+    "parameters": {
+      "min_decision_score": 10.25,
+      "target_n_positions": 5,
+      "trail_percent": 8.0,
+      "max_positions": 5,
+      "rebalance_every": 1,
+      "n_splits": 4,
+      "initial_capital": 1000.0,
+      "costs_bps": [
+        10,
+        20
+      ],
+      "n_trials_dsr": 18
+    },
+    "llm_pipeline": {
+      "screen": "claude-haiku-5-5",
+      "adjudicate": "claude-sonnet-5-5",
+      "audit": "claude-fable-5-2 (not run in this experiment)",
+      "chatgpt_leg": "not run (OpenAI top-up never approved)"
+    },
+    "scoring_scope": "filings dated <= 2026-08-17 only; holdout decisions use the latest scored filing carried forward"
+  },
+  "scoring": {
+    "in_scope_filings": 1166,
+    "near_threshold_filings": 1165,
+    "total_relevance_triples": 61313,
+    "sonnet_subset_size": 104,
+    "haiku": {
+      "n_attempted": 1166,
+      "n_scored_new": 795,
+      "n_cached": 171,
+      "n_failed": 0,
+      "input_tokens": 31467471,
+      "output_tokens": 308101,
+      "cost_usd": 2.242331,
+      "spent_after_usd": 3.331245
+    },
+    "sonnet": {
+      "n_attempted": 104,
+      "n_scored_new": 104,
+      "n_cached": 0,
+      "n_failed": 0,
+      "input_tokens": 2703744,
+      "output_tokens": 15014,
+      "cost_usd": 5.557628,
+      "spent_after_usd": 8.888873
+    },
+    "total_spend_usd": 8.888873,
+    "run_spend_usd": 7.799959,
+    "spend_cap_usd": 10.0,
+    "sonnet_budget_usd": 5.0,
+    "notes": [
+      "Token counts corrected post-run from the per-role scores files: the driver printed 0 because score_pass read result[\"input_tokens\"]/result[\"output_tokens\"] while the provider returns \"tokens_in\"/\"tokens_out\". Fixed in run_llm_backtest.py (same commit). Cost figures were unaffected (cost_usd key was correct).",
+      "Sonnet sub-budget BREACHED: actual Sonnet spend $5.557628 vs the $5.00 sub-budget (+$0.5576, +11.2%). The 104-filing subset was selected by worst-case estimate totalling $4.9968, within budget, but the chars/4 token estimate undercounts SEC filing text: mean actual Sonnet input tokens 25,998 vs 19,026 estimated (ratio 1.366, i.e. ~2.9 chars/token not 4). The $10 hard cap was NOT breached (total $8.888873).",
+      "Haiku tokens are all-in across the interrupted + resumed runs (795 fresh this run: 21,382,474 in / 208,150 out; 371 cached re-reads at $0 with their original tokens). Haiku billed total $3.300814 across runs (this run fresh $2.242331 + cached originals $1.058483).",
+      "Only 58 of the 104 Sonnet-adjudicated filings actually contribute an LLM adjustment (both confidences >= 0.6, agreement >= 0.7, same sign); the other 46 are neutralised (mostly Sonnet confidence < 0.6).",
+      "Run interrupted once by a runtime restart during the Haiku pass (run2, ~371 filings scored); resumed with per-role score files and ledger-based already-spent accounting. No double-billing: cached re-reads cost $0."
+    ]
+  },
+  "coverage": {
+    "applied_cells": 4294,
+    "active_technical_cells": 71608,
+    "applied_frac_of_active": 0.06
+  },
+  "train": {
+    "cost_10bps": [
+      {
+        "variant": "v4_regime_quality_risk_llm",
+        "start_equity": 1000.0,
+        "ending_equity": 844.54,
+        "pnl": -155.46,
+        "total_return": -0.1555,
+        "annual_return": -0.0627,
+        "annual_vol": 0.1445,
+        "sharpe": -0.434,
+        "sortino": -0.57,
+        "max_drawdown": -0.2564,
+        "hit_rate": 0.5061,
+        "avg_daily_turnover": 0.6201,
+        "n_days": 658,
+        "trades": 1025,
+        "wf_median_sharpe": -0.648,
+        "wf_positive_folds": 0,
+        "wf_folds": 4
+      },
+      {
+        "variant": "v2_regime",
+        "start_equity": 1000.0,
+        "ending_equity": 727.52,
+        "pnl": -272.48,
+        "total_return": -0.2725,
+        "annual_return": -0.1147,
+        "annual_vol": 0.1783,
+        "sharpe": -0.643,
+        "sortino": -0.939,
+        "max_drawdown": -0.3903,
+        "hit_rate": 0.4985,
+        "avg_daily_turnover": 0.7325,
+        "n_days": 658,
+        "trades": 1210,
+        "wf_median_sharpe": -0.939,
+        "wf_positive_folds": 0,
+        "wf_folds": 4
+      },
+      {
+        "variant": "v3_regime_trend_quality",
+        "start_equity": 1000.0,
+        "ending_equity": 727.52,
+        "pnl": -272.48,
+        "total_return": -0.2725,
+        "annual_return": -0.1147,
+        "annual_vol": 0.1783,
+        "sharpe": -0.643,
+        "sortino": -0.939,
+        "max_drawdown": -0.3903,
+        "hit_rate": 0.4985,
+        "avg_daily_turnover": 0.7325,
+        "n_days": 658,
+        "trades": 1210,
+        "wf_median_sharpe": -0.939,
+        "wf_positive_folds": 0,
+        "wf_folds": 4
+      },
+      {
+        "variant": "v1_composite",
+        "start_equity": 1000.0,
+        "ending_equity": 714.87,
+        "pnl": -285.13,
+        "total_return": -0.2851,
+        "annual_return": -0.1206,
+        "annual_vol": 0.1807,
+        "sharpe": -0.667,
+        "sortino": -1.037,
+        "max_drawdown": -0.4009,
+        "hit_rate": 0.4802,
+        "avg_daily_turnover": 1.018,
+        "n_days": 658,
+        "trades": 1673,
+        "wf_median_sharpe": -1.098,
+        "wf_positive_folds": 1,
+        "wf_folds": 4
+      },
+      {
+        "variant": "v4_regime_quality_risk",
+        "start_equity": 1000.0,
+        "ending_equity": 741.42,
+        "pnl": -258.58,
+        "total_return": -0.2586,
+        "annual_return": -0.1083,
+        "annual_vol": 0.1464,
+        "sharpe": -0.74,
+        "sortino": -0.995,
+        "max_drawdown": -0.3252,
+        "hit_rate": 0.4863,
+        "avg_daily_turnover": 0.6395,
+        "n_days": 658,
+        "trades": 1057,
+        "wf_median_sharpe": -0.936,
+        "wf_positive_folds": 0,
+        "wf_folds": 4
+      },
+      {
+        "variant": "v2_regime_llm",
+        "start_equity": 1000.0,
+        "ending_equity": 648.73,
+        "pnl": -351.27,
+        "total_return": -0.3513,
+        "annual_return": -0.1527,
+        "annual_vol": 0.1673,
+        "sharpe": -0.913,
+        "sortino": -1.264,
+        "max_drawdown": -0.4417,
+        "hit_rate": 0.4894,
+        "avg_daily_turnover": 0.7119,
+        "n_days": 658,
+        "trades": 1176,
+        "wf_median_sharpe": -1.236,
+        "wf_positive_folds": 0,
+        "wf_folds": 4
+      },
+      {
+        "variant": "v3_regime_trend_quality_llm",
+        "start_equity": 1000.0,
+        "ending_equity": 648.73,
+        "pnl": -351.27,
+        "total_return": -0.3513,
+        "annual_return": -0.1527,
+        "annual_vol": 0.1673,
+        "sharpe": -0.913,
+        "sortino": -1.264,
+        "max_drawdown": -0.4417,
+        "hit_rate": 0.4894,
+        "avg_daily_turnover": 0.7119,
+        "n_days": 658,
+        "trades": 1176,
+        "wf_median_sharpe": -1.236,
+        "wf_positive_folds": 0,
+        "wf_folds": 4
+      },
+      {
+        "variant": "v1_composite_llm",
+        "start_equity": 1000.0,
+        "ending_equity": 624.49,
+        "pnl": -375.51,
+        "total_return": -0.3755,
+        "annual_return": -0.165,
+        "annual_vol": 0.1708,
+        "sharpe": -0.966,
+        "sortino": -1.42,
+        "max_drawdown": -0.4626,
+        "hit_rate": 0.4742,
+        "avg_daily_turnover": 0.9943,
+        "n_days": 658,
+        "trades": 1634,
+        "wf_median_sharpe": -1.364,
+        "wf_positive_folds": 0,
+        "wf_folds": 4
+      }
+    ],
+    "cost_20bps": [
+      {
+        "variant": "v4_regime_quality_risk_llm",
+        "start_equity": 1000.0,
+        "ending_equity": 561.34,
+        "pnl": -438.66,
+        "total_return": -0.4387,
+        "annual_return": -0.1984,
+        "annual_vol": 0.1451,
+        "sharpe": -1.367,
+        "sortino": -1.804,
+        "max_drawdown": -0.4669,
+        "hit_rate": 0.4696,
+        "avg_daily_turnover": 0.6201,
+        "n_days": 658,
+        "trades": 1025,
+        "wf_median_sharpe": -1.417,
+        "wf_positive_folds": 0,
+        "wf_folds": 4
+      },
+      {
+        "variant": "v2_regime",
+        "start_equity": 1000.0,
+        "ending_equity": 448.9,
+        "pnl": -551.1,
+        "total_return": -0.5511,
+        "annual_return": -0.2642,
+        "annual_vol": 0.1791,
+        "sharpe": -1.475,
+        "sortino": -2.125,
+        "max_drawdown": -0.6014,
+        "hit_rate": 0.4605,
+        "avg_daily_turnover": 0.7325,
+        "n_days": 658,
+        "trades": 1210,
+        "wf_median_sharpe": -1.549,
+        "wf_positive_folds": 0,
+        "wf_folds": 4
+      },
+      {
+        "variant": "v3_regime_trend_quality",
+        "start_equity": 1000.0,
+        "ending_equity": 448.9,
+        "pnl": -551.1,
+        "total_return": -0.5511,
+        "annual_return": -0.2642,
+        "annual_vol": 0.1791,
+        "sharpe": -1.475,
+        "sortino": -2.125,
+        "max_drawdown": -0.6014,
+        "hit_rate": 0.4605,
+        "avg_daily_turnover": 0.7325,
+        "n_days": 658,
+        "trades": 1210,
+        "wf_median_sharpe": -1.549,
+        "wf_positive_folds": 0,
+        "wf_folds": 4
+      },
+      {
+        "variant": "v4_regime_quality_risk",
+        "start_equity": 1000.0,
+        "ending_equity": 486.5,
+        "pnl": -513.5,
+        "total_return": -0.5135,
+        "annual_return": -0.2411,
+        "annual_vol": 0.1469,
+        "sharpe": -1.642,
+        "sortino": -2.209,
+        "max_drawdown": -0.5379,
+        "hit_rate": 0.465,
+        "avg_daily_turnover": 0.6395,
+        "n_days": 658,
+        "trades": 1057,
+        "wf_median_sharpe": -1.753,
+        "wf_positive_folds": 0,
+        "wf_folds": 4
+      },
+      {
+        "variant": "v2_regime_llm",
+        "start_equity": 1000.0,
+        "ending_equity": 405.73,
+        "pnl": -594.27,
+        "total_return": -0.5943,
+        "annual_return": -0.2921,
+        "annual_vol": 0.1683,
+        "sharpe": -1.735,
+        "sortino": -2.385,
+        "max_drawdown": -0.6314,
+        "hit_rate": 0.4605,
+        "avg_daily_turnover": 0.7119,
+        "n_days": 658,
+        "trades": 1176,
+        "wf_median_sharpe": -2.046,
+        "wf_positive_folds": 0,
+        "wf_folds": 4
+      },
+      {
+        "variant": "v3_regime_trend_quality_llm",
+        "start_equity": 1000.0,
+        "ending_equity": 405.73,
+        "pnl": -594.27,
+        "total_return": -0.5943,
+        "annual_return": -0.2921,
+        "annual_vol": 0.1683,
+        "sharpe": -1.735,
+        "sortino": -2.385,
+        "max_drawdown": -0.6314,
+        "hit_rate": 0.4605,
+        "avg_daily_turnover": 0.7119,
+        "n_days": 658,
+        "trades": 1176,
+        "wf_median_sharpe": -2.046,
+        "wf_positive_folds": 0,
+        "wf_folds": 4
+      },
+      {
+        "variant": "v1_composite",
+        "start_equity": 1000.0,
+        "ending_equity": 365.48,
+        "pnl": -634.52,
+        "total_return": -0.6345,
+        "annual_return": -0.3199,
+        "annual_vol": 0.1813,
+        "sharpe": -1.764,
+        "sortino": -2.691,
+        "max_drawdown": -0.6755,
+        "hit_rate": 0.4331,
+        "avg_daily_turnover": 1.018,
+        "n_days": 658,
+        "trades": 1673,
+        "wf_median_sharpe": -2.087,
+        "wf_positive_folds": 0,
+        "wf_folds": 4
+      },
+      {
+        "variant": "v1_composite_llm",
+        "start_equity": 1000.0,
+        "ending_equity": 324.26,
+        "pnl": -675.74,
+        "total_return": -0.6757,
+        "annual_return": -0.3503,
+        "annual_vol": 0.1714,
+        "sharpe": -2.044,
+        "sortino": -2.969,
+        "max_drawdown": -0.7054,
+        "hit_rate": 0.4362,
+        "avg_daily_turnover": 0.9943,
+        "n_days": 658,
+        "trades": 1634,
+        "wf_median_sharpe": -2.405,
+        "wf_positive_folds": 0,
+        "wf_folds": 4
+      }
+    ],
+    "baselines_no_cost": {
+      "spy_buy_and_hold": {
+        "total_return": 0.6348,
+        "annual_return": 0.2071,
+        "annual_vol": 0.1578,
+        "sharpe": 1.313,
+        "sortino": 1.726,
+        "max_drawdown": -0.19,
+        "hit_rate": 0.5669,
+        "avg_daily_turnover": 0.0,
+        "n_days": 658.0
+      },
+      "equal_weight_universe": {
+        "total_return": 0.4802,
+        "annual_return": 0.1621,
+        "annual_vol": 0.1299,
+        "sharpe": 1.247,
+        "sortino": 1.623,
+        "max_drawdown": -0.1628,
+        "hit_rate": 0.5653,
+        "avg_daily_turnover": 0.0,
+        "n_days": 658.0
+      }
+    }
+  },
+  "holdout": {
+    "cost_10bps": [
+      {
+        "variant": "v1_composite_llm",
+        "start_equity": 1000.0,
+        "ending_equity": 963.97,
+        "pnl": -36.03,
+        "total_return": -0.036,
+        "annual_return": -0.1365,
+        "annual_vol": 0.1697,
+        "sharpe": -0.804,
+        "sortino": -1.178,
+        "max_drawdown": -0.0866,
+        "hit_rate": 0.5079,
+        "avg_daily_turnover": 0.8571,
+        "n_days": 63,
+        "trades": 140,
+        "wf_median_sharpe": null,
+        "wf_positive_folds": 0,
+        "wf_folds": 0
+      },
+      {
+        "variant": "v1_composite",
+        "start_equity": 1000.0,
+        "ending_equity": 955.44,
+        "pnl": -44.56,
+        "total_return": -0.0446,
+        "annual_return": -0.1667,
+        "annual_vol": 0.1706,
+        "sharpe": -0.977,
+        "sortino": -1.49,
+        "max_drawdown": -0.0866,
+        "hit_rate": 0.5079,
+        "avg_daily_turnover": 0.8635,
+        "n_days": 63,
+        "trades": 141,
+        "wf_median_sharpe": null,
+        "wf_positive_folds": 0,
+        "wf_folds": 0
+      },
+      {
+        "variant": "v4_regime_quality_risk",
+        "start_equity": 1000.0,
+        "ending_equity": 956.68,
+        "pnl": -43.32,
+        "total_return": -0.0433,
+        "annual_return": -0.1623,
+        "annual_vol": 0.1588,
+        "sharpe": -1.022,
+        "sortino": -1.52,
+        "max_drawdown": -0.0801,
+        "hit_rate": 0.5079,
+        "avg_daily_turnover": 0.6984,
+        "n_days": 63,
+        "trades": 115,
+        "wf_median_sharpe": null,
+        "wf_positive_folds": 0,
+        "wf_folds": 0
+      },
+      {
+        "variant": "v4_regime_quality_risk_llm",
+        "start_equity": 1000.0,
+        "ending_equity": 952.87,
+        "pnl": -47.13,
+        "total_return": -0.0471,
+        "annual_return": -0.1756,
+        "annual_vol": 0.1583,
+        "sharpe": -1.11,
+        "sortino": -1.644,
+        "max_drawdown": -0.0803,
+        "hit_rate": 0.5079,
+        "avg_daily_turnover": 0.7048,
+        "n_days": 63,
+        "trades": 116,
+        "wf_median_sharpe": null,
+        "wf_positive_folds": 0,
+        "wf_folds": 0
+      },
+      {
+        "variant": "v2_regime_llm",
+        "start_equity": 1000.0,
+        "ending_equity": 942.91,
+        "pnl": -57.09,
+        "total_return": -0.0571,
+        "annual_return": -0.2095,
+        "annual_vol": 0.1652,
+        "sharpe": -1.269,
+        "sortino": -2.072,
+        "max_drawdown": -0.0825,
+        "hit_rate": 0.4603,
+        "avg_daily_turnover": 0.7873,
+        "n_days": 63,
+        "trades": 129,
+        "wf_median_sharpe": null,
+        "wf_positive_folds": 0,
+        "wf_folds": 0
+      },
+      {
+        "variant": "v3_regime_trend_quality_llm",
+        "start_equity": 1000.0,
+        "ending_equity": 942.91,
+        "pnl": -57.09,
+        "total_return": -0.0571,
+        "annual_return": -0.2095,
+        "annual_vol": 0.1652,
+        "sharpe": -1.269,
+        "sortino": -2.072,
+        "max_drawdown": -0.0825,
+        "hit_rate": 0.4603,
+        "avg_daily_turnover": 0.7873,
+        "n_days": 63,
+        "trades": 129,
+        "wf_median_sharpe": null,
+        "wf_positive_folds": 0,
+        "wf_folds": 0
+      },
+      {
+        "variant": "v2_regime",
+        "start_equity": 1000.0,
+        "ending_equity": 933.1,
+        "pnl": -66.9,
+        "total_return": -0.0669,
+        "annual_return": -0.2419,
+        "annual_vol": 0.1656,
+        "sharpe": -1.461,
+        "sortino": -2.465,
+        "max_drawdown": -0.088,
+        "hit_rate": 0.4603,
+        "avg_daily_turnover": 0.7873,
+        "n_days": 63,
+        "trades": 129,
+        "wf_median_sharpe": null,
+        "wf_positive_folds": 0,
+        "wf_folds": 0
+      },
+      {
+        "variant": "v3_regime_trend_quality",
+        "start_equity": 1000.0,
+        "ending_equity": 933.1,
+        "pnl": -66.9,
+        "total_return": -0.0669,
+        "annual_return": -0.2419,
+        "annual_vol": 0.1656,
+        "sharpe": -1.461,
+        "sortino": -2.465,
+        "max_drawdown": -0.088,
+        "hit_rate": 0.4603,
+        "avg_daily_turnover": 0.7873,
+        "n_days": 63,
+        "trades": 129,
+        "wf_median_sharpe": null,
+        "wf_positive_folds": 0,
+        "wf_folds": 0
+      }
+    ],
+    "cost_20bps": [
+      {
+        "variant": "v1_composite_llm",
+        "start_equity": 1000.0,
+        "ending_equity": 913.25,
+        "pnl": -86.75,
+        "total_return": -0.0868,
+        "annual_return": -0.3044,
+        "annual_vol": 0.1696,
+        "sharpe": -1.795,
+        "sortino": -2.607,
+        "max_drawdown": -0.1123,
+        "hit_rate": 0.4921,
+        "avg_daily_turnover": 0.8571,
+        "n_days": 63,
+        "trades": 140,
+        "wf_median_sharpe": null,
+        "wf_positive_folds": 0,
+        "wf_folds": 0
+      },
+      {
+        "variant": "v4_regime_quality_risk",
+        "start_equity": 1000.0,
+        "ending_equity": 915.49,
+        "pnl": -84.51,
+        "total_return": -0.0845,
+        "annual_return": -0.2976,
+        "annual_vol": 0.1579,
+        "sharpe": -1.885,
+        "sortino": -2.651,
+        "max_drawdown": -0.1003,
+        "hit_rate": 0.4444,
+        "avg_daily_turnover": 0.6984,
+        "n_days": 63,
+        "trades": 115,
+        "wf_median_sharpe": null,
+        "wf_positive_folds": 0,
+        "wf_folds": 0
+      },
+      {
+        "variant": "v1_composite",
+        "start_equity": 1000.0,
+        "ending_equity": 904.79,
+        "pnl": -95.21,
+        "total_return": -0.0952,
+        "annual_return": -0.3298,
+        "annual_vol": 0.1706,
+        "sharpe": -1.933,
+        "sortino": -2.907,
+        "max_drawdown": -0.1136,
+        "hit_rate": 0.4921,
+        "avg_daily_turnover": 0.8635,
+        "n_days": 63,
+        "trades": 141,
+        "wf_median_sharpe": null,
+        "wf_positive_folds": 0,
+        "wf_folds": 0
+      },
+      {
+        "variant": "v4_regime_quality_risk_llm",
+        "start_equity": 1000.0,
+        "ending_equity": 911.48,
+        "pnl": -88.52,
+        "total_return": -0.0885,
+        "annual_return": -0.3098,
+        "annual_vol": 0.1572,
+        "sharpe": -1.97,
+        "sortino": -2.76,
+        "max_drawdown": -0.1028,
+        "hit_rate": 0.4444,
+        "avg_daily_turnover": 0.7048,
+        "n_days": 63,
+        "trades": 116,
+        "wf_median_sharpe": null,
+        "wf_positive_folds": 0,
+        "wf_folds": 0
+      },
+      {
+        "variant": "v2_regime_llm",
+        "start_equity": 1000.0,
+        "ending_equity": 897.27,
+        "pnl": -102.73,
+        "total_return": -0.1027,
+        "annual_return": -0.3518,
+        "annual_vol": 0.1639,
+        "sharpe": -2.147,
+        "sortino": -3.379,
+        "max_drawdown": -0.1226,
+        "hit_rate": 0.4286,
+        "avg_daily_turnover": 0.7873,
+        "n_days": 63,
+        "trades": 129,
+        "wf_median_sharpe": null,
+        "wf_positive_folds": 0,
+        "wf_folds": 0
+      },
+      {
+        "variant": "v3_regime_trend_quality_llm",
+        "start_equity": 1000.0,
+        "ending_equity": 897.27,
+        "pnl": -102.73,
+        "total_return": -0.1027,
+        "annual_return": -0.3518,
+        "annual_vol": 0.1639,
+        "sharpe": -2.147,
+        "sortino": -3.379,
+        "max_drawdown": -0.1226,
+        "hit_rate": 0.4286,
+        "avg_daily_turnover": 0.7873,
+        "n_days": 63,
+        "trades": 129,
+        "wf_median_sharpe": null,
+        "wf_positive_folds": 0,
+        "wf_folds": 0
+      },
+      {
+        "variant": "v2_regime",
+        "start_equity": 1000.0,
+        "ending_equity": 887.92,
+        "pnl": -112.08,
+        "total_return": -0.1121,
+        "annual_return": -0.3784,
+        "annual_vol": 0.1644,
+        "sharpe": -2.301,
+        "sortino": -3.707,
+        "max_drawdown": -0.1318,
+        "hit_rate": 0.4286,
+        "avg_daily_turnover": 0.7873,
+        "n_days": 63,
+        "trades": 129,
+        "wf_median_sharpe": null,
+        "wf_positive_folds": 0,
+        "wf_folds": 0
+      },
+      {
+        "variant": "v3_regime_trend_quality",
+        "start_equity": 1000.0,
+        "ending_equity": 887.92,
+        "pnl": -112.08,
+        "total_return": -0.1121,
+        "annual_return": -0.3784,
+        "annual_vol": 0.1644,
+        "sharpe": -2.301,
+        "sortino": -3.707,
+        "max_drawdown": -0.1318,
+        "hit_rate": 0.4286,
+        "avg_daily_turnover": 0.7873,
+        "n_days": 63,
+        "trades": 129,
+        "wf_median_sharpe": null,
+        "wf_positive_folds": 0,
+        "wf_folds": 0
+      }
+    ],
+    "baselines_no_cost": {
+      "spy_buy_and_hold": {
+        "total_return": -0.017,
+        "annual_return": -0.0665,
+        "annual_vol": 0.1455,
+        "sharpe": -0.457,
+        "sortino": -0.545,
+        "max_drawdown": -0.0592,
+        "hit_rate": 0.4444,
+        "avg_daily_turnover": 0.0,
+        "n_days": 63.0
+      },
+      "equal_weight_universe": {
+        "total_return": 0.0165,
+        "annual_return": 0.0678,
+        "annual_vol": 0.1133,
+        "sharpe": 0.598,
+        "sortino": 0.756,
+        "max_drawdown": -0.0448,
+        "hit_rate": 0.5238,
+        "avg_daily_turnover": 0.0,
+        "n_days": 63.0
+      }
+    }
+  },
+  "diagnostics": {
+    "train": {
+      "v4_regime_quality_risk": {
+        "total_return": -0.2586,
+        "gross_return": 0.1293,
+        "cost_drag_frac": 0.3879,
+        "sharpe": -0.74,
+        "max_drawdown": -0.3252,
+        "trades": 1057,
+        "deflated_sharpe": {
+          "sharpe": -0.709,
+          "deflated_sharpe": 0.0,
+          "sharpe_null_max": 0.082,
+          "n_trials": 18
+        },
+        "alpha_beta_vs_spy": {
+          "alpha_annual": -0.0975,
+          "beta": -0.032,
+          "r_squared": 0.001
+        },
+        "information_ratio_vs_spy": {
+          "information_ratio": -1.392,
+          "tracking_error_annual": 0.2191
+        },
+        "return_significance": {
+          "t_stat_mean_return": -1.15,
+          "mean_return_annual_ci95": [
+            -0.2814,
+            0.0737
+          ]
+        },
+        "trade_stats": {
+          "n_trades": 1052,
+          "win_rate": 0.475,
+          "expectancy_per_trade": -0.00026,
+          "expectancy_per_trade_bps": -2.62,
+          "avg_win": 0.00313,
+          "avg_loss": -0.00333,
+          "profit_factor": 0.85,
+          "avg_holding_days": 3.09,
+          "median_holding_days": 1.0,
+          "max_holding_days": 90,
+          "trades_per_month": 33.57
+        },
+        "total_costs": {
+          "total_cost_frac_of_capital": 0.4208,
+          "total_cost_usd_on_1000": 420.8,
+          "avg_cost_bps_per_day": 6.4
+        },
+        "exposure": {
+          "mean_gross_exposure": 0.998,
+          "frac_days_fully_invested": 0.998,
+          "frac_days_in_cash": 0.002,
+          "mean_positions_held": 4.99
+        }
+      },
+      "v4_regime_quality_risk_llm": {
+        "total_return": -0.1555,
+        "gross_return": 0.27,
+        "cost_drag_frac": 0.4254,
+        "sharpe": -0.434,
+        "max_drawdown": -0.2564,
+        "trades": 1025,
+        "deflated_sharpe": {
+          "sharpe": -0.375,
+          "deflated_sharpe": 0.0,
+          "sharpe_null_max": 0.073,
+          "n_trials": 18
+        },
+        "alpha_beta_vs_spy": {
+          "alpha_annual": -0.0451,
+          "beta": -0.046,
+          "r_squared": 0.003
+        },
+        "information_ratio_vs_spy": {
+          "information_ratio": -1.163,
+          "tracking_error_annual": 0.2194
+        },
+        "return_significance": {
+          "t_stat_mean_return": -0.61,
+          "mean_return_annual_ci95": [
+            -0.2296,
+            0.1211
+          ]
+        },
+        "trade_stats": {
+          "n_trades": 1020,
+          "win_rate": 0.484,
+          "expectancy_per_trade": -0.00014,
+          "expectancy_per_trade_bps": -1.43,
+          "avg_win": 0.00325,
+          "avg_loss": -0.00333,
+          "profit_factor": 0.917,
+          "avg_holding_days": 3.19,
+          "median_holding_days": 1.5,
+          "max_holding_days": 90,
+          "trades_per_month": 32.55
+        },
+        "total_costs": {
+          "total_cost_frac_of_capital": 0.408,
+          "total_cost_usd_on_1000": 408.0,
+          "avg_cost_bps_per_day": 6.2
+        },
+        "exposure": {
+          "mean_gross_exposure": 0.998,
+          "frac_days_fully_invested": 0.998,
+          "frac_days_in_cash": 0.002,
+          "mean_positions_held": 4.99
+        }
+      }
+    },
+    "holdout": {
+      "v4_regime_quality_risk": {
+        "total_return": -0.0433,
+        "gross_return": -0.0003,
+        "cost_drag_frac": 0.043,
+        "sharpe": -1.022,
+        "max_drawdown": -0.0801,
+        "trades": 115,
+        "deflated_sharpe": {
+          "sharpe": -1.037,
+          "deflated_sharpe": 0.0,
+          "sharpe_null_max": 0.237,
+          "n_trials": 18
+        },
+        "alpha_beta_vs_spy": {
+          "alpha_annual": -0.159,
+          "beta": 0.141,
+          "r_squared": 0.017
+        },
+        "information_ratio_vs_spy": {
+          "information_ratio": -0.533,
+          "tracking_error_annual": 0.2027
+        },
+        "return_significance": {
+          "t_stat_mean_return": -0.52,
+          "mean_return_annual_ci95": [
+            -0.7872,
+            0.4579
+          ]
+        },
+        "trade_stats": {
+          "n_trades": 110,
+          "win_rate": 0.445,
+          "expectancy_per_trade": -0.00038,
+          "expectancy_per_trade_bps": -3.81,
+          "avg_win": 0.00362,
+          "avg_loss": -0.00359,
+          "profit_factor": 0.809,
+          "avg_holding_days": 2.35,
+          "median_holding_days": 2.0,
+          "max_holding_days": 10,
+          "trades_per_month": 36.67
+        },
+        "total_costs": {
+          "total_cost_frac_of_capital": 0.044,
+          "total_cost_usd_on_1000": 44.0,
+          "avg_cost_bps_per_day": 6.98
+        },
+        "exposure": {
+          "mean_gross_exposure": 0.984,
+          "frac_days_fully_invested": 0.984,
+          "frac_days_in_cash": 0.016,
+          "mean_positions_held": 4.92
+        }
+      },
+      "v4_regime_quality_risk_llm": {
+        "total_return": -0.0471,
+        "gross_return": -0.0039,
+        "cost_drag_frac": 0.0432,
+        "sharpe": -1.11,
+        "max_drawdown": -0.0803,
+        "trades": 116,
+        "deflated_sharpe": {
+          "sharpe": -1.142,
+          "deflated_sharpe": 0.0,
+          "sharpe_null_max": 0.243,
+          "n_trials": 18
+        },
+        "alpha_beta_vs_spy": {
+          "alpha_annual": -0.175,
+          "beta": 0.146,
+          "r_squared": 0.018
+        },
+        "information_ratio_vs_spy": {
+          "information_ratio": -0.617,
+          "tracking_error_annual": 0.2017
+        },
+        "return_significance": {
+          "t_stat_mean_return": -0.57,
+          "mean_return_annual_ci95": [
+            -0.801,
+            0.4397
+          ]
+        },
+        "trade_stats": {
+          "n_trades": 111,
+          "win_rate": 0.432,
+          "expectancy_per_trade": -0.00041,
+          "expectancy_per_trade_bps": -4.14,
+          "avg_win": 0.00366,
+          "avg_loss": -0.00352,
+          "profit_factor": 0.793,
+          "avg_holding_days": 2.33,
+          "median_holding_days": 2.0,
+          "max_holding_days": 10,
+          "trades_per_month": 37.0
+        },
+        "total_costs": {
+          "total_cost_frac_of_capital": 0.0444,
+          "total_cost_usd_on_1000": 44.4,
+          "avg_cost_bps_per_day": 7.05
+        },
+        "exposure": {
+          "mean_gross_exposure": 0.984,
+          "frac_days_fully_invested": 0.984,
+          "frac_days_in_cash": 0.016,
+          "mean_positions_held": 4.92
+        }
+      }
+    }
+  },
+  "gate": {
+    "verdict": "FAIL",
+    "headline_pair": "v4_regime_quality_risk vs v4_regime_quality_risk_llm",
+    "sub_gates": {
+      "SG1_holdout_net10_llm_gt_base": false,
+      "SG2_holdout_net20_llm_gt_base": false,
+      "SG3_holdout_net10_llm_gt_zero": false
+    },
+    "values": {
+      "holdout_net10_base": -0.0433,
+      "holdout_net10_llm": -0.0471,
+      "holdout_net20_base": -0.0845,
+      "holdout_net20_llm": -0.0885
+    },
+    "supporting_pairs": {
+      "v1_composite": {
+        "holdout_net10_base": -0.0446,
+        "holdout_net10_llm": -0.036,
+        "holdout_net20_base": -0.0952,
+        "holdout_net20_llm": -0.0868
+      },
+      "v2_regime": {
+        "holdout_net10_base": -0.0669,
+        "holdout_net10_llm": -0.0571,
+        "holdout_net20_base": -0.1121,
+        "holdout_net20_llm": -0.1027
+      },
+      "v3_regime_trend_quality": {
+        "holdout_net10_base": -0.0669,
+        "holdout_net10_llm": -0.0571,
+        "holdout_net20_base": -0.1121,
+        "holdout_net20_llm": -0.1027
+      }
+    }
+  },
+  "limits": [
+    "Backtest only; no paper trading, no live money.",
+    "Alpaca IEX bars are raw (unadjusted) prices; not survivorship-free.",
+    "Holdout sentiment is stale by construction (latest pre-holdout filing carried forward).",
+    "Agreement is between two Claude-family models, not independent-model (Claude + ChatGPT) agreement.",
+    "Universe is the current 134-symbol set; results are for that universe only."
+  ]
+}

@@ -1,0 +1,2082 @@
+{
+  "0000040545-25-000111": {
+    "symbol": "GE",
+    "as_of": "2025-07-21",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.5,
+    "confidence": 0.6,
+    "rationale": "Strong Q2 2025 results (revenue +21%, adjusted EPS +38%, FCF up 28% in H1), credit rating upgrades, rising RPO, higher engine deliveries and ongoing buybacks are clearly positive, though tariff costs, supply chain constraints and likely already-high expectations limit upside.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-07-21"
+      }
+    ],
+    "tokens_in": 17094,
+    "tokens_out": 136,
+    "cost_usd": 0.035548,
+    "cached": false
+  },
+  "0001193125-25-253512": {
+    "symbol": "PLD",
+    "as_of": "2025-10-28",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.4,
+    "confidence": 0.6,
+    "rationale": "Prologis posted solid Q3/9M results: Core FFO up about 8% to $4.18B, same-store NOI up 3.9% net effective and 5.2% cash, a 19% lease mark-to-market, 52% rent change on new leases, a dividend increase, a strong balance sheet (A/A2) and rising development starts including data cent",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-10-28"
+      }
+    ],
+    "tokens_in": 24026,
+    "tokens_out": 189,
+    "cost_usd": 0.049942,
+    "cached": false
+  },
+  "0000895421-25-000440": {
+    "symbol": "MS",
+    "as_of": "2025-08-04",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.35,
+    "confidence": 0.6,
+    "rationale": "Strong Q2 results (revenue +12%, EPS +17%, ROTCE 18.2%), solid wealth flows, a lower expected SCB (5.1%), a higher dividend and a $20B buyback authorization are positive, tempered by a slightly lower CET1 ratio, rising credit provisions, weak investment banking and results that a",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-08-04"
+      }
+    ],
+    "tokens_in": 37618,
+    "tokens_out": 148,
+    "cost_usd": 0.076716,
+    "cached": false
+  },
+  "0000045012-25-000069": {
+    "symbol": "HAL",
+    "as_of": "2025-10-24",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": -0.35,
+    "confidence": 0.6,
+    "rationale": "Q3 operating income fell 59% on large impairments, a 20% drop in segment operating income, falling oil prices, customer spending cuts, and a planned 30% capex reduction in 2026, only partly offset by about $100M per quarter of cost savings, solid liquidity, and ongoing buybacks a",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-10-24"
+      }
+    ],
+    "tokens_in": 14306,
+    "tokens_out": 132,
+    "cost_usd": 0.029932,
+    "cached": false
+  },
+  "0000070858-25-000405": {
+    "symbol": "BAC",
+    "as_of": "2025-10-31",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.15,
+    "confidence": 0.5,
+    "rationale": "BAC repurchased $5.3B of stock in the quarter under a newly authorized $40B program, with $36B remaining, which supports per-share value and signals capital strength, but this is routine and largely anticipated, and the risk factors are unchanged.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-10-31"
+      }
+    ],
+    "tokens_in": 1261,
+    "tokens_out": 108,
+    "cost_usd": 0.003602,
+    "cached": false
+  },
+  "0000101829-25-000042": {
+    "symbol": "RTX",
+    "as_of": "2025-10-21",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.5,
+    "confidence": 0.7,
+    "rationale": "Q3 2025 shows strong organic sales growth (+13%), operating profit up 24% with margin expansion across all three segments, backlog up to $251B, improved credit outlooks and higher cash flow, with manageable risks from tariffs, the government shutdown and Powder Metal cash outflow",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-10-21"
+      }
+    ],
+    "tokens_in": 29795,
+    "tokens_out": 126,
+    "cost_usd": 0.06085,
+    "cached": false
+  },
+  "0000766704-25-000029": {
+    "symbol": "WELL",
+    "as_of": "2025-07-29",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.55,
+    "confidence": 0.7,
+    "rationale": "Welltower's Q2 2025 shows strong growth (FFO/share up 51% YoY, SSNOI +14%, Seniors Housing SSNOI +23%, occupancy rising to 85.6%), falling leverage, and $4.4B cash with large acquisitions, though heavy equity issuance and a rich valuation temper the upside.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-07-29"
+      }
+    ],
+    "tokens_in": 34641,
+    "tokens_out": 142,
+    "cost_usd": 0.070702,
+    "cached": false
+  },
+  "0000886982-25-001411": {
+    "symbol": "GS",
+    "as_of": "2025-10-31",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.4,
+    "confidence": 0.6,
+    "rationale": "Strong Q3 2025 results (net revenues +20%, EPS $12.25 vs $8.40, ROE 14.2%), record AUS, a solid CET1 ratio of 14.3% and continued buybacks, plus the OneGS 3.0 efficiency initiative, are positive, though much of this is likely priced in and the filing flags macro, tariff and shutd",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-10-31"
+      }
+    ],
+    "tokens_in": 32892,
+    "tokens_out": 155,
+    "cost_usd": 0.067334,
+    "cached": false
+  },
+  "0000018230-25-000048": {
+    "symbol": "CAT",
+    "as_of": "2025-11-03",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.15,
+    "confidence": 0.5,
+    "rationale": "Q3 revenue grew 10% on strong Power Generation/data center demand and record backlog of $39.8B, with guidance for strong Q4 sales growth, but tariff costs of $1.6-1.75B are squeezing margins (17.3% vs 19.5%) and EPS declined year over year.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-11-03"
+      }
+    ],
+    "tokens_in": 36246,
+    "tokens_out": 127,
+    "cost_usd": 0.073762,
+    "cached": false
+  },
+  "0000886982-25-000022": {
+    "symbol": "GS",
+    "as_of": "2025-08-01",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.4,
+    "confidence": 0.6,
+    "rationale": "Strong Q2 2025 results with net revenues up 15%, EPS of $10.91 versus $8.62, ROE of 12.8%, a 14.5% CET1 ratio and $3.96B returned to shareholders, driven by Equities, advisory and a rising investment banking backlog, partly offset by weak A&WM investment revenues and macro and ta",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-08-01"
+      }
+    ],
+    "tokens_in": 33329,
+    "tokens_out": 153,
+    "cost_usd": 0.068188,
+    "cached": false
+  },
+  "0000109198-23-000060": {
+    "symbol": "TJX",
+    "as_of": "2023-11-29",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.5,
+    "confidence": 0.6,
+    "rationale": "Strong Q3 results with 6% comp growth driven by traffic, 0.8pt pre-tax margin expansion from lower freight, EPS up 13%, strong cash flow and buybacks; offsets are SG&A pressure, weak International margins, and the results were largely already public so the price impact is partly ",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2023-11-29"
+      }
+    ],
+    "tokens_in": 14580,
+    "tokens_out": 129,
+    "cost_usd": 0.03045,
+    "cached": false
+  },
+  "0000316709-25-000051": {
+    "symbol": "SCHW",
+    "as_of": "2025-11-07",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.5,
+    "confidence": 0.6,
+    "rationale": "Q3 2025 results were very strong, with net revenue up 27%, EPS up 77%, record net new assets, a 70% reduction in bank supplemental funding, NIM expansion, and continued buybacks; the main offsets are sensitivity to rate cuts and the Forge acquisition, which looks small and manage",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-11-07"
+      }
+    ],
+    "tokens_in": 36233,
+    "tokens_out": 131,
+    "cost_usd": 0.073776,
+    "cached": false
+  },
+  "0001156375-24-000200": {
+    "symbol": "CME",
+    "as_of": "2024-11-08",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.45,
+    "confidence": 0.6,
+    "rationale": "Q3 2024 showed strong results: revenue up 18%, ADV up 27%, operating margin up to 64.6%, EPS up 21%, with solid cash flow and a maintained dividend, though the average rate per contract fell and lower interest income is a modest offset.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-11-08"
+      }
+    ],
+    "tokens_in": 10966,
+    "tokens_out": 116,
+    "cost_usd": 0.023092,
+    "cached": false
+  },
+  "0001558370-24-006535": {
+    "symbol": "ECL",
+    "as_of": "2024-05-02",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.55,
+    "confidence": 0.7,
+    "rationale": "Ecolab's Q1 2024 showed 5% organic sales growth, adjusted EPS up 52%, adjusted gross margin up 5 points to 43.3%, operating cash flow up $451M, lower net leverage, and a $950M surgical business sale, though Industrial and Healthcare volumes were soft and the high growth rate part",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-05-02"
+      }
+    ],
+    "tokens_in": 16777,
+    "tokens_out": 151,
+    "cost_usd": 0.035064,
+    "cached": false
+  },
+  "0000004962-25-000222": {
+    "symbol": "AXP",
+    "as_of": "2025-10-17",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.35,
+    "confidence": 0.6,
+    "rationale": "Q3 2025 showed strong results: revenue up 11%, EPS up 19%, billed business growth accelerating to 9%, stable credit metrics, a Platinum refresh with higher annual fees, and $2.9B returned to shareholders, though expense growth, a one-time equity gain and a higher tax rate temper ",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-10-17"
+      }
+    ],
+    "tokens_in": 34819,
+    "tokens_out": 137,
+    "cost_usd": 0.071008,
+    "cached": false
+  },
+  "0000950170-25-103780": {
+    "symbol": "BLK",
+    "as_of": "2025-08-06",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.35,
+    "confidence": 0.55,
+    "rationale": "Q2 shows strong AUM growth to $12.5T, $68B total net inflows, 16% as-adjusted EPS growth and a stable as-adjusted margin, with HPS closing adding private credit scale; offsets include a $52B institutional index redemption, lower performance fees, GAAP margin compression from acqu",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-08-06"
+      }
+    ],
+    "tokens_in": 37926,
+    "tokens_out": 144,
+    "cost_usd": 0.077292,
+    "cached": false
+  },
+  "0000070858-25-000268": {
+    "symbol": "BAC",
+    "as_of": "2025-07-31",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.4,
+    "confidence": 0.6,
+    "rationale": "BAC repurchased $5.3B of stock in Q2 2025 and the Board authorized a new $40B buyback program (up from $25B) effective August 1, 2025, signaling strong capital return and management confidence, with no material changes to risk factors.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-07-31"
+      }
+    ],
+    "tokens_in": 1117,
+    "tokens_out": 109,
+    "cost_usd": 0.003324,
+    "cached": false
+  },
+  "0001628280-25-046072": {
+    "symbol": "VLO",
+    "as_of": "2025-10-23",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.45,
+    "confidence": 0.6,
+    "rationale": "Q3 2025 refining operating income more than tripled year over year on much higher diesel and gasoline margins and throughput, and the outlook cites low product inventories, falling refining capacity and rising fuel demand, partly offset by a weak Renewable Diesel segment, expecte",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-10-23"
+      }
+    ],
+    "tokens_in": 25796,
+    "tokens_out": 140,
+    "cost_usd": 0.052992,
+    "cached": false
+  },
+  "0000037996-25-000147": {
+    "symbol": "F",
+    "as_of": "2025-07-31",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": -0.25,
+    "confidence": 0.55,
+    "rationale": "Ford's Q2 2025 showed a GAAP net loss, lower adjusted EBIT, about $800M of tariff costs, a $1.3B special-item charge and ongoing EV losses, with 2025 guidance cut to $6.5-7.5B and a $2B net tariff headwind; strong liquidity and Ford Credit gains only partly offset this.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-07-31"
+      }
+    ],
+    "tokens_in": 33919,
+    "tokens_out": 148,
+    "cost_usd": 0.069318,
+    "cached": false
+  },
+  "0000104169-24-000141": {
+    "symbol": "WMT",
+    "as_of": "2024-08-30",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.3,
+    "confidence": 0.6,
+    "rationale": "Q2 FY25 showed solid fundamentals: comparable sales up 4.3%, operating income up 8.5%, gross margin expansion, 16% growth in membership income, and ROI rising to 15.1%. Offsetting this, free cash flow fell sharply and net income dropped on investment fair-value losses, while the ",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-08-30"
+      }
+    ],
+    "tokens_in": 16100,
+    "tokens_out": 148,
+    "cost_usd": 0.03368,
+    "cached": false
+  },
+  "0001035267-24-000247": {
+    "symbol": "ISRG",
+    "as_of": "2024-10-18",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.45,
+    "confidence": 0.6,
+    "rationale": "Q3 2024 showed strong growth, with revenue up 17%, procedures up 18%, operating income up 24%, gross margin expanding, and da Vinci 5 placements ramping (110 in the quarter), though China softness, bariatric decline, and rising opex are modest offsets.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-10-18"
+      }
+    ],
+    "tokens_in": 32739,
+    "tokens_out": 122,
+    "cost_usd": 0.066698,
+    "cached": false
+  },
+  "0001652044-25-000091": {
+    "symbol": "GOOGL",
+    "as_of": "2025-10-30",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.5,
+    "confidence": 0.7,
+    "rationale": "Strong Q3 results: revenue up 16%, Cloud up 34% with margin expansion, operating cash flow of $48B, and large buybacks. Offsets are a one-time $3.5B EC fine, much of the EPS beat coming from unrealized equity gains, and a sharp capex step-up planned for 2026.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-10-30"
+      }
+    ],
+    "tokens_in": 17492,
+    "tokens_out": 132,
+    "cost_usd": 0.036304,
+    "cached": false
+  },
+  "0001534701-25-000155": {
+    "symbol": "PSX",
+    "as_of": "2025-10-29",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": -0.1,
+    "confidence": 0.4,
+    "rationale": "Q3 2025 earnings fell to $133M from $346M, hurt by a $948M WRB impairment, an $833M Propel judgment that is still exposed to further loss, weak chemicals margins and higher debt. Offsets are a sharply higher refining crack spread, strong realized margins, the Midstream NGL growth",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-10-29"
+      }
+    ],
+    "tokens_in": 34271,
+    "tokens_out": 168,
+    "cost_usd": 0.070222,
+    "cached": false
+  },
+  "0000886982-26-000118": {
+    "symbol": "GS",
+    "as_of": "2026-05-01",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.45,
+    "confidence": 0.6,
+    "rationale": "Strong Q1 2026 results with net revenues up 14%, EPS of $17.55 (vs $14.12) and ROE of 19.8%, driven by record equities and investment banking, plus $6.4B of capital returned and solid CET1; partly offset by a low tax rate that flattered EPS, weaker FICC, a slightly lower IB backl",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-05-01"
+      }
+    ],
+    "tokens_in": 32761,
+    "tokens_out": 159,
+    "cost_usd": 0.067112,
+    "cached": false
+  },
+  "0000040545-25-000132": {
+    "symbol": "GE",
+    "as_of": "2025-10-21",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.55,
+    "confidence": 0.7,
+    "rationale": "Q3 2025 results were strong: revenue rose 24%, adjusted EPS rose 44%, Commercial Engines & Services margins expanded, free cash flow grew to $5.9B over nine months, RPO reached $176B, credit ratings were upgraded, and zero-for-zero tariffs with the EU, UK and Japan ease the tarif",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-10-21"
+      }
+    ],
+    "tokens_in": 18520,
+    "tokens_out": 194,
+    "cost_usd": 0.03898,
+    "cached": false
+  },
+  "0000018230-25-000040": {
+    "symbol": "CAT",
+    "as_of": "2025-08-06",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": -0.1,
+    "confidence": 0.5,
+    "rationale": "Q2 profit and margins fell sharply on price realization and tariffs, and the guided $1.3-1.5B tariff headwind for 2025 weighs on margins, but backlog grew $2.5B to $37.5B, power generation demand is strong, Q3 sales are guided higher, and the dividend was raised.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-08-06"
+      }
+    ],
+    "tokens_in": 36421,
+    "tokens_out": 131,
+    "cost_usd": 0.074152,
+    "cached": false
+  },
+  "0001075531-24-000027": {
+    "symbol": "BKNG",
+    "as_of": "2024-05-02",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.15,
+    "confidence": 0.5,
+    "rationale": "Q1 2024 was strong: room nights +8.5%, revenue +16.9%, net income up to $776M from $266M, better marketing efficiency and $1.9B of buybacks. Offsetting this, Q2 guidance implies a sharp deceleration (room nights +4-6%) with operating income slightly lower year over year, and marg",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-05-02"
+      }
+    ],
+    "tokens_in": 15587,
+    "tokens_out": 163,
+    "cost_usd": 0.032804,
+    "cached": false
+  },
+  "0000895421-25-000539": {
+    "symbol": "MS",
+    "as_of": "2025-11-03",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.45,
+    "confidence": 0.6,
+    "rationale": "Morgan Stanley's Q3 2025 results were very strong: revenue rose 18%, EPS rose 49%, ROTCE was 23.5% against a 20% goal, and net new assets were $81B. The SCB was cut to 4.3%, which frees up capital for returns, and the buyback authorization is $20B. Much of this is already known a",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-11-03"
+      }
+    ],
+    "tokens_in": 37441,
+    "tokens_out": 153,
+    "cost_usd": 0.076412,
+    "cached": false
+  },
+  "0000831001-25-000131": {
+    "symbol": "C",
+    "as_of": "2025-08-06",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.5,
+    "confidence": 0.6,
+    "rationale": "Citi reported strong Q2 2025 results: revenue up 8%, net income up 25%, positive operating leverage in all five businesses, RoTCE of 8.7%, and a CET1 ratio of 13.5% with a target of at least $4B of buybacks in Q3. Offsetting items are the Russia transfer-risk reserve build, sever",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-08-06"
+      }
+    ],
+    "tokens_in": 37511,
+    "tokens_out": 174,
+    "cost_usd": 0.076762,
+    "cached": false
+  },
+  "0000004962-24-000068": {
+    "symbol": "AXP",
+    "as_of": "2024-10-18",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.3,
+    "confidence": 0.55,
+    "rationale": "Q3 2024 showed solid results with revenue up 8%, EPS up 6%, billed business up 6%, accelerating net card fees, strong buybacks and a CET1 ratio of 10.7%, partly offset by rising write-offs, 19% higher marketing expense, new Category III regulatory burdens and the CFPB late-fee ru",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-10-18"
+      }
+    ],
+    "tokens_in": 35119,
+    "tokens_out": 145,
+    "cost_usd": 0.071688,
+    "cached": false
+  },
+  "0001141391-24-000202": {
+    "symbol": "MA",
+    "as_of": "2024-10-31",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.3,
+    "confidence": 0.55,
+    "rationale": "Q3 2024 showed solid 13% revenue growth, 15% adjusted EPS growth, adjusted margin expansion, strong cash flow and buybacks, with value-added services up 18%; this is partly offset by a restructuring charge, higher litigation provisions, and a higher tax rate, and the results were",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-10-31"
+      }
+    ],
+    "tokens_in": 18298,
+    "tokens_out": 145,
+    "cost_usd": 0.038046,
+    "cached": false
+  },
+  "0001045810-25-000209": {
+    "symbol": "NVDA",
+    "as_of": "2025-08-27",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.3,
+    "confidence": 0.6,
+    "rationale": "Q2 FY26 shows strong fundamentals (revenue +56% YoY, data center +56%, gross margin recovering to 72.4%, Blackwell ramp, $60B added buyback authorization), but the filing also flags export-control, China H20, customer concentration and gross-margin pressures, and much of this is ",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-08-27"
+      }
+    ],
+    "tokens_in": 19913,
+    "tokens_out": 138,
+    "cost_usd": 0.041206,
+    "cached": false
+  },
+  "0000713676-26-000038": {
+    "symbol": "PNC",
+    "as_of": "2026-05-05",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.3,
+    "confidence": 0.5,
+    "rationale": "Q1 2026 shows solid year-over-year growth (net income +18%, NII +14%, NIM up to 2.95%, strong capital markets fees), with FirstBank integration on track and Q2/FY guidance implying further revenue growth; offsets are the sequential earnings decline, CET1 falling to 10.1%, higher ",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-05-05"
+      }
+    ],
+    "tokens_in": 36211,
+    "tokens_out": 161,
+    "cost_usd": 0.074032,
+    "cached": false
+  },
+  "0001104659-25-107395": {
+    "symbol": "SPG",
+    "as_of": "2025-11-06",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.45,
+    "confidence": 0.6,
+    "rationale": "Q3 2025 shows solid fundamentals: Portfolio NOI up 5.2%, Real Estate FFO per share up about 5.6% to $3.22, higher occupancy and base rent, a raised dividend to $2.20, and the TRG buyout that will bring a non-cash gain, offset by rising interest costs and a modest increase in leve",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-11-06"
+      }
+    ],
+    "tokens_in": 22718,
+    "tokens_out": 146,
+    "cost_usd": 0.046896,
+    "cached": false
+  },
+  "0000019617-24-000326": {
+    "symbol": "JPM",
+    "as_of": "2024-05-01",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.2,
+    "confidence": 0.55,
+    "rationale": "JPM's Q1 2024 results were strong (revenue +9%, EPS +8%, CET1 15.0%, TBVPS +15%, FY NII guidance of about $90B, a likely Visa gain), though offsets include rising card charge-offs, CRE/office downgrades, the FDIC assessment and expense growth, and most of this was likely priced i",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-05-01"
+      }
+    ],
+    "tokens_in": 38079,
+    "tokens_out": 146,
+    "cost_usd": 0.077618,
+    "cached": false
+  },
+  "0001558370-24-010647": {
+    "symbol": "ECL",
+    "as_of": "2024-08-02",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.45,
+    "confidence": 0.6,
+    "rationale": "Q2 2024 showed strong earnings: adjusted EPS up 35%, adjusted operating margin up 350bp, organic sales up 4% with pricing doing most of the work, and operating cash flow up sharply with leverage falling. The new One Ecolab restructuring program (about $140M of savings by 2027) ad",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-08-02"
+      }
+    ],
+    "tokens_in": 20958,
+    "tokens_out": 163,
+    "cost_usd": 0.043546,
+    "cached": false
+  },
+  "0001571949-24-000014": {
+    "symbol": "ICE",
+    "as_of": "2024-08-01",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.45,
+    "confidence": 0.6,
+    "rationale": "Q2 2024 showed strong results with revenue up 23%, adjusted EPS up 6%, record energy and interest-rate futures volumes, steady data growth and de-levering, partly offset by a weak mortgage segment, higher interest expense, a $30M NYSE claims charge, and regulatory headwinds (Base",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-08-01"
+      }
+    ],
+    "tokens_in": 33065,
+    "tokens_out": 147,
+    "cost_usd": 0.0676,
+    "cached": false
+  },
+  "0000034088-25-000061": {
+    "symbol": "XOM",
+    "as_of": "2025-11-03",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.1,
+    "confidence": 0.5,
+    "rationale": "Q3 earnings fell year over year ($7.5B vs $8.6B) on weaker crude prices and chemical margins, but production grew 4% on Permian and Guyana, refining margins were strong, structural cost savings reached $14.3B, and buybacks continued, so the overall picture is mildly positive.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-11-03"
+      }
+    ],
+    "tokens_in": 15448,
+    "tokens_out": 129,
+    "cost_usd": 0.032186,
+    "cached": false
+  },
+  "0000109198-25-000054": {
+    "symbol": "TJX",
+    "as_of": "2025-08-29",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.4,
+    "confidence": 0.6,
+    "rationale": "TJX posted a solid Q2 with 4% comp growth driven by customer transactions, 7% sales growth, EPS up 15% to $1.10, margin expansion across most segments, flat merchandise margin despite tariffs, and continued buybacks and dividend growth, though inventory is up 10% per store and ta",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-08-29"
+      }
+    ],
+    "tokens_in": 13269,
+    "tokens_out": 140,
+    "cost_usd": 0.027938,
+    "cached": false
+  },
+  "0001652044-24-000053": {
+    "symbol": "GOOGL",
+    "as_of": "2024-04-26",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.6,
+    "confidence": 0.7,
+    "rationale": "Strong Q1 2024 results (revenue +15%, operating margin up to 32%, EPS +62%, Cloud +28% and now solidly profitable), plus the first-ever dividend and an additional $70B buyback, point to a positive outlook, tempered by rising AI capex and ad-concentration risk.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-04-26"
+      }
+    ],
+    "tokens_in": 16114,
+    "tokens_out": 130,
+    "cost_usd": 0.033528,
+    "cached": false
+  },
+  "0000021665-26-000023": {
+    "symbol": "CL",
+    "as_of": "2026-05-01",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.15,
+    "confidence": 0.5,
+    "rationale": "Operating cash flow rose 25% to $747M on working capital and higher net income, total debt was flat, the dividend was raised, and covenant compliance was affirmed, which is modestly positive but routine for a stable staples company with no major new information.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-05-01"
+      }
+    ],
+    "tokens_in": 1620,
+    "tokens_out": 105,
+    "cost_usd": 0.00429,
+    "cached": false
+  },
+  "0001104659-26-058640": {
+    "symbol": "SPG",
+    "as_of": "2026-05-11",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.4,
+    "confidence": 0.6,
+    "rationale": "Q1 2026 showed solid core results: Real Estate FFO per share rose about 7.5% to $3.17, portfolio NOI rose 6.7%, base rent rose 5.2%, occupancy was stable at 96%, the dividend was raised to $2.25, and buybacks continued; offsets are weaker other platform investments (Catalyst, RGG",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-05-11"
+      }
+    ],
+    "tokens_in": 21127,
+    "tokens_out": 177,
+    "cost_usd": 0.044024,
+    "cached": false
+  },
+  "0000950170-24-104905": {
+    "symbol": "ORCL",
+    "as_of": "2024-09-10",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.4,
+    "confidence": 0.5,
+    "rationale": "Q1 FY25 shows solid results: revenue up 7%, cloud services up 21%, operating margin up to 30% from 26%, and trailing free cash flow up 19%, offset by heavy capex, $36B of data center lease commitments, high debt, and weak hardware and services segments.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-09-10"
+      }
+    ],
+    "tokens_in": 19318,
+    "tokens_out": 123,
+    "cost_usd": 0.039866,
+    "cached": false
+  },
+  "0000886982-24-000025": {
+    "symbol": "GS",
+    "as_of": "2024-11-04",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.4,
+    "confidence": 0.6,
+    "rationale": "Q3 2024 results were strong, with EPS up 54% year over year, net revenues up 7%, a higher IB backlog, record AUS of $3.1T with net inflows, and a much better efficiency ratio. Offsetting this, FICC revenue was weaker, credit card provisions rose, Platform Solutions is still losin",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-11-04"
+      }
+    ],
+    "tokens_in": 32790,
+    "tokens_out": 174,
+    "cost_usd": 0.06732,
+    "cached": false
+  },
+  "0000051143-25-000064": {
+    "symbol": "IBM",
+    "as_of": "2025-10-23",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.4,
+    "confidence": 0.6,
+    "rationale": "Q3 2025 shows accelerating revenue (+9.1% reported, +7.3% constant currency), software and infrastructure strength from the z17 cycle, operating margin expansion, and operating EPS up 15%, though weak consulting signings, higher debt, and the one-time tax charge partly offset.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-10-23"
+      }
+    ],
+    "tokens_in": 36044,
+    "tokens_out": 128,
+    "cost_usd": 0.073368,
+    "cached": false
+  },
+  "0000092122-24-000075": {
+    "symbol": "SO",
+    "as_of": "2024-08-01",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.45,
+    "confidence": 0.6,
+    "rationale": "Q2 2024 EPS rose to $1.10 from $0.77 and net income rose 44%, driven by Vogtle Units 3 and 4 entering rates (about $730M annual revenue), favorable weather, and a $21M reduction in the Vogtle cost forecast, though higher interest expense and flat residential sales temper the outl",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-08-01"
+      }
+    ],
+    "tokens_in": 36055,
+    "tokens_out": 139,
+    "cost_usd": 0.0735,
+    "cached": false
+  },
+  "0000019617-25-000615": {
+    "symbol": "JPM",
+    "as_of": "2025-08-05",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.2,
+    "confidence": 0.5,
+    "rationale": "Underlying Q2 results were solid (Markets +15%, IB fees +7%, AWM and CCB growth, TBVPS +11%, CET1 15.1%, NII guidance raised to ~$95.5B), but net income fell 17% on the absence of last year's Visa gain, and wholesale nonaccrual loans and the provision are rising, which tempers th",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-08-05"
+      }
+    ],
+    "tokens_in": 40203,
+    "tokens_out": 151,
+    "cost_usd": 0.081916,
+    "cached": false
+  },
+  "0000037996-25-000186": {
+    "symbol": "F",
+    "as_of": "2025-10-24",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": -0.1,
+    "confidence": 0.5,
+    "rationale": "Q3 results were solid (revenue +9%, adjusted EBIT flat, strong cash flow, tariff headwind cut to ~$1B), but the Novelis fire creates a $1.5-2.0B Q4 EBIT headwind and a $2-3B free cash flow hit, and more EV cancellation charges (~$1.8B) are still to come, so the net near-term outl",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-10-24"
+      }
+    ],
+    "tokens_in": 35020,
+    "tokens_out": 162,
+    "cost_usd": 0.07166,
+    "cached": false
+  },
+  "0001628280-24-004372": {
+    "symbol": "MAR",
+    "as_of": "2024-02-13",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.4,
+    "confidence": 0.55,
+    "rationale": "FY2023 results were strong (RevPAR +14.9%, net fee revenue +19%, record signings, 5.5-6% net rooms growth guided for 2024, heavy buybacks), though much of the gain reflects post-COVID normalization, with U.S. & Canada RevPAR growth stabilizing, higher interest expense, and an unq",
+    "sources": [
+      {
+        "doc": "10-K",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-02-13"
+      }
+    ],
+    "tokens_in": 24548,
+    "tokens_out": 155,
+    "cost_usd": 0.050646,
+    "cached": false
+  },
+  "0001730168-25-000064": {
+    "symbol": "AVGO",
+    "as_of": "2025-06-11",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.5,
+    "confidence": 0.6,
+    "rationale": "Q2 FY25 results were strong: revenue up 20%, operating margin 39% vs 24%, AI networking and VMware software drove growth, cash flow was robust, and a new $10B buyback was authorized. Offsetting these are boilerplate risks (customer concentration, tariffs, AI cyclicality, heavy de",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-06-11"
+      }
+    ],
+    "tokens_in": 27000,
+    "tokens_out": 167,
+    "cost_usd": 0.05567,
+    "cached": false
+  },
+  "0000927628-25-000247": {
+    "symbol": "COF",
+    "as_of": "2025-07-31",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.1,
+    "confidence": 0.4,
+    "rationale": "The headline Q2 net loss of $4.3B is driven by the one-time $8.8B initial allowance build on the Discover acquisition, while underlying credit metrics improved (lower charge-offs and delinquencies), net interest margin widened, and CET1 stayed strong at 14.0% with a lower stress ",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-07-31"
+      }
+    ],
+    "tokens_in": 52822,
+    "tokens_out": 153,
+    "cost_usd": 0.107174,
+    "cached": false
+  },
+  "0001558370-24-011208": {
+    "symbol": "SPG",
+    "as_of": "2024-08-07",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.35,
+    "confidence": 0.6,
+    "rationale": "Q2 2024 shows solid core fundamentals: portfolio NOI up 4.8%, occupancy up 90 bps to 95.6%, base rent up 3.0%, real estate FFO per share up 4% to $2.93, a dividend raise to $2.05, a $2.0B buyback authorization and strong liquidity, though weak other platform investments and risin",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-08-07"
+      }
+    ],
+    "tokens_in": 22078,
+    "tokens_out": 159,
+    "cost_usd": 0.045746,
+    "cached": false
+  },
+  "0001628280-25-048859": {
+    "symbol": "JPM",
+    "as_of": "2025-11-04",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.3,
+    "confidence": 0.6,
+    "rationale": "Q3 2025 was strong, with net income up 12%, EPS of $5.07 up 16%, record Markets revenue, investment banking and AWM growth, ROTCE of 20% and a CET1 ratio of 14.8%, partly offset by rising wholesale provisions, apparent borrower fraud losses, a 23% rise in nonperforming assets, an",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-11-04"
+      }
+    ],
+    "tokens_in": 39449,
+    "tokens_out": 159,
+    "cost_usd": 0.080488,
+    "cached": false
+  },
+  "0000097476-24-000021": {
+    "symbol": "TXN",
+    "as_of": "2024-04-24",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": -0.2,
+    "confidence": 0.55,
+    "rationale": "Q1 2024 revenue fell 16% YoY with gross margin compressing to 57.2%, trailing free cash flow dropped 79%, inventory days rose to 235, and heavy capex continues, though the CHIPS tax credit cash benefit starts in Q2 and the cyclical trough may be near.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-04-24"
+      }
+    ],
+    "tokens_in": 4237,
+    "tokens_out": 130,
+    "cost_usd": 0.009774,
+    "cached": false
+  },
+  "0001413329-24-000087": {
+    "symbol": "PM",
+    "as_of": "2024-04-26",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.4,
+    "confidence": 0.6,
+    "rationale": "Q1 2024 showed strong underlying results (net revenues +12.1% ex-currency, operating income +23.5% ex-currency, HTU shipments +20.9%, ZYN pouch volume +79%) and a resolved BAT dispute with U.S. IQOS rights returning May 2024, partly offset by currency headwinds, higher interest, ",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-04-26"
+      }
+    ],
+    "tokens_in": 33551,
+    "tokens_out": 152,
+    "cost_usd": 0.068622,
+    "cached": false
+  },
+  "0000766704-26-000021": {
+    "symbol": "WELL",
+    "as_of": "2026-04-29",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.5,
+    "confidence": 0.6,
+    "rationale": "Q1 2026 shows strong growth (SSNOI +17%, SHO SSNOI +21.6%, FFO/share +15%), rising occupancy, falling leverage, a large accretive Amica acquisition at about C$4B, and ample liquidity, though much of the strength is already priced in and ongoing equity issuance dilutes.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-04-29"
+      }
+    ],
+    "tokens_in": 30745,
+    "tokens_out": 140,
+    "cost_usd": 0.06289,
+    "cached": false
+  },
+  "0001141391-24-000022": {
+    "symbol": "MA",
+    "as_of": "2024-02-13",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.15,
+    "confidence": 0.5,
+    "rationale": "FY2023 results are strong (13% revenue growth, 15% adjusted EPS growth, margin expansion, heavy buybacks and a larger repurchase authorization), but this is backward-looking, largely expected, and the risk factors are standard regulatory and litigation boilerplate, so the net eff",
+    "sources": [
+      {
+        "doc": "10-K",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-02-13"
+      }
+    ],
+    "tokens_in": 35714,
+    "tokens_out": 134,
+    "cost_usd": 0.072768,
+    "cached": false
+  },
+  "0000101829-25-000032": {
+    "symbol": "RTX",
+    "as_of": "2025-07-22",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.45,
+    "confidence": 0.6,
+    "rationale": "RTX's Q2 2025 shows strong organic sales growth (+9%), a record backlog of $236B, large operating profit and EPS improvement, improved credit outlooks, and tailwinds from the $156B DoD supplement and Iron Dome funding; these are partly offset by weaker operating cash flow, tariff",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-07-22"
+      }
+    ],
+    "tokens_in": 28425,
+    "tokens_out": 165,
+    "cost_usd": 0.0585,
+    "cached": false
+  },
+  "0000731766-26-000127": {
+    "symbol": "UNH",
+    "as_of": "2026-05-05",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.15,
+    "confidence": 0.4,
+    "rationale": "Q1 2026 showed a better MCR (83.9% vs 84.8%), EPS of $6.90 (up from $6.85), strong operating cash flow and UnitedHealthcare margin expansion, but earnings from operations fell and Optum segments declined, membership contracted across Medicare Advantage, Medicaid and commercial, a",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-05-05"
+      }
+    ],
+    "tokens_in": 11769,
+    "tokens_out": 173,
+    "cost_usd": 0.025268,
+    "cached": false
+  },
+  "0000723125-23-000077": {
+    "symbol": "MU",
+    "as_of": "2023-12-21",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.4,
+    "confidence": 0.6,
+    "rationale": "Micron's fiscal Q1 2024 shows a clear cyclical recovery: revenue up 18% sequentially, gross margin improving to -1% from -11%, rising ASPs, AI-driven demand, industry supply discipline and $600M of customer prepayments, though it still posted a large net loss, heavy capex and ong",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2023-12-21"
+      }
+    ],
+    "tokens_in": 26125,
+    "tokens_out": 147,
+    "cost_usd": 0.05372,
+    "cached": false
+  },
+  "0001628280-26-028802": {
+    "symbol": "KO",
+    "as_of": "2026-04-30",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.5,
+    "confidence": 0.6,
+    "rationale": "Q1 2026 was strong: revenue up 12%, concentrate volume up 8%, unit cases up 3%, operating income up 19%, operating margin expanded to 35.0%, and FX is expected to remain a tailwind. Offsetting risks are that part of the volume beat comes from six extra days, Asia Pacific margin f",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-04-30"
+      }
+    ],
+    "tokens_in": 18496,
+    "tokens_out": 172,
+    "cost_usd": 0.038712,
+    "cached": false
+  },
+  "0000896159-24-000010": {
+    "symbol": "CB",
+    "as_of": "2024-07-26",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.35,
+    "confidence": 0.6,
+    "rationale": "Chubb reported strong Q2 2024 results, with net income up 24%, record net investment income of $1.5B, 11.8% premium growth, and a P&C CAY combined ratio ex-cats flat at 83.2%; offsetting this were higher catastrophe losses, a higher reported combined ratio, and adverse run-off de",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-07-26"
+      }
+    ],
+    "tokens_in": 38419,
+    "tokens_out": 152,
+    "cost_usd": 0.078358,
+    "cached": false
+  },
+  "0001403161-24-000016": {
+    "symbol": "V",
+    "as_of": "2024-01-26",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.3,
+    "confidence": 0.6,
+    "rationale": "Visa's fiscal Q1 2024 showed solid 9% net revenue growth, non-GAAP EPS up 11%, 18% cross-border growth, a Pismo acquisition and strong buybacks, but operating cash flow declined and client incentives rose 20%, so the overall effect is moderately positive.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-01-26"
+      }
+    ],
+    "tokens_in": 8285,
+    "tokens_out": 131,
+    "cost_usd": 0.01788,
+    "cached": false
+  },
+  "0000831001-25-000154": {
+    "symbol": "C",
+    "as_of": "2025-11-06",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.5,
+    "confidence": 0.6,
+    "rationale": "Strong Q3 results show 9% revenue growth, 16% net income growth, positive operating leverage in all five businesses, $5B of buybacks, a lower stress capital buffer and Banamex progress, with the goodwill impairment and macro risks only partly offsetting.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-11-06"
+      }
+    ],
+    "tokens_in": 25093,
+    "tokens_out": 117,
+    "cost_usd": 0.051356,
+    "cached": false
+  },
+  "0001109357-24-000156": {
+    "symbol": "EXC",
+    "as_of": "2024-08-01",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.15,
+    "confidence": 0.4,
+    "rationale": "Q2 and six-month earnings rose on rate increases, adjusted EPS grew to $0.47 from $0.41, and large rate cases are pending, but the new $70M ComEd FERC audit charge, higher interest costs, a flat dividend and heavy capex and financing needs temper the upside.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-08-01"
+      }
+    ],
+    "tokens_in": 36122,
+    "tokens_out": 126,
+    "cost_usd": 0.073504,
+    "cached": false
+  },
+  "0001628280-26-028690": {
+    "symbol": "VLO",
+    "as_of": "2026-04-30",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.55,
+    "confidence": 0.6,
+    "rationale": "Q1 2026 swung to $1.3B net income on much stronger diesel margins, adjusted operating income of $1.76B (vs $235M), higher renewable diesel and ethanol results, a new $2.5B buyback authorization and $10.8B liquidity, and an outlook of tight global refined product inventories, only",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-04-30"
+      }
+    ],
+    "tokens_in": 19694,
+    "tokens_out": 174,
+    "cost_usd": 0.041128,
+    "cached": false
+  },
+  "0001018724-24-000008": {
+    "symbol": "AMZN",
+    "as_of": "2024-02-02",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.5,
+    "confidence": 0.6,
+    "rationale": "FY2023 results show a sharp operating income rise to $36.9B from $12.2B, free cash flow turning to +$36.8B, 12% sales growth and Q1 2024 operating income guidance of $8-12B versus $4.8B, though AWS growth slowed to 13%, capex is set to rise, and regulatory and macro risks remain.",
+    "sources": [
+      {
+        "doc": "10-K",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-02-02"
+      }
+    ],
+    "tokens_in": 31418,
+    "tokens_out": 142,
+    "cost_usd": 0.064256,
+    "cached": false
+  },
+  "0000080424-24-000051": {
+    "symbol": "PG",
+    "as_of": "2024-04-19",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.25,
+    "confidence": 0.55,
+    "rationale": "Q3 FY24 showed strong gross margin expansion (+300bp), 11% EPS growth and solid cash flow, but with flat volumes, price-driven growth, Greater China weakness and FX headwinds, while the Gillette impairment and restructuring charges are non-cash and already known.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-04-19"
+      }
+    ],
+    "tokens_in": 25259,
+    "tokens_out": 124,
+    "cost_usd": 0.051758,
+    "cached": false
+  },
+  "0000927628-24-000094": {
+    "symbol": "COF",
+    "as_of": "2024-02-23",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": -0.1,
+    "confidence": 0.3,
+    "rationale": "FY2023 shows net income down 34% on a doubled provision and rising delinquencies and charge-offs, partly offset by strong capital (CET1 12.9%) and NII growth; the pending all-stock Discover acquisition adds integration and regulatory uncertainty, making the net directional effect",
+    "sources": [
+      {
+        "doc": "10-K",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-02-23"
+      }
+    ],
+    "tokens_in": 52294,
+    "tokens_out": 134,
+    "cost_usd": 0.105928,
+    "cached": false
+  },
+  "0000055785-24-000054": {
+    "symbol": "KMB",
+    "as_of": "2024-04-23",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.5,
+    "confidence": 0.65,
+    "rationale": "Q1 2024 was strong, with adjusted EPS up 20%, operating profit up 14% on an adjusted basis, 1% volume growth and $120M of productivity savings. The new $3B transformation initiative with $1.5B in costs and the $640M PPE divestiture add to the positive outlook, though there is exe",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-04-23"
+      }
+    ],
+    "tokens_in": 9072,
+    "tokens_out": 168,
+    "cost_usd": 0.019824,
+    "cached": false
+  },
+  "0000104169-25-000191": {
+    "symbol": "WMT",
+    "as_of": "2025-12-03",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.15,
+    "confidence": 0.5,
+    "rationale": "Q3 shows solid 5.8% sales growth, 4.8% Walmart U.S. comps, strong eCommerce, higher free cash flow and a 13% dividend increase, but operating income was flat (down 0.2%) on one-time PhonePe and insurance charges, ROI slipped, and capex is rising.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-12-03"
+      }
+    ],
+    "tokens_in": 15617,
+    "tokens_out": 133,
+    "cost_usd": 0.032564,
+    "cached": false
+  },
+  "0000097745-25-000159": {
+    "symbol": "TMO",
+    "as_of": "2025-10-31",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.25,
+    "confidence": 0.5,
+    "rationale": "Q3 showed 3% organic growth, a 1.0pt adjusted margin gain and 10% adjusted EPS growth with strong bioproduction and productivity, but offsets include weak academic/government and China demand, tariff pressure on Analytical Instruments, lower free cash flow and rising debt from ac",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-10-31"
+      }
+    ],
+    "tokens_in": 13562,
+    "tokens_out": 143,
+    "cost_usd": 0.028554,
+    "cached": false
+  },
+  "0001730168-25-000098": {
+    "symbol": "AVGO",
+    "as_of": "2025-09-10",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.45,
+    "confidence": 0.6,
+    "rationale": "Strong results with revenue up 22%, operating income up 55% in the quarter, operating margin expanding to 37%, and strong cash flow driven by AI semiconductor and VMware software demand, partly offset by customer concentration, a CAMT valuation allowance, rising stock-based compe",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-09-10"
+      }
+    ],
+    "tokens_in": 27053,
+    "tokens_out": 143,
+    "cost_usd": 0.055536,
+    "cached": false
+  },
+  "0000831001-24-000134": {
+    "symbol": "C",
+    "as_of": "2024-11-07",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.15,
+    "confidence": 0.4,
+    "rationale": "Q3 shows broad revenue growth, falling expenses, a higher CET1 ratio, a lower SCB and progress closing a consent order, but net income fell 9% on a 33% jump in net credit losses, with card credit stress and a weak All Other segment offsetting the gains.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-11-07"
+      }
+    ],
+    "tokens_in": 37820,
+    "tokens_out": 120,
+    "cost_usd": 0.07684,
+    "cached": false
+  },
+  "0001551182-25-000028": {
+    "symbol": "ETN",
+    "as_of": "2025-08-05",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.25,
+    "confidence": 0.55,
+    "rationale": "Q2 2025 shows 8% organic growth, 8% adjusted EPS growth, record backlog and strong data center and aerospace demand, but gross and Electrical Americas margins slipped, orders decelerated (Americas orders +2%), a hyperscaler paused some projects, operating cash flow fell, and debt",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-08-05"
+      }
+    ],
+    "tokens_in": 14693,
+    "tokens_out": 136,
+    "cost_usd": 0.030746,
+    "cached": false
+  },
+  "0000060667-25-000210": {
+    "symbol": "LOW",
+    "as_of": "2025-11-26",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.1,
+    "confidence": 0.4,
+    "rationale": "Q3 showed positive comps (+0.4%), higher gross margin and adjusted EPS of $3.06 versus $2.89, but SG&A deleverage, lower ROIC, much higher debt after the $8.8B FBM deal and a paused buyback offset the gains, leaving a mildly positive net read.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-11-26"
+      }
+    ],
+    "tokens_in": 9236,
+    "tokens_out": 131,
+    "cost_usd": 0.019782,
+    "cached": false
+  },
+  "0000950170-24-091706": {
+    "symbol": "BLK",
+    "as_of": "2024-08-06",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.45,
+    "confidence": 0.6,
+    "rationale": "BlackRock reported strong Q2 2024 results: revenue up 8%, as-adjusted EPS up 12%, operating margin up 160 bps, AUM at a record $10.6T, and $82B of net inflows led by ETFs. Institutional index outflows and acquisition integration risk (GIP, Preqin) are modest offsets.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-08-06"
+      }
+    ],
+    "tokens_in": 37786,
+    "tokens_out": 141,
+    "cost_usd": 0.076982,
+    "cached": false
+  },
+  "0000895421-26-000121": {
+    "symbol": "MS",
+    "as_of": "2026-05-05",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.45,
+    "confidence": 0.6,
+    "rationale": "Q1 2026 results were very strong: revenue up 16%, EPS up 32%, ROTCE of 27.1% versus a 20% goal, record Wealth Management net new assets and a 15.1% CET1 ratio. Offsetting this, the results are largely already reported, SLR fell to 5.0% and Investment Management was weak, so the i",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-05-05"
+      }
+    ],
+    "tokens_in": 36325,
+    "tokens_out": 154,
+    "cost_usd": 0.07419,
+    "cached": false
+  },
+  "0001326160-25-000168": {
+    "symbol": "DUK",
+    "as_of": "2025-08-05",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.45,
+    "confidence": 0.6,
+    "rationale": "Strong H1 adjusted EPS growth ($3.00 vs $2.62) driven by rate cases and volumes, a $6B Florida minority stake sale and the $2.48B Piedmont Tennessee sale that fund the $87B capital plan without new equity, and favorable NC and SC legislation outweigh execution risk and rising int",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-08-05"
+      }
+    ],
+    "tokens_in": 25934,
+    "tokens_out": 144,
+    "cost_usd": 0.053308,
+    "cached": false
+  },
+  "0000895421-24-000322": {
+    "symbol": "MS",
+    "as_of": "2024-05-03",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.35,
+    "confidence": 0.6,
+    "rationale": "Morgan Stanley's Q1 2024 results were solid, with revenue up 4%, EPS up 19% to $2.02, ROTCE of 19.7% near the 20% goal, a 15.0% CET1 ratio, $95B of net new assets, and continued buybacks, though M&A advisory and wealth net interest income remain weak.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-05-03"
+      }
+    ],
+    "tokens_in": 32711,
+    "tokens_out": 141,
+    "cost_usd": 0.066832,
+    "cached": false
+  },
+  "0000909832-24-000029": {
+    "symbol": "COST",
+    "as_of": "2024-06-06",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.3,
+    "confidence": 0.55,
+    "rationale": "Costco's Q3 FY24 results were strong: net sales +9%, comparable sales +7%, membership fees +8%, EPS up 29% to $3.78, SG&A leverage and record renewal rates, though the stock's premium valuation and the largely anticipated, partly one-off margin recovery limit the upside.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-06-06"
+      }
+    ],
+    "tokens_in": 10718,
+    "tokens_out": 132,
+    "cost_usd": 0.022756,
+    "cached": false
+  },
+  "0001193125-25-276207": {
+    "symbol": "NUE",
+    "as_of": "2025-11-12",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.1,
+    "confidence": 0.5,
+    "rationale": "Q3 2025 earnings more than doubled year over year (EPS $2.63 vs $1.05) on higher metal margins and volumes, with a strong balance sheet, but management guides Q4 earnings lower on volumes and sheet pricing, and the nine-month results remain below the prior year.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-11-12"
+      }
+    ],
+    "tokens_in": 11379,
+    "tokens_out": 124,
+    "cost_usd": 0.023998,
+    "cached": false
+  },
+  "0000104169-25-000137": {
+    "symbol": "WMT",
+    "as_of": "2025-08-29",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.05,
+    "confidence": 0.4,
+    "rationale": "Strong comparable sales (+4.7% Walmart U.S.), eCommerce growth, higher free cash flow and a 13% dividend increase are offset by an 8.2% operating income decline from legal charges and higher liability claims, International margin pressure, tariff uncertainty, and net income lifte",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-08-29"
+      }
+    ],
+    "tokens_in": 15284,
+    "tokens_out": 136,
+    "cost_usd": 0.031928,
+    "cached": false
+  },
+  "0000858877-25-000171": {
+    "symbol": "CSCO",
+    "as_of": "2025-11-18",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.35,
+    "confidence": 0.6,
+    "rationale": "Q1 FY26 showed 8% revenue growth, a 15% rise in Networking driven by AI infrastructure, and operating margin up 5.6 points, but product gross margin fell on mix and pricing, memory costs are rising, RPO and deferred revenue declined, and inventory purchase commitments are growing",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-11-18"
+      }
+    ],
+    "tokens_in": 36753,
+    "tokens_out": 140,
+    "cost_usd": 0.074906,
+    "cached": false
+  },
+  "0000002969-24-000043": {
+    "symbol": "APD",
+    "as_of": "2024-08-01",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.2,
+    "confidence": 0.5,
+    "rationale": "Q3 FY24 showed solid margin expansion (adjusted EPS +7%, adjusted EBITDA margin +260bp) plus a $1.8B LNG divestiture that helps fund the heavy capex program, but flat volumes, rising debt ($14B), $5.0-5.5B capex, weaker Asia, and $115M of project cost overruns temper the outlook.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-08-01"
+      }
+    ],
+    "tokens_in": 27049,
+    "tokens_out": 154,
+    "cost_usd": 0.055638,
+    "cached": false
+  },
+  "0001327567-24-000029": {
+    "symbol": "PANW",
+    "as_of": "2024-09-06",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.3,
+    "confidence": 0.5,
+    "rationale": "FY2024 shows solid 16.5% revenue growth, expanding gross and operating margins, strong free cash flow of $3.1B, and a larger buyback, but billings growth slowed to 11% and billings reporting is being discontinued, product revenue is flat, and there are litigation charges and comp",
+    "sources": [
+      {
+        "doc": "10-K",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-09-06"
+      }
+    ],
+    "tokens_in": 34524,
+    "tokens_out": 137,
+    "cost_usd": 0.070418,
+    "cached": false
+  },
+  "0000354950-23-000240": {
+    "symbol": "HD",
+    "as_of": "2023-11-21",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": -0.15,
+    "confidence": 0.5,
+    "rationale": "Q3 sales, margins, EPS and ROIC all declined on negative comps (-3.1%), SG&A deleverage and higher interest costs, though strong operating cash flow, buybacks and dividends provide some offset and the results were largely expected.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2023-11-21"
+      }
+    ],
+    "tokens_in": 9569,
+    "tokens_out": 109,
+    "cost_usd": 0.020228,
+    "cached": false
+  },
+  "0000019617-24-000611": {
+    "symbol": "JPM",
+    "as_of": "2024-10-30",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.25,
+    "confidence": 0.55,
+    "rationale": "Q3 2024 results were solid: revenue up 7%, investment banking fees up 31%, CET1 at 15.3%, TBVPS up 18% and a raised NII outlook. Offsetting this, net income fell 2%, card charge-offs and provisions rose sharply, CCB earnings dropped 31% on deposit margin compression, and Office r",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-10-30"
+      }
+    ],
+    "tokens_in": 38967,
+    "tokens_out": 163,
+    "cost_usd": 0.079564,
+    "cached": false
+  },
+  "0001018724-25-000123": {
+    "symbol": "AMZN",
+    "as_of": "2025-10-31",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.45,
+    "confidence": 0.55,
+    "rationale": "Q3 2025 showed accelerating sales growth (13%, AWS 20%) and a strong Q4 guide (sales +10-13%, operating income $21-26B vs. $21.2B), with one-time FTC settlement and severance charges depressing operating income, while the main offsets are free cash flow collapsing to $14.8B on he",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-10-31"
+      }
+    ],
+    "tokens_in": 30232,
+    "tokens_out": 164,
+    "cost_usd": 0.062104,
+    "cached": false
+  },
+  "0000036104-26-000024": {
+    "symbol": "USB",
+    "as_of": "2026-05-04",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.35,
+    "confidence": 0.55,
+    "rationale": "Q1 2026 showed solid results: EPS up 14.6%, net interest income up 4.2%, NIM up to 2.77%, fee income up 5.7%, expenses nearly flat (efficiency ratio 58.2% vs 60.8%), stable credit quality and steady capital, which is moderately positive, though largely in line with expectations.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-05-04"
+      }
+    ],
+    "tokens_in": 24773,
+    "tokens_out": 142,
+    "cost_usd": 0.050966,
+    "cached": false
+  },
+  "0000070858-24-000122": {
+    "symbol": "BAC",
+    "as_of": "2024-02-20",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.05,
+    "confidence": 0.3,
+    "rationale": "FY2023 results were mixed: NII rose 8.5% to $56.9B and CET1 improved to 11.8%, but net income and EPS fell, with one-time Q4 charges (BSBY $1.6B, FDIC $2.1B), rising credit-card charge-offs and a falling ROTCE, so the net effect on the stock is roughly neutral and largely already",
+    "sources": [
+      {
+        "doc": "10-K",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-02-20"
+      }
+    ],
+    "tokens_in": 53078,
+    "tokens_out": 152,
+    "cost_usd": 0.107676,
+    "cached": false
+  },
+  "0000858877-24-000030": {
+    "symbol": "CSCO",
+    "as_of": "2024-11-19",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": -0.1,
+    "confidence": 0.4,
+    "rationale": "Q1 FY25 revenue fell 6% (down 14% ex-Splunk), networking product revenue dropped 23%, and operating margin compressed to 17% on restructuring and Splunk costs; offsetting this, management says demand is normalizing, gross margin improved, free cash flow rose sharply, and the quar",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-11-19"
+      }
+    ],
+    "tokens_in": 37647,
+    "tokens_out": 164,
+    "cost_usd": 0.076934,
+    "cached": false
+  },
+  "0001283699-24-000065": {
+    "symbol": "TMUS",
+    "as_of": "2024-04-26",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.35,
+    "confidence": 0.6,
+    "rationale": "Q1 2024 showed strong profitability and cash generation (Core Adj. EBITDA +8%, Adjusted FCF +39%, net income +22%, large buybacks, falling capex), partly offset by slowing postpaid and prepaid net adds, lower equipment revenue and heavy debt.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-04-26"
+      }
+    ],
+    "tokens_in": 22177,
+    "tokens_out": 128,
+    "cost_usd": 0.045634,
+    "cached": false
+  },
+  "0000018230-26-000021": {
+    "symbol": "CAT",
+    "as_of": "2026-05-06",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.55,
+    "confidence": 0.7,
+    "rationale": "Q1 2026 sales rose 22% and EPS rose 30% to $5.47, backlog jumped $11.5B to $62.7B on data-center power demand, guidance points to strong Q2 and low-double-digit full-year growth, and Moody's upgraded the rating; offsetting this are margin compression from about $2.3B of annual ta",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-05-06"
+      }
+    ],
+    "tokens_in": 28074,
+    "tokens_out": 176,
+    "cost_usd": 0.057908,
+    "cached": false
+  },
+  "0000109198-25-000061": {
+    "symbol": "TJX",
+    "as_of": "2025-12-02",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.45,
+    "confidence": 0.6,
+    "rationale": "Q3 FY26 showed strong 5% comp growth, 7% sales growth, EPS up 12% to $1.28, pre-tax margin expansion to 12.7%, and broad segment strength, though the results were largely already reported and tariff uncertainty, higher SG&A and inventory growth temper the outlook.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-12-02"
+      }
+    ],
+    "tokens_in": 13865,
+    "tokens_out": 132,
+    "cost_usd": 0.02905,
+    "cached": false
+  },
+  "0001628280-24-044884": {
+    "symbol": "MAR",
+    "as_of": "2024-11-04",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.15,
+    "confidence": 0.5,
+    "rationale": "Marriott reported solid fee revenue growth (+7%), about 6% net rooms growth, a $585K-room pipeline, $80-90M of G&A cost savings from 2025 and heavy buybacks, offset by Greater China weakness, slowing U.S. RevPAR, higher guarantee reserves and interest expense, and negative net co",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-11-04"
+      }
+    ],
+    "tokens_in": 10686,
+    "tokens_out": 148,
+    "cost_usd": 0.022852,
+    "cached": false
+  },
+  "0000100885-26-000155": {
+    "symbol": "UNP",
+    "as_of": "2026-04-23",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.25,
+    "confidence": 0.55,
+    "rationale": "Q1 2026 showed solid execution: EPS up 6% to $2.87, operating ratio improved 0.2 points to 60.5%, free cash flow rose 35%, and leverage fell. Offsetting this were a 1% volume decline, a 28% drop in international intermodal, paused buybacks, and uncertainty around the pending Norf",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-04-23"
+      }
+    ],
+    "tokens_in": 13489,
+    "tokens_out": 152,
+    "cost_usd": 0.028498,
+    "cached": false
+  },
+  "0000310764-24-000115": {
+    "symbol": "SYK",
+    "as_of": "2024-10-30",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.5,
+    "confidence": 0.6,
+    "rationale": "Q3 2024 showed strong organic growth of 11.5% (10.3% volume, 1.2% price), a 130 bps rise in adjusted operating margin, and adjusted EPS growth of 16.7%; a likely material Core Spine goodwill impairment (non-cash, on about $265M of goodwill) and a gross margin dip are minor offset",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-10-30"
+      }
+    ],
+    "tokens_in": 17464,
+    "tokens_out": 147,
+    "cost_usd": 0.036398,
+    "cached": false
+  },
+  "0000950170-25-100235": {
+    "symbol": "MSFT",
+    "as_of": "2025-07-30",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.4,
+    "confidence": 0.55,
+    "rationale": "FY2025 results were strong (revenue +15%, operating income +17%, Azure +34%, cash from operations $136B) with a large unearned revenue balance, but Microsoft Cloud gross margin fell to 69% on AI infrastructure scaling and purchase commitments are heavy, so much of this is already",
+    "sources": [
+      {
+        "doc": "10-K",
+        "section": "MD&A + Risk Factors",
+        "date": "2025-07-30"
+      }
+    ],
+    "tokens_in": 31956,
+    "tokens_out": 133,
+    "cost_usd": 0.065242,
+    "cached": false
+  },
+  "0000764180-24-000057": {
+    "symbol": "MO",
+    "as_of": "2024-04-25",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": -0.15,
+    "confidence": 0.5,
+    "rationale": "Q1 2024 adjusted EPS fell 2.5% on a 10% cigarette volume decline, discount share gains, Copenhagen and Skoal share losses, and Skoal impairment risk, partly offset by pricing power, buybacks funded by the ABI sale, and NJOY growth.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-04-25"
+      }
+    ],
+    "tokens_in": 32788,
+    "tokens_out": 127,
+    "cost_usd": 0.066846,
+    "cached": false
+  },
+  "0001467858-24-000076": {
+    "symbol": "GM",
+    "as_of": "2024-04-23",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.4,
+    "confidence": 0.6,
+    "rationale": "Q1 2024 results were solid, with EPS-adjusted of $2.62 and positive automotive cash flow, plus ongoing buybacks, and FY2024 guidance of $12.5-14.5B EBIT-adjusted was in line with or above expectations (it was raised in the same release). Offsetting items are weak China JV results",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-04-23"
+      }
+    ],
+    "tokens_in": 22202,
+    "tokens_out": 169,
+    "cost_usd": 0.046094,
+    "cached": false
+  },
+  "0000092122-24-000042": {
+    "symbol": "SO",
+    "as_of": "2024-05-02",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.45,
+    "confidence": 0.6,
+    "rationale": "Q1 2024 EPS rose 30% to $1.03 on rate increases and colder weather, Vogtle Unit 4 entered service with about $730M of annual retail base revenue increases effective May 1, and the Georgia IRP was approved; these are partly offset by higher interest expense, the new EPA rules and ",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-05-02"
+      }
+    ],
+    "tokens_in": 34453,
+    "tokens_out": 140,
+    "cost_usd": 0.070306,
+    "cached": false
+  },
+  "0000004962-24-000052": {
+    "symbol": "AXP",
+    "as_of": "2024-07-19",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.3,
+    "confidence": 0.55,
+    "rationale": "Q2 2024 showed strong earnings (EPS +44%, ROE 41%, revenue +8%, steady credit metrics, sizable buybacks), though a one-time Accertify gain flatters results, write-offs are rising, and Category III status plus the CFPB late-fee rule add regulatory overhang.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-07-19"
+      }
+    ],
+    "tokens_in": 35156,
+    "tokens_out": 131,
+    "cost_usd": 0.071622,
+    "cached": false
+  },
+  "0000936468-24-000052": {
+    "symbol": "LMT",
+    "as_of": "2024-04-23",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.1,
+    "confidence": 0.4,
+    "rationale": "Strong sales growth (+14%) from munitions ramp-up, a supportive Ukraine/Israel/Taiwan supplemental, and strong F-35 international demand are offset by lower EPS and margins, a $100M classified-program loss, no F-35 deliveries in the quarter, TR-3 delays, and FARA cancellation.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2024-04-23"
+      }
+    ],
+    "tokens_in": 16556,
+    "tokens_out": 140,
+    "cost_usd": 0.034512,
+    "cached": false
+  }
+}

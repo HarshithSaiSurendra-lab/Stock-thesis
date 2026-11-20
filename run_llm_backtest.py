@@ -372,8 +372,8 @@ def score_pass(
         is_cached = bool(result.get("cached"))
         cost = 0.0 if is_cached else float(result.get("cost_usd", 0.0))
         spent += cost
-        tokens_in += int(result.get("input_tokens", 0))
-        tokens_out += int(result.get("output_tokens", 0))
+        tokens_in += int(result.get("tokens_in", 0))
+        tokens_out += int(result.get("tokens_out", 0))
         if is_cached:
             n_cached += 1
         else:
