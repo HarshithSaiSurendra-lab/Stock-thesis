@@ -1,0 +1,116 @@
+{
+  "build_notes": {
+    "runtime_restart": "A runtime restart at ~01:39 UTC 2026-11-20 wiped /tmp, losing the first parallel build's worker shards (~1,200 filings fetched). The edgartools cache (~/.edgar, 3.6 GB) survived, so the rebuild from cache took ~55 min in 4 parallel chunked workers. All worker dirs/logs now live under ~/workspace/trading-system/ (persistent), not /tmp.",
+    "shard_sizes": "16 quarterly shards, 335 MB total; largest 32 MB (Q1 shards hold the 10-Ks). Quarterly, not half-year: the Git Data API rejects blobs above ~40 MB and a half-year shard runs ~48 MB; a 38.7 MB test blob succeeded, a 47.9 MB one failed with 422.",
+    "stale_client": "Long-lived edgartools processes degrade after ~15 tickers / ~250 requests (list calls start failing fast); fixed by running in fresh processes of <=8 tickers per chunk. No data was lost to this - failed tickers were re-run."
+  },
+  "coverage": {
+    "both_sections_empty": 0,
+    "filing_date_max": "2026-11-12",
+    "filing_date_min": "2023-01-05",
+    "holdout_window_records": 130,
+    "missing_mda": 0,
+    "missing_risk": 185,
+    "n_records": 2108,
+    "n_tickers": 133,
+    "per_form": {
+      "10-K": 527,
+      "10-Q": 1581
+    },
+    "per_year": {
+      "2023": 532,
+      "2024": 532,
+      "2025": 533,
+      "2026": 511
+    },
+    "train_window_records": 1446
+  },
+  "experiment_id": "dataset-edgar-point-in-time-v1",
+  "gap_fill_w4": {
+    "blk_old_cik": "BlackRock filed under CIK 1364742 until late 2024, then CIK 2012383 (current BLK mapping). Added the 7 pre-change filings (2023-02-24 10-K through 2024-08-06 10-Q) under BLK via EXTRA_CIKS in the builder. BLK now 16/16.",
+    "mda_fallback": "30 records recovered MD&A via the regex fallback (mda_source=fallback): INTC 16 (all filings - edgartools misses Item 7 in Intel docs), PNC 10 (10-Q MD&A is headed 'Financial Review'), USB 3 (2023 10-Qs), MCD 1 (2023 10-K, both sections empty before fallback). Every recovered head/tail was eyeballed. Missing MD&A is now 0 across the dataset.",
+    "unp_lin_retries": "UNP and LIN each had 1 extraction failure in the chunked build (transient); retried in w4, both now 16/16, 0 failures."
+  },
+  "gate": {
+    "result": "PASS - 2,108 records, 133/133 tickers, 0 validation errors, 130 holdout-window records",
+    "rule": "PASS iff every record passes schema + point-in-time validation, coverage >=95% of expected filings, every universe symbol has >=1 filing, and holdout-window filings exist"
+  },
+  "haiku_sample_validation": {
+    "file": "data/edgar_excerpts/haiku_validation.json",
+    "input_tokens": 172870,
+    "model": "claude-haiku-5-5",
+    "n": 5,
+    "output_tokens": 1495,
+    "scores": [
+      {
+        "confidence": 0.6,
+        "filing_date": "2024-02-02",
+        "form": "10-Q",
+        "score": 0.25,
+        "ticker": "AAPL"
+      },
+      {
+        "confidence": 0.7,
+        "filing_date": "2024-02-23",
+        "form": "10-K",
+        "score": -0.4,
+        "ticker": "COF"
+      },
+      {
+        "confidence": 0.55,
+        "filing_date": "2024-02-23",
+        "form": "10-K",
+        "score": -0.2,
+        "ticker": "GS"
+      },
+      {
+        "confidence": 0.5,
+        "filing_date": "2024-02-22",
+        "form": "10-K",
+        "score": -0.1,
+        "ticker": "MS"
+      },
+      {
+        "confidence": 0.8,
+        "filing_date": "2024-01-30",
+        "form": "10-Q",
+        "score": 0.6,
+        "ticker": "SBUX"
+      }
+    ],
+    "total_cost_usd": 0.018034,
+    "verdict": "Excerpts are real filing text and Haiku scores them sensibly with rationales citing actual filing numbers. Dataset is ready for Phase 2 (exp-technical-plus-llm-v1).",
+    "window": "train only (2024-01-02..2026-08-17); holdout unscored"
+  },
+  "known_gaps": {
+    "manifest_failures_2": "Historical log entries only (UNP + LIN extraction failures from the chunked build); both filings were recovered in the w4 gap-fill and are in the dataset.",
+    "mcd_10k_risk": "MCD 2023-02-24 10-K risk factors still unparsed (edgartools section split fails on that document); MD&A recovered via fallback, so the record is valid.",
+    "missing_risk_185": "Mostly 10-Qs (176) where Item 1A is legitimately omitted/short when unchanged; 4 in 10-Ks (3 HAL, 1 MCD). Stored empty + listed in missing_sections; never filled from another filing."
+  },
+  "meta": {
+    "amendments": "excluded",
+    "builder": "build_edgar_dataset.py",
+    "cost_new_cash_usd": 0,
+    "forms": [
+      "10-K",
+      "10-Q"
+    ],
+    "location": "data/edgar_excerpts/",
+    "manifest": "data/edgar_excerpts/manifest.json",
+    "source": "SEC EDGAR direct via edgartools 5.62.1 (MIT)",
+    "tests": "95/95 pass (incl. 6 MD&A-fallback tests)",
+    "universe": "config.DEFAULT_SEED_SYMBOLS (133 symbols; SPY excluded, ETF files no 10-K/10-Q)",
+    "window": {
+      "end": "2026-11-13",
+      "start": "2023-01-01"
+    }
+  },
+  "run_date": "2026-11-20",
+  "status": "complete",
+  "validation": {
+    "build_edgar_dataset.py --validate": "PASS, 0 errors, manifest_ok true",
+    "note": "15-count tickers are fiscal-year offsets (e.g. NVDA Jan FY, AMAT Oct FY, COST Aug FY), not gaps; verified XOM (15) against SEC submissions JSON - complete. Only BLK was short (9) before the gap-fill.",
+    "per_ticker_max": 16,
+    "per_ticker_min": 15
+  }
+}

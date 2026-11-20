@@ -228,3 +228,36 @@ committed — `.env` is git-ignored. Keys live only in the local `.env`.
   (exp-technical-plus-llm-v1) — which still needs the point-in-time
   10-K/10-Q dataset decision before it can run. No paper trading
   of either technical variant; no live money; ALLOW_LIVE stays 0.
+
+## Done — 2026-11-20
+
+- **Point-in-time EDGAR dataset built — `dataset-edgar-point-in-time-v1`
+  COMPLETE and validated** (`data/edgar_excerpts/`, results in
+  `experiments/results/dataset-edgar-point-in-time-v1.json`).
+  **2,108 records, 133/133 tickers** (10-K 527, 10-Q 1,581),
+  filing dates 2023-01-05..2026-11-12; train window 1,446 records,
+  frozen holdout 130 records. Build cost $0 new cash (SEC EDGAR direct
+  via edgartools 5.62.1). `build_edgar_dataset.py --validate` passes
+  with 0 errors. Full test suite 95/95 (incl. 6 new MD&A-fallback tests).
+- Build notes: a runtime restart mid-build wiped /tmp and the first
+  parallel build's shards; the edgartools cache survived, so the rebuild
+  from cache finished in ~55 min (4 parallel workers, fresh processes
+  of ≤8 tickers each — long-lived edgartools processes degrade after
+  ~15 tickers / ~250 requests). Worker dirs/logs now live under
+  `~/workspace/trading-system/` (persistent), not /tmp.
+- Gap-fill (w4) fixed everything the first pass missed: BlackRock's
+  pre-2024 filings live under former CIK 1364742 (7 filings added, BLK
+  9 → 16); a regex MD&A fallback recovered 30 records edgartools'
+  section splitter misses (INTC 16, PNC 10 — its 10-Q MD&A is headed
+  "Financial Review", USB 3, MCD 1) — missing MD&A is now 0, and the
+  one both-sections-empty record (MCD 2023 10-K) is valid; UNP and LIN
+  extraction failures retried successfully. Missing Risk Factors: 185
+  (mostly 10-Qs where Item 1A is legitimately omitted when unchanged).
+- Haiku sample validation (train window only, holdout unscored):
+  5 excerpts scored, $0.018034 total (172,870 input / 1,495 output
+  tokens) — AAPL +0.25, COF −0.40, GS −0.20, MS −0.10, SBUX +0.60,
+  all with sensible rationales citing real filing numbers
+  (`data/edgar_excerpts/haiku_validation.json`).
+- **Ready for Phase 2**: `exp-technical-plus-llm-v1` (the registered
+  LLM test) can now run against this dataset. NOT run yet — dataset
+  build only, per the task. No paper trading; no live money.

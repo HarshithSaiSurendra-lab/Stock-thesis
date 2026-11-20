@@ -1,0 +1,70 @@
+{
+  "results": [
+    {
+      "accession": "0000320193-24-000006",
+      "confidence": 0.6,
+      "cost_usd": 0.00082,
+      "excerpt_chars": 19714,
+      "filing_date": "2024-02-02",
+      "form": "10-Q",
+      "input_tokens": 6625,
+      "output_tokens": 315,
+      "rationale": "Results are solid: revenue rose 2%, Services grew 11%, gross margin expanded to 45.9%, and buybacks were $20.5B, offset by a 13% drop in Greater China, a 25% drop in iPad, and new regulatory and antitrust risks that could pressure App Store and search licensing revenue.",
+      "score": 0.25,
+      "ticker": "AAPL"
+    },
+    {
+      "accession": "0000927628-24-000094",
+      "confidence": 0.7,
+      "cost_usd": 0.005399,
+      "excerpt_chars": 160000,
+      "filing_date": "2024-02-23",
+      "form": "10-K",
+      "input_tokens": 52275,
+      "output_tokens": 343,
+      "rationale": "Net income fell 34% and diluted EPS fell 33% in 2023, driven by a 78% rise in credit provisions, a 134 bps jump in the net charge-off rate, and a 78 bps rise in 30+ day delinquencies, with the pending all-stock Discover deal adding integration and approval uncertainty.",
+      "score": -0.4,
+      "ticker": "COF"
+    },
+    {
+      "accession": "0000886982-24-000006",
+      "confidence": 0.55,
+      "cost_usd": 0.005283,
+      "excerpt_chars": 160000,
+      "filing_date": "2024-02-23",
+      "form": "10-K",
+      "input_tokens": 51125,
+      "output_tokens": 341,
+      "rationale": "Earnings fell sharply (EPS down 24%, ROE 7.5% vs. a 14-16% target, efficiency ratio up to 74.6%) and investment banking fees and backlog declined, though record AUS, a surpassed alternatives fundraising target, strong capital returns and a 14.4% CET1 ratio partly offset these.",
+      "score": -0.2,
+      "ticker": "GS"
+    },
+    {
+      "accession": "0000895421-24-000300",
+      "confidence": 0.5,
+      "cost_usd": 0.005213,
+      "excerpt_chars": 160000,
+      "filing_date": "2024-02-22",
+      "form": "10-K",
+      "input_tokens": 50372,
+      "output_tokens": 352,
+      "rationale": "Net income and EPS fell about 17% year over year, the expense efficiency ratio worsened to 77%, and Institutional Securities revenues and Investment Banking fell, but Wealth Management grew, net new assets were strong at $282B, and capital ratios remained solid, leaving the mixed",
+      "score": -0.1,
+      "ticker": "MS"
+    },
+    {
+      "accession": "0000829224-24-000013",
+      "confidence": 0.8,
+      "cost_usd": 0.001319,
+      "excerpt_chars": 35747,
+      "filing_date": "2024-01-30",
+      "form": "10-Q",
+      "input_tokens": 12473,
+      "output_tokens": 144,
+      "rationale": "Strong Q1 FY2024 results with revenue up 8%, operating margin up 140 bps to 15.8%, comparable store sales up 5%, record operating cash flow of $2.4B, and large buybacks ($1.25B) support a positive outlook, tempered by rising partner wage costs, a G&A increase, and a small commerc",
+      "score": 0.6,
+      "ticker": "SBUX"
+    }
+  ],
+  "total_cost_usd": 0.018034
+}
