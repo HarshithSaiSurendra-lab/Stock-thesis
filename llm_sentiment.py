@@ -430,6 +430,57 @@ def llm_score(
     return result
 
 
+def combine_two_scores(
+    technical_score: float,
+    score_a: float,
+    confidence_a: float,
+    score_b: float,
+    confidence_b: float,
+) -> dict:
+    """Combine TWO model scores with a technical score (amended Phase 2 rule).
+
+    Generic version of :func:`combine_with_technical`: model A and model B
+    are any two scorers (in the amended exp-technical-plus-llm-v1, A is
+    Haiku 5.5 screen and B is Sonnet 5.5 adjudicate). The rule is identical
+    to the registered one: agreement = 1 - |a - b| / 2, combined = mean
+    when the signs do not disagree; the adjustment applies only when
+    agreement >= 0.7 and both confidences >= 0.6, is capped at +/-1.0,
+    and is 0 when the models disagree in sign. Returns the same
+    {"adjusted_score", "llm_contribution", "applied", "reason"} shape.
+    """
+    disagree_in_sign = (score_a > 0 > score_b) or (score_b > 0 > score_a)
+    if disagree_in_sign:
+        return {
+            "adjusted_score": technical_score,
+            "llm_contribution": 0.0,
+            "applied": False,
+            "reason": "models disagree in sign; combined LLM score neutralised",
+        }
+    agreement = 1.0 - abs(score_a - score_b) / 2.0
+    if agreement < MIN_AGREEMENT:
+        return {
+            "adjusted_score": technical_score,
+            "llm_contribution": 0.0,
+            "applied": False,
+            "reason": f"agreement {agreement:.4f} below {MIN_AGREEMENT}",
+        }
+    if confidence_a < MIN_CONFIDENCE or confidence_b < MIN_CONFIDENCE:
+        return {
+            "adjusted_score": technical_score,
+            "llm_contribution": 0.0,
+            "applied": False,
+            "reason": f"a model confidence is below {MIN_CONFIDENCE}",
+        }
+    combined = (score_a + score_b) / 2.0
+    contribution = max(-MAX_LLM_ADJUSTMENT, min(MAX_LLM_ADJUSTMENT, combined))
+    return {
+        "adjusted_score": technical_score + contribution,
+        "llm_contribution": contribution,
+        "applied": True,
+        "reason": "both models agree and are confident; LLM adds at most +/-1.0",
+    }
+
+
 def combine_with_technical(technical_score: float, llm_result: dict) -> dict:
     """Add the LLM signal to a technical score under the registered rule.
 
