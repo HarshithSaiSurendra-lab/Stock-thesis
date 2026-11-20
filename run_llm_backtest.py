@@ -332,11 +332,15 @@ def score_pass(
             continue
         consecutive_failures = 0
         scores[accession] = result
-        cost = float(result.get("cost_usd", 0.0))
+        # A cache hit returns the ORIGINAL result dict (with its original
+        # cost_usd) but bills $0: the provider did not re-charge. Count
+        # it as $0, or a resumed run double-counts the spend.
+        is_cached = bool(result.get("cached"))
+        cost = 0.0 if is_cached else float(result.get("cost_usd", 0.0))
         spent += cost
         tokens_in += int(result.get("input_tokens", 0))
         tokens_out += int(result.get("output_tokens", 0))
-        if cost == 0.0:
+        if is_cached:
             n_cached += 1
         else:
             n_scored += 1

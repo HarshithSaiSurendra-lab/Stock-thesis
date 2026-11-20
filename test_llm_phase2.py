@@ -220,6 +220,31 @@ def test_score_pass_budget_guard_stops_before_exceeding(tmp_path):
     assert "ACC2" not in scores  # third filing never attempted
 
 
+def test_score_pass_cached_results_cost_zero_not_original_cost(tmp_path):
+    """A cache hit returns the original cost_usd but bills $0.
+
+    Regression: the first version added the original cost to `spent`
+    again, double-counting every resumed filing.
+    """
+    class _MixedProvider(_FakeProvider):
+        def score(self, symbol, documents, excerpt, as_of):
+            if symbol == "S0":
+                return {"score": 0.5, "confidence": 0.9, "cost_usd": 0.01,
+                        "input_tokens": 100, "output_tokens": 10, "cached": True}
+            return super().score(symbol, documents, excerpt, as_of)
+
+    filings = _fake_filings(2)
+    scores = {}
+    summary = score_pass(
+        _MixedProvider(cost=0.01), filings, "haiku",
+        spent_before_usd=0.0, budget_usd=10.0,
+        save_path=tmp_path / "scores.json", scores=scores,
+    )
+    assert summary["n_cached"] == 1
+    assert summary["n_scored_new"] == 1
+    assert summary["cost_usd"] == pytest.approx(0.01)  # only the fresh call
+
+
 def test_score_pass_records_failures_and_continues(tmp_path, monkeypatch):
     monkeypatch.setattr("time.sleep", lambda *a, **k: None)
     filings = _fake_filings(3)
