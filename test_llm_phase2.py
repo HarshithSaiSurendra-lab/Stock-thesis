@@ -220,6 +220,18 @@ def test_score_pass_budget_guard_stops_before_exceeding(tmp_path):
     assert "ACC2" not in scores  # third filing never attempted
 
 
+def test_load_scores_missing_invalid_and_valid(tmp_path):
+    import run_llm_backtest as driver
+
+    assert driver._load_scores(tmp_path / "missing.json") == {}
+    bad = tmp_path / "bad.json"
+    bad.write_text("{not json")
+    assert driver._load_scores(bad) == {}
+    good = tmp_path / "good.json"
+    good.write_text('{"ACC1": {"score": 0.5}}')
+    assert driver._load_scores(good) == {"ACC1": {"score": 0.5}}
+
+
 def test_already_spent_usd_reads_ledger_plus_off_ledger_validation(tmp_path, monkeypatch):
     import json as _json
 

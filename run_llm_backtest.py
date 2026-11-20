@@ -71,6 +71,24 @@ REPO = Path(__file__).parent
 SHARD_DIR = REPO / "data" / "edgar_excerpts"
 RESULTS_PATH = REPO / "experiments" / "results" / "exp-technical-plus-llm-v1.json"
 SCORES_PATH = REPO / "experiments" / "results" / "exp-technical-plus-llm-v1-scores.json"
+# Incrementally-written per-role score files (raw accession -> result).
+# Kept separate so the Sonnet pass never overwrites the Haiku scores
+# and a resume after an interruption reads back exactly what was saved.
+HAIKU_SCORES_PATH = REPO / "experiments" / "results" / "exp-technical-plus-llm-v1-scores-haiku.json"
+SONNET_SCORES_PATH = REPO / "experiments" / "results" / "exp-technical-plus-llm-v1-scores-sonnet.json"
+
+
+def _load_scores(path: Path) -> dict:
+    """Load an incrementally-written scores file (raw accession->result).
+
+    Returns {} when the file is missing or unparsable, so a fresh run
+    and a resumed run use the same code path.
+    """
+    try:
+        data = json.loads(path.read_text())
+    except (OSError, ValueError):
+        return {}
+    return data if isinstance(data, dict) else {}
 
 # Registered parameters (amendment-1).
 MIN_DECISION_SCORE = 10.25  # live-path only; research selects top-5, no threshold
@@ -568,16 +586,13 @@ def main() -> int:
         monthly_cap_usd=PROVIDER_MONTHLY_CAP_USD,
         client=_SurrogateClient(),
     )
-    haiku_scores = {}
-    if SCORES_PATH.exists():
-        prior = json.loads(SCORES_PATH.read_text())
-        haiku_scores = prior.get("haiku", {})
-        print(f"resuming: {len(haiku_scores)} Haiku scores already on disk", flush=True)
+    haiku_scores = _load_scores(HAIKU_SCORES_PATH)
+    print(f"resuming: {len(haiku_scores)} Haiku scores already on disk", flush=True)
     haiku_summary = score_pass(
         haiku, in_scope, "haiku",
         spent_before_usd=already_spent,
         budget_usd=RUN_CAP_USD,
-        save_path=SCORES_PATH,
+        save_path=HAIKU_SCORES_PATH,
         scores=haiku_scores,
     )
     print(f"Haiku pass: {haiku_summary}", flush=True)
@@ -596,16 +611,14 @@ def main() -> int:
         monthly_cap_usd=PROVIDER_MONTHLY_CAP_USD,
         client=_SurrogateClient(),
     )
-    sonnet_scores = {}
-    if SCORES_PATH.exists():
-        prior = json.loads(SCORES_PATH.read_text())
-        sonnet_scores = prior.get("sonnet", {})
+    sonnet_scores = _load_scores(SONNET_SCORES_PATH)
+    print(f"resuming: {len(sonnet_scores)} Sonnet scores already on disk", flush=True)
     sonnet_filings = in_scope.loc[sonnet_subset] if sonnet_subset else in_scope.iloc[0:0]
     sonnet_summary = score_pass(
         sonnet, sonnet_filings, "sonnet",
         spent_before_usd=spent,
         budget_usd=RUN_CAP_USD,
-        save_path=SCORES_PATH,
+        save_path=SONNET_SCORES_PATH,
         scores=sonnet_scores,
     )
     print(f"Sonnet pass: {sonnet_summary}", flush=True)
