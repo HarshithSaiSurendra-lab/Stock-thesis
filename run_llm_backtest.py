@@ -87,13 +87,29 @@ INITIAL_CAPITAL = 1000.0
 COSTS_BPS = (10, 20)
 N_TRIALS_DSR = 18  # 4 base variants + 4 LLM variants + 10 (dataset + scoring choices)
 
-# Spend guardrails (USD). Already spent before this run: smoke test
-# $0.012397 + Haiku validation $0.018034 = $0.030431.
-ALREADY_SPENT_USD = 0.030431
+# Spend guardrails (USD). Already spent before THIS (re)run is read from
+# the provider's monthly ledger (.cache/llm_spend.json) plus the $0.018034
+# Haiku validation (Nov 17), which went through the raw helper, not the
+# provider, so it is not in the ledger. Reading the ledger (instead of a
+# hardcoded constant) makes a resumed run after an interruption account
+# for the spend of the interrupted run instead of understating it.
+VALIDATION_OFF_LEDGER_USD = 0.018034
+LEDGER_PATH = REPO / ".cache" / "llm_spend.json"
 RUN_CAP_USD = 10.00
 SONNET_BUDGET_USD = 5.00
 PROVIDER_RUN_CAP_USD = 9.50
 PROVIDER_MONTHLY_CAP_USD = 10.00
+
+
+def already_spent_usd() -> float:
+    """Anthropic spend incurred before this (re)run, in dollars."""
+    month = datetime.now(timezone.utc).strftime("%Y-%m")
+    try:
+        data = json.loads(LEDGER_PATH.read_text())
+        ledger_total = float(data.get(month, 0.0))
+    except (OSError, ValueError, KeyError):
+        ledger_total = 0.0
+    return round(ledger_total + VALIDATION_OFF_LEDGER_USD, 6)
 # Filing-date cutoff for scoring: train window only. Filings dated
 # after this are holdout-window and are NEVER scored.
 TRAIN_END_DATE = "2026-08-17"
@@ -505,7 +521,9 @@ def main() -> int:
     run_started = datetime.now(timezone.utc).isoformat()
     print("=== Phase 2: exp-technical-plus-llm-v1 ===", flush=True)
     print(f"run started {run_started}", flush=True)
-    print(f"spend already incurred before this run: ${ALREADY_SPENT_USD:.6f}", flush=True)
+    already_spent = already_spent_usd()
+    print(f"spend already incurred before this run: ${already_spent:.6f} "
+          f"(ledger + ${VALIDATION_OFF_LEDGER_USD:.6f} off-ledger validation)", flush=True)
 
     # --- Load bars and technical panels (identical to v1) -------------------
     data = _load_cached_bars()
@@ -557,7 +575,7 @@ def main() -> int:
         print(f"resuming: {len(haiku_scores)} Haiku scores already on disk", flush=True)
     haiku_summary = score_pass(
         haiku, in_scope, "haiku",
-        spent_before_usd=ALREADY_SPENT_USD,
+        spent_before_usd=already_spent,
         budget_usd=RUN_CAP_USD,
         save_path=SCORES_PATH,
         scores=haiku_scores,
@@ -593,7 +611,7 @@ def main() -> int:
     print(f"Sonnet pass: {sonnet_summary}", flush=True)
     spent = sonnet_summary["spent_after_usd"]
     total_spend = round(spent, 6)
-    print(f"TOTAL Anthropic spend this run: ${total_spend - ALREADY_SPENT_USD:.6f} "
+    print(f"TOTAL Anthropic spend this run: ${total_spend - already_spent:.6f} "
           f"(cumulative incl. prior: ${total_spend:.6f})", flush=True)
     if total_spend > RUN_CAP_USD:
         raise RuntimeError(f"spend cap breached: ${total_spend:.4f} > ${RUN_CAP_USD:.2f}")
@@ -711,7 +729,7 @@ def main() -> int:
             "haiku": haiku_summary,
             "sonnet": sonnet_summary,
             "total_spend_usd": total_spend,
-            "run_spend_usd": round(total_spend - ALREADY_SPENT_USD, 6),
+            "run_spend_usd": round(total_spend - already_spent, 6),
             "spend_cap_usd": RUN_CAP_USD,
             "sonnet_budget_usd": SONNET_BUDGET_USD,
         },

@@ -220,6 +220,19 @@ def test_score_pass_budget_guard_stops_before_exceeding(tmp_path):
     assert "ACC2" not in scores  # third filing never attempted
 
 
+def test_already_spent_usd_reads_ledger_plus_off_ledger_validation(tmp_path, monkeypatch):
+    import json as _json
+
+    import run_llm_backtest as driver
+
+    ledger = tmp_path / "llm_spend.json"
+    ledger.write_text(_json.dumps({"2026-11": 1.07088, "2026-10": 5.0}))
+    monkeypatch.setattr(driver, "LEDGER_PATH", ledger)
+    # Current month is 2026-11, so only that month's total counts, plus
+    # the $0.018034 validation that never hit the ledger.
+    assert driver.already_spent_usd() == pytest.approx(1.07088 + 0.018034)
+
+
 def test_score_pass_cached_results_cost_zero_not_original_cost(tmp_path):
     """A cache hit returns the original cost_usd but bills $0.
 
