@@ -102,7 +102,13 @@ def cost_usd(model_id: str, tokens_in: int, tokens_out: int) -> float:
 
 
 def _estimate_tokens(text: str) -> int:
-    return max(1, len(text) // 4)
+    # ~2.9 chars/token, NOT 4: Phase 2 (exp-technical-plus-llm-v1) measured
+    # mean actual Sonnet input 25,998 tokens vs 19,026 estimated at
+    # chars/4 (ratio 1.366) — the chars/4 estimate breached the $5.00
+    # Sonnet sub-budget by $0.5576. SEC filing text is denser than 4
+    # chars/token; 2.9 is the measured rate. Estimates stay conservative
+    # (worst-case output is still MAX_OUTPUT_TOKENS).
+    return max(1, int(len(text) / 2.9))
 
 
 def _trim_excerpt(text: str) -> str:
