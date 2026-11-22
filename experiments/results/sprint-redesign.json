@@ -1,0 +1,47 @@
+{
+  "generated_utc": "2026-11-22T06:05:56.686710+00:00",
+  "spend_usd": 0.0,
+  "train_window": "2024-01-02..2026-08-17",
+  "design": "hold every name with Haiku score >= the day's 5th-highest positive score, equal weight; no tie-break",
+  "selection_size": {
+    "mean": 25.737082066869302,
+    "min": 5,
+    "max": 40,
+    "median": 27.0
+  },
+  "max_positions": 60,
+  "variants": {
+    "cost_0bps": {
+      "total_return": 0.595,
+      "trades": 120,
+      "avg_daily_turnover": 0.0166,
+      "sharpe": 0.956,
+      "hit_rate": 0.5775,
+      "max_drawdown": -0.2259,
+      "wf_median_sharpe": 0.621,
+      "wf_positive_folds": 4
+    },
+    "cost_10bps": {
+      "total_return": 0.5777,
+      "trades": 120,
+      "avg_daily_turnover": 0.0166,
+      "sharpe": 0.931,
+      "hit_rate": 0.5775,
+      "max_drawdown": -0.2275,
+      "wf_median_sharpe": 0.604,
+      "wf_positive_folds": 4
+    },
+    "cost_20bps": {
+      "total_return": 0.5606,
+      "trades": 120,
+      "avg_daily_turnover": 0.0166,
+      "sharpe": 0.907,
+      "hit_rate": 0.5745,
+      "max_drawdown": -0.2291,
+      "wf_median_sharpe": 0.586,
+      "wf_positive_folds": 4
+    }
+  },
+  "n_trials_new": 3,
+  "n_trials_total_dsr": 75
+}

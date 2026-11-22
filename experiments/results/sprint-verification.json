@@ -1,0 +1,1014 @@
+{
+  "generated_utc": "2026-11-22T05:58:06.499278+00:00",
+  "spend_usd": 0.0,
+  "train_window": "2024-01-02..2026-08-17",
+  "v1_reproduce_v2": {
+    "reb5_hold5": {
+      "total_return": -0.1401,
+      "trades": 364,
+      "wf_median_sharpe": -0.226
+    },
+    "reb5_hold10": {
+      "total_return": 0.0369,
+      "trades": 339,
+      "wf_median_sharpe": -0.422
+    }
+  },
+  "v2_audit_c2": {
+    "net10": 1.5383,
+    "gross0": 1.572,
+    "sharpe": 1.434,
+    "max_drawdown": -0.3629,
+    "n_entries": 38,
+    "distinct_symbols": 24,
+    "entries": [
+      {
+        "symbol": "AAPL",
+        "entry": "2026-02-06",
+        "exit": "2026-05-05",
+        "hold_days": 87
+      },
+      {
+        "symbol": "ADBE",
+        "entry": "2024-01-18",
+        "exit": "2024-05-06",
+        "hold_days": 108
+      },
+      {
+        "symbol": "ADBE",
+        "entry": "2024-09-27",
+        "exit": "2025-09-29",
+        "hold_days": 367
+      },
+      {
+        "symbol": "AEP",
+        "entry": "2026-02-13",
+        "exit": "2026-05-12",
+        "hold_days": 87
+      },
+      {
+        "symbol": "AMD",
+        "entry": "2024-08-01",
+        "exit": "2025-08-08",
+        "hold_days": 372
+      },
+      {
+        "symbol": "AMD",
+        "entry": "2025-11-10",
+        "exit": "2026-02-06",
+        "hold_days": 88
+      },
+      {
+        "symbol": "AMD",
+        "entry": "2026-03-16",
+        "exit": "2026-08-17",
+        "hold_days": 154
+      },
+      {
+        "symbol": "AMZN",
+        "entry": "2024-02-08",
+        "exit": "2024-04-29",
+        "hold_days": 80
+      },
+      {
+        "symbol": "AMZN",
+        "entry": "2024-07-25",
+        "exit": "2024-09-27",
+        "hold_days": 64
+      },
+      {
+        "symbol": "AMZN",
+        "entry": "2024-11-01",
+        "exit": "2025-08-08",
+        "hold_days": 280
+      },
+      {
+        "symbol": "AVGO",
+        "entry": "2025-05-06",
+        "exit": "2026-03-16",
+        "hold_days": 314
+      },
+      {
+        "symbol": "AVGO",
+        "entry": "2026-08-14",
+        "exit": "2026-08-17",
+        "hold_days": 3
+      },
+      {
+        "symbol": "AXP",
+        "entry": "2024-02-15",
+        "exit": "2024-04-29",
+        "hold_days": 73
+      },
+      {
+        "symbol": "AXP",
+        "entry": "2025-10-20",
+        "exit": "2025-12-23",
+        "hold_days": 64
+      },
+      {
+        "symbol": "AXP",
+        "entry": "2026-04-28",
+        "exit": "2026-06-03",
+        "hold_days": 36
+      },
+      {
+        "symbol": "BAC",
+        "entry": "2026-05-12",
+        "exit": "2026-05-27",
+        "hold_days": 15
+      },
+      {
+        "symbol": "BKNG",
+        "entry": "2024-01-03",
+        "exit": "2024-02-15",
+        "hold_days": 43
+      },
+      {
+        "symbol": "CB",
+        "entry": "2024-01-03",
+        "exit": "2024-02-08",
+        "hold_days": 36
+      },
+      {
+        "symbol": "CB",
+        "entry": "2025-11-03",
+        "exit": "2025-11-17",
+        "hold_days": 14
+      },
+      {
+        "symbol": "CME",
+        "entry": "2025-06-04",
+        "exit": "2025-07-25",
+        "hold_days": 51
+      },
+      {
+        "symbol": "CME",
+        "entry": "2025-08-08",
+        "exit": "2025-10-27",
+        "hold_days": 80
+      },
+      {
+        "symbol": "CMG",
+        "entry": "2024-01-03",
+        "exit": "2024-02-01",
+        "hold_days": 29
+      },
+      {
+        "symbol": "CMG",
+        "entry": "2025-09-29",
+        "exit": "2025-10-20",
+        "hold_days": 21
+      },
+      {
+        "symbol": "CMG",
+        "entry": "2025-10-27",
+        "exit": "2025-11-10",
+        "hold_days": 14
+      },
+      {
+        "symbol": "COST",
+        "entry": "2024-01-03",
+        "exit": "2024-01-18",
+        "hold_days": 15
+      },
+      {
+        "symbol": "GE",
+        "entry": "2025-07-25",
+        "exit": "2026-04-28",
+        "hold_days": 277
+      },
+      {
+        "symbol": "GOOGL",
+        "entry": "2024-04-29",
+        "exit": "2024-07-25",
+        "hold_days": 87
+      },
+      {
+        "symbol": "LLY",
+        "entry": "2024-05-06",
+        "exit": "2025-05-06",
+        "hold_days": 365
+      },
+      {
+        "symbol": "LLY",
+        "entry": "2025-08-08",
+        "exit": "2026-02-13",
+        "hold_days": 189
+      },
+      {
+        "symbol": "LLY",
+        "entry": "2026-05-05",
+        "exit": "2026-08-17",
+        "hold_days": 104
+      },
+      {
+        "symbol": "MSFT",
+        "entry": "2024-04-29",
+        "exit": "2024-08-01",
+        "hold_days": 94
+      },
+      {
+        "symbol": "MU",
+        "entry": "2025-12-23",
+        "exit": "2026-08-17",
+        "hold_days": 236
+      },
+      {
+        "symbol": "NOW",
+        "entry": "2024-02-01",
+        "exit": "2024-05-06",
+        "hold_days": 94
+      },
+      {
+        "symbol": "NUE",
+        "entry": "2026-05-19",
+        "exit": "2026-08-14",
+        "hold_days": 87
+      },
+      {
+        "symbol": "NVDA",
+        "entry": "2024-01-03",
+        "exit": "2025-06-04",
+        "hold_days": 517
+      },
+      {
+        "symbol": "SPGI",
+        "entry": "2024-08-01",
+        "exit": "2024-11-01",
+        "hold_days": 92
+      },
+      {
+        "symbol": "TJX",
+        "entry": "2026-06-03",
+        "exit": "2026-08-17",
+        "hold_days": 75
+      },
+      {
+        "symbol": "WELL",
+        "entry": "2024-05-06",
+        "exit": "2024-08-01",
+        "hold_days": 87
+      }
+    ],
+    "attribution": {
+      "n_positions": 24,
+      "top_contributors": {
+        "MU": 0.3116,
+        "AMD": 0.2741,
+        "LLY": 0.1636,
+        "AVGO": 0.112,
+        "NVDA": 0.0834,
+        "AMZN": 0.0579,
+        "NUE": 0.0416,
+        "AXP": 0.0335
+      },
+      "bottom_contributors": {
+        "CME": -0.006,
+        "TJX": -0.008,
+        "NOW": -0.0094,
+        "CMG": -0.0284,
+        "ADBE": -0.093
+      },
+      "total_gross_return": 1.0633,
+      "n_days": 658
+    },
+    "beta_vs_spy": -0.1007715946744687,
+    "alpha_ann_vs_spy": 0.42301805298291967,
+    "wf_folds": [
+      {
+        "fold": "2024-07-11..2025-01-16",
+        "total_return": -0.0668,
+        "trades": 10
+      },
+      {
+        "fold": "2025-01-17..2025-07-28",
+        "total_return": 0.1341,
+        "trades": 8
+      },
+      {
+        "fold": "2025-07-29..2026-02-03",
+        "total_return": 0.2909,
+        "trades": 12
+      },
+      {
+        "fold": "2026-02-04..2026-08-12",
+        "total_return": 0.6304,
+        "trades": 12
+      }
+    ],
+    "spot_check": {
+      "symbol": "MU",
+      "entry": "2025-12-23",
+      "exit": "2026-08-17",
+      "entry_close": 276.27,
+      "exit_close": 971.66
+    }
+  },
+  "v3_c6_rank_rebuild": {
+    "gross0": 0.5517,
+    "net10": 0.4897,
+    "trades": 107,
+    "turnover": 0.062,
+    "wf_median_sharpe": 1.869,
+    "wf_positive_folds": 3
+  },
+  "v4_audit_c6_rank": {
+    "net10": 0.4897,
+    "gross0": 0.5517,
+    "sharpe": 0.75,
+    "max_drawdown": -0.1942,
+    "n_entries": 107,
+    "distinct_symbols": 53,
+    "entries": [
+      {
+        "symbol": "ABT",
+        "entry": "2025-07-25",
+        "exit": "2025-08-08",
+        "hold_days": 14
+      },
+      {
+        "symbol": "ADBE",
+        "entry": "2024-10-11",
+        "exit": "2024-10-25",
+        "hold_days": 14
+      },
+      {
+        "symbol": "ADBE",
+        "entry": "2025-08-08",
+        "exit": "2025-09-15",
+        "hold_days": 38
+      },
+      {
+        "symbol": "AEP",
+        "entry": "2024-02-23",
+        "exit": "2024-03-08",
+        "hold_days": 14
+      },
+      {
+        "symbol": "AMZN",
+        "entry": "2024-03-01",
+        "exit": "2024-04-29",
+        "hold_days": 58
+      },
+      {
+        "symbol": "AMZN",
+        "entry": "2025-10-06",
+        "exit": "2025-11-03",
+        "hold_days": 28
+      },
+      {
+        "symbol": "AMZN",
+        "entry": "2026-03-09",
+        "exit": "2026-04-28",
+        "hold_days": 50
+      },
+      {
+        "symbol": "AXP",
+        "entry": "2024-04-22",
+        "exit": "2024-05-13",
+        "hold_days": 21
+      },
+      {
+        "symbol": "AXP",
+        "entry": "2025-04-22",
+        "exit": "2025-05-13",
+        "hold_days": 21
+      },
+      {
+        "symbol": "AXP",
+        "entry": "2026-05-05",
+        "exit": "2026-05-19",
+        "hold_days": 14
+      },
+      {
+        "symbol": "BAC",
+        "entry": "2026-08-07",
+        "exit": "2026-08-17",
+        "hold_days": 10
+      },
+      {
+        "symbol": "CAT",
+        "entry": "2025-11-10",
+        "exit": "2026-02-23",
+        "hold_days": 105
+      },
+      {
+        "symbol": "CAT",
+        "entry": "2026-07-31",
+        "exit": "2026-08-14",
+        "hold_days": 14
+      },
+      {
+        "symbol": "CB",
+        "entry": "2025-12-02",
+        "exit": "2025-12-16",
+        "hold_days": 14
+      },
+      {
+        "symbol": "CB",
+        "entry": "2026-02-23",
+        "exit": "2026-03-09",
+        "hold_days": 13
+      },
+      {
+        "symbol": "CCI",
+        "entry": "2024-11-01",
+        "exit": "2024-11-15",
+        "hold_days": 14
+      },
+      {
+        "symbol": "CCI",
+        "entry": "2025-02-24",
+        "exit": "2025-03-17",
+        "hold_days": 20
+      },
+      {
+        "symbol": "CCI",
+        "entry": "2025-11-10",
+        "exit": "2026-03-02",
+        "hold_days": 112
+      },
+      {
+        "symbol": "CL",
+        "entry": "2024-02-15",
+        "exit": "2024-03-01",
+        "hold_days": 15
+      },
+      {
+        "symbol": "COF",
+        "entry": "2024-08-08",
+        "exit": "2025-02-24",
+        "hold_days": 200
+      },
+      {
+        "symbol": "COF",
+        "entry": "2026-08-07",
+        "exit": "2026-08-17",
+        "hold_days": 10
+      },
+      {
+        "symbol": "COST",
+        "entry": "2025-07-25",
+        "exit": "2025-10-13",
+        "hold_days": 80
+      },
+      {
+        "symbol": "CRWD",
+        "entry": "2025-08-29",
+        "exit": "2025-11-03",
+        "hold_days": 66
+      },
+      {
+        "symbol": "CRWD",
+        "entry": "2025-12-09",
+        "exit": "2026-03-09",
+        "hold_days": 89
+      },
+      {
+        "symbol": "CSCO",
+        "entry": "2025-03-03",
+        "exit": "2025-05-06",
+        "hold_days": 63
+      },
+      {
+        "symbol": "CSCO",
+        "entry": "2025-09-15",
+        "exit": "2025-11-17",
+        "hold_days": 63
+      },
+      {
+        "symbol": "CSCO",
+        "entry": "2026-03-16",
+        "exit": "2026-03-30",
+        "hold_days": 14
+      },
+      {
+        "symbol": "CSCO",
+        "entry": "2026-08-07",
+        "exit": "2026-08-17",
+        "hold_days": 10
+      },
+      {
+        "symbol": "EMR",
+        "entry": "2026-08-07",
+        "exit": "2026-08-17",
+        "hold_days": 10
+      },
+      {
+        "symbol": "EOG",
+        "entry": "2024-01-03",
+        "exit": "2024-02-23",
+        "hold_days": 51
+      },
+      {
+        "symbol": "EOG",
+        "entry": "2024-05-06",
+        "exit": "2024-08-08",
+        "hold_days": 94
+      },
+      {
+        "symbol": "EOG",
+        "entry": "2025-05-06",
+        "exit": "2025-08-08",
+        "hold_days": 94
+      },
+      {
+        "symbol": "EOG",
+        "entry": "2026-05-12",
+        "exit": "2026-08-07",
+        "hold_days": 87
+      },
+      {
+        "symbol": "GS",
+        "entry": "2025-11-03",
+        "exit": "2026-03-02",
+        "hold_days": 119
+      },
+      {
+        "symbol": "HAL",
+        "entry": "2024-05-06",
+        "exit": "2024-08-01",
+        "hold_days": 87
+      },
+      {
+        "symbol": "HAL",
+        "entry": "2025-04-29",
+        "exit": "2025-05-13",
+        "hold_days": 14
+      },
+      {
+        "symbol": "HAL",
+        "entry": "2026-04-28",
+        "exit": "2026-05-12",
+        "hold_days": 14
+      },
+      {
+        "symbol": "HD",
+        "entry": "2024-11-22",
+        "exit": "2025-03-24",
+        "hold_days": 121
+      },
+      {
+        "symbol": "ISRG",
+        "entry": "2024-04-22",
+        "exit": "2024-05-06",
+        "hold_days": 14
+      },
+      {
+        "symbol": "ISRG",
+        "entry": "2025-04-29",
+        "exit": "2025-05-13",
+        "hold_days": 14
+      },
+      {
+        "symbol": "ISRG",
+        "entry": "2026-04-28",
+        "exit": "2026-05-12",
+        "hold_days": 14
+      },
+      {
+        "symbol": "JNJ",
+        "entry": "2024-05-13",
+        "exit": "2024-08-01",
+        "hold_days": 80
+      },
+      {
+        "symbol": "JNJ",
+        "entry": "2025-05-13",
+        "exit": "2025-07-25",
+        "hold_days": 73
+      },
+      {
+        "symbol": "KMB",
+        "entry": "2024-01-03",
+        "exit": "2024-02-15",
+        "hold_days": 43
+      },
+      {
+        "symbol": "LIN",
+        "entry": "2024-02-23",
+        "exit": "2024-03-08",
+        "hold_days": 14
+      },
+      {
+        "symbol": "LMT",
+        "entry": "2025-05-06",
+        "exit": "2025-07-25",
+        "hold_days": 80
+      },
+      {
+        "symbol": "MCD",
+        "entry": "2024-02-23",
+        "exit": "2024-05-06",
+        "hold_days": 72
+      },
+      {
+        "symbol": "MCD",
+        "entry": "2024-11-08",
+        "exit": "2024-11-22",
+        "hold_days": 14
+      },
+      {
+        "symbol": "MCD",
+        "entry": "2024-12-02",
+        "exit": "2024-12-16",
+        "hold_days": 14
+      },
+      {
+        "symbol": "MCD",
+        "entry": "2025-03-17",
+        "exit": "2025-04-29",
+        "hold_days": 43
+      },
+      {
+        "symbol": "MCD",
+        "entry": "2025-08-08",
+        "exit": "2025-08-22",
+        "hold_days": 14
+      },
+      {
+        "symbol": "MCD",
+        "entry": "2026-03-02",
+        "exit": "2026-05-05",
+        "hold_days": 63
+      },
+      {
+        "symbol": "MDT",
+        "entry": "2024-03-01",
+        "exit": "2024-04-22",
+        "hold_days": 51
+      },
+      {
+        "symbol": "META",
+        "entry": "2024-04-29",
+        "exit": "2024-05-13",
+        "hold_days": 14
+      },
+      {
+        "symbol": "MMM",
+        "entry": "2025-04-29",
+        "exit": "2025-05-13",
+        "hold_days": 14
+      },
+      {
+        "symbol": "MO",
+        "entry": "2024-04-29",
+        "exit": "2024-05-13",
+        "hold_days": 14
+      },
+      {
+        "symbol": "MRK",
+        "entry": "2024-08-01",
+        "exit": "2024-08-15",
+        "hold_days": 14
+      },
+      {
+        "symbol": "MSFT",
+        "entry": "2024-03-01",
+        "exit": "2024-04-29",
+        "hold_days": 58
+      },
+      {
+        "symbol": "MSFT",
+        "entry": "2026-03-02",
+        "exit": "2026-04-28",
+        "hold_days": 56
+      },
+      {
+        "symbol": "MU",
+        "entry": "2024-04-08",
+        "exit": "2024-04-22",
+        "hold_days": 14
+      },
+      {
+        "symbol": "MU",
+        "entry": "2024-08-01",
+        "exit": "2024-10-11",
+        "hold_days": 71
+      },
+      {
+        "symbol": "MU",
+        "entry": "2025-08-01",
+        "exit": "2025-10-06",
+        "hold_days": 66
+      },
+      {
+        "symbol": "MU",
+        "entry": "2026-03-23",
+        "exit": "2026-05-05",
+        "hold_days": 43
+      },
+      {
+        "symbol": "NKE",
+        "entry": "2025-04-07",
+        "exit": "2025-04-29",
+        "hold_days": 22
+      },
+      {
+        "symbol": "NOW",
+        "entry": "2025-08-22",
+        "exit": "2025-09-08",
+        "hold_days": 17
+      },
+      {
+        "symbol": "NUE",
+        "entry": "2025-02-24",
+        "exit": "2025-03-10",
+        "hold_days": 13
+      },
+      {
+        "symbol": "ORCL",
+        "entry": "2025-03-24",
+        "exit": "2025-04-22",
+        "hold_days": 29
+      },
+      {
+        "symbol": "ORLY",
+        "entry": "2024-01-03",
+        "exit": "2024-03-01",
+        "hold_days": 58
+      },
+      {
+        "symbol": "ORLY",
+        "entry": "2024-05-13",
+        "exit": "2024-08-08",
+        "hold_days": 87
+      },
+      {
+        "symbol": "ORLY",
+        "entry": "2025-05-13",
+        "exit": "2025-08-08",
+        "hold_days": 87
+      },
+      {
+        "symbol": "ORLY",
+        "entry": "2026-05-12",
+        "exit": "2026-08-07",
+        "hold_days": 87
+      },
+      {
+        "symbol": "PANW",
+        "entry": "2024-08-08",
+        "exit": "2024-09-13",
+        "hold_days": 36
+      },
+      {
+        "symbol": "PEG",
+        "entry": "2024-05-06",
+        "exit": "2024-08-01",
+        "hold_days": 87
+      },
+      {
+        "symbol": "PEG",
+        "entry": "2025-05-06",
+        "exit": "2025-08-08",
+        "hold_days": 94
+      },
+      {
+        "symbol": "PEG",
+        "entry": "2026-05-12",
+        "exit": "2026-08-07",
+        "hold_days": 87
+      },
+      {
+        "symbol": "PFE",
+        "entry": "2024-01-03",
+        "exit": "2024-02-23",
+        "hold_days": 51
+      },
+      {
+        "symbol": "PFE",
+        "entry": "2024-08-08",
+        "exit": "2025-02-14",
+        "hold_days": 190
+      },
+      {
+        "symbol": "PFE",
+        "entry": "2025-08-15",
+        "exit": "2025-08-29",
+        "hold_days": 14
+      },
+      {
+        "symbol": "PFE",
+        "entry": "2025-10-13",
+        "exit": "2025-10-27",
+        "hold_days": 14
+      },
+      {
+        "symbol": "PFE",
+        "entry": "2026-08-07",
+        "exit": "2026-08-17",
+        "hold_days": 10
+      },
+      {
+        "symbol": "PG",
+        "entry": "2025-03-03",
+        "exit": "2025-04-29",
+        "hold_days": 56
+      },
+      {
+        "symbol": "PG",
+        "entry": "2026-04-28",
+        "exit": "2026-05-27",
+        "hold_days": 29
+      },
+      {
+        "symbol": "PG",
+        "entry": "2026-07-24",
+        "exit": "2026-08-07",
+        "hold_days": 14
+      },
+      {
+        "symbol": "PLD",
+        "entry": "2024-09-13",
+        "exit": "2024-10-25",
+        "hold_days": 42
+      },
+      {
+        "symbol": "PNC",
+        "entry": "2024-05-06",
+        "exit": "2024-05-20",
+        "hold_days": 14
+      },
+      {
+        "symbol": "PNC",
+        "entry": "2024-08-01",
+        "exit": "2024-08-15",
+        "hold_days": 14
+      },
+      {
+        "symbol": "PNC",
+        "entry": "2025-05-06",
+        "exit": "2025-05-20",
+        "hold_days": 14
+      },
+      {
+        "symbol": "PNC",
+        "entry": "2025-08-08",
+        "exit": "2025-11-10",
+        "hold_days": 94
+      },
+      {
+        "symbol": "PSA",
+        "entry": "2025-11-03",
+        "exit": "2026-02-13",
+        "hold_days": 102
+      },
+      {
+        "symbol": "SHW",
+        "entry": "2024-10-25",
+        "exit": "2025-02-24",
+        "hold_days": 122
+      },
+      {
+        "symbol": "SHW",
+        "entry": "2026-05-05",
+        "exit": "2026-07-31",
+        "hold_days": 87
+      },
+      {
+        "symbol": "SNOW",
+        "entry": "2026-04-07",
+        "exit": "2026-04-28",
+        "hold_days": 21
+      },
+      {
+        "symbol": "SPGI",
+        "entry": "2024-01-03",
+        "exit": "2024-02-08",
+        "hold_days": 36
+      },
+      {
+        "symbol": "TJX",
+        "entry": "2024-02-08",
+        "exit": "2024-04-08",
+        "hold_days": 59
+      },
+      {
+        "symbol": "TJX",
+        "entry": "2025-03-17",
+        "exit": "2025-04-07",
+        "hold_days": 21
+      },
+      {
+        "symbol": "TJX",
+        "entry": "2026-03-02",
+        "exit": "2026-04-07",
+        "hold_days": 35
+      },
+      {
+        "symbol": "TMUS",
+        "entry": "2024-10-25",
+        "exit": "2024-11-08",
+        "hold_days": 14
+      },
+      {
+        "symbol": "TSLA",
+        "entry": "2024-10-25",
+        "exit": "2024-11-08",
+        "hold_days": 14
+      },
+      {
+        "symbol": "TSLA",
+        "entry": "2026-05-27",
+        "exit": "2026-07-24",
+        "hold_days": 58
+      },
+      {
+        "symbol": "USB",
+        "entry": "2024-08-08",
+        "exit": "2024-10-25",
+        "hold_days": 78
+      },
+      {
+        "symbol": "VLO",
+        "entry": "2024-11-01",
+        "exit": "2024-12-02",
+        "hold_days": 31
+      },
+      {
+        "symbol": "VLO",
+        "entry": "2025-02-14",
+        "exit": "2025-03-03",
+        "hold_days": 17
+      },
+      {
+        "symbol": "VLO",
+        "entry": "2025-10-27",
+        "exit": "2025-11-10",
+        "hold_days": 14
+      },
+      {
+        "symbol": "VLO",
+        "entry": "2025-11-17",
+        "exit": "2025-12-02",
+        "hold_days": 15
+      },
+      {
+        "symbol": "VLO",
+        "entry": "2026-02-13",
+        "exit": "2026-03-02",
+        "hold_days": 17
+      },
+      {
+        "symbol": "WMT",
+        "entry": "2024-12-09",
+        "exit": "2025-03-17",
+        "hold_days": 97
+      },
+      {
+        "symbol": "WMT",
+        "entry": "2026-03-02",
+        "exit": "2026-03-16",
+        "hold_days": 13
+      }
+    ],
+    "attribution": {
+      "n_positions": 53,
+      "top_contributors": {
+        "MU": 0.218,
+        "COF": 0.0891,
+        "AMZN": 0.0741,
+        "CAT": 0.07,
+        "JNJ": 0.0389,
+        "AXP": 0.0376,
+        "PEG": 0.0361,
+        "VLO": 0.0292
+      },
+      "bottom_contributors": {
+        "HD": -0.027,
+        "ORCL": -0.036,
+        "PFE": -0.0361,
+        "MCD": -0.0402,
+        "ORLY": -0.1011
+      },
+      "total_gross_return": 0.5046,
+      "n_days": 658
+    },
+    "beta_vs_spy": -0.02858581972744317,
+    "alpha_ann_vs_spy": 0.1836248436143773,
+    "wf_folds": [
+      {
+        "fold": "2024-07-11..2025-01-16",
+        "total_return": 0.1651,
+        "trades": 23
+      },
+      {
+        "fold": "2025-01-17..2025-07-28",
+        "total_return": -0.1741,
+        "trades": 23
+      },
+      {
+        "fold": "2025-07-29..2026-02-03",
+        "total_return": 0.2691,
+        "trades": 25
+      },
+      {
+        "fold": "2026-02-04..2026-08-12",
+        "total_return": 0.1957,
+        "trades": 32
+      }
+    ]
+  }
+}

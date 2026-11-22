@@ -1,0 +1,100 @@
+{
+  "generated_utc": "2026-11-22T06:03:45.293101+00:00",
+  "spend_usd": 0.0,
+  "train_window": "2024-01-02..2026-08-17",
+  "pre_commitment": "Registered design uses TB5 (confidence then recency) on principle, not on train performance.",
+  "variants": {
+    "TB1_alphabetical": {
+      "cost_0bps": {
+        "total_return": 1.572,
+        "trades": 38,
+        "avg_daily_turnover": 0.0201,
+        "sharpe": 1.458,
+        "wf_median_sharpe": 1.945,
+        "wf_positive_folds": 3
+      },
+      "cost_10bps": {
+        "total_return": 1.5383,
+        "trades": 38,
+        "avg_daily_turnover": 0.0201,
+        "sharpe": 1.434,
+        "wf_median_sharpe": 1.921,
+        "wf_positive_folds": 3
+      }
+    },
+    "TB2_reverse_alpha": {
+      "cost_0bps": {
+        "total_return": 1.572,
+        "trades": 38,
+        "avg_daily_turnover": 0.0201,
+        "sharpe": 1.458,
+        "wf_median_sharpe": 1.945,
+        "wf_positive_folds": 3
+      },
+      "cost_10bps": {
+        "total_return": 1.5383,
+        "trades": 38,
+        "avg_daily_turnover": 0.0201,
+        "sharpe": 1.434,
+        "wf_median_sharpe": 1.921,
+        "wf_positive_folds": 3
+      }
+    },
+    "TB3_confidence": {
+      "cost_0bps": {
+        "total_return": 0.5543,
+        "trades": 40,
+        "avg_daily_turnover": 0.0213,
+        "sharpe": 0.603,
+        "wf_median_sharpe": 0.056,
+        "wf_positive_folds": 2
+      },
+      "cost_10bps": {
+        "total_return": 0.5327,
+        "trades": 40,
+        "avg_daily_turnover": 0.0213,
+        "sharpe": 0.582,
+        "wf_median_sharpe": 0.04,
+        "wf_positive_folds": 2
+      }
+    },
+    "TB4_recency": {
+      "cost_0bps": {
+        "total_return": 1.9677,
+        "trades": 134,
+        "avg_daily_turnover": 0.0784,
+        "sharpe": 1.9,
+        "wf_median_sharpe": 1.851,
+        "wf_positive_folds": 4
+      },
+      "cost_10bps": {
+        "total_return": 1.8189,
+        "trades": 134,
+        "avg_daily_turnover": 0.0784,
+        "sharpe": 1.792,
+        "wf_median_sharpe": 1.731,
+        "wf_positive_folds": 3
+      }
+    },
+    "TB5_conf_then_recency": {
+      "cost_0bps": {
+        "total_return": 1.7212,
+        "trades": 131,
+        "avg_daily_turnover": 0.0766,
+        "sharpe": 1.732,
+        "wf_median_sharpe": 1.647,
+        "wf_positive_folds": 4
+      },
+      "cost_10bps": {
+        "total_return": 1.5878,
+        "trades": 131,
+        "avg_daily_turnover": 0.0766,
+        "sharpe": 1.628,
+        "wf_median_sharpe": 1.53,
+        "wf_positive_folds": 4
+      }
+    }
+  },
+  "n_trials_new": 10,
+  "n_trials_total_dsr": 74
+}
