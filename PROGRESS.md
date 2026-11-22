@@ -461,3 +461,69 @@ committed — `.env` is git-ignored. Keys live only in the local `.env`.
   that the train reproduction matches the redesign's +57.77% net10
   within 0.2pp before the gate is read — both checks PASSED. Full
   test suite 117/117 passed.
+
+- **Repo-derived hypotheses RUN (native only) + `exp-llm-long-horizon-v3`
+  COMPLETE. GATE VERDICT: PASS — all 3 sub-gates pass, and v3 beats
+  v2 on the holdout.** Parent follow-up Nov 22, 2026: repo assessment
+  (read-only) ranked TradingAgents / ai-hedge-fund as study-for-ideas,
+  daily_stock_analysis as mine-its-catalog, OpenBB data-layer only,
+  Alpaca MCP adopt-narrowly-later, tradingview-mcp + FinceptTerminal
+  skip. User guardrail, effective immediately: do NOT clone, install,
+  or run any code from the 7 shared repos — every idea below was
+  implemented natively in stock-thesis code only (`test_repo_hypotheses.py`,
+  results in `experiments/results/sprint-repo-hypotheses.json`).
+  - H1 Haiku bull/bear debate: BLOCKED on funding, not tested. Debate
+    = 3 Haiku calls/filing, ~$0.009908/filing (3.5x the measured
+    $0.002831 single-pass cost); n=100 costs ~$0.99 vs $0.175 monthly
+    headroom; at most ~17 filings fit. Needs the +$5 Anthropic top-up
+    verified (still UNVERIFIED). No calls were made.
+  - H2a LLM as veto on the technical panel: WEAK (calibration C3,
+    cited): train net10 +9.10%, WF -0.28, 1/4 folds vs v4 long-hold
+    control +7.02%. Not registered.
+  - H2b Technical veto on the passing v2 design: STRONG on train.
+    v2 + composite > 0 veto: train gross +110.20%, net10 +85.48%,
+    net20 +63.64%, WF 0.767 @10bps, 3/4 folds @10bps, 444 trades,
+    turnover 0.190/day (v2: +57.77% net10, WF 0.604, 4/4, 120 trades,
+    0.017/day). The sma_50 veto was tested and NOT selected (+22.04%,
+    worse than v2). Registered as `exp-llm-long-horizon-v3` BEFORE
+    scoring (registry entry + design doc
+    `experiments/exp-llm-long-horizon-v3-design.md`); driver
+    `run_llm_long_horizon_v3.py`; results in
+    `experiments/results/exp-llm-long-horizon-v3.json`; registry
+    record `exp-llm-long-horizon-v3-results` (status `passed`);
+    Sheet rows A108:L113 (6 rows, read back verified).
+  - H3 PEAD + MA alignment / pullback: ALL NULL on train. PEAD proxy
+    (filing-date abnormal return, n=1,446): IC +0.0078/+0.0077/+0.0035
+    @5/10/20d — no drift, no reversal. MA alignment: IC -0.0162/
+    -0.0103/-0.0028 @5/10/20d, Q-spread -0.02pp @20d — slightly
+    negative (mean-reversion regime) but too weak to use. Pullback:
+    -0.33pp/-0.48pp/-0.62pp vs the rest @5/10/20d — pullbacks do
+    WORSE. The pre-set bar (|IC| >= 0.03 @20d or 20d Q-spread >= 1%)
+    was NOT cleared, so no alignment backtest was run. All three
+    patterns are dropped in this window.
+  - Headline v3, holdout 2026-08-18..2026-11-13: gross +6.07%, net
+    10bps +4.74% (SG1 pass, +9.07pp vs v4 base -4.33%), net 20bps
+    +3.44% (SG2 pass, +11.89pp vs base -8.45%), net 10bps +4.74% > 0
+    (SG3 pass). vs v2: net10 +2.43pp better, net20 +1.34pp better.
+    Sharpe 0.91 @10bps, max DD -9.52%, hit rate 50.8%, 43 trades,
+    turnover 0.033/day, selection mean 8.2 names (min 0 — some days
+    no name passes both filters), alpha vs SPY +19.0%/yr, beta -0.41.
+  - **Honest limits on the PASS:** this is the SECOND holdout
+    evaluation on the same frozen window — NOT independent evidence
+    vs v2's pass; the family-wise false-positive risk grows with
+    each holdout look. Deflated Sharpe 0.931 @10bps (n_trials=81) is
+    still just below the 0.95 threshold (0.966 at 0bps). The veto's
+    edge depends on turnover (0.190/day vs v2's 0.017/day); at 20bps
+    the train advantage over v2 is only +7.58pp and only 2/4 WF folds
+    are positive. LLM knowledge-cutoff contamination (same as v2).
+    No paper trading of this variant without a further decision;
+    ALLOW_LIVE stays 0.
+  - **Spend: $0.00 new scoring this run** (all scores reused).
+    Cumulative Nov total $9.824975, balance ~$1.95, monthly cap
+    headroom $0.175. The +$5 Anthropic top-up is UNVERIFIED. OpenAI /
+    GPT-6.1 Sol leg: no connector exists, adapter not built — pending.
+  - **Reproducibility**: the confirmation driver asserts the union
+    current-filing series equals the stale series on train days and
+    that the train reproduction matches H2b's +85.48% net10 within
+    0.2pp before the gate is read — both checks PASSED. Full test
+    suite 117/117 passed.
