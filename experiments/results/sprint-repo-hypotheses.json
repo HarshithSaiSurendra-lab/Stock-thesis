@@ -1,0 +1,144 @@
+{
+  "generated_utc": "2026-11-22T06:14:09.819875+00:00",
+  "spend_usd": 0.0,
+  "train_window": "2024-01-02..2026-08-17",
+  "guardrail": "No code from the 7 shared research repos was cloned, installed, imported, or run. All ideas implemented natively in stock-thesis code only.",
+  "H1_debate_cost_estimate": {
+    "method": "3 Haiku calls per filing (bull + bear + adjudicate); no calls made",
+    "measured_single_pass_haiku_usd_per_filing": 0.002831,
+    "debate_usd_per_filing_floor_3x": 0.008493,
+    "debate_usd_per_filing_plan_3.5x": 0.009908,
+    "monthly_headroom_usd": 0.175025,
+    "max_filings_at_plan_estimate": 17,
+    "cost_n50_usd": 0.4954,
+    "cost_n100_usd": 0.9908,
+    "verdict": "BLOCKED at meaningful scale: a 100-filing subsample costs ~$0.99 vs $0.175 headroom. A ~17-filing pilot fits the headroom but is too small for a stable IC comparison. Needs the user's +$5 Anthropic top-up verified (still UNVERIFIED) before any debate scoring."
+  },
+  "H2a_llm_veto_on_technical": {
+    "source": "sprint-calibration.json (already tested; cited, not re-run)",
+    "design": "v4 panel, entries blocked where the LLM contribution < 0; rebalance 5, min hold 10",
+    "train_net10": 0.091,
+    "train_wf_median_sharpe": -0.28,
+    "train_wf_positive_folds": 1,
+    "control_v4_long_hold_net10": 0.0702,
+    "verdict": "WEAK: the veto adds only +2.08pp over the v4 long-hold control (+9.10% vs +7.02%) with a negative WF median Sharpe (-0.28) and 1/4 positive folds. Not worth registering."
+  },
+  "H2b_technical_veto_on_v2": {
+    "H2b_veto_composite_gt0": {
+      "cost_0bps": {
+        "total_return": 1.102,
+        "trades": 444,
+        "avg_daily_turnover": 0.1904,
+        "wf_median_sharpe": 0.996,
+        "wf_positive_folds": 4
+      },
+      "cost_10bps": {
+        "total_return": 0.8548,
+        "trades": 444,
+        "avg_daily_turnover": 0.1904,
+        "wf_median_sharpe": 0.767,
+        "wf_positive_folds": 3
+      },
+      "cost_20bps": {
+        "total_return": 0.6364,
+        "trades": 444,
+        "avg_daily_turnover": 0.1904,
+        "wf_median_sharpe": 0.549,
+        "wf_positive_folds": 2
+      }
+    },
+    "H2b_veto_close_gt_sma50": {
+      "cost_0bps": {
+        "total_return": 0.2991,
+        "trades": 353,
+        "avg_daily_turnover": 0.095,
+        "wf_median_sharpe": 0.811,
+        "wf_positive_folds": 4
+      },
+      "cost_10bps": {
+        "total_return": 0.2204,
+        "trades": 353,
+        "avg_daily_turnover": 0.095,
+        "wf_median_sharpe": 0.64,
+        "wf_positive_folds": 4
+      },
+      "cost_20bps": {
+        "total_return": 0.1465,
+        "trades": 353,
+        "avg_daily_turnover": 0.095,
+        "wf_median_sharpe": 0.474,
+        "wf_positive_folds": 4
+      }
+    }
+  },
+  "H3a_pead_proxy": {
+    "h5d": {
+      "n": 1446,
+      "spearman_ic": 0.0078,
+      "top_quintile_mean_fwd": 0.0021,
+      "bot_quintile_mean_fwd": 0.0006,
+      "qspread": 0.0015
+    },
+    "h10d": {
+      "n": 1446,
+      "spearman_ic": 0.0077,
+      "top_quintile_mean_fwd": 0.0085,
+      "bot_quintile_mean_fwd": 0.0071,
+      "qspread": 0.0013
+    },
+    "h20d": {
+      "n": 1446,
+      "spearman_ic": 0.0035,
+      "top_quintile_mean_fwd": 0.0157,
+      "bot_quintile_mean_fwd": 0.0107,
+      "qspread": 0.005
+    }
+  },
+  "H3b_ma_alignment": {
+    "h5d": {
+      "spread_ic": -0.016230302649838355,
+      "spread_ic_t": -1.938625152461927,
+      "n_days": 639,
+      "quintile_spread": -0.002007565690936528,
+      "aligned_minus_unaligned_mean_fwd": -0.002176340789727844
+    },
+    "h10d": {
+      "spread_ic": -0.010335919970013248,
+      "spread_ic_t": -1.2823795541036234,
+      "n_days": 639,
+      "quintile_spread": -0.002050552841941131,
+      "aligned_minus_unaligned_mean_fwd": -0.0029221948899373997
+    },
+    "h20d": {
+      "spread_ic": -0.00283158728191459,
+      "spread_ic_t": -0.3651760234126832,
+      "n_days": 639,
+      "quintile_spread": -0.00022064338383049844,
+      "aligned_minus_unaligned_mean_fwd": -0.004464424358229011
+    }
+  },
+  "H3c_pullback": {
+    "h5d": {
+      "pullback_minus_rest_mean_fwd": -0.0033178419785639054,
+      "pullback_minus_aligned_no_pullback_mean_fwd": -0.001752532496669843,
+      "n_days": 616
+    },
+    "h10d": {
+      "pullback_minus_rest_mean_fwd": -0.004769597797931673,
+      "pullback_minus_aligned_no_pullback_mean_fwd": -0.0028332371761695626,
+      "n_days": 616
+    },
+    "h20d": {
+      "pullback_minus_rest_mean_fwd": -0.00624230985495144,
+      "pullback_minus_aligned_no_pullback_mean_fwd": -0.0037996503148238414,
+      "n_days": 616
+    }
+  },
+  "alignment_backtest_rule": {
+    "rule": "run alignment backtest only if |IC| >= 0.03 at h=20d or 20d quintile spread >= 1% or |pullback 20d diff| >= 1%",
+    "clears_bar": false
+  },
+  "H3b_alignment_backtest": "not run: pattern did not clear the pre-set bar",
+  "n_trials_new": 6,
+  "n_trials_total_dsr": 81
+}
