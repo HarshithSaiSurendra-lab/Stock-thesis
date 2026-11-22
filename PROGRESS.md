@@ -527,3 +527,225 @@ committed — `.env` is git-ignored. Keys live only in the local `.env`.
     that the train reproduction matches H2b's +85.48% net10 within
     0.2pp before the gate is read — both checks PASSED. Full test
     suite 117/117 passed.
+
+## Done — 2026-11-22 — Sprint round 2 (calibration + GPT leg)
+
+**Context:** round 1 closed with two gate passes on the frozen holdout
+(2026-08-18..2026-11-13): v2 net +2.31% @10bps, v3 net +4.74% @10bps,
+but Deflated Sharpe below 0.95 in both (0.731/0.931, n_trials 75/81).
+Every new holdout look raises family-wise false-positive risk — n_trials
+is tracked and DSR reported for everything below. Design doc:
+`experiments/exp-llm-long-horizon-r2-design.md`. All hypotheses were
+registered in `experiments/registry.jsonl` BEFORE scoring. $0 tests
+(H2–H7) first, then H1 debate, then the GPT leg. No paper trading;
+ALLOW_LIVE stays 0.
+
+**Funding (verified Nov 22):** user added $5 to Anthropic AND $5 to
+OpenAI. November Anthropic budget is now $15 total ($11.77 original +
+$5 top-up); the $1/run cap is kept. Anthropic has NO balance endpoint —
+verified via the spend ledger and successful calls, not a balance check.
+OpenAI key entered via Secure Vault ~02:41 EST and VERIFIED live
+~02:55 EST (GET /v1/models 200, 99 models incl. `gpt-6.1-sol`;
+smoke chat 200, 73 tokens). Credit-grants endpoint is 403 for secret
+keys (browser session key only), so the $5 balance is not directly
+readable — a successful chat call is the practical proof credits exist.
+Connector: `~/workspace/custom-connectors/custom.openai/` (helper
+`bin/openai_api.py`, sends `max_completion_tokens` because gpt-6.1-sol
+rejects `max_tokens` with a 400).
+
+### Calibration (H2–H7, train only, $0) — `r2_calibrate.py`, `r2_panels.py`
+Anchors reproduced exactly: v2 train net10 +57.77%, v3 +85.48%.
+n_trials 81 → 123 (42 new trials: 14 designs × 3 costs; H6 no backtest
+= 0 trials). Results: `experiments/results/sprint-r2-calibration.json`.
+- **H2a banding** (bar: within 10pp of v3 +85.48% AND turnover < 0.10/day
+  AND WF ≥ 3/4): v3-buf30 +67.18% (WF 4/4, turn 0.006) DROP;
+  v3-buf50 +67.76% (4/4, 0.007) DROP; v2-buf30 +70.31% (4/4, 0.005)
+  DROP; v2-buf50 +71.54% (4/4, 0.006) DROP. Turnover crushed
+  (0.005–0.007/day) but 14–18pp below v3. Note: banding-v2 BEAT its own
+  base (+70.31% vs +57.77%) — the symmetric "within 10pp of v3" bar
+  excluded an outperforming design; flagged for a separately-registered
+  follow-up with a one-sided bar, NOT a bar change now.
+- **H2b cohorts**: v3-h10 +55.35% (WF 3/4, turn 0.120 — also fails
+  turnover) DROP; v3-h20 +44.96% (4/4, 0.066) DROP; v2-h10 +52.52%
+  (4/4, 0.018) DROP under the corrected v3 bar. (Bar correction made
+  before the re-run: the brief's H2 bar is vs v3 for ALL H2 designs,
+  not vs each design's own base — the first run wrongly confirmed
+  cohort-v2-h10 under the per-base bar; corrected and recorded.)
+- **H3 Lazy-Prices veto** (bar: beats base by ≥ 2pp AND WF ≥ 3/4):
+  veto-v3 **+89.52% (WF 3/4, turn 0.191) → CONFIRM** (+4.04pp vs base);
+  veto-v2 +52.94% (4/4, 0.018) DROP. Diagnostic: Item 1A similarity
+  IC @20d **−0.0177 (t −4.78, n 637 days)** — changers predict HIGHER
+  returns, contradicting the veto's premise; mean changer share/day
+  0.085.
+- **H4 decoupled mixture** (bar: train net10 > v2 +57.77% AND WF ≥ 3/4):
+  +49.80%, WF 2/4, turn 0.092 → DROP.
+- **H5 cross-family ensemble** (native numpy Ridge closed-form +
+  native numpy GBDT, binned depth-3, 100 rounds; NO sklearn/scipy —
+  see incident below): BOTH veto and no-veto **+54.98%, WF 3/4,
+  turn 0.166** → DROP (below v2's +57.77%). Veto and no-veto identical —
+  the disagreement veto did not bind (no selected name was in the top
+  disagreement quintile). Fit: 84,854 rows, 67,431 walk-forward
+  predictions, 20d horizon.
+- **H6 volume shock + intraday/overnight**: IC gate NOT cleared by any
+  feature (|IC| < 0.03 @20d) → dropped at IC stage, no backtest.
+  ICs @20d: vol_pct 0.0001 (t 0.02), vol_ratio 0.0005 (t 0.09),
+  shock_flag 0.0047 (t 1.11), intraday_20d 0.015 (t 2.03, best),
+  overnight_20d −0.0008 (t −0.1).
+- **H7 runner-ups** (re-verified exactly in R2): C6 textual delta
+  +48.97% (WF 3/4, turn 0.062); C1c reversion+RSI +64.06% (WF 3/4,
+  turn 0.117). Pick by highest train net10: **C1c → CONFIRM**.
+
+### Holdout confirmations — `r2_confirm.py` — BOTH PASS
+- **h3-lazy-veto-v3: PASS.** Holdout net10 **+4.25%**, net20 +2.97%,
+  gross +5.55%; Sharpe 0.788 @10bps, maxDD −10.37%, hit 52.4%,
+  54 trades, turnover 0.198/day, DSR **0.857** (n_trials 126, below
+  0.95), alpha vs SPY +17.1%/yr, beta −0.42. Slightly below v3's
+  +4.74% on holdout but passes all three sub-gates.
+- **h7-c1c-reversion-rsi: PASS, decisively.** Holdout net10 **+42.54%**,
+  net20 +41.09%, gross +44.00%; Sharpe **9.22** @10bps, maxDD −7.38%,
+  hit 60.3%, 31 trades, turnover 0.162/day, DSR **1.0** (n_trials
+  129), alpha vs SPY **+148.3%/yr**, beta −0.31. SPY holdout return
+  was −1.7%. Independently re-verified (run_backtest reproduced
+  exactly 0.4254). Daily returns max +5.95% / min −4.15%; 9 of 63 days
+  beyond ±3%; 38 positive days vs 23 negative. 21 names held;
+  contributions spread across many names (top AMAT +6.75pp, CRWD
+  +6.20pp, INTC +4.99pp of +44% gross) — no single-name artifact;
+  gains came from dip-rebound timing (names' buy-and-hold returns
+  were mostly negative, e.g. INTC −38%, CAT −29%, AMAT −28%, while
+  their timed contributions were positive).
+  **Honest caveat:** 63-day window, 5 positions, mean-reversion
+  returns concentrate in volatile regimes; holdout Sharpe (9.22) far
+  above train WF Sharpe (1.178) — short-window/regime effect, not
+  proof of a tradeable edge.
+- Sheet logging: **48 rows appended and READ BACK VERIFIED at
+  Sheet1!A114:L161** (42 train rows + 6 holdout rows; total sheet now
+  161 rows incl. header). Registry: results entries appended for both
+  confirmed designs (status passed).
+
+### H1 Haiku bull/bear debate — `r2_debate.py` — DROP
+106 systematic sample → trimmed to 100 filings (worst case $0.9632,
+under the $0.98 target; run cap $1.00). 297 new calls, 0 cached,
+1 failed (WELL filing — truncated JSON reply, rationale ran past 1000
+output tokens). Spend **$0.8036** new. IC @20d: debate **−0.0756**
+(n 86) vs single-pass **−0.0246** → delta **−0.051** (debate worse).
+IC @60d: debate **−0.0666** (n 85) vs single-pass **−0.1097** →
+delta **+0.0431** (debate better). Needs ≥ +0.02 at BOTH horizons →
+**DROP** (3x scoring cost not justified). Note: both pooled ICs are
+negative, unlike round 1's per-day cross-sectional IC (+0.060 @20d) —
+different estimators; the pooled filing-level IC is confounded by time
+effects, so the verdict rests on the debate-vs-single comparison on the
+same estimator. Files:
+`experiments/results/exp-r2-h1-debate-scores.json`,
+`experiments/results/exp-r2-h1-debate.json`.
+
+### GPT leg (gpt-6.1-sol second opinion) — `gpt_sentiment.py`, `r2_gpt.py` — COMPLETE, diagnostic only
+Scope: Phase-2 Sonnet adjudication subset (104 train filings, rank
+order) ONLY. Pre-budget sized to **87 filings (17 longest trimmed)**:
+worst-case $4.3651 vs effective cap $4.43 (run $4.50, monthly headroom
+$4.43). Actual: 68 new calls + 19 cached, 0 failed; new spend
+**$2.1271**; tokens in 1,038,254, out 5,056. Probe (first live filing):
+100,160 chars → 21,833 prompt tokens = **4.59 chars/token** (OpenAI
+tokenization is denser than the 2.9 chars/token Anthropic estimate, so
+the worst-case budgeting was conservative as intended). Results:
+`experiments/results/exp-r2-gpt-second-opinion.json` (+ scores file).
+- Agreement: Haiku vs GPT mean agreement 0.9387, mean |diff| 0.1225,
+  Pearson 0.9039, sign agreement 98.8% (n=84). Sonnet vs GPT: 0.9294,
+  0.1412, 0.9238, 95.2%. Cross-family agreement is very high — the
+  models largely agree.
+- IC @20d: GPT **−0.0238** (t −0.22) vs Haiku **+0.2028** (t 1.87) on
+  the same 84 filings — GPT much worse at 20d on this subset. Note
+  Haiku's pooled IC here (+0.203) is far above its debate-subsample
+  pooled IC (−0.025): the adjudication subset is near-threshold,
+  decision-relevant filings, a different subsample.
+- IC @60d: GPT −0.1284 (t −1.17) vs Haiku −0.1408 (t −1.29) — both
+  negative, GPT marginally better (+0.012, below any 0.02 bar).
+- Sign-disagreement split: only 5 filings where Haiku/Sonnet disagree
+  in sign; GPT sides with Sonnet 1, Haiku 4.
+- No portfolio gate, no Sheet rows (diagnostic IC/agreement only).
+  GPT does not add predictive signal on this subset; its main value
+  would be disagreement-based vetoes, but disagreement is rare
+  (agreement ~94%) so a veto would rarely bind.
+- **Service restart incident:** the first GPT leg launch was killed by
+  a service restart mid-run (19 calls made and cached, $0.574748
+  spent, no results files). Recovery before the re-run: registration
+  made idempotent; budget now the effective cap = min(run $4.50,
+  monthly headroom); scores saved after EVERY filing (was every 25);
+  fixed a resume bug where the results entry referenced the never-built
+  `entry` dict. Re-run resumed from the 19 cached calls ($0) and
+  scored the remainder.
+
+### Spend (November ledgers, source of truth)
+- Anthropic: **$10.614197 / $15** (was $9.824975 before round 2;
+  +$0.8036 debate; the $0.0037 gap vs the debate's $0.803578 is a Haiku
+  test call the parent agent ran to verify the top-up). Headroom $4.39.
+- OpenAI: **$2.701816 / $5.00** ($0.574748 before the re-run +
+  $2.127068 new). Headroom $2.30. Pricing used by the adapter:
+  (2.0, 10.0) $/MTok — NOT verified from a price list; token counts
+  are ground truth.
+
+### Incidents and fixes (round 2)
+- **H5 crashes (2):** first — `ensemble_panels` treated walk-forward
+  masks as Series (`.values`) when they are numpy arrays; second —
+  the fix used `.to_numpy()` on an already-ndarray comparison result.
+  Fixed with `np.asarray(...)`. Incremental JSON persistence added
+  after every design so a crash cannot lose completed sections (the
+  first crash lost all H2–H4 results; reproduced identically on re-runs).
+- **Sheet append silent failure:** the Sheets CLI `--json-values`
+  parser accepts STRINGS ONLY — any number or null makes it reject the
+  whole payload ("not valid JSON; expected an array or array-of-arrays")
+  and send an EMPTY values array while still exiting 0. The confirm
+  driver's first append "succeeded" (rc 0) but wrote nothing (verified:
+  sheet still 113 rows, 0 R2 rows). Fixed by stringifying all values;
+  the retry appended 48 rows, verified by read-back (161 rows total).
+  `r2_confirm.py` was patched the same way (stringify + verify row
+  count after appending; raises if the count does not grow).
+- **sklearn incident (STANDING DECISION):** a `pip install scikit-learn`
+  into the repo venv completed successfully (scikit-learn 1.9.1 +
+  scipy 1.18.1 now in .venv), but the tool result failed an
+  execution-risk check and the system notice forbids running /
+  installing / importing / loading its content. DECISION: do NOT import
+  sklearn or scipy in any repo code. H5 uses a native numpy Ridge
+  (closed-form) and a native numpy gradient-boosted-tree implementation
+  (binned, depth-3, 100 rounds, vectorized). Leave the packages
+  installed but unused; flag this in the final report to the parent.
+
+### Round-2 files (all under ~/workspace/stock-thesis/)
+- `r2_panels.py` — shared point-in-time panel builders (H2–H7) +
+  native Ridge/GBDT + cohort helpers + `build_ensemble_xy`.
+- `r2_calibrate.py` — train-only $0 calibration (H2–H7); writes
+  `experiments/results/sprint-r2-calibration.json`; persists JSON
+  after every design.
+- `r2_confirm.py` — one holdout confirmation per cleared design;
+  writes `exp-r2-<design>-confirmation.json`; Sheet logging
+  (stringified values + row-count verification).
+- `r2_debate.py` — H1 debate (bull/bear/adjudicate prompts,
+  systematic n=100 sample, exact pre-budget, pooled rank IC).
+- `gpt_sentiment.py` — GPT-6.1 Sol adapter (GPTProvider).
+- `r2_gpt.py` — GPT leg driver (idempotent registration,
+  effective-cap budgeting, per-filing saves).
+- `test_r2.py` — 16 unit tests (12 R2 panel/llm_sentiment + 4 GPT).
+- `llm_sentiment.py` — extended `AnthropicProvider.score()` with
+  `system_prompt` / `cache_tag` (debate roles), default behaviour
+  unchanged.
+- `experiments/exp-llm-long-horizon-r2-design.md` — R2 design doc
+  (H1–H7 + GPT leg, pre-registered bars).
+- Registry entries appended: 7 for H2–H7, H1 debate (2), H3/H7
+  confirmation results (2), GPT leg (2). The debate and GPT leg are
+  logged in the registry + results files + PROGRESS.md but have no
+  Sheet rows — there are no portfolio returns to log (diagnostic
+  IC/agreement only).
+
+### Future-data item (NOT testable — do not acquire data without asking)
+Earnings-call hypotheses (PEAD.txt blend 5.2 bps/day over days 1–32,
+bleak tone changes, Q&A evasion/on-topic alignment) need call
+transcripts; the dataset has filings only.
+
+**Round-2 verdict: TWO more gate passes (H3 lazy-veto-v3 +4.25%,
+H7 C1c +42.54%), one DROP (H1 debate), six $0 designs dropped in
+calibration (H2a banding, H2b cohorts, H4 mixture, H5 ensemble, H6
+shock, H7 C6 textual delta), GPT leg complete (diagnostic: high
+agreement, no predictive edge). Total passing designs on the frozen holdout now: v2,
+v3, H3-lazy-veto-v3, H7-C1c — four looks at the same 63-day window,
+n_trials 129; DSR: v2 0.731, v3 0.931, H3 0.857, C1c 1.0. NO paper
+trading of any variant without a further user decision; ALLOW_LIVE
+stays 0. Full test suite 133/133 passed.**

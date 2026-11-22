@@ -1,0 +1,87 @@
+{
+  "experiment_id": "exp-r2-h7-runnerup",
+  "design": "h7-c1c-reversion-rsi",
+  "train": {
+    "cost_0bps": {
+      "total_return": 0.7722,
+      "sharpe": 0.696,
+      "trades": 198,
+      "avg_daily_turnover": 0.1173,
+      "max_drawdown": -0.2775,
+      "wf_median_sharpe": 1.292,
+      "wf_positive_folds": 3,
+      "wf_folds": 4
+    },
+    "cost_10bps": {
+      "total_return": 0.6406,
+      "sharpe": 0.593,
+      "trades": 198,
+      "avg_daily_turnover": 0.1173,
+      "max_drawdown": -0.2846,
+      "wf_median_sharpe": 1.178,
+      "wf_positive_folds": 3,
+      "wf_folds": 4
+    },
+    "cost_20bps": {
+      "total_return": 0.5187,
+      "sharpe": 0.493,
+      "trades": 198,
+      "avg_daily_turnover": 0.1173,
+      "max_drawdown": -0.2915,
+      "wf_median_sharpe": 1.067,
+      "wf_positive_folds": 3,
+      "wf_folds": 4
+    }
+  },
+  "holdout": {
+    "cost_0bps": {
+      "total_return": 0.4399884110622825,
+      "sharpe": 9.741,
+      "max_drawdown": -0.0717,
+      "hit_rate": 0.6032,
+      "trades": 31,
+      "avg_daily_turnover": 0.1619,
+      "deflated_sharpe": 1.0,
+      "sharpe_null_max": 0.0,
+      "alpha_annual_vs_spy": 1.5237,
+      "beta_vs_spy": -0.327,
+      "r_squared_vs_spy": 0.02
+    },
+    "cost_10bps": {
+      "total_return": 0.42539294502077984,
+      "sharpe": 9.22,
+      "max_drawdown": -0.0738,
+      "hit_rate": 0.6032,
+      "trades": 31,
+      "avg_daily_turnover": 0.1619,
+      "deflated_sharpe": 1.0,
+      "sharpe_null_max": 0.0,
+      "alpha_annual_vs_spy": 1.4833,
+      "beta_vs_spy": -0.31,
+      "r_squared_vs_spy": 0.018
+    },
+    "cost_20bps": {
+      "total_return": 0.41093045256535166,
+      "sharpe": 8.717,
+      "max_drawdown": -0.0759,
+      "hit_rate": 0.5873,
+      "trades": 31,
+      "avg_daily_turnover": 0.1619,
+      "deflated_sharpe": 1.0,
+      "sharpe_null_max": 0.0,
+      "alpha_annual_vs_spy": 1.4428,
+      "beta_vs_spy": -0.292,
+      "r_squared_vs_spy": 0.016
+    }
+  },
+  "n_trials_dsr": 129,
+  "method": "panel backtest, rebalance 5, min hold 10",
+  "gate": {
+    "sg1_holdout_net10_gt_v4_base": true,
+    "sg2_holdout_net20_gt_v4_base": true,
+    "sg3_holdout_net10_positive": true,
+    "verdict": "PASS",
+    "v4_base_holdout_net10": -0.0433,
+    "v4_base_holdout_net20": -0.0845
+  }
+}

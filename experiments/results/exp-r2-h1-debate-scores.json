@@ -1,0 +1,2086 @@
+{
+  "0000796343-23-000205": {
+    "ticker": "ADBE",
+    "filing_date": "2023-09-27",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows accelerating-to-steady recurring growth (Digital Media ARR up 10% to $14.60B, Creative ARR up ~9% from $10.98B to $11.97B, Creative revenue up 11%, Digital Experience subscription up 12%), a $15.72B RPO up 3%, strong cash flow ($5.71B operating cash, up 3%), and"
+    },
+    "bear": {
+      "score": 0.6,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows decelerating growth (total revenue up 10%, Digital Media ARR up 10%, Digital Experience subscription up 12%), rising operating expenses (up 9% in Q3, 12% YTD) against slower RPO growth of 3%, a pending $20 billion Figma acquisition with a $1 billion reverse term"
+    },
+    "adjudicated": {
+      "score": 0.1,
+      "confidence": 0.5,
+      "rationale": "Recurring revenue and ARR still grow about 10% with subscription revenue up 12%, but RPO growth slowed to 3%, operating expenses rose faster than revenue, operating cash flow grew only 3%, and the pending $20 billion Figma deal adds integration, financing, and $1 billion reverse-"
+    },
+    "single_pass": 0.35
+  },
+  "0001652044-23-000094": {
+    "ticker": "GOOGL",
+    "filing_date": "2023-10-25",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.82,
+      "confidence": 0.7,
+      "rationale": "Q3 2023 showed revenue up 11% to $76.7B, operating income up 25%, net income up 42%, Google Cloud swinging to profit with 22% revenue growth, YouTube subscriptions and paid clicks growing, a $52.3B buyback authorization remaining, and cost savings from workforce reductions and se"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows Google Network revenue declining, impressions and Google Network down, Network and Ad Manager weakness, FX headwinds, rising content acquisition and capex (~$21.2B for nine months with AI investment), large legal/EC fine exposure, $10.5B tax payment, and only mo"
+    },
+    "adjudicated": {
+      "score": 0.45,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows strong headline growth (revenue +11%, operating income +25%, Cloud profitability, Services and YouTube subscription growth, $52.3B buyback capacity) that outweighs the bear points of Network decline, capex of $21.2B, a $10.5B tax payment, and legal/EC exposure, "
+    },
+    "single_pass": 0.6
+  },
+  "0001018724-23-000018": {
+    "ticker": "AMZN",
+    "filing_date": "2023-10-27",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.8,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows strong growth (Q3 net sales +13%, AWS +12%, operating income rising from $2.5B to $11.2B YoY, trailing free cash flow swinging to $21.4B from -$19.7B), a Q4 guidance of 7-12% sales growth with $7-11B operating income versus $2.7B prior year, and expected lower c"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt flags slowing AWS growth (12% in Q3 versus 27% a year earlier), rising cash taxes expected to increase significantly, Q4 operating income guidance of $7-11B that is below the prior-year level of $2.7B only in relative terms but sits within a wide range, a free cash fl"
+    },
+    "adjudicated": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "Excerpt shows strong top-line growth (Q3 sales +13%), a sharp operating income and trailing free cash flow swing to $21.4B, and Q4 guidance implying meaningful profit growth, outweighing the AWS deceleration to 12%, rising cash taxes, and wide guidance range."
+    },
+    "single_pass": 0.55
+  },
+  "0000732717-23-000057": {
+    "ticker": "T",
+    "filing_date": "2023-10-31",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.3,
+      "confidence": 0.6,
+      "rationale": "The excerpt offers some support through a sizable $12,000 undrawn revolver, investment-grade covenant compliance, the 144 million remaining buyback shares, and a stable $0.8325 per-share dividend, but it contains no earnings, revenue, or growth data and shows dividend payments fa"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows dividends paid fell sharply to $6,116 from $7,845 while vendor financing cash payments rose to $4,736 and $3,336 of vendor financing payables (with $2,092 due within a year) sit on the balance sheet, alongside new high-yield preferred interests (6.85%, 6.8%) tha"
+    },
+    "adjudicated": {
+      "score": -0.2,
+      "confidence": 0.55,
+      "rationale": "The excerpt shows dividend payments down sharply ($6,116 vs $7,845), rising vendor financing cash outflows ($4,736 vs $4,237) and $3,336 of vendor financing payables with $2,092 due within a year, plus costly new preferred interests (6.85%, 6.8%), which signal financing strain, p"
+    },
+    "single_pass": 0.05
+  },
+  "0001193125-23-268341": {
+    "ticker": "USB",
+    "filing_date": "2023-11-01",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.4,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows rising net interest income (up 27% year-to-date), growing fee lines like trust fees and commercial products revenue, a 0.91% ROA and a 2.94% year-to-date NIM, and a stable liquidity position of about $310 billion, but these are offset by margin compression in Q3"
+    },
+    "bear": {
+      "score": 0.6,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows EPS down about 22% year over year, ROE falling from 15.8% to 11.9%, net interest margin compressing on deposit mix and pricing, noninterest-bearing deposits down 28.8% year to date, nonperforming assets up 28.9%, commercial real estate nonaccrual and charge-off "
+    },
+    "adjudicated": {
+      "score": -0.3,
+      "confidence": 0.6,
+      "rationale": "Q3 EPS fell about 22% and ROE dropped to 11.9%, with Q3 NIM compressing, noninterest-bearing deposits down 28.8% YTD, nonperforming assets up 28.9%, and provisions and charge-offs rising, including in commercial real estate. These outweigh the bull points of 27% YTD net interest "
+    },
+    "single_pass": -0.35
+  },
+  "0001628280-23-036256": {
+    "ticker": "MAR",
+    "filing_date": "2023-11-02",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.82,
+      "confidence": 0.75,
+      "rationale": "The excerpt shows strong RevPAR growth (+8.8% Q3, +17.5% nine months), rising fee revenues (gross fees +21% nine months), expanding pipeline of ~557,000 rooms and unit growth guidance of 4.2-4.5%, plus heavy capital returns ($2.99B buybacks, $435M dividends) and a $2.4B operating"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt flags decelerating U.S. & Canada RevPAR growth ('continued to stabilize'), a short booking window, rising interest expense (up 43% YTD) and rising leverage from debt-funded buybacks ($2,988M repurchases versus $2,419M operating cash flow), a current ratio of 0.5, an u"
+    },
+    "adjudicated": {
+      "score": 0.45,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows strong RevPAR growth (+17.5% nine months), fee revenue up 21% and a large pipeline with 4.2-4.5% unit growth, outweighing the bear points of stabilizing U.S. & Canada RevPAR, a short booking window, 43% higher interest expense, debt-funded buybacks exceeding ope"
+    },
+    "single_pass": 0.6
+  },
+  "0001534701-23-000148": {
+    "ticker": "PSX",
+    "filing_date": "2023-11-03",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.68,
+      "confidence": 0.6,
+      "rationale": "The excerpt supports a bullish case via raised shareholder return targets ($13\u201315B through 2024), a $5B buyback authorization increase, over $3B of non-core asset sales, cost-reduction targets raised to $1.1B run-rate, and a 95% refinery utilization rate, though weaker Q3 earning"
+    },
+    "bear": {
+      "score": 0.55,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows sharply lower Q3 and nine-month earnings and pre-tax income (Refining income down ~$1.7B YTD, realized refining margins falling from $22.17 to $18.30/bbl), operating cash flow down to $4.8B from $6.1B, debt-to-capital rising to 38% from 34% with total debt up to"
+    },
+    "adjudicated": {
+      "score": -0.1,
+      "confidence": 0.5,
+      "rationale": "Core earnings and cash flow are clearly weaker (refining margins fell from $22.17 to $18.30/bbl, nine-month operating cash flow dropped to $4.8B, and debt-to-capital rose to 38%), but the year-over-year earnings decline is inflated by a $3B one-time 2022 DCP merger gain, and the "
+    },
+    "single_pass": 0.25
+  },
+  "0000032604-23-000044": {
+    "ticker": "EMR",
+    "filing_date": "2023-11-13",
+    "form": "10-K",
+    "bull": {
+      "score": 0.78,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows strong FY2023 growth (sales up 10%, underlying sales up 10%, adjusted EPS up 22% to $4.44), margin expansion to 49.0% gross and 23.4% adjusted EBITA, record free cash flow up 35% to $2.36B, a strong balance sheet with net debt-to-net capital near 0.5%, and FY202"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows bearish points such as decelerating Discrete Automation demand in H2 FY23, AspenTech segment margin collapse to a loss driven by $486M amortization, rising operating working capital (8.5% of sales from 3.5%), a sharply lower FY24 GAAP EPS outlook ($3.82\u2013$4.02) v"
+    },
+    "adjudicated": {
+      "score": 0.35,
+      "confidence": 0.6,
+      "rationale": "FY2023 shows solid underlying growth (10%), expanding margins, record free cash flow up 35%, and a strong balance sheet, and the FY2024 adjusted EPS guide of $5.15\u2013$5.35 implies continued growth. Offsetting this are rising working capital (8.5% of sales), AspenTech's losses from "
+    },
+    "single_pass": 0.45
+  },
+  "0000104169-23-000132": {
+    "ticker": "WMT",
+    "filing_date": "2023-11-30",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.8,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows accelerating growth (nine-month net sales up 6.2%, U.S. comparable sales up 5.5% with transaction and ticket growth), operating income up about 33% for the nine months with margin expansion, improving ROI (14.1% vs 12.8%), free cash flow up to $4.3B, and ongoing"
+    },
+    "bear": {
+      "score": 0.4,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows bearish pressure points such as a thin 3.9% quarterly operating margin, working capital deficit widening to $15.8B, sharply lower Q3 operating expense leverage that was largely a lapping of one-time opioid charges, slowing Walmart U.S. operating income growth (d"
+    },
+    "adjudicated": {
+      "score": 0.4,
+      "confidence": 0.6,
+      "rationale": "Underlying sales growth, free cash flow gains, and a roughly 33% nine-month operating income increase support a positive view, but much of the margin and earnings improvement reflects lapping one-time opioid charges, and Q3 Walmart U.S. operating income declined while the working"
+    },
+    "single_pass": 0.5
+  },
+  "0001065280-24-000030": {
+    "ticker": "NFLX",
+    "filing_date": "2024-01-26",
+    "form": "10-K",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows revenue up 7%, operating margin expanding from 18% to 21%, paid memberships up 13% to 260 million with record net additions of about 29.5 million, free cash flow rising to $6.9 billion from $1.6 billion, and $6 billion in buybacks with $8.4 billion authorization"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows slowing ARM decline in APAC and UCAN, a 1% drop in average revenue per membership, a 3-point margin gain driven partly by reduced technology spend, heavy fixed content commitments (~$21.7B), $14.6B of notes, and risk factors on competition, ad-tier novelty, and "
+    },
+    "adjudicated": {
+      "score": 0.45,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows strong operating momentum (revenue up 7%, margin up 3 points to 21%, free cash flow of $6.9B versus $1.6B, $6B buybacks with $8.4B remaining, and record paid net additions of 29.5M), which outweighs bear concerns about 1% lower ARM, APAC ARM decline of 10%, roug"
+    },
+    "single_pass": 0.6
+  },
+  "0000318154-24-000011": {
+    "ticker": "AMGN",
+    "filing_date": "2024-02-14",
+    "form": "10-K",
+    "bull": {
+      "score": 0.6,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong volume growth in several growth brands (Repatha, TEZSPIRE, EVENITY, Prolia, BLINCYTO), a $954M Horizon contribution, 9% product sales growth, $8.5B operating cash flow, a 6% dividend increase, and a promising pipeline, but these are offset by heavy debt f"
+    },
+    "bear": {
+      "score": 0.72,
+      "confidence": 0.8,
+      "rationale": "The excerpt shows a bearish setup: operating income fell 17% and EPS growth was only 3% on a 21% jump in operating expenses, with net selling prices declining (including for ENBREL, now subject to IRA Medicare price setting and a Colorado PDAB review), a $63.2B long-term debt loa"
+    },
+    "adjudicated": {
+      "score": -0.2,
+      "confidence": 0.6,
+      "rationale": "Solid volume growth, a $954M Horizon contribution, and a dividend increase are offset by a 17% drop in operating income, a 21% rise in operating expenses, guided 2024 net price declines, IRA and state PDAB pressure on ENBREL, and long-term debt rising to $63.2B with ratings downg"
+    },
+    "single_pass": -0.1
+  },
+  "0001628280-24-005350": {
+    "ticker": "EQIX",
+    "filing_date": "2024-02-16",
+    "form": "10-K",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong recurring revenue (95% of total, up 13% to $8.19B), adjusted EBITDA up 10% to $3.70B, AFFO up 11% to $3.02B, income from operations up 20%, a sticky customer base (over 90% of bookings from existing customers), and a network-effect platform with strong de"
+    },
+    "bear": {
+      "score": 0.6,
+      "confidence": 0.75,
+      "rationale": "The excerpt shows cabinet utilization falling from 82% to 79%, heavy and rising capital needs (~$2.0B unaccrued capex commitments, $13.2B senior notes, rising interest expense to $402M), power constraints and rising utility costs compressing margins, rising rent and lease renewal"
+    },
+    "adjudicated": {
+      "score": 0.25,
+      "confidence": 0.6,
+      "rationale": "Strong recurring revenue growth, 13% revenue and 10% adjusted EBITDA growth, and sticky customers support the stock, but falling cabinet utilization, heavy capex and debt commitments, rising interest expense, power cost pressure and lease renewal risk partly offset these positive"
+    },
+    "single_pass": 0.5
+  },
+  "0000036104-24-000018": {
+    "ticker": "USB",
+    "filing_date": "2024-02-20",
+    "form": "10-K",
+    "bull": {
+      "score": 0.05,
+      "confidence": 0.9,
+      "rationale": "The excerpt contains only cross-references to MD&A and Risk Factors in an external annual report, with no financial results, guidance, or operational facts, so there is essentially no bullish case that can be drawn from it alone."
+    },
+    "bear": {
+      "score": 0.05,
+      "confidence": 0.9,
+      "rationale": "The excerpt only incorporates Item 7 (MD&A) and Item 1A (Risk Factors) by reference to the 2023 Annual Report and contains no financial results, guidance, risks, or other facts, so it provides no evidence for a bearish case."
+    },
+    "adjudicated": {
+      "score": 0.0,
+      "confidence": 0.9,
+      "rationale": "The excerpt is purely a cross-reference to MD&A and Risk Factors in the 2023 Annual Report with no financial results, guidance, or risk facts, so neither the bull nor bear case has evidentiary support and the expected directional effect is neutral."
+    },
+    "single_pass": 0.0
+  },
+  "0000063908-24-000072": {
+    "ticker": "MCD",
+    "filing_date": "2024-02-22",
+    "form": "10-K",
+    "bull": {
+      "score": 0.82,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows strong 2023 momentum (global comparable sales +9.0%, operating income +24%, diluted EPS +39%, free cash flow +32% to $7.3B), a 10% dividend increase, $7.6B returned to shareholders, and a clear long-term plan (50,000 units by 2027, loyalty sales growth to $45B) "
+    },
+    "bear": {
+      "score": 0.6,
+      "confidence": 0.6,
+      "rationale": "Reported 2023 growth is flattered by lapping 2022 charges (non-GAAP net income rose only 17%, and non-GAAP operating income 16%), comparable sales growth was driven mainly by price rather than disclosed guest counts, and 2024 guidance points to slower unit-driven Systemwide growt"
+    },
+    "adjudicated": {
+      "score": 0.45,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows strong reported 2023 results, a 10% dividend increase, and a credible unit-growth plan, with comparable sales up 9.0% and free cash flow up 32%, though the bear points about 2022 charges flattering growth, price-driven comps, and a Middle East drag on 2024 Syste"
+    },
+    "single_pass": 0.6
+  },
+  "0001551182-24-000006": {
+    "ticker": "ETN",
+    "filing_date": "2024-02-29",
+    "form": "10-K",
+    "bull": {
+      "score": 0.4,
+      "confidence": 0.6,
+      "rationale": "The excerpt is almost entirely risk disclosure, with only brief positive signals such as management's belief that Eaton is well positioned to capitalize on electrification and climate-related secular trends, diversification of end markets, and the statement that most COVID disrup"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt lays out a fairly broad set of risks (persistent raw material, labor and logistics inflation that may not be fully passed through, cybersecurity and GDPR fine exposure, tariff and tax uncertainty, end-market cyclicality, and climate-related costs), but it is generic r"
+    },
+    "adjudicated": {
+      "score": -0.2,
+      "confidence": 0.6,
+      "rationale": "The excerpt is overwhelmingly a generic risk-factor disclosure (COVID, cyber, climate, input inflation, tariffs, tax, IP, litigation) with only brief, unquantified positive framing about electrification and diversification, so the net expected effect is mildly negative to neutral"
+    },
+    "single_pass": -0.2
+  },
+  "0000004962-24-000031": {
+    "ticker": "AXP",
+    "filing_date": "2024-04-19",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.8,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows strong Q1 2024 results (net income up 34%, EPS up 39% to $3.33, revenue up 11%, ROE 34.3%), a 17% dividend increase, $1.6B returned to shareholders with buybacks at $213.59 average, billed business growth of 6%, best-in-class credit metrics, and an expected size"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows rising credit stress (net write-off rate up to 2.3% from 1.7%, provisions up 20%, Card Member loans reserves rising, 30+ day delinquencies up), a 5-point rise in deposit funding costs (savings rates 4.2% vs 3.4%), a 2.3% discount revenue rate slipping, pending r"
+    },
+    "adjudicated": {
+      "score": 0.35,
+      "confidence": 0.6,
+      "rationale": "Strong Q1 2024 earnings growth (EPS +39%, ROE 34.3%), a 17% dividend increase, and buybacks outweigh rising credit stress, higher deposit costs, and pending late-fee and EU cobrand regulatory risks, though the quarter was helped by a $196M one-time rewards-model benefit."
+    },
+    "single_pass": 0.6
+  },
+  "0000101829-24-000012": {
+    "ticker": "RTX",
+    "filing_date": "2024-04-23",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "Q1 2024 net sales rose 12% to $19.3B with organic growth of $2.1B across all three segments, Raytheon operating profit nearly doubled (up 74%) on a $0.4B CIS gain, backlog grew to a record-level $202B, and operating cash flow swung to $342M from -$863M, though these gains are par"
+    },
+    "bear": {
+      "score": 0.6,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows a $405M Middle East advance-payment exposure with no expected execution, a $1.3B 2024 Powder Metal cash outflow estimate, a $175M titanium charge, Collins margin compression (14.7% to 12.7%), Pratt & Whitney margin erosion (7.9% to 6.4%), negative credit outlook"
+    },
+    "adjudicated": {
+      "score": -0.25,
+      "confidence": 0.6,
+      "rationale": "Headline growth and a record $202B backlog are real, but Q1 earnings were lifted by one-time items (CIS gain, $275M tax benefit), segment margins compressed at Collins and Pratt & Whitney, and the excerpt flags a ~$1.3B 2024 Powder Metal cash outflow, $405M of at-risk Middle East"
+    },
+    "single_pass": 0.3
+  },
+  "0001437749-24-013206": {
+    "ticker": "UNP",
+    "filing_date": "2024-04-25",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.6,
+      "confidence": 0.55,
+      "rationale": "The excerpt shows EPS up to $2.69 from $2.67 on flat-to-slightly-lower revenue, operating ratio improving 1.4 points to 60.7%, operating income up 3%, free cash flow more than doubling to $525M, locomotive productivity up 10%, intermodal and manifest service indices up sharply, a"
+    },
+    "bear": {
+      "score": 0.4,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows freight revenue down 1%, volume down 1% with weakness in coal (-18%), bulk (-4%), intermodal (-6%), and metals (-4%), net income flat, debt-to-net income only slightly improved, and a Q1 boost from a one-time settlement and a $107M real estate gain in the prior "
+    },
+    "adjudicated": {
+      "score": 0.1,
+      "confidence": 0.5,
+      "rationale": "Operating-ratio gains, operating income up 3%, productivity and service improvements, and a doubled free cash flow support the stock, but falling volume and revenue, flat net income, a 2023 real estate gain that flatters the prior-year comparison, and a one-time 2024 settlement t"
+    },
+    "single_pass": 0.2
+  },
+  "0000004904-24-000046": {
+    "ticker": "AEP",
+    "filing_date": "2024-04-30",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows a sharp Q1 2024 earnings swing (net income attributable to common shareholders up to $208.1M from $40.6M, mostly from one-time tax benefits), a $32M increase in weather-normalized margins, a 38% rise in heating degree days, and pending rate cases (e.g., a $218M "
+    },
+    "bear": {
+      "score": 0.55,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows a sharp drop in fuel revenue ($39M), a $144M income tax benefit that flatters Q1 earnings, a $13M O&M hit from a Dolet Hills disallowance, large pending refund exposures (Texas AFUDC refunds up to $200M, FERC NOLC refunds, CCR rule costs expected to be material)"
+    },
+    "adjudicated": {
+      "score": -0.1,
+      "confidence": 0.5,
+      "rationale": "The Q1 earnings jump is mostly non-recurring tax benefits, and the excerpt carries significant unresolved refund and disallowance exposure (Texas AFUDC refunds up to $200M, FERC NOLC refunds, a material CCR rule cost estimate), which likely outweighs the pending rate-case upside "
+    },
+    "single_pass": 0.1
+  },
+  "0000089800-24-000087": {
+    "ticker": "SHW",
+    "filing_date": "2024-04-30",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.6,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows margin expansion (gross margin up to 47.2% from 44.5%), diluted EPS up 7.1%, Consumer Brands income up 63.5%, a dividend increase to $0.715 from $0.605, ongoing buybacks, strong cash returns and $2.445B of unused credit capacity, though sales fell 1.4%, SG&A ros"
+    },
+    "bear": {
+      "score": 0.55,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows Q1 2024 net sales down 1.4% with volume declines in Consumer Brands and North American Performance Coatings, SG&A up 240 bps as a share of sales, a working capital deficit and current ratio of 0.78 driven by a $1.349B jump in current debt, rising total debt to $"
+    },
+    "adjudicated": {
+      "score": 0.1,
+      "confidence": 0.5,
+      "rationale": "Earnings per share rose 7.1%, gross margin expanded to 47.2%, and the dividend was raised, but net sales fell 1.4% on volume declines, SG&A rose 240 bps as a share of sales, Paint Stores pre-tax income fell 6.4%, operating cash flow was negative, and the current ratio dropped to "
+    },
+    "single_pass": 0.3
+  },
+  "0000804328-24-000039": {
+    "ticker": "QCOM",
+    "filing_date": "2024-05-01",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.6,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong bullish signals: Q2 net income up 37%, QCT EBT margin expanding to 29% from 27%, cash and marketable securities rising to $13.9B from $11.3B alongside $6.5B operating cash flow, a dividend increase to $0.85, buybacks, and a QTL licensing margin of 71%, th"
+    },
+    "bear": {
+      "score": 0.72,
+      "confidence": 0.8,
+      "rationale": "The excerpt shows IoT revenue down sharply (-$690M in six months), elevated customer and company inventory with expected continued IoT drawdowns, Huawei revenue expected to end after this calendar year, vertical integration by Apple, Samsung and Chinese OEMs, and heavy China and "
+    },
+    "adjudicated": {
+      "score": 0.05,
+      "confidence": 0.5,
+      "rationale": "Solid cash generation, a dividend increase, buybacks, and expanding QCT and QTL margins are offset by flat Q2 revenue (+1%), a 37% net income gain driven largely by non-operating investment gains, and explicit warnings on IoT destocking, elevated inventory, the end of Huawei reve"
+    },
+    "single_pass": 0.1
+  },
+  "0001571949-24-000011": {
+    "ticker": "ICE",
+    "filing_date": "2024-05-02",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong Q1 2024 growth in revenues less transaction-based expenses (+21%), adjusted operating income (+18%), adjusted diluted EPS (+5%), operating cash flow (+54%), and free cash flow, alongside record energy volumes, a growing data services ASV (+4.6%), a $160M "
+    },
+    "bear": {
+      "score": 0.62,
+      "confidence": 0.6,
+      "rationale": "Reported EPS growth leans on a one-time $160M PennyMac gain, while adjusted EPS rose only 5% and operating margin fell from 51% to 46% as operating expenses jumped 32%, Mortgage Technology's operating loss widened to $48M, interest expense rose 37%, and cash equities, CDS clearin"
+    },
+    "adjudicated": {
+      "score": 0.1,
+      "confidence": 0.5,
+      "rationale": "Strong adjusted operating income (+18%), free cash flow (+52%), and energy volumes (+25%) support the bull case, but the reported EPS lift comes from a one-time $160M PennyMac gain, adjusted EPS rose only 5%, margins compressed, Mortgage Technology losses widened, and interest ex"
+    },
+    "single_pass": 0.4
+  },
+  "0000831001-24-000051": {
+    "ticker": "C",
+    "filing_date": "2024-05-03",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.55,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong revenue growth in Services, Banking (investment banking fees up 32%, DCM/ECM recovery), and USPB, a CET1 ratio of 13.5% above its 12.3% requirement, and a maintained $0.53 dividend with buybacks resumed, but offsets include a 27% net income decline, risin"
+    },
+    "bear": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows net income down 27%, EPS down 28%, cost of credit up 20% with cards net credit losses up 74-77% and management guiding higher 2024 card loss rates, expenses up 7% with further repositioning costs flagged, Markets revenue down 7%, falling deposits, a lower supple"
+    },
+    "adjudicated": {
+      "score": -0.3,
+      "confidence": 0.6,
+      "rationale": "Q1 2024 shows net income down 27% and EPS down 28%, with cost of credit up roughly 20% and management guiding higher 2024 card loss rates, plus rising expenses and further repositioning costs, which outweigh bright spots in Banking/IB fees, Services growth, a 13.5% CET1 ratio abo"
+    },
+    "single_pass": -0.2
+  },
+  "0001558370-24-007058": {
+    "ticker": "SPG",
+    "filing_date": "2024-05-07",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows Q1 2024 diluted EPS up to $2.25 from $1.38, Real Estate FFO per share up to $2.91 from $2.82, Portfolio NOI up 3.9%, rising occupancy and base rents (e.g., U.S. Malls and Premium Outlets occupancy 95.5% vs 94.4%, rent up 3.0%), a $1.2 billion ABG sale, a raised "
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "Q1 EPS jumped to $2.25 mainly on a one-time $414.8M ABG gain, while Real Estate FFO per share rose only $0.09 (about 3%) and unconsolidated income fell $56.2M on platform losses (SPARC, JCP), interest expense rose $31.2M, and the effective borrowing rate and variable-rate cost cl"
+    },
+    "adjudicated": {
+      "score": 0.3,
+      "confidence": 0.6,
+      "rationale": "Core operations improved, with portfolio NOI up 3.9%, U.S. Malls and Premium Outlets occupancy up 110 bps, base rent up 3.0%, Real Estate FFO per share up about 3%, and a higher Q2 dividend, though the headline EPS jump is driven by the one-time $414.8M ABG gain and is offset by "
+    },
+    "single_pass": 0.5
+  },
+  "0001327567-24-000017": {
+    "ticker": "PANW",
+    "filing_date": "2024-05-21",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong subscription-driven growth (total revenue up 15.3% in Q3, subscription and support up 19.6%, gross margin expanding to 74.1%, operating income up to $176.7M from $78.7M), growing cash and investments to $6.4B, $2.6B free cash flow for nine months, and a $"
+    },
+    "bear": {
+      "score": 0.55,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows decelerating billings (3.4% in Q3 vs 25.6% prior year), flat product revenue, a $180.5M litigation accrual, heavy reliance on three distributors (46.1% of revenue), rising customer financing and deferred payments, sizable share-based compensation ($263.5M in the"
+    },
+    "adjudicated": {
+      "score": 0.1,
+      "confidence": 0.5,
+      "rationale": "Strong subscription growth, margin expansion, and $2.6B of nine-month free cash flow support the stock, but the sharp billings slowdown to 3.4%, flat product revenue, the $180.5M litigation accrual, and customer financing pressure offset much of that, and the $1.55B nine-month ne"
+    },
+    "single_pass": -0.1
+  },
+  "0000723125-24-000019": {
+    "ticker": "MU",
+    "filing_date": "2024-06-27",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.8,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows a sharp recovery from a loss-making 2023 to Q3 2024 revenue up 82% year-over-year, gross margin rising from -18% to 27%, improving ASPs and reduced industry supply via structural wafer capacity cuts, plus a $10 billion buyback authorization with $6.89 billion al"
+    },
+    "bear": {
+      "score": 0.7,
+      "confidence": 0.65,
+      "rationale": "The recovery looks cyclical and partly flattered by one-time tailwinds (about $987M of lower costs from previously written-down inventory and $267M of other operating income in the nine months), while the company still posted a nine-month net loss, faces an $8.0B capex plan again"
+    },
+    "adjudicated": {
+      "score": 0.45,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows a strong rebound in revenue (+82% YoY in Q3), gross margin swinging to 27% and a sizable buyback capacity, but the nine-month period is still a net loss, roughly $987M of margin benefit came from previously written-down inventory, and the ~$8.0B capex plan and c"
+    },
+    "single_pass": 0.6
+  },
+  "0000089800-24-000105": {
+    "ticker": "SHW",
+    "filing_date": "2024-07-23",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows Q2 2024 diluted EPS up 14% to $3.50, EBITDA up 12.1% with margin at 22.9% of sales, gross margin expanding to 48.8% from 46.0% on moderating raw material costs, Paint Stores same-store sales up 2.4%, a dividend increase of about 18%, and heavy buybacks, though w"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows bearish pressure points: Consumer Brands sales down 10.7% with soft DIY demand, first-half SG&A up 170 bps as a share of sales, working capital deficit with current ratio of 0.81, total debt rising to $10.3B against only $200M cash, short-term borrowings up shar"
+    },
+    "adjudicated": {
+      "score": 0.4,
+      "confidence": 0.6,
+      "rationale": "Strong Q2 earnings growth, gross margin expansion, Paint Stores comps, and a dividend increase with buybacks outweigh the Consumer Brands weakness, rising SG&A, and higher short-term borrowings/working capital deficit, which are real but manageable given $2.3B of unused credit ca"
+    },
+    "single_pass": 0.6
+  },
+  "0000732717-24-000053": {
+    "ticker": "T",
+    "filing_date": "2024-07-25",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.4,
+      "confidence": 0.6,
+      "rationale": "The excerpt supports a modest bullish case through debt reduction (net repayments of about $6.2B in the first half, with $690M net commercial paper borrowings offset by $6.9B of long-term repayments), a stable $0.5550 per-share dividend, a $12B undrawn revolver, and a 4.2% weight"
+    },
+    "bear": {
+      "score": 0.55,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows $13.3B cash used in financing in the first half, $6.9B of long-term debt repayments against $126B of notes outstanding, $5.2B maturing within a year at a 5.5% short-term rate, vendor financing payments falling from $3.8B to $1.4B, and a newly disclosed cybersecu"
+    },
+    "adjudicated": {
+      "score": -0.1,
+      "confidence": 0.5,
+      "rationale": "The excerpt shows meaningful debt paydown, a stable dividend, and an undrawn $12B revolver, but also $13.3B of financing outflows, $5.2B maturing within a year at a 5.5% short-term rate, a sharp drop in vendor financing payments, and a newly disclosed cybersecurity incident, leav"
+    },
+    "single_pass": -0.15
+  },
+  "0000004904-24-000081": {
+    "ticker": "AEP",
+    "filing_date": "2024-07-30",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.55,
+      "confidence": 0.5,
+      "rationale": "Load growth (six-month KWh sales up about 4.7%, with residential, commercial and industrial all higher), large rate-case and securitization wins (AEP Texas settlement approving $1.2B of prudent investment, Indiana and Michigan base rate increases, Louisiana storm securitization o"
+    },
+    "bear": {
+      "score": 0.72,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows a sharp Q2 2024 swing to a $70.1M loss driven by a $160M probable revenue refund (Turk Plant/2012 Texas rate case), a $14M Dolet Hills disallowance, rising O&M and interest-related pressures, a $334.7M plant-retirement regulatory asset not earning a return, a $1"
+    },
+    "adjudicated": {
+      "score": -0.35,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows a sharp Q2 2024 loss driven by a one-time $160M Turk Plant refund provision, Dolet Hills and other disallowances, and higher O&M and wildfire-related risk, which outweigh the positive load growth and favorable rate-case outcomes (AEP Texas settlement, Michigan a"
+    },
+    "single_pass": -0.15
+  },
+  "0000766704-24-000033": {
+    "ticker": "WELL",
+    "filing_date": "2024-07-30",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong growth and balance-sheet improvement: Q2 2024 NICS and FFO rose, SSNOI grew 8% (YTD 11%), interest and fixed-charge coverage improved to 5.59x and 5.21x, net debt to book capitalization fell from 40% to 27%, occupancy kept rising, a 10% dividend increase "
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows Triple-net NOI down 39% YoY and Q2 NOI down sequentially from Q1 ($713.6M vs $762.8M), with an $88M rent write-off tied to RIDEA conversions, rising share issuance (43M shares, ~$4.0B gross proceeds) diluting per-share metrics, FFO per share falling 12% YoY, and"
+    },
+    "adjudicated": {
+      "score": 0.3,
+      "confidence": 0.6,
+      "rationale": "Same-store NOI growth of 8% in Q2 (11% YTD), a sharp deleveraging with net debt to book capitalization falling from 40% to 27%, higher coverage ratios, and a 10% dividend increase outweigh the bear points, which are partly one-time (the $88M RIDEA-related write-off) and offset by"
+    },
+    "single_pass": 0.6
+  },
+  "0001075531-24-000041": {
+    "ticker": "BKNG",
+    "filing_date": "2024-08-01",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows accelerating merchant revenue (+24%), revenue up 7% with constant-currency growth of about 9%, full-year guidance for gross bookings above 6% and revenue above 7%, a $6.9B deferred bookings float, $3.5B of buybacks in six months with $10.6B remaining authorizati"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows decelerating room night growth (7% in Q2 vs 9% in Q1), a 1% constant-currency ADR decline, Q3 guidance for only 2-4% revenue and low-single-digit operating income growth, rising marketing and sales costs as merchant mix grows, lower performance marketing ROIs, a"
+    },
+    "adjudicated": {
+      "score": 0.1,
+      "confidence": 0.5,
+      "rationale": "Strong constant-currency revenue growth, a full-year gross bookings and revenue outlook above 6% and 7%, and a $10.6B buyback runway support the stock, but decelerating room nights, a 1% ADR decline, a sharply weaker Q3 revenue guide (2-4%) and low-single-digit operating income g"
+    },
+    "single_pass": -0.15
+  },
+  "0000072903-24-000172": {
+    "ticker": "XEL",
+    "filing_date": "2024-08-01",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong six-month ongoing EPS growth ($1.42 vs $1.28), a reaffirmed 2024 guidance range of $3.50-$3.60 with a 5-7% long-term EPS and dividend growth framework, and a large regulated capital pipeline (e.g., $1.9B Colorado wildfire plan, multiple renewable RFPs, an"
+    },
+    "bear": {
+      "score": 0.68,
+      "confidence": 0.6,
+      "rationale": "Rising capex funded by debt has pushed interest charges, depreciation, and financing needs sharply higher, while operating cash flow fell $215M and several pending rate cases point to ROEs well below requested levels (e.g., PSCo staff and UCA proposing 8.89% to 9.20% against a 10"
+    },
+    "adjudicated": {
+      "score": 0.15,
+      "confidence": 0.5,
+      "rationale": "Year-to-date ongoing EPS rose to $1.42 from $1.28 and 2024 guidance was reaffirmed, supported by rate outcomes and a large capital pipeline, but the excerpt also shows operating cash flow down $215M, rising debt-funded interest and depreciation, and settled or proposed ROEs well "
+    },
+    "single_pass": 0.3
+  },
+  "0001156375-24-000149": {
+    "ticker": "CME",
+    "filing_date": "2024-08-05",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong six-month and quarterly revenue growth (Q2 revenue up 13%, net income up 14%, diluted EPS up 13%), record-level volume growth across most product lines, a 2024 fee increase supporting rates, rising market data and other revenues, and a strong balance shee"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows investment income and non-operating income falling sharply (investment income down 33% in Q2, other non-operating expense down 34%, non-operating income down 27% for six months), cash fell from $2.9B to $1.8B, cash-markets fee revenue is shrinking with European "
+    },
+    "adjudicated": {
+      "score": 0.3,
+      "confidence": 0.6,
+      "rationale": "Core operating momentum is strong, with Q2 revenue up 13%, volumes up 14%, a fee increase and rising market data and other revenue, but the six-month net income gain is only 5% because non-operating income fell 27% on lower investment income, and cash-markets volumes and notional"
+    },
+    "single_pass": 0.5
+  },
+  "0001551152-24-000031": {
+    "ticker": "ABBV",
+    "filing_date": "2024-08-07",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows strong growth in Skyrizi (+46%) and Rinvoq (+59%) offsetting the Humira erosion, multiple FDA and EC approvals, positive Phase 3 readouts, a Rinvoq head-to-head win over dupilumab, and a rising dividend and ongoing buybacks, though weak Humira, rising interest e"
+    },
+    "bear": {
+      "score": 0.6,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows a steep Humira decline (down 32% globally for six months), only 2.6% reported revenue growth, heavy leverage from $15B in new notes and $1.5B-plus contingent consideration charges, a $1.0B-plus shift in SG&A and R&D costs, a CRL for ABBV-951, discontinued navito"
+    },
+    "adjudicated": {
+      "score": 0.2,
+      "confidence": 0.5,
+      "rationale": "Skyrizi (+46%) and Rinvoq (+59%) growth, multiple approvals, and a head-to-head win support the franchise, but Humira's 32% decline, only 2.6% reported revenue growth, the ABBV-951 CRL, the navitoclax discontinuation, and heavy new debt temper the outlook."
+    },
+    "single_pass": 0.35
+  },
+  "0000731766-24-000262": {
+    "ticker": "UNH",
+    "filing_date": "2024-08-09",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.55,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows revenue growth of 6% and Optum revenue up 12%, a dividend increase to $8.40 annually, active buybacks with 44 million shares authorized, a strong A-range credit rating, 1.6 million more domestic people served, and Optum Rx and Optum Health growth, though it is o"
+    },
+    "bear": {
+      "score": 0.72,
+      "confidence": 0.8,
+      "rationale": "The excerpt shows a sharp collapse in earnings (net earnings down 72% for six months, ROE down to 6.4%), a medical care ratio up 2.0 points to 84.7% driven by Medicare funding cuts and rising medical costs, Optum Insight earnings down 44%, $8.1B in cyberattack-related loans, $9B+"
+    },
+    "adjudicated": {
+      "score": -0.4,
+      "confidence": 0.6,
+      "rationale": "Earnings from operations fell 2% and the medical care ratio rose 1.9 points to 85.1% on Medicare funding cuts and cyberattack costs, with Optum Insight earnings down 44% and $8.1B in provider loans outstanding. These outweigh the revenue growth, Optum Rx and Optum Health gains, d"
+    },
+    "single_pass": -0.3
+  },
+  "0000950170-24-104905": {
+    "ticker": "ORCL",
+    "filing_date": "2024-09-10",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.82,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows cloud services revenue up 21% with cloud and license revenue up 10%, total operating margin rising to 30% from 26%, trailing free cash flow up 19% to $11.3 billion, and a stated expectation that cloud revenue growth and mix shift will continue, though capex grow"
+    },
+    "bear": {
+      "score": 0.55,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows real bearish pressure: hardware and services revenues fell 8% and 9%, services margin dropped to 16%, GAAP operating expenses and infrastructure costs are rising, the operating lease commitments have ballooned to $36.2B, capex of $2.3B in one quarter, free cash "
+    },
+    "adjudicated": {
+      "score": 0.3,
+      "confidence": 0.6,
+      "rationale": "Cloud services growth of 21%, operating margin expansion to 30% from 26%, and trailing free cash flow up 19% to $11.3B are strong positives, but they are offset by hardware and services declines, rising infrastructure costs, heavy capex, and a $36.2B lease commitment that adds ex"
+    },
+    "single_pass": 0.5
+  },
+  "0000066740-24-000101": {
+    "ticker": "MMM",
+    "filing_date": "2024-10-22",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.55,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows a strong Q3 2024 operating margin recovery (20.9% vs. a large 2023 charge-driven loss), adjusted EPS of $1.98 up 18%, a net debt reduction of about $4.4 billion, a $3.1 billion buyback authorization remaining, a $0.70 quarterly dividend, and productivity gains, "
+    },
+    "bear": {
+      "score": 0.72,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows heavy, open-ended PFAS and litigation liabilities (a $10.5\u201312.5B PWS settlement, $6B CAE settlement, rising PFAS exposure), organic sales flat to down with Consumer and Transportation & Electronics declining, a S&P negative outlook and reduced post-spin scale, a"
+    },
+    "adjudicated": {
+      "score": 0.05,
+      "confidence": 0.6,
+      "rationale": "Strong Q3 margin and adjusted EPS gains, debt reduction, and buyback capacity are offset by heavy open-ended PFAS and litigation liabilities (PWS $10.5\u201312.5B, CAE $6B), flat-to-down organic sales in Consumer and Transportation & Electronics, and an S&P negative outlook, leaving t"
+    },
+    "single_pass": 0.1
+  },
+  "0001437749-24-032008": {
+    "ticker": "UNP",
+    "filing_date": "2024-10-24",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.78,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows strong Q3 2024 execution, with EPS up to $2.75 from $2.51, operating ratio improved 3.1 points to 60.3%, volume up 6%, free cash flow of $1.855B versus $954M, a falling debt-to-net-income ratio (5.1 to 4.7), and ongoing buybacks of about $738M in the quarter, al"
+    },
+    "bear": {
+      "score": 0.35,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows a sharp drop in coal and rock volumes, a 17% decline in coal freight revenue, a 1% revenue-ton-mile decline year-to-date, a 3% decline in nine-month revenue for other subsidiaries, a 2% decline in capital plan with lower capacity investment, and a tight free cas"
+    },
+    "adjudicated": {
+      "score": 0.5,
+      "confidence": 0.6,
+      "rationale": "Q3 2024 execution was strong (EPS $2.75 vs $2.51, operating ratio down 3.1 points to 60.3%, volume up 6%, free cash flow of $1.855B vs $954M, debt/net income down to 4.7 from 5.1, and $738M of Q3 buybacks), outweighing softer coal and rock volumes and lower other-subsidiary reven"
+    },
+    "single_pass": 0.6
+  },
+  "0000051143-24-000049": {
+    "ticker": "IBM",
+    "filing_date": "2024-10-30",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.6,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows accelerating Software growth (9.7% in Q3, ~3.5 pts from Red Hat), expanding gross margins, operating EPS up 4.5% in Q3 and 11.7% year-to-date, $6.6B free cash flow, a dividend-supported shareholder return, and a pending HashiCorp acquisition, though weak Infrast"
+    },
+    "bear": {
+      "score": 0.6,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows GAAP pre-tax income down sharply (nine-month pre-tax income down 49.5%, Q3 GAAP loss), Consulting signings falling 8.7% with clients cutting discretionary spend, Infrastructure revenue down 7% with IBM Z in cyclical decline, Americas revenue declining, rising SG"
+    },
+    "adjudicated": {
+      "score": 0.1,
+      "confidence": 0.55,
+      "rationale": "Strong Software growth, margin expansion, operating EPS up 11.7% YTD and $6.6B free cash flow are offset by GAAP pre-tax income down 49.5%, Consulting signings down 8.7%, Infrastructure down 7% with IBM Z declining, and a declining Americas business, leaving a mixed but modestly "
+    },
+    "single_pass": 0.35
+  },
+  "0001551182-24-000041": {
+    "ticker": "ETN",
+    "filing_date": "2024-10-31",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.85,
+      "confidence": 0.8,
+      "rationale": "The excerpt shows accelerating growth (9M organic sales +8%, Electrical Americas backlog up 26% with book-to-bill 1.2), margin expansion (gross margin 38.0% vs 36.0%), adjusted EPS up 21%, and large buybacks ($1.6B) alongside a growing dividend, all tied to data center and utilit"
+    },
+    "bear": {
+      "score": 0.4,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows real bearish pressure points\u2014Electrical Global margin compression (21.8% to 18.7%), residential and industrial end-market weakness, Vehicle and eMobility softness and negative eMobility margins, rising restructuring charges, $1.6B of buybacks against roughly $2."
+    },
+    "adjudicated": {
+      "score": 0.5,
+      "confidence": 0.7,
+      "rationale": "Strong growth, an Electrical Americas backlog up 26% with book-to-bill of 1.2, gross margin expansion to 38.0%, and adjusted EPS up 21% outweigh the Electrical Global margin compression, residential and industrial softness, eMobility losses, and rising restructuring charges."
+    },
+    "single_pass": 0.6
+  },
+  "0000713676-24-000081": {
+    "ticker": "PNC",
+    "filing_date": "2024-11-01",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.6,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong Q3 2024 EPS of $3.49 with NII up 3% sequentially, NIM expanding to 2.64%, record-level capital markets and advisory growth (up 36% QoQ, 40% YTD), a CET1 ratio rising to 10.3%, a $1.60 quarterly dividend, ongoing buybacks, stable credit metrics with net ch"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows net interest margin compression year-to-date (down 18 bps), nine-month net income down 9%, rising nonperforming assets (up 18% to $2.6B, mostly CRE), net charge-offs up 55%, office loans with 28.9% criticized and 12.5% nonperforming against a reserve of 11.3%, a"
+    },
+    "adjudicated": {
+      "score": 0.05,
+      "confidence": 0.55,
+      "rationale": "The excerpt shows a mixed picture: Q3 EPS of $3.49, sequential NII and NIM gains, strong capital markets growth, and a rising CET1 ratio support the stock, but nine-month net income fell 9%, NIM is down 18 bps YTD, net charge-offs rose 55%, nonperforming assets are up 18% with he"
+    },
+    "single_pass": 0.3
+  },
+  "0000004904-24-000100": {
+    "ticker": "AEP",
+    "filing_date": "2024-11-06",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows a large one-time Texas refund and Turk Plant provision weighing on 2024 earnings, but also several constructive items: favorable rate outcomes (AEP Texas $70M increase approved, Michigan and Indiana base rate increases, PSO $120M interim increase, WV ENEC approv"
+    },
+    "bear": {
+      "score": 0.72,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows SWEPCo's nine-month earnings falling about 1% to $277.1M on a $160M Texas refund provision, a 63% drop in pre-tax operating income to $127.1M, a jump in O&M, a $14M Dolet Hills disallowance, sharply lower interest expense and an income tax benefit that flatters "
+    },
+    "adjudicated": {
+      "score": 0.2,
+      "confidence": 0.5,
+      "rationale": "The excerpt is a SWEPCo subsidiary filing, but for AEP the consolidated 9-month EPS rose to $4.34 from $3.62 and several rate outcomes are constructive (AEP Texas $70M, PSO $120M interim, WV ENEC $38M, Indiana and Michigan increases), while SWEPCo's $160M Texas refund, the Dolet "
+    },
+    "single_pass": 0.1
+  },
+  "0000898173-24-000043": {
+    "ticker": "ORLY",
+    "filing_date": "2024-11-08",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.6,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows steady sales growth (5% year-to-date), positive comparable store sales, a structural tailwind from an aging vehicle fleet (average age up to 12.5 years), continued store expansion, EPS growth of 7% aided by buybacks, and comfortable covenant headroom (6.14x fixe"
+    },
+    "bear": {
+      "score": 0.68,
+      "confidence": 0.7,
+      "rationale": "Comparable store sales decelerated sharply (Q3 +1.5% vs +8.7% a year earlier), DIY transaction counts are falling amid pressured consumer spending, operating income was flat in Q3 with margin down about 80bp, and nine-month net income grew only 2% while EPS growth of 7% leans on "
+    },
+    "adjudicated": {
+      "score": 0.2,
+      "confidence": 0.6,
+      "rationale": "Mixed picture: the excerpt shows steady sales growth, a structural aging-fleet tailwind, store expansion, EPS growth and comfortable covenant headroom, but comparable sales decelerated sharply to +1.5%, DIY transactions are falling, Q3 operating income was flat with margin down a"
+    },
+    "single_pass": 0.05
+  },
+  "0000002969-24-000056": {
+    "ticker": "APD",
+    "filing_date": "2024-11-21",
+    "form": "10-K",
+    "bull": {
+      "score": 0.6,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows adjusted EPS up 8%, adjusted EBITDA up 7% with margin expanding 440 bp, expected 2025 merchant pricing gains and new on-site plants, a 42-year dividend-growth record, and a $1.2B LNG sale gain, but it also flags a ~$0.49 EPS headwind from that divestiture, falli"
+    },
+    "bear": {
+      "score": 0.6,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows GAAP sales down 4%, a 79% operating income jump driven by a one-time $1.6B LNG sale gain, adjusted diluted EPS up only 8%, a guided ~4% EPS headwind from the divestiture, heavy capex ($4.5-5.0B for FY2025) funded by rising debt (total debt up ~$3.9B to $14.2B), "
+    },
+    "adjudicated": {
+      "score": 0.1,
+      "confidence": 0.5,
+      "rationale": "Underlying core business improved (adjusted EPS +8%, adjusted EBITDA +7% with 440 bp margin gain, expected 2025 merchant pricing and new on-site plants, 42-year dividend record), but the headline GAAP gains are one-time, the LNG divestiture is a ~$0.49 (~4%) EPS headwind, and hea"
+    },
+    "single_pass": 0.15
+  },
+  "0000909832-24-000079": {
+    "ticker": "COST",
+    "filing_date": "2024-12-19",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.68,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows net sales up 8% with comparable sales up 5% (7% ex-FX and gasoline), membership fees up 8% with paid members rising to 77.4M and a 92.8% U.S./Canada renewal rate, net income up 13% to $4.04 per diluted share, gross margin and ancillary mix improving, and continu"
+    },
+    "bear": {
+      "score": 0.35,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows operating cash flow falling sharply to $3,260 from $4,651, a rise in SG&A as a percentage of sales (9.59% vs 9.45%), reported gross margin gains largely reliant on gasoline deflation and mix, a lower-margin e-commerce growth profile, planned capex of about $5,00"
+    },
+    "adjudicated": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong top-line momentum (net sales +8%, comparable sales +7% ex-FX/gasoline, membership fees +8%, 92.8% U.S./Canada renewal, net income +13%) that outweighs the bear points of weaker operating cash flow driven by inventory investment, slightly higher SG&A, and "
+    },
+    "single_pass": 0.5
+  },
+  "0001628280-25-003063": {
+    "ticker": "TSLA",
+    "filing_date": "2025-01-30",
+    "form": "10-K",
+    "bull": {
+      "score": 0.6,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows 2024 revenue of $97.69B, energy storage revenue up 67% with gross margin rising to 26.2%, $36.56B in cash and investments, operating cash flow up to $14.92B, a growing services and regulatory credit base, and cost reductions and AI/FSD monetization plans, though"
+    },
+    "bear": {
+      "score": 0.6,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows declining automotive gross margin (19.4% to 18.4%), an 8% drop in automotive sales revenue driven by price cuts, a 74% plunge in net income from a prior-year tax benefit, rising capex guided above $11B annually, rising R&D, new-model ramp risks, cyclical demand "
+    },
+    "adjudicated": {
+      "score": 0.1,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows mixed evidence: revenue was roughly flat, automotive sales fell 8% with automotive gross margin down to 18.4%, and net income plunged 74% on a prior tax benefit, while energy storage growth, improving energy margins, strong operating cash flow, and regulatory cr"
+    },
+    "single_pass": -0.1
+  },
+  "0001652044-25-000014": {
+    "ticker": "GOOGL",
+    "filing_date": "2025-02-05",
+    "form": "10-K",
+    "bull": {
+      "score": 0.8,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows strong momentum (revenue up 14% to $350B, operating margin expanding from 27% to 32%, diluted EPS up 39%, Google Cloud revenue up 31% with rising profitability, $62B of buybacks, a newly initiated dividend, and a $8.0B unrealized gain in January 2025), though it"
+    },
+    "bear": {
+      "score": 0.6,
+      "confidence": 0.7,
+      "rationale": "The excerpt lays out a substantial bearish case: AI-driven competition and possible erosion of search monetization, a 2024 Search antitrust ruling with possible structural remedies, pending ad-tech remedies, a rising capex and margin-pressure outlook, slowing Google Network reven"
+    },
+    "adjudicated": {
+      "score": 0.3,
+      "confidence": 0.6,
+      "rationale": "Strong 2024 results (revenue +14%, operating margin 27% to 32%, Cloud +31% with rising profitability, $62B buybacks, new dividend) are offset by significant overhangs: the Search antitrust remedies that could include structural changes, pending ad-tech remedies, AI competition ri"
+    },
+    "single_pass": 0.6
+  },
+  "0000875320-25-000053": {
+    "ticker": "VRTX",
+    "filing_date": "2025-02-13",
+    "form": "10-K",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong growth (product revenue up 12% to $11.0B, TRIKAFTA/KAFTRIO up 14%), new approvals (ALYFTREK, expanded TRIKAFTA label, JOURNAVX, CASGEVY launches) and a deep pipeline with near-term catalysts (AMPLITUDE interim, RAINIER interim, T1D filings, VX-522 data), "
+    },
+    "bear": {
+      "score": 0.6,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows heavy concentration in CF revenue, a 2024 operating loss driven by a $4.4B non-deductible Alpine acquired R&D charge, operating cash flow turning negative, cash down 18%, rising cost of sales and expenses guided higher for 2025, a failed-to-separate-from-placebo"
+    },
+    "adjudicated": {
+      "score": 0.2,
+      "confidence": 0.6,
+      "rationale": "Revenue growth of 12% with TRIKAFTA/KAFTRIO up 14% and a deep pipeline with near-term catalysts are offset by a $4.4B non-deductible Alpine charge that produced an operating loss, negative operating cash flow, an 18% cash decline, guided higher 2025 costs, and the LSR placebo-sep"
+    },
+    "single_pass": 0.25
+  },
+  "0000316709-25-000010": {
+    "ticker": "SCHW",
+    "filing_date": "2025-02-26",
+    "form": "10-K",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong 2024 momentum (net income up 17%, diluted EPS up 18% to $2.99, core net new assets up 20% with Q4 up 51%, client assets up 19% to $10.1T, net interest margin up to 2.12%, bank supplemental funding down 37%, Ameritrade integration complete with ~$2.0B syne"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows net interest revenue falling 3% with reliance on costlier bank supplemental funding, a 2025 expense growth guide of 3.5-4.5% against modest revenue trends, ROE and ROTCE declining, pending rules (AOCI in capital, long-term debt, FDIC brokered deposit changes, Re"
+    },
+    "adjudicated": {
+      "score": 0.35,
+      "confidence": 0.6,
+      "rationale": "Strong 2024 growth in core net new assets (up 20%, Q4 up 51%), EPS up 18%, client assets up 19%, NIM expansion, falling bank supplemental funding and about $2.0B of Ameritrade synergies support the stock, but net interest revenue fell 3%, the 2025 expense guide of 3.5-4.5% and pe"
+    },
+    "single_pass": 0.4
+  },
+  "0000898173-25-000008": {
+    "ticker": "ORLY",
+    "filing_date": "2025-02-28",
+    "form": "10-K",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows steady sales growth (6% to $16.7B), 2.9% comparable store sales growth, stable gross margins around 51%, planned 200-210 net new stores in 2025, a long-run tailwind from an aging and growing vehicle fleet, strong free cash flow near $2.0B, and covenant complianc"
+    },
+    "bear": {
+      "score": 0.62,
+      "confidence": 0.6,
+      "rationale": "Comparable store sales growth slowed sharply from 7.9% to 2.9%, with negative DIY transaction counts and pressured discretionary spending; operating margin fell from 20.2% to 19.5% as SG&A grew faster than sales; net income rose only about 2% with EPS growth helped by a shrinking"
+    },
+    "adjudicated": {
+      "score": -0.15,
+      "confidence": 0.5,
+      "rationale": "Comparable store sales slowed sharply from 7.9% to 2.9% with negative DIY transactions, operating margin fell from 20.2% to 19.5%, and operating income rose only 2%, with EPS growth (about 6%) helped by a smaller share count. These outweigh the steady sales growth, store expansio"
+    },
+    "single_pass": 0.45
+  },
+  "0000055785-25-000039": {
+    "ticker": "KMB",
+    "filing_date": "2025-04-22",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.3,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows declining sales (-6.0%), falling adjusted operating profit (-6.0%) and adjusted EPS (-4.0%), and organic sales down 1.6%, so the bullish case rests mainly on the 2024 Transformation Initiative's $3.0 billion targeted gross productivity savings, stable North Amer"
+    },
+    "bear": {
+      "score": 0.72,
+      "confidence": 0.8,
+      "rationale": "Net sales fell 6.0%, organic sales declined 1.6% on lower pricing, GAAP and adjusted EPS both dropped (-11.0% and -4.0%), operating cash flow fell to $327M from $438M, IPC operating profit dropped 19.8%, and the excerpt flags a ~$300M tariff cost headwind, ongoing restructuring c"
+    },
+    "adjudicated": {
+      "score": -0.35,
+      "confidence": 0.6,
+      "rationale": "Q1 2025 shows broad deterioration (net sales -6.0%, organic -1.6% on lower pricing, adjusted EPS -4.0%, operating cash flow down to $327M from $438M, IPC operating profit -19.8%) plus an estimated ~$300M tariff cost headwind and ongoing restructuring, which outweigh the longer-te"
+    },
+    "single_pass": -0.4
+  },
+  "0001283699-25-000079": {
+    "ticker": "TMUS",
+    "filing_date": "2025-04-24",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong Q1 2025 growth (revenue +7%, operating income +20%, net income +24%, Adjusted Free Cash Flow +31%), rising postpaid ARPA, record-scale stockholder returns of up to $14.0B for 2025 with about $10.0B remaining, and $1.0B annual cost synergies expected from "
+    },
+    "bear": {
+      "score": 0.5,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows postpaid phone net adds down 7% with churn up 5 bps, prepaid ARPU down 7%, wholesale revenue down 35%, heavy leverage ($88.0B debt), a large ~$1.0B cash dividend plus $2.5B buybacks, and pending multi-billion acquisitions and fiber JV commitments, but results ar"
+    },
+    "adjudicated": {
+      "score": 0.2,
+      "confidence": 0.5,
+      "rationale": "Solid Q1 2025 growth in operating income, net income, and Adjusted Free Cash Flow, plus a $14.0B return program and rising postpaid ARPA, outweigh weaker postpaid phone net adds, higher churn, and prepaid ARPU declines, but heavy leverage ($88.0B debt) and roughly $9B of pending "
+    },
+    "single_pass": 0.45
+  },
+  "0001075531-25-000024": {
+    "ticker": "BKNG",
+    "filing_date": "2025-04-29",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.78,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows accelerating merchant gross bookings (+21%), room nights up 7%, revenue up 8% reported and 10% constant currency, net income-supporting operating cash flow of $3.3B, a $20B buyback authorization with $25.9B remaining, a $9.60 dividend, and a Transformation Progr"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows real bearish pressure points: agency gross bookings down 12.8%, operating margin drag from the shift to merchant model, rising marketing costs as a share of gross bookings with falling performance-marketing ROIs, a widened full-year guidance range citing geopoli"
+    },
+    "adjudicated": {
+      "score": 0.2,
+      "confidence": 0.6,
+      "rationale": "Solid demand (room nights +7%, revenue +8%/+10% constant currency), strong operating cash flow, a $20B buyback authorization, and Q2 guidance for 10-12% reported revenue growth support a modestly positive view. These are offset by agency bookings down 12.8%, lower performance-mar"
+    },
+    "single_pass": 0.3
+  },
+  "0001628280-25-021090": {
+    "ticker": "ABT",
+    "filing_date": "2025-04-30",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.78,
+      "confidence": 0.7,
+      "rationale": "Q1 2025 excerpt shows 6.8% constant-currency sales growth led by Medical Devices (+12.6%) and CGM sales up 21.6%, gross margin expanding to 52.8% from 50.5%, operating cash flow up $392M, a 7.3% dividend increase, and a $7B buyback authorization, though FX drag, Rapid Diagnostics"
+    },
+    "bear": {
+      "score": 0.4,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows bearish pressure points such as a 4.9% constant-currency decline in Diagnostic Products with Rapid Diagnostics down 16.1%, a 2.8% FX drag on total sales, multiple IRS SNODs totaling over $1 billion in contested tax assessments, rising inventory and receivables, "
+    },
+    "adjudicated": {
+      "score": 0.45,
+      "confidence": 0.7,
+      "rationale": "Constant-currency growth of 6.8%, Medical Devices up 12.6%, a 2.3-point gross margin gain, higher operating cash flow, a dividend increase and a $7B buyback outweigh the Diagnostics decline, the 2.8% FX drag, and roughly $1.05B of contested IRS assessments, though rising inventor"
+    },
+    "single_pass": 0.45
+  },
+  "0001628280-25-021379": {
+    "ticker": "LIN",
+    "filing_date": "2025-05-01",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.6,
+      "confidence": 0.6,
+      "rationale": "Reported operating profit rose 4% to $2,184M with margin expanding to 26.9% and adjusted EPS up 5% to $3.95, driven by pricing and productivity gains that offset volume and FX headwinds, while operating cash flow grew 11% to $2,161M, a $7.0B large-project backlog supports future "
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "Flat reported sales with a 1% volume decline, 3% currency drag, and volume declines in EMEA, APAC, and helium suggest growth relies on pricing and cost cuts, while EPS gains come partly from buybacks, capex rose 21% with debt-funded shareholder returns, and reported profit was he"
+    },
+    "adjudicated": {
+      "score": 0.3,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows solid adjusted profit growth (operating profit +4%, adjusted EPS +5%), margin expansion, and 11% higher operating cash flow with a $7.0B backlog, outweighing the flat sales, 1% volume decline, 3% FX drag, and rising capex and debt-funded buybacks/dividends that "
+    },
+    "single_pass": 0.3
+  },
+  "0000004904-25-000061": {
+    "ticker": "AEP",
+    "filing_date": "2025-05-06",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows a strong Q1 2025 operating income gain (up to $74.7M from $68.6M), rising retail revenues driven by rider revenue and weather, and large pending rate cases (e.g., $114M Arkansas, $251M West Virginia, $57M ETT requests) that could lift future earnings, but net in"
+    },
+    "bear": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows AEP diluted EPS down about 21% year over year ($1.50 vs $1.90), a jump in SWEPCo interest expense from $13.5M to $39.3M, and $519M of debt coming due within a year, while weather-normalized margins fell $23M and operating cash flow ($119M) trailed construction s"
+    },
+    "adjudicated": {
+      "score": -0.05,
+      "confidence": 0.4,
+      "rationale": "Reported EPS fell about 21%, but much of the year-over-year decline reflects non-recurring 2024 items (the Dolet Hills write-off, the IRS PLR-related tax benefit), while large pending rate requests and rising operating cash flow offset it, leaving the net effect close to neutral "
+    },
+    "single_pass": -0.1
+  },
+  "0000882095-25-000012": {
+    "ticker": "GILD",
+    "filing_date": "2025-05-07",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.6,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows a flat-revenue quarter ($6.7B) with HIV growth (Biktarvy +7%, total HIV +6%), a priority-review lenacapavir PrEP filing with a June 19, 2025 PDUFA date, a positive ASCENT-04 Phase 3 readout for Trodelvy, EU conditional approval of seladelpar, a 2024 IPR&D charge"
+    },
+    "bear": {
+      "score": 0.6,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows flat total revenue (-0% YoY), declining Veklury (-45%), Cell Therapy (-3%), Trodelvy (-5%) and Oncology (-4%), a prior NSCLC and urothelial setback for Trodelvy, heavy reliance on HIV and wholesaler-driven sales, extensive IRA/Medicaid/340B pricing pressure, pen"
+    },
+    "adjudicated": {
+      "score": 0.1,
+      "confidence": 0.6,
+      "rationale": "Flat quarterly revenue with declines in Veklury, Oncology, Cell Therapy and Trodelvy, offset by solid HIV growth, a pending lenacapavir PrEP PDUFA date, and the absence of prior-year IPR&D charges that inflated EPS comparisons; the bull and bear cases roughly balance, with heavy "
+    },
+    "single_pass": 0.3
+  },
+  "0001327567-25-000017": {
+    "ticker": "PANW",
+    "filing_date": "2025-05-21",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows 15.3% Q3 revenue growth, NGS ARR rising from $4.2B to $5.1B, subscription revenue up 15.2%, operating margin expanding to 11.2% for nine months from 7.6%, and $2.3B in free cash flow alongside $8.5B in cash and investments, though it also notes gross margin comp"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows decelerating nine-month revenue growth (14.5% vs 18.2%), gross margin compression (73.5% vs 74.6%, subscription margin down to 72.6% from 73.7%), G&A and share-based compensation rising sharply (SBC $941M vs $810M, with $2.4B still to expense), operating cash fl"
+    },
+    "adjudicated": {
+      "score": 0.25,
+      "confidence": 0.6,
+      "rationale": "Strong NGS ARR growth ($4.2B to $5.1B), 15.3% Q3 revenue growth, a sharp rise in nine-month operating margin to 11.2% from 7.6%, and $8.5B in cash are offset by decelerating nine-month growth (14.5% vs 18.2%), gross margin compression, and rising share-based compensation with $2."
+    },
+    "single_pass": 0.45
+  },
+  "0001613103-25-000091": {
+    "ticker": "MDT",
+    "filing_date": "2025-06-20",
+    "form": "10-K",
+    "bull": {
+      "score": 0.6,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows solid growth (revenue up 4% to $33.5B, non-GAAP EPS $5.49 vs $5.20, Diabetes up 11%, Cardiovascular up 5%), strong free cash flow of about $5.2B, an A-rated balance sheet, and a $2.1B buyback capacity, but it is tempered by $200-350M in tariff headwinds, flat Me"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows real bearish pressures: an estimated $200\u2013350M FY2026 tariff hit (up to 145% US/125% China rates scenario), a $90M Italian payback accrual, pending Diabetes separation execution risk, rising debt to $28.5B with a \u20ac3.0B issuance, a 16.6% GAAP tax rate vs 23.4% pr"
+    },
+    "adjudicated": {
+      "score": 0.2,
+      "confidence": 0.5,
+      "rationale": "Reported growth (revenue +4%, non-GAAP EPS $5.49 vs $5.20, Diabetes +11%) and a strong balance sheet support the stock, but the estimated $200\u2013350M FY2026 tariff hit, flat free cash flow, the rise in debt to $28.5B, and Diabetes separation execution risk cap the upside, so the ne"
+    },
+    "single_pass": 0.3
+  },
+  "0000753308-25-000040": {
+    "ticker": "NEE",
+    "filing_date": "2025-07-23",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.6,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows growing FPL rate base (about $5.3B higher), FPL net income up 5.8% for the six months, strong Q2 NEE net income up 25% with EPS of $0.98 versus $0.79, a large renewable pipeline with $2.0B in new-investment earnings support, OBBBA preserving credit eligibility f"
+    },
+    "bear": {
+      "score": 0.6,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows six-month net income down about $1.0B and EPS down from $1.89 to $1.39, driven by a roughly $0.7B XPLR impairment, rising interest expense (NEER up $491M, Corporate and Other sharply worse), a $17.1B liquidity cushion versus $88.4B long-term debt rising from $80"
+    },
+    "adjudicated": {
+      "score": 0.08,
+      "confidence": 0.5,
+      "rationale": "Q2 results and FPL's growing rate base are constructive, but six-month EPS fell from $1.89 to $1.39 on the XPLR impairment and higher interest costs, debt rose to $88.4B, and OBBBA and executive-order uncertainty over wind and solar tax credits remains unresolved, so the net effe"
+    },
+    "single_pass": 0.1
+  },
+  "0000100885-25-000253": {
+    "ticker": "UNP",
+    "filing_date": "2025-07-24",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.82,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows Q2 2025 EPS of $3.15 (up from $2.74), a 4% volume increase, operating ratio improved 1.0 point to 59.0%, freight car velocity up 10%, workforce productivity up 9%, free cash flow rising to $1.1B from $853M, a cash flow conversion rate of 77% versus 70%, and a fa"
+    },
+    "bear": {
+      "score": 0.4,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows real bearish pressure points: freight revenue growth driven partly by low-ARC coal and intermodal mix, falling ARC (down 3% YTD), weak automotive and Mexico auto volumes, tariff-related uncertainty in iron ore and automotive, a $55M crew charge, rising debt ($32"
+    },
+    "adjudicated": {
+      "score": 0.4,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows strong Q2 execution (EPS up to $3.15, operating ratio improved 1.0 point, volume up 4%, FCF up to $1.1B, cash conversion 77%), outweighing bearish pressures like falling ARC, weak automotive and Mexico volumes, tariff uncertainty, the $55M crew charge, and risin"
+    },
+    "single_pass": 0.45
+  },
+  "0000829224-25-000058": {
+    "ticker": "SBUX",
+    "filing_date": "2025-07-29",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt offers a credible bull angle: store count grew 4% to 41,000+, revenue rose 4% in the quarter, management cites early positive 'Back to Starbucks' pilot results and an accelerated Green Apron rollout, the balance sheet is supported by $4.7B cash and an undrawn $3.0B re"
+    },
+    "bear": {
+      "score": 0.8,
+      "confidence": 0.8,
+      "rationale": "The excerpt shows a 2% global comparable store sales decline driven by a 4% drop in U.S. comparable transactions, an 680 bp collapse in quarterly operating margin to 9.9%, operating income down about 38%, net earnings down about 47%, store operating expense deleverage, rising lab"
+    },
+    "adjudicated": {
+      "score": -0.5,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows weakening fundamentals: comparable transactions fell 4% in the U.S., operating margin contracted 680 bp to 9.9%, net earnings fell about 47%, and management expects macro headwinds and further material restructuring charges, which outweigh the store growth, liqu"
+    },
+    "single_pass": -0.5
+  },
+  "0001403161-25-000052": {
+    "ticker": "V",
+    "filing_date": "2025-07-30",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.82,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows net revenue up 14% in the quarter, non-GAAP diluted EPS up 23% to $2.98, processed transactions up 10%, cross-border volume up 13%, value-added services revenue up 28%, a $30 billion buyback authorization with $29.8 billion remaining, and a raised quarterly divi"
+    },
+    "bear": {
+      "score": 0.4,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows GAAP operating expenses up 35% in the quarter driven by a $1.5B interchange litigation accrual, GAAP net income growing only 4% over nine months versus 11% revenue growth, rising client incentives (up 13%, a drag on net revenue quality), cross-border and value-a"
+    },
+    "adjudicated": {
+      "score": 0.5,
+      "confidence": 0.6,
+      "rationale": "Strong top-line and non-GAAP earnings growth, growing transaction and cross-border volumes, value-added services up 28%, and a large buyback outweigh the bear points on the $1.5B interchange litigation accrual, the 4% nine-month GAAP net income growth, and 13% client incentive gr"
+    },
+    "single_pass": 0.6
+  },
+  "0000320193-25-000073": {
+    "ticker": "AAPL",
+    "filing_date": "2025-08-01",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows Q3 net sales up 10% with Services up 13% at a 75.6% gross margin, total gross margin percentage rising to 46.5%, a $21.0 billion buyback, and a planned annual dividend increase, though tariff and gross margin pressure risks are acknowledged."
+    },
+    "bear": {
+      "score": 0.5,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows bearish signals\u2014management says gross margins will face volatility and downward pressure, tariffs and Section 232 semiconductor probes threaten margins and supply, Greater China sales fell 4% over nine months, Wearables declined 5%, iPad fell in Q3, and opex gre"
+    },
+    "adjudicated": {
+      "score": 0.25,
+      "confidence": 0.6,
+      "rationale": "Q3 net sales rose 10%, Services grew 13% at a 75.6% margin, and buybacks and dividend increases support the stock, but management's warning of gross margin downward pressure, tariff and Section 232 risks, the 4% nine-month decline in Greater China, and the Wearables decline partl"
+    },
+    "single_pass": 0.3
+  },
+  "0001551152-25-000040": {
+    "ticker": "ABBV",
+    "filing_date": "2025-08-04",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows revenue growth of 7% reported and 8% constant currency, strong Skyrizi (+66% six-month) and Rinvoq (+49%) uptake, multiple approvals and positive Phase 3 readouts, and a growing dividend, though offset by Humira erosion, Imbruvica declines, MFN pricing and tarif"
+    },
+    "bear": {
+      "score": 0.72,
+      "confidence": 0.7,
+      "rationale": "Humira's roughly 55% decline, Imbruvica's 11% drop, the failed VERONA Phase 3 trial, and Juvederm and Botox Cosmetic weakness show heavy erosion outside Skyrizi and Rinvoq. Layered on that are MFN pricing and tariff risks, $4.3B of contingent consideration charges that pushed EPS"
+    },
+    "adjudicated": {
+      "score": 0.3,
+      "confidence": 0.6,
+      "rationale": "Strong Skyrizi and Rinvoq growth, 7-8% revenue growth, and rising operating cash flow outweigh Humira and Imbruvica erosion, the failed VERONA trial, and MFN and tariff overhangs; the $4.3B contingent consideration charge is non-cash and reflects higher expected Skyrizi sales, so"
+    },
+    "single_pass": 0.45
+  },
+  "0000078003-25-000138": {
+    "ticker": "PFE",
+    "filing_date": "2025-08-05",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.05,
+      "confidence": 0.85,
+      "rationale": "The excerpt contains only MD&A boilerplate and cross-references to risk factors in other sections, with no revenue, earnings, pipeline, margin, or guidance data that would support a bullish case for the stock rising over the next 3-12 months."
+    },
+    "bear": {
+      "score": 0.12,
+      "confidence": 0.7,
+      "rationale": "The excerpt contains only a generic MD&A introduction and cross-references to other risk-factor sections, with no revenue, margin, pipeline, guidance, debt, or litigation figures, so it offers almost no specific evidence that the stock will fall over the next 3-12 months."
+    },
+    "adjudicated": {
+      "score": 0.0,
+      "confidence": 0.85,
+      "rationale": "The excerpt is purely boilerplate MD&A introduction and cross-references to other sections with no revenue, earnings, pipeline, guidance, or litigation figures, so neither the bull nor the bear case has concrete evidence to support a directional call."
+    },
+    "single_pass": 0.0
+  },
+  "0000093410-25-000062": {
+    "ticker": "CVX",
+    "filing_date": "2025-08-07",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.6,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows free cash flow up to $6.1B from $5.1B, a $2-3B structural cost-reduction plan by 2026, $2.5-3.0B expected Q3 buybacks, a completed Hess acquisition expected to boost production and free cash flow, and a $10-15B asset-sale target, offset by sharply lower Q2 earni"
+    },
+    "bear": {
+      "score": 0.6,
+      "confidence": 0.7,
+      "rationale": "Earnings fell sharply (Q2 net income down ~44% to $2.5B, H1 upstream down from $9.7B to $6.5B) on lower liquids realizations and TCO affiliate weakness, while Brent averaged $72 vs $84, net debt ratio rose from 10.4% to 14.8%, debt grew to $29.5B with commercial paper up, buyback"
+    },
+    "adjudicated": {
+      "score": -0.2,
+      "confidence": 0.6,
+      "rationale": "Earnings fell sharply (Q2 net income down about 44%, upstream down on lower liquids realizations and TCO weakness) and leverage rose (net debt ratio 10.4% to 14.8%, debt $29.5B), which outweighs the higher free cash flow ($6.1B vs $5.1B), planned buybacks, cost-cut plan, and Hess"
+    },
+    "single_pass": -0.15
+  },
+  "0000006951-25-000037": {
+    "ticker": "AMAT",
+    "filing_date": "2025-08-21",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.6,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong Q3 FY2025 revenue growth (+8%), gross and operating margin expansion, Semiconductor Systems and Taiwan/Korea demand strength, a growing AGS service base with long-term agreements, ongoing $14.8B buyback capacity and dividends, and AI-driven demand tailwin"
+    },
+    "bear": {
+      "score": 0.6,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows real bearish fodder: a $410M tax valuation allowance that depressed net income (nine-month net income down $345M despite higher revenue), China revenue down 18% for nine months, AGS and US/Europe revenue declines, rising DSOs (72 vs 67 days), operating cash flow"
+    },
+    "adjudicated": {
+      "score": 0.2,
+      "confidence": 0.6,
+      "rationale": "Core operations improved (nine-month revenue +7%, Q3 revenue +8%, margin expansion, Semiconductor Systems and Taiwan/Korea strength, ~$14.8B buyback capacity), but the $410M CAMT valuation allowance, nine-month net income down ~6%, China revenue down 18%, and DSO rising to 72 day"
+    },
+    "single_pass": 0.3
+  },
+  "0001108524-25-000088": {
+    "ticker": "CRM",
+    "filing_date": "2025-09-04",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows accelerating operating margin (about 22% vs 19%), double-digit EPS growth ($3.55 vs $3.03), 12% RPO growth to $59.9B, stable ~8% attrition, strong Platform/Integration growth, and heavy buybacks, though subscription growth of 9% and a pending $8B Informatica dea"
+    },
+    "bear": {
+      "score": 0.55,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows decelerating growth (subscription revenue growth down from 11% in Q2 to 9% over six months, professional services down 3%), a sharp drop in unearned revenue (16.6B vs 20.7B), a $8B Informatica debt-funded acquisition plus $900M Regrello and $750M Genesys commitm"
+    },
+    "adjudicated": {
+      "score": 0.1,
+      "confidence": 0.5,
+      "rationale": "Margin expansion, EPS growth, 12% RPO growth, and buybacks support the stock, but decelerating subscription growth (11% to 9%), falling professional services, flat operating cash flow, and about $8B of debt-funded acquisitions plus $1.65B in other commitments offset them, leaving"
+    },
+    "single_pass": 0.45
+  },
+  "0001467858-25-000143": {
+    "ticker": "GM",
+    "filing_date": "2025-10-21",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.6,
+      "confidence": 0.6,
+      "rationale": "The excerpt supports a bullish case through raised-to-guided 2025 EBIT-adjusted of $12.0-13.0B, a strong full-size truck/SUV franchise with lean dealer inventory and favorable pricing, rising U.S. share (17.2%), a $2.8B buyback capacity, a dividend increase to $0.15, a material p"
+    },
+    "bear": {
+      "score": 0.72,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows sharply lower GMNA EBIT-adjusted margin (6.2% vs 9.7% in Q3), a $1.6B EV realignment charge with more possible, $3.5-4.5B tariff hit to 2025 EBIT-adjusted, rising warranty and material costs, a 2025 ROE falling to 4.7%, EV demand slowing, and Automotive free cas"
+    },
+    "adjudicated": {
+      "score": 0.05,
+      "confidence": 0.55,
+      "rationale": "Guidance was maintained at $12.0-13.0B EBIT-adjusted with a $2.8B buyback capacity and a dividend increase, and management expects a material Q4 tariff-offset benefit, offsetting a sharp GMNA margin drop to 6.2%, a $1.6B EV charge with more possible, a $3.5-4.5B tariff hit, and a"
+    },
+    "single_pass": 0.1
+  },
+  "0000100885-25-000321": {
+    "ticker": "UNP",
+    "filing_date": "2025-10-23",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows Q3 2025 EPS up to $3.01 from $2.75, operating ratio improved 1.1 points to 59.2%, freight revenue up 3% on core pricing, record velocity (+8%) and workforce productivity (+6%), free cash flow steady near $1.86B, and a leverage ratio that eased to 2.6x adjusted d"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows pending Norfolk Southern acquisition with paused buybacks, debt rising to $31.8B, intermodal and international volumes down 17% in Q3, Q3 freight revenue growth driven mainly by price, a $55M crew ratification charge, and falling fuel surcharge revenue, but oper"
+    },
+    "adjudicated": {
+      "score": 0.2,
+      "confidence": 0.6,
+      "rationale": "Q3 earnings growth, a 1.1-point operating ratio improvement, record velocity and productivity, and stable free cash flow support the stock, but the pending Norfolk Southern deal, paused buybacks, rising debt, and 17% international intermodal decline offset much of that upside."
+    },
+    "single_pass": 0.3
+  },
+  "0000731766-25-000305": {
+    "ticker": "UNH",
+    "filing_date": "2025-10-28",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt offers a credible bull case in resilient revenue growth (up 12%), strong operating cash flow of $18.6B, continued buybacks and a raised dividend, a $76.3B liquidity position, and Optum Rx and Optum Insight growth, but it is undercut by collapsing earnings from operati"
+    },
+    "bear": {
+      "score": 0.72,
+      "confidence": 0.8,
+      "rationale": "The excerpt shows Q3 2025 earnings from operations down 50% with the medical care ratio jumping to 89.9% from 85.2%, management stating 2025 pricing was 'well-short' of cost trends, Medicare Advantage funding pressure and Medicaid margin downside, shrinking risk-based membership,"
+    },
+    "adjudicated": {
+      "score": -0.4,
+      "confidence": 0.7,
+      "rationale": "Earnings from operations fell 50% in Q3 and the medical care ratio rose 4.7 points to 89.9%, with management saying 2025 pricing fell well short of cost trends, plus Medicare Advantage and Medicaid margin pressure and negative rating outlooks at three agencies. Revenue growth, $1"
+    },
+    "single_pass": -0.5
+  },
+  "0000764180-25-000130": {
+    "ticker": "MO",
+    "filing_date": "2025-10-30",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.55,
+      "confidence": 0.6,
+      "rationale": "Adjusted diluted EPS rose 5.9% for the nine months and 3.6% in Q3 with fewer shares outstanding, smokeable adjusted OCI margin expanded to 64.4% from 61.7% on pricing, and oral tobacco OCI rose to $1,390M from $996M, but cigarette volume fell about 10%, discount share gained, and"
+    },
+    "bear": {
+      "score": 0.8,
+      "confidence": 0.8,
+      "rationale": "The excerpt shows Marlboro shipments down about 12% over nine months, discount share up 2.4 points, industry cigarette volume down 8%, nicotine pouch share gains, a $873 million e-vapor goodwill impairment with further impairment risk, rising state excise taxes, FDA and litigatio"
+    },
+    "adjudicated": {
+      "score": -0.3,
+      "confidence": 0.6,
+      "rationale": "Reported adjusted EPS grew 5.9% and smokeable adjusted OCI margins expanded on pricing, but the excerpt shows steep cigarette volume declines (Marlboro down 12.1% nine-month, discount share up 2.4 points), an $873M e-vapor goodwill impairment with further impairment risk, a sizab"
+    },
+    "single_pass": -0.25
+  },
+  "0000018230-25-000048": {
+    "ticker": "CAT",
+    "filing_date": "2025-11-03",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.62,
+      "confidence": 0.7,
+      "rationale": "Sales rose 10% in Q3 with Energy & Transportation up 17% on data-center-driven Power Generation demand, backlog grew $2.4B to $39.8B, management guides to strong Q4 sales growth, and the company has $5.8B of ME&T free cash flow for buybacks ($15.3B authorization remaining) and a "
+    },
+    "bear": {
+      "score": 0.6,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows margin compression (Q3 operating margin 17.3% vs 19.5%, nine-month adjusted EPS down about 17%), sharply lower price realization and tariff costs of $1.6\u20131.75B for 2025 with Q4 tariff impact of $650\u2013800M, Construction Industries profit down 27%, Resource Industr"
+    },
+    "adjudicated": {
+      "score": -0.15,
+      "confidence": 0.6,
+      "rationale": "Strong Q3 sales growth, a $39.8B backlog, and data-center-driven Power Generation demand support the top line, but margin compression, roughly $1.6\u20131.75B of 2025 tariff costs with a heavier Q4 hit, price realization declines, and a roughly 17% drop in nine-month adjusted EPS outw"
+    },
+    "single_pass": -0.1
+  },
+  "0000726728-25-000148": {
+    "ticker": "O",
+    "filing_date": "2025-11-04",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows steady dividend increases (five in 2025, 132 total), AFFO and Normalized FFO per share growth, a 103.5% rent recapture rate, 98.7% occupancy, a 5.4x leverage ratio, A3/A- ratings with stable outlooks, and a 4.6x debt service coverage, all supporting a bullish ca"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows bearish pressure points: rising impairments ($346.9M YTD vs $282.9M, with real estate impairments up 51%), a 98.7% occupancy with 204 vacant properties, ~$28.7B debt with interest expense up 13% and dividend coverage by AFFO at 75.5% of AFFO-based distributions "
+    },
+    "adjudicated": {
+      "score": 0.2,
+      "confidence": 0.5,
+      "rationale": "The excerpt shows solid fundamentals (Q3 normalized FFO per share up 10.1%, 103.5% rent recapture, 98.7% occupancy, 5.4x leverage, 4.6x coverage, A3/A- stable ratings, and a 75.5% AFFO payout), but real estate impairments rose about 51% year to date, interest expense rose 13.1%, "
+    },
+    "single_pass": 0.3
+  },
+  "0000036104-25-000064": {
+    "ticker": "USB",
+    "filing_date": "2025-11-05",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.6,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows Q3 2025 EPS up to $1.22 from $1.03, ROACE rising to 13.5%, fee income up 14.1%, flat-to-lower noninterest expense, improving NPAs and an NIM of 2.75%, though revenue growth is modest and net interest income, deposits and loan growth are only marginal."
+    },
+    "bear": {
+      "score": 0.4,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows thin revenue growth (net interest income up only about 2%), a 5.5 billion-dollar-scale rise in long-term debt, falling noninterest-bearing deposits, persistent commercial real estate office stress with a roughly 10 percent coverage ratio, and rising net charge-o"
+    },
+    "adjudicated": {
+      "score": 0.4,
+      "confidence": 0.6,
+      "rationale": "Q3 2025 EPS rose to $1.22 from $1.03 on 14.1% noninterest income growth, flat expenses, lower Q3 charge-offs and NPAs down 9.7%, which outweigh modest 2% net interest income growth, a 7.8% rise in long-term debt, falling year-over-year noninterest-bearing deposits, CRE office str"
+    },
+    "single_pass": 0.4
+  },
+  "0000032604-25-000087": {
+    "ticker": "EMR",
+    "filing_date": "2025-11-10",
+    "form": "10-K",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong bullish fundamentals: FY2025 adjusted EPS rose to $6.00 (up 9%), adjusted EBITA margin expanded to 26.0%, free cash flow reached $3.2B (up 12%), FY2026 guidance calls for adjusted EPS of $6.35\u2013$6.55 with $3.5\u20133.6B FCF, a dividend increase, and buybacks, t"
+    },
+    "bear": {
+      "score": 0.6,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows a sharp rise in leverage (total debt-to-capital from 26.2% to 39.3%, commercial paper about $4.2B), higher interest expense ($237M), weak underlying volume (+0.5%) with growth mostly from price, declines in Europe, China, and Safety & Productivity, a working-cap"
+    },
+    "adjudicated": {
+      "score": 0.3,
+      "confidence": 0.6,
+      "rationale": "Adjusted EPS growth, expanding margins, strong FCF, and FY2026 guidance (adjusted EPS $6.35\u2013$6.55) support a positive view, but leverage rose sharply (debt-to-capital 39.3%, CP ~$4.2B), interest expense climbed to $237M, underlying volume was only +0.5%, and several segments weak"
+    },
+    "single_pass": 0.3
+  },
+  "0001108524-25-000238": {
+    "ticker": "CRM",
+    "filing_date": "2025-12-04",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.6,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows accelerating operating margin (22% vs 19%), 12% RPO growth, EPS up from $4.60 to $5.73, ongoing buybacks ($8.7B repurchased with $21.9B remaining authorization), and Agentforce/Data Cloud momentum, though revenue growth is a steady 9%, professional services decl"
+    },
+    "bear": {
+      "score": 0.55,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows slowing revenue growth (9% nine-month, professional services down 4-6%), an 8% attrition rate, sharply falling unearned revenue and cash from a $9.6B debt-funded Informatica deal with $6B borrowed, heavy buybacks, restructuring charges rising to $260M in the qua"
+    },
+    "adjudicated": {
+      "score": 0.1,
+      "confidence": 0.5,
+      "rationale": "Operating margin expansion (22% vs 19%), 12% RPO growth, and large buybacks support the stock, but steady 9% revenue growth, falling professional services, rising restructuring charges, $6B of new acquisition debt for Informatica, and EPS aided by investment gains offset much of "
+    },
+    "single_pass": 0.3
+  },
+  "0001628280-26-004195": {
+    "ticker": "LMT",
+    "filing_date": "2026-01-29",
+    "form": "10-K",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows record backlog ($193.6B, up from $176.0B), 6% sales growth to $75.0B, rising free cash flow ($6.9B vs $5.3B), a large FY2026 defense budget and multi-year demand tailwinds, offset by margin compression from reach-forward losses (segment margins down, operating p"
+    },
+    "bear": {
+      "score": 0.72,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows sharply falling segment margins (Aeronautics 6.9% vs 10.3% in 2023, MFC/RMS down), roughly $950M and $570M reach-forward losses with warnings of more, a $479M pension settlement charge, rising interest expense, a higher tax rate, a $485M tariff cash hit, and an "
+    },
+    "adjudicated": {
+      "score": -0.2,
+      "confidence": 0.6,
+      "rationale": "Record backlog ($193.6B), 6% sales growth, and higher free cash flow ($6.9B) support the stock, but segment margin compression from large reach-forward losses (Aeronautics 6.9%, RMS 7.6%), the $479M pension settlement charge, rising interest and tax expense, and warnings of furth"
+    },
+    "single_pass": -0.2
+  },
+  "0001571949-26-000004": {
+    "ticker": "ICE",
+    "filing_date": "2026-02-05",
+    "form": "10-K",
+    "bull": {
+      "score": 0.8,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows strong 2025 momentum (revenue less transaction expenses up 7%, operating income up 14%, adjusted diluted EPS up 14% to $6.95, record recurring revenue at 51% of total, data services ASV up 8.3%, adjusted free cash flow up 16%), plus a $3.0B buyback authorization"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows substantial bearish points\u2014$19.6B debt with $1.0B commercial paper, $1.3B buybacks plus $1.1B dividends funded partly by borrowing, a $1.0B Polymarket-related investment, Mortgage Technology operating margin of only 1% with heavy amortization, falling interest i"
+    },
+    "adjudicated": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong 2025 operating and per-share momentum, rising recurring revenue share, and a $3.0B buyback, outweighing bearish points around leverage, buybacks/dividends partly debt-funded, the $1.0B Polymarket investment, and thin Mortgage Technology margins, though th"
+    },
+    "single_pass": 0.6
+  },
+  "0000200406-26-000016": {
+    "ticker": "JNJ",
+    "filing_date": "2026-02-11",
+    "form": "10-K",
+    "bull": {
+      "score": 0.62,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows 6.0% worldwide sales growth to $94.2B, MedTech growth of 6.1%, strong oncology momentum (DARZALEX, CARVYKTI, TREMFYA), a swing in pre-tax margin to 34.6% largely from a ~$7.0B talc reserve reversal, and a 64-year dividend record, but it is offset by the STELARA "
+    },
+    "bear": {
+      "score": 0.6,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows a sharp Immunology decline (STELARA sales down 41%, with biosimilar erosion and a SIMPONI biosimilar threat), an expected 2026 OPSUMIT generic loss, Medicare Part D redesign and IRA pricing pressure, rising debt ($47.9B, net debt $27.8B), a 2025 operating profit"
+    },
+    "adjudicated": {
+      "score": 0.1,
+      "confidence": 0.6,
+      "rationale": "Solid 6.0% sales growth, strong oncology and MedTech momentum, and TREMFYA gains are offset by a 41% STELARA collapse, pricing pressure, upcoming OPSUMIT and SIMPONI biosimilar losses, and net debt rising to $27.8B, while the 34.6% pre-tax margin is inflated by a one-time ~$7.0B "
+    },
+    "single_pass": 0.3
+  },
+  "0001193125-26-051453": {
+    "ticker": "PLD",
+    "filing_date": "2026-02-13",
+    "form": "10-K",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong bullish fundamentals: 18% embedded lease mark-to-market, 50.1% net effective rent change on new leases, rising Core FFO ($5.56B vs $5.31B), growing NOI, 95.6% occupancy, A/A2 ratings with stable outlooks, and a development pipeline with 25.4% estimated ma"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows decelerating fundamentals and rising risk: net interest expense up 16% on higher-rate issuance, Strategic Capital NOI down 16% with promote revenue collapsing from $139M to $2M, G&A up 12%, the 18% lease mark-to-market is described as relying on in-place rents w"
+    },
+    "adjudicated": {
+      "score": 0.4,
+      "confidence": 0.65,
+      "rationale": "Core FFO rose about 4.8% to $5.56B, Real Estate segment NOI grew about 8%, occupancy held at 95.6%, and rent change on new leases was 50.1%, all supporting a positive outlook. These are partly offset by the collapse in promote revenue ($139M to $2M), a 16% fall in Strategic Capit"
+    },
+    "single_pass": 0.35
+  },
+  "0000092122-26-000006": {
+    "ticker": "SO",
+    "filing_date": "2026-02-19",
+    "form": "10-K",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong utility fundamentals: rising retail revenues (up 8.7%), net income near $4.3B, a 2026 quarterly dividend increase to $0.74, rate-base growth from a ~$16.7B approved generation and transmission certification program, data-center-driven sales growth, Southe"
+    },
+    "bear": {
+      "score": 0.6,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows declining Southern Company net income and EPS (-1.4% net income, basic EPS down from $4.02 to $3.94), a 75% dividend payout ratio, rising interest expense (+5.3% electric, +37.6% parent), accelerated depreciation hitting Southern Power (net income down $203M), N"
+    },
+    "adjudicated": {
+      "score": 0.2,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows a mixed picture: retail revenue growth (+8.7%), a rate-base growth program of about $16.7B, and a stable-rate consent order support the bull case, while flat-to-down consolidated net income and EPS, a 75% payout ratio, rising interest and depreciation costs, and"
+    },
+    "single_pass": 0.45
+  },
+  "0000821189-26-000054": {
+    "ticker": "EOG",
+    "filing_date": "2026-02-24",
+    "form": "10-K",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong 2025 volume growth (crude up 6%, NGLs up 17%, gas deliveries up 30%), a 70% minimum cash-return commitment with a raised dividend and $2.6B of buybacks, a conservative 21% debt-to-cap ratio with $3.4B cash and an undrawn $3.0B facility, the accretive Enci"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows falling 2025 net income ($4.98B vs $6.40B), lower oil prices (-14%), a 2026 NYMEX crude outlook already down 2%, rising debt-to-capitalization (14% to 21%) after the $5.7B Encino acquisition, higher DD&A/interest/operating costs per Boe, impairments up to $843M,"
+    },
+    "adjudicated": {
+      "score": 0.05,
+      "confidence": 0.5,
+      "rationale": "Strong volume growth, a 70% minimum cash-return commitment, and ample liquidity ($3.4B cash, undrawn $3.0B facility) offset falling 2025 net income and operating cash flow, a weaker 2026 crude strip, higher impairments and interest, and debt-to-capitalization rising from 14% to 2"
+    },
+    "single_pass": 0.15
+  },
+  "0001104659-26-019419": {
+    "ticker": "SPG",
+    "filing_date": "2026-02-25",
+    "form": "10-K",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong core fundamentals: Portfolio NOI up 4.7%, base minimum rent up 4.7% to $60.97 psf, Real Estate FFO per share rising to $12.73 from $12.24, a $2.0 billion buyback, a dividend of $2.20 quarterly, investment-grade-oriented financing with $7.7 billion in avai"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows rising borrowing costs (effective rate up 25 bps to 3.87%), a $28.6B debt load with shorter weighted maturity (7.0 vs 8.1 years), a sharp drop in ending occupancy at U.S. malls/outlets, heavy reliance on a non-recurring $2.9B TRG remeasurement gain for EPS (dilu"
+    },
+    "adjudicated": {
+      "score": 0.45,
+      "confidence": 0.7,
+      "rationale": "Core fundamentals are strong (Portfolio NOI up 4.7%, base minimum rent up 4.7%, Real Estate FFO per share up to $12.73, a $2.0B buyback, and a steady $2.20 quarterly dividend), outweighing rising borrowing costs, shorter maturities, and the non-recurring $2.9B TRG gain that infla"
+    },
+    "single_pass": 0.45
+  },
+  "0000896159-26-000005": {
+    "ticker": "CB",
+    "filing_date": "2026-02-27",
+    "form": "10-K",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows record net income ($10.31B, up 11.2%), record pre-tax net investment income ($6.5B), net premiums written up 6.6% with broad-based growth, a P&C combined ratio improving to 85.7%, favorable prior period development of $1.13B, operating cash flow of $12.8B, and n"
+    },
+    "bear": {
+      "score": 0.5,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows reserve-adequacy risk (a 1-point tail-factor change moves workers' comp reserves by about $1.1B, and a 5-point change moves excess/umbrella reserves by about 18%), $306M of corporate run-off adverse development, rising policy acquisition and tax costs, a Persona"
+    },
+    "adjudicated": {
+      "score": 0.6,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows record net income, premium growth of 6.6%, a P&C combined ratio improved to 85.7%, record net investment income and strong operating cash flow, outweighing the reserve-sensitivity and run-off adverse development concerns highlighted in the bear case, which are r"
+    },
+    "single_pass": 0.6
+  },
+  "0000200406-26-000087": {
+    "ticker": "JNJ",
+    "filing_date": "2026-04-22",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "Q1 2026 worldwide sales rose 9.9% (6.4% operational) with strong growth in key drugs like DARZALEX, TREMFYA, CARVYKTI and TALVEY, MedTech franchises like Cardiovascular and Electrophysiology growing double digits, and a dividend raised to $1.34 from $1.30, offsetting STELARA eros"
+    },
+    "bear": {
+      "score": 0.72,
+      "confidence": 0.7,
+      "rationale": "Operational growth was only 6.4% (about 5.3% excluding acquisitions), with STELARA's biosimilar collapse subtracting about 5.4 points, while SIMPONI and OPSUMIT face imminent biosimilar and generic erosion, XARELTO and IMBRUVICA are losing share, MedTech core franchises slowed to"
+    },
+    "adjudicated": {
+      "score": 0.2,
+      "confidence": 0.6,
+      "rationale": "Strong growth in oncology (DARZALEX, CARVYKTI, TALVEY), TREMFYA, and MedTech cardiovascular, plus a dividend increase, outweigh the STELARA erosion and upcoming SIMPONI and OPSUMIT generic losses, but declining segment margins, higher net debt, and XARELTO and IMBRUVICA share los"
+    },
+    "single_pass": 0.3
+  },
+  "0001628280-26-027019": {
+    "ticker": "PM",
+    "filing_date": "2026-04-24",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong smoke-free growth (International Smoke-Free net revenues up 24.7%, HTU volume up 11.3%, e-vapor up 94.8%), FDA authorizations and renewals (ZYN, IQOS, General snus), a Japan excise harmonization that favors HTP pricing, and an reported Q1 operating income"
+    },
+    "bear": {
+      "score": 0.6,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong bearish signals: cigarette volumes down 5.1%, U.S. smoke-free shipments down 21.2% with ZYN shipments down 23.5%, U.S. net revenues down 30.8%, excluding-currency diluted EPS down 19.8%, a $338M after-tax equity investment loss, industry volume expected t"
+    },
+    "adjudicated": {
+      "score": -0.2,
+      "confidence": 0.6,
+      "rationale": "Q1 2026 operating income was flat excluding currency (+0.2%), and diluted EPS fell 19.8% excluding currency, driven by a $338M equity investment loss, a higher guided tax rate, a U.S. smoke-free slump (ZYN shipments down 23.5%, U.S. net revenues down 30.8%) and a 5.1% cigarette v"
+    },
+    "single_pass": 0.05
+  },
+  "0000804328-26-000061": {
+    "ticker": "QCOM",
+    "filing_date": "2026-04-29",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows a $5.7B tax valuation-allowance release driving a 162% net income increase, growing automotive and IoT revenues, QTL licensing up 5%, substantial buybacks and dividends, and a favorable cash-tax shift from OBBB, but it is offset by a 3% revenue decline, a shrink"
+    },
+    "bear": {
+      "score": 0.72,
+      "confidence": 0.8,
+      "rationale": "The excerpt flags a QCT handset revenue decline from memory supply constraints, expected Apple modem vertical integration with a 'significant negative impact,' rising R&D and SG&A (R&D up to 23% of revenue) compressing QCT EBT margin from 30% to 27%, a $5.4B buyback and $1.9B div"
+    },
+    "adjudicated": {
+      "score": -0.35,
+      "confidence": 0.7,
+      "rationale": "The $5.7B tax benefit inflates reported net income and the buybacks/dividends and OBBB cash-tax benefit are supportive, but the excerpt's operating picture is weakening: QCT revenue and handset sales are declining from memory constraints, management flags a 'significant negative "
+    },
+    "single_pass": -0.3
+  },
+  "0001628280-26-028802": {
+    "ticker": "KO",
+    "filing_date": "2026-04-30",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows strong Q1 2026 results (revenue up 12%, concentrate volume up 8%, operating income up 19%, operating margin 35.0% vs 32.9%, gross margin up to 63.0%), favorable pricing, FX tailwinds guided for full-year 2026, a dividend increase cadence, and buybacks, though it"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows a $960M trademark impairment on BodyArmor with the remaining $2,440M carrying value at only approximate fair value and flagged for possible further impairment, Asia Pacific operating income down about 22% with margin falling from 47.1% to 37.6%, marketing spend "
+    },
+    "adjudicated": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "Q1 2026 shows strong broad-based growth (revenue +12%, operating income +19%, concentrate volume +8%, margin expansion, FX tailwinds and dividend/buyback support) that outweighs the BodyArmor impairment, Asia Pacific margin compression, and the overhang from the ~$14B IRS tax lit"
+    },
+    "single_pass": 0.45
+  },
+  "0000021665-26-000023": {
+    "ticker": "CL",
+    "filing_date": "2026-05-01",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.6,
+      "confidence": 0.55,
+      "rationale": "The excerpt shows operating cash flow up 25% to $747, a dividend increase to $0.53 from $0.52, debt reduced to $7,973, and commercial paper used to refinance maturities, all supporting shareholder returns and balance-sheet stability, though it contains no revenue or earnings grow"
+    },
+    "bear": {
+      "score": 0.4,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows a bearish tilt on cash quality and funding: operating cash flow rose mainly from working capital, commercial paper jumped from $147 to $1,258, nearly all cash ($1,321 of $1,335) sits abroad, and debt remains about $8.0 billion, but it gives no sales, margin, or "
+    },
+    "adjudicated": {
+      "score": 0.1,
+      "confidence": 0.5,
+      "rationale": "The excerpt shows a 25% rise in operating cash flow and a modest dividend increase with debt slightly lower, but the cash gain leans on working capital, commercial paper rose sharply, and nearly all cash is held abroad, with no sales or earnings data to judge operating performanc"
+    },
+    "single_pass": 0.3
+  },
+  "0001326160-26-000026": {
+    "ticker": "DUK",
+    "filing_date": "2026-05-05",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows Q1 2026 adjusted EPS up to $1.93 from $1.76, rate-case-driven revenue growth, record nuclear reliability, $2.8B and $2.5B cash inflows that fund a growing regulated capital plan, a $3.1B tax credit sale, rising data-center-driven load growth, and a Carolinas uti"
+    },
+    "bear": {
+      "score": 0.6,
+      "confidence": 0.7,
+      "rationale": "Operating cash flow fell 31% to $1.5B while capex rose to $4.1B, so funding relies on one-time proceeds (the $2.8B Florida Progress minority stake, the $2.5B Piedmont Tennessee sale, and $3.1B of tax-credit sales), and GAAP EPS was lifted by a $374M gain, with adjusted EPS of $1."
+    },
+    "adjudicated": {
+      "score": 0.25,
+      "confidence": 0.55,
+      "rationale": "Adjusted EPS rose to $1.93 from $1.76 on rate-case recovery and regulatory progress, with a constructive Carolinas outlook and data-center load growth, but operating cash flow fell 31%, capex is rising, and funding leans on one-time asset and minority-stake sales, so the net effe"
+    },
+    "single_pass": 0.35
+  },
+  "0000002488-26-000076": {
+    "ticker": "AMD",
+    "filing_date": "2026-05-06",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.8,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong momentum: Q1 2026 revenue up 38% to $10.3B, Data Center up 57% on EPYC and Instinct demand, gross margin expanded to 53% from 50%, operating income nearly doubled to $1.5B, operating cash flow reached $3.0B, and the Meta 6-gigawatt GPU deal adds a large c"
+    },
+    "bear": {
+      "score": 0.6,
+      "confidence": 0.7,
+      "rationale": "The excerpt highlights a heavy reliance on a few customers, AI demand that rests on uncertain data center buildouts and customer financing, intense competition from Nvidia and Intel, a memory shortage pressuring margins, rising opex (R&D up 39%, MG&A up 41%), growing purchase com"
+    },
+    "adjudicated": {
+      "score": 0.4,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong growth (revenue +38%, Data Center +57%, gross margin up to 53%, operating cash flow $3.0B) and a large Meta GPU agreement, outweighing risks that are real but largely already disclosed: customer concentration, data center buildout dependence, competition,"
+    },
+    "single_pass": 0.6
+  },
+  "0000726728-26-000030": {
+    "ticker": "O",
+    "filing_date": "2026-05-07",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows strong bullish fundamentals: AFFO per share up 6.6% to $1.13 with distributions covered (71.7% payout), 98.9% occupancy, 103.4% rent recapture, a 4.7x debt service coverage, A3/A- credit ratings, a $1.0B Apollo joint venture and GIC partnership validating privat"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows bearish pressure points: rising provisions for credit losses ($39.1M vs $19.2M), impairments up 9% to $129M, rising interest expense and debt ($30B, 5.2x net debt/EBITDA), heavy reliance on dilutive equity via ATM forwards ($1.2\u20131.4B) and new debt at 4.2\u20134.9% co"
+    },
+    "adjudicated": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows solid core fundamentals (AFFO/share up 6.6% to $1.13 with a 71.7% payout, 98.9% occupancy, 103.4% rent recapture, A3/A- ratings, and the Apollo and GIC capital partnerships) that outweigh the modest pressures from higher credit-loss provisions, impairments, and "
+    },
+    "single_pass": 0.35
+  },
+  "0000109198-26-000034": {
+    "ticker": "TJX",
+    "filing_date": "2026-05-29",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.82,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows 9% net sales growth, 6% comp sales growth accelerating from 3% a year earlier, EPS up from $0.92 to $1.19, pre-tax margin up 1.7 points, gross margin up 1.8 points, $5.6 billion cash, $2.75-3.0 billion planned buybacks, a 13% dividend increase, and possible IEEP"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "Much of the margin and EPS gain looks cyclical or non-recurring: the cost-ratio improvement leans on mark-to-market hedge timing, lower general corporate expense, and a one-time credit card interchange settlement that lifted operating cash flow; inventory per store is up 7% again"
+    },
+    "adjudicated": {
+      "score": 0.6,
+      "confidence": 0.72,
+      "rationale": "The excerpt shows strong broad-based execution: 6% comp acceleration from 3%, 9% net sales growth, 1.8-point gross margin expansion driven partly by higher markon and comp leverage, and an 18% EPS increase with shareholder returns and a dividend raise, though part of the margin g"
+    },
+    "single_pass": 0.7
+  },
+  "0001373715-26-000076": {
+    "ticker": "NOW",
+    "filing_date": "2026-07-23",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.72,
+      "confidence": 0.6,
+      "rationale": "Strong top-line growth (subscription revenue up 25% in Q2, RPO up 21%), 98% renewal rate, non-GAAP operating income up 23%, and rising free cash flow (up 14% for six months) support a bullish case, though margin compression from acquisitions, a rising tax rate, and heavy new debt"
+    },
+    "bear": {
+      "score": 0.55,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows sharply compressing subscription gross margin (80% to 73% in Q2), GAAP operating income down 55% year over year, a 32% effective tax rate, interest income falling 40%, cash flow from operations down 6%, and a shift to $6.7B in liquidity alongside $4B of new note"
+    },
+    "adjudicated": {
+      "score": 0.1,
+      "confidence": 0.5,
+      "rationale": "Revenue growth of 24%, a 98% renewal rate, 21% RPO growth, and 14% six-month free cash flow growth support the bull case, but the sharp drop in GAAP operating income (down 55% in Q2), subscription gross margin compression (80% to 73%), flat-to-lower operating cash flow, and about"
+    },
+    "single_pass": 0.2
+  },
+  "0000766704-26-000030": {
+    "error": "model reply contained no JSON object: '{\"score\": 0.6, \"confidence\": 0.6, \"rationale\": \"The excerpt shows a sharp run-up in share price (about $186 to $227 since December 2025) funded by roughly $4.5B of ATM equity issuance that grew shares'",
+    "ticker": "WELL",
+    "filing_date": "2026-07-28"
+  },
+  "0001141391-26-000083": {
+    "ticker": "MA",
+    "filing_date": "2026-07-30",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.85,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows accelerating GAAP and adjusted growth (Q2 net revenue +14%, operating income +17%, diluted EPS +22%, adjusted EPS +21%), expanding operating margins, value-added services up 20%, cross-border volume up 14%, and heavy buybacks ($8.9B repurchased in six months wit"
+    },
+    "bear": {
+      "score": 0.6,
+      "confidence": 0.65,
+      "rationale": "Currency-neutral growth is decelerating (net revenue 12% vs. 15% reported, payment network 8%, U.S. GDV 6%), rebates and incentives rose 22% and outpaced payment network revenue growth, and the company borrowed to fund buybacks, lifting debt from $19.0B to $24.6B while operating "
+    },
+    "adjudicated": {
+      "score": 0.35,
+      "confidence": 0.6,
+      "rationale": "Reported and adjusted growth remain strong, with net revenue up 14%, value-added services up 20%, adjusted EPS up 21%, and margins expanding, but currency-neutral growth is decelerating, rebates are outpacing payment network revenue, U.S. GDV is only 6%, and debt rose from $19.0B"
+    },
+    "single_pass": 0.6
+  },
+  "0000886982-26-000297": {
+    "ticker": "GS",
+    "filing_date": "2026-08-03",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.82,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows strong momentum: Q2 2026 net earnings up ~78% to $6.63B, EPS $20.98 vs $10.91, ROE 23.5% above the 14-16% target, net revenues up 39%, provisions down, record-level buybacks ($9.0B in H1) and dividends, a 12.9% CET1 ratio, rising investment banking backlog, and "
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows real bearish hooks: the 39% revenue surge and 23.5% ROE sit above the company's own 14-16% through-the-cycle ROE target, sell-side revenues depend on volatile market-making and investment banking activity that management flags as vulnerable to geopolitical, infl"
+    },
+    "adjudicated": {
+      "score": 0.45,
+      "confidence": 0.7,
+      "rationale": "Excerpt shows strong earnings momentum (net revenues +39%, EPS $20.98 vs $10.91, provisions down, $9.0B H1 buybacks, CET1 12.9%) and rising IB backlog, but the 23.5% ROE sits above the 14-16% through-the-cycle target and revenues depend on volatile market-making and IB activity e"
+    },
+    "single_pass": 0.6
+  },
+  "0001628280-26-053170": {
+    "ticker": "PNC",
+    "filing_date": "2026-08-05",
+    "form": "10-Q",
+    "bull": {
+      "score": 0.8,
+      "confidence": 0.7,
+      "rationale": "The excerpt shows strong momentum: net income up 16% sequentially to $2.1B, EPS of $4.81, revenue up 12% quarter over quarter, NIM expanding to 2.96%, a raised dividend of 18%, a 2026 guidance of roughly 14% revenue growth, and stable credit with falling nonperforming assets, tho"
+    },
+    "bear": {
+      "score": 0.45,
+      "confidence": 0.6,
+      "rationale": "The excerpt shows bearish pressure points: CET1 fell from 10.6% to 9.9%, borrowed funds rose 50% to $85.7B with FHLB advances up sharply, office CRE reserves and criticized loans are elevated (29.4% criticized), Q2 earnings leaned on one-time items (a $448M Visa gain versus a $13"
+    },
+    "adjudicated": {
+      "score": 0.2,
+      "confidence": 0.55,
+      "rationale": "Core earnings momentum is solid (EPS $4.81, NIM 2.96%, dividend up 18%, FY2026 revenue guided ~14%), but Q2 EPS leaned on one-time items (net $224M of significant items plus a $140M Foundation charge), CET1 fell to 9.9%, borrowed funds rose 50% largely via FHLB advances, and offi"
+    },
+    "single_pass": 0.6
+  }
+}

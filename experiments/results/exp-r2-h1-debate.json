@@ -1,0 +1,32 @@
+{
+  "experiment_id": "exp-r2-h1-debate",
+  "n_filings": 100,
+  "n_errors": 1,
+  "spend_usd": 0.803578,
+  "worst_case_usd": 0.9632,
+  "ic_debate_20d": {
+    "n": 86,
+    "ic": -0.0756,
+    "tstat": -0.69
+  },
+  "ic_single_20d": {
+    "n": 86,
+    "ic": -0.0246,
+    "tstat": -0.23
+  },
+  "ic_debate_60d": {
+    "n": 85,
+    "ic": -0.0666,
+    "tstat": -0.61
+  },
+  "ic_single_60d": {
+    "n": 85,
+    "ic": -0.1097,
+    "tstat": -1.01
+  },
+  "delta_20d": -0.051,
+  "delta_60d": 0.0431,
+  "decision_delta": 0.02,
+  "verdict": "DROP",
+  "scores_file": "/home/hatch/workspace/stock-thesis/experiments/results/exp-r2-h1-debate-scores.json"
+}

@@ -223,7 +223,9 @@ class AnthropicProvider:
     - "audit" -> Fable 5.2 (5-10% sample only, never the daily model)
 
     Results are cached on disk by (symbol, document hash, model id,
-    prompt version). A cached call costs $0 and makes no network call.
+    prompt version, cache tag). A cached call costs $0 and makes no
+    network call. The cache tag (default "") keeps debate-role calls
+    (bull / bear / adjudicate) separate from single-pass calls.
     """
 
     ROLE_MODELS = {
@@ -278,15 +280,24 @@ class AnthropicProvider:
         except ImportError:
             return anthropic.Anthropic(api_key=self.api_key)
 
-    def _disk_path(self, symbol: str, documents: list[dict]) -> Path:
+    def _disk_path(self, symbol: str, documents: list[dict], cache_tag: str = "") -> Path:
         key = hashlib.sha256(
-            "|".join([symbol, _doc_hash(documents), self.model_id, PROMPT_VERSION]).encode()
+            "|".join([symbol, _doc_hash(documents), self.model_id, PROMPT_VERSION,
+                      cache_tag]).encode()
         ).hexdigest()[:24]
         return self.cache_dir / f"{key}.json"
 
-    def score(self, symbol: str, as_of: str, documents: list[dict], excerpt: str) -> dict:
-        """Score one excerpt. ``documents`` must be dated <= ``as_of``."""
-        disk_path = self._disk_path(symbol, documents)
+    def score(self, symbol: str, as_of: str, documents: list[dict], excerpt: str,
+              system_prompt: str | None = None, cache_tag: str = "") -> dict:
+        """Score one excerpt. ``documents`` must be dated <= ``as_of``.
+
+        ``system_prompt`` overrides the module SYSTEM_PROMPT for this
+        call (e.g. bull/bear/adjudicate debate roles); ``cache_tag``
+        keeps those roles' disk-cache entries separate. Both default
+        to the standard single-pass behaviour.
+        """
+        prompt = system_prompt or SYSTEM_PROMPT
+        disk_path = self._disk_path(symbol, documents, cache_tag)
         try:
             cached = json.loads(disk_path.read_text())
             cached["cached"] = True
@@ -295,7 +306,7 @@ class AnthropicProvider:
             pass
 
         text = _trim_excerpt(excerpt)
-        est_in = _estimate_tokens(SYSTEM_PROMPT) + _estimate_tokens(text)
+        est_in = _estimate_tokens(prompt) + _estimate_tokens(text)
         price_in, price_out = MODEL_PRICES[self.model_id]
         worst_case = est_in / 1_000_000 * price_in + MAX_OUTPUT_TOKENS / 1_000_000 * price_out
         self.cap.check(worst_case)
@@ -303,7 +314,7 @@ class AnthropicProvider:
         response = self.client.messages.create(
             model=self.model_id,
             max_tokens=MAX_OUTPUT_TOKENS,
-            system=SYSTEM_PROMPT,
+            system=prompt,
             messages=[{"role": "user", "content": f"Symbol: {symbol}\nAs of: {as_of}\n\n{text}"}],
         )
         reply = "".join(block.text for block in response.content if hasattr(block, "text"))

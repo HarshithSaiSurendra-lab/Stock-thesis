@@ -1,0 +1,58 @@
+{
+  "experiment_id": "exp-r2-gpt-second-opinion",
+  "n_filings": 87,
+  "n_errors": 0,
+  "n_trimmed_for_budget": 17,
+  "spend_usd": 2.127068,
+  "worst_case_usd": 4.3651,
+  "tokens_in": 1038254,
+  "tokens_out": 5056,
+  "first_probe": {
+    "accession": "0001534701-25-000155",
+    "excerpt_chars": 100160,
+    "prompt_tokens": 21833,
+    "completion_tokens": 110,
+    "cost_usd": 0.044766,
+    "chars_per_token": 4.59
+  },
+  "agreement_haiku_vs_gpt": {
+    "n": 84,
+    "mean_agreement": 0.9387,
+    "mean_abs_diff": 0.1225,
+    "pearson": 0.9039,
+    "sign_agreement": 0.9881
+  },
+  "agreement_sonnet_vs_gpt": {
+    "n": 84,
+    "mean_agreement": 0.9294,
+    "mean_abs_diff": 0.1412,
+    "pearson": 0.9238,
+    "sign_agreement": 0.9524
+  },
+  "ic_gpt_20d": {
+    "n": 84,
+    "ic": -0.0238,
+    "tstat": -0.22
+  },
+  "ic_haiku_20d": {
+    "n": 84,
+    "ic": 0.2028,
+    "tstat": 1.87
+  },
+  "ic_gpt_60d": {
+    "n": 84,
+    "ic": -0.1284,
+    "tstat": -1.17
+  },
+  "ic_haiku_60d": {
+    "n": 84,
+    "ic": -0.1408,
+    "tstat": -1.29
+  },
+  "sign_disagreement_split": {
+    "n_disagree": 5,
+    "gpt_sides_with_sonnet": 1,
+    "gpt_sides_with_haiku": 4
+  },
+  "scores_file": "/home/hatch/workspace/stock-thesis/experiments/results/exp-r2-gpt-second-opinion-scores.json"
+}
