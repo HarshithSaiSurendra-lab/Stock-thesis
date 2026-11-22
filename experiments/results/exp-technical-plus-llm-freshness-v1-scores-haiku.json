@@ -1,0 +1,1502 @@
+{
+  "0000320193-26-000026": {
+    "symbol": "AAPL",
+    "as_of": "2026-11-03",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.5,
+    "confidence": 0.75,
+    "rationale": "Net sales grew 15%, iPhone rose 21%, gross margin expanded to 48.8%, and management announced a $100B buyback with a dividend increase, outweighing warnings about memory and component cost pressure, margin volatility, rising AI-related R&D spending, and tariff and legal uncertain",
+    "sources": [
+      {
+        "doc": "10-K",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-11-03"
+      }
+    ],
+    "tokens_in": 22880,
+    "tokens_out": 299,
+    "cost_usd": 0.002437,
+    "cached": false
+  },
+  "0001551152-26-000037": {
+    "symbol": "ABBV",
+    "as_of": "2026-11-03",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.6,
+    "confidence": 0.8,
+    "rationale": "Strong 11% revenue growth led by Skyrizi and Rinvoq, a steady run of approvals and positive Phase 3 readouts, a dividend increase, a credit upgrade, and a favorable court ruling on Botox pricing outweigh Humira and Imbruvica erosion, the failed Epkinly DLBCL-1 trial, and a CRL.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-11-03"
+      }
+    ],
+    "tokens_in": 14394,
+    "tokens_out": 309,
+    "cost_usd": 0.001594,
+    "cached": false
+  },
+  "0001628280-26-070154": {
+    "symbol": "ABT",
+    "as_of": "2026-11-04",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.2,
+    "confidence": 0.5,
+    "rationale": "Acquisition-driven top-line growth (Q3 sales up 14.8% ex-FX), strong Electrophysiology, Rhythm Management, and CGM growth, and new product approvals are offset by gross margin compression, sharply higher R&D and SG&A, legal settlements, weaker operating cash flow, lower Nutrition",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-11-04"
+      }
+    ],
+    "tokens_in": 9712,
+    "tokens_out": 414,
+    "cost_usd": 0.001178,
+    "cached": false
+  },
+  "0000796343-26-000156": {
+    "symbol": "ADBE",
+    "as_of": "2026-09-22",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.3,
+    "confidence": 0.6,
+    "rationale": "Subscription revenue grew 14% and ARR 11.2%, with heavy buybacks ($6.8B) supporting per-share value, but operating expense growth of 15%, cost of subscription up 24% from AI inferencing, a 3% net income increase against 13% revenue growth, and rising AI competition and regulatory",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-09-22"
+      }
+    ],
+    "tokens_in": 31217,
+    "tokens_out": 412,
+    "cost_usd": 0.003328,
+    "cached": false
+  },
+  "0001628280-26-058235": {
+    "symbol": "AMAT",
+    "as_of": "2026-08-20",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.6,
+    "confidence": 0.8,
+    "rationale": "Strong revenue growth (+25% Q3, +11% nine months), expanding gross and operating margins, DRAM-driven demand, rising AGS services, and ample cash returns support a positive outlook, tempered by export-control, tariff, and tax-rate risks and a lower-quality one-off in the nine-mon",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-08-20"
+      }
+    ],
+    "tokens_in": 29248,
+    "tokens_out": 132,
+    "cost_usd": 0.002991,
+    "cached": false
+  },
+  "0000002488-26-000191": {
+    "symbol": "AMD",
+    "as_of": "2026-11-04",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.5,
+    "confidence": 0.7,
+    "rationale": "Results are strong, with Q3 revenue up 45%, Data Center up 97%, gross margin up to 54%, and operating income more than doubled, but the excerpt also flags large off-balance-sheet commitments ($48.8B unconditional, $8.5B in guarantees), rising debt, a memory shortage, customer con",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-11-04"
+      }
+    ],
+    "tokens_in": 28490,
+    "tokens_out": 358,
+    "cost_usd": 0.003028,
+    "cached": false
+  },
+  "0000318154-26-000155": {
+    "symbol": "AMGN",
+    "as_of": "2026-11-04",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.3,
+    "confidence": 0.6,
+    "rationale": "Strong Q3 results (product sales +8%, diluted EPS +19%) and multiple pipeline wins (DeLLphi-305 overall survival, TEZSPIRE EoE, dazodalibep Phase 3, Repatha EU expansion) outweigh erosion from Prolia/XGEVA biosimilars and IRA/MFN pricing pressure, but the large unresolved IRS tax",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-11-04"
+      }
+    ],
+    "tokens_in": 34191,
+    "tokens_out": 422,
+    "cost_usd": 0.00363,
+    "cached": false
+  },
+  "0001053507-26-000157": {
+    "symbol": "AMT",
+    "as_of": "2026-10-27",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.2,
+    "confidence": 0.6,
+    "rationale": "Revenue grew 5% for nine months and Adjusted EBITDA, AFFO (up 3%) and Data Center growth are solid, with long-term non-cancellable leases of about $49 billion, but offsetting this are DISH bankruptcy churn, the AT&T Mexico dispute with ongoing reserves, U.S. & Canada revenue decl",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-27"
+      }
+    ],
+    "tokens_in": 31849,
+    "tokens_out": 161,
+    "cost_usd": 0.003265,
+    "cached": false
+  },
+  "0001730168-26-000080": {
+    "symbol": "AVGO",
+    "as_of": "2026-09-10",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.6,
+    "confidence": 0.8,
+    "rationale": "Quarterly revenue up 86% and operating income up 171% year over year, with strong AI semiconductor demand and cash generation, though offset by a $29B backstop liability, customer concentration, and rising receivables and inventory.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-09-10"
+      }
+    ],
+    "tokens_in": 27316,
+    "tokens_out": 101,
+    "cost_usd": 0.002782,
+    "cached": false
+  },
+  "0000004962-26-000409": {
+    "symbol": "AXP",
+    "as_of": "2026-10-23",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.6,
+    "confidence": 0.8,
+    "rationale": "Strong growth in revenue (+9%), EPS (+31%), billed business (+8%), falling net write-offs and delinquencies, and ROE of 42%, though partly boosted by a one-time GBTG gain, offset by a $350M OCC penalty, regulatory orders, and surcharging/antitrust risks.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-23"
+      }
+    ],
+    "tokens_in": 34245,
+    "tokens_out": 133,
+    "cost_usd": 0.003491,
+    "cached": false
+  },
+  "0001193125-26-447043": {
+    "symbol": "BLK",
+    "as_of": "2026-11-04",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.6,
+    "confidence": 0.8,
+    "rationale": "Strong AUM growth to $15.5T with $869B trailing-twelve-month net inflows, 26% EPS growth as adjusted, improving margins, and rising technology revenue point to positive prospects, tempered by index-fund outflows, GAAP earnings sensitivity to contingent consideration, and market-d",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-11-04"
+      }
+    ],
+    "tokens_in": 37883,
+    "tokens_out": 136,
+    "cost_usd": 0.003856,
+    "cached": false
+  },
+  "0000014272-26-000024": {
+    "symbol": "BMY",
+    "as_of": "2026-10-29",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.3,
+    "confidence": 0.6,
+    "rationale": "Revenue grew 7% in Q3 and 5% year-to-date, with strong Growth Portfolio and Camzyos, Breyanzi, Reblozyl and Eliquis gains and several positive Phase III readouts and approvals. These are offset by a 28-cent drop in Q3 non-GAAP EPS, a $3.5B fall in operating cash flow, steep Revli",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-29"
+      }
+    ],
+    "tokens_in": 24684,
+    "tokens_out": 502,
+    "cost_usd": 0.002719,
+    "cached": false
+  },
+  "0000896159-26-000021": {
+    "symbol": "CB",
+    "as_of": "2026-10-28",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.3,
+    "confidence": 0.6,
+    "rationale": "Nine-month results are solid: net income attributable to Chubb is up 12.9%, premiums written up 5.1%, net investment income up 10.1%, operating cash flow is strong, and buybacks and the dividend are increasing. Offsetting this, Q3 catastrophe losses rose sharply, commercial lines",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-28"
+      }
+    ],
+    "tokens_in": 38651,
+    "tokens_out": 378,
+    "cost_usd": 0.004054,
+    "cached": false
+  },
+  "0000021665-26-000048": {
+    "symbol": "CL",
+    "as_of": "2026-10-30",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.0,
+    "confidence": 0.1,
+    "rationale": "The excerpt is methodological boilerplate on how market share is measured and states there are no material changes to risk factors, with no reported sales, earnings, or guidance to indicate a directional effect.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-30"
+      }
+    ],
+    "tokens_in": 737,
+    "tokens_out": 134,
+    "cost_usd": 0.000141,
+    "cached": false
+  },
+  "0001058090-26-000104": {
+    "symbol": "CMG",
+    "as_of": "2026-10-29",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": -0.2,
+    "confidence": 0.6,
+    "rationale": "Revenue and comparable sales grew (+9.6% revenue, +2.1% comps) and digital share rose, but diluted EPS fell 6.9% as other operating costs, labor, G&A, and the tax rate all rose faster than sales, and July's food-safety and geopolitical headwinds were only partly recovered by Augu",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-29"
+      }
+    ],
+    "tokens_in": 8638,
+    "tokens_out": 311,
+    "cost_usd": 0.001019,
+    "cached": false
+  },
+  "0000927628-26-000152": {
+    "symbol": "COF",
+    "as_of": "2026-11-03",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.0,
+    "confidence": 0.1,
+    "rationale": "The excerpt is boilerplate MD&A forward-looking language and a statement that there are no material changes to risk factors, with no quantitative results, guidance, or substantive developments to indicate a directional stock effect.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-11-03"
+      }
+    ],
+    "tokens_in": 476,
+    "tokens_out": 96,
+    "cost_usd": 9.6e-05,
+    "cached": false
+  },
+  "0001108524-26-000190": {
+    "symbol": "CRM",
+    "as_of": "2026-08-27",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.12,
+    "confidence": 0.5,
+    "rationale": "Revenue grew 12% and current RPO grew 14%, but GAAP EPS is inflated by $3.2B of strategic-investment gains, operating income was flat in Q2 with margin down, interest expense rose sharply on $39.5B of debt, and new acquisitions add cost and integration risk.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-08-27"
+      }
+    ],
+    "tokens_in": 33326,
+    "tokens_out": 470,
+    "cost_usd": 0.003568,
+    "cached": false
+  },
+  "0000858877-26-000132": {
+    "symbol": "CSCO",
+    "as_of": "2026-09-02",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.45,
+    "confidence": 0.6,
+    "rationale": "Strong fiscal 2026 growth (revenue +12%, Q4 +18%, Networking +22%, EPS +31%, RPO +7%) points positive, but inventory up 80%, purchase commitments up 126%, memory-driven gross margin pressure, flat operating cash flow, and hyperscaler concentration add meaningful downside risk.",
+    "sources": [
+      {
+        "doc": "10-K",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-09-02"
+      }
+    ],
+    "tokens_in": 40310,
+    "tokens_out": 343,
+    "cost_usd": 0.004202,
+    "cached": false
+  },
+  "0001193125-26-440697": {
+    "symbol": "D",
+    "as_of": "2026-10-30",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.2,
+    "confidence": 0.5,
+    "rationale": "Q3 earnings rose 15% on regulated rider returns and the 2025 Biennial Review, and all three agencies revised outlooks to positive, but year-to-date income fell 13% on impairments and higher interest, and the pending NextEra merger largely anchors the stock's direction.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-30"
+      }
+    ],
+    "tokens_in": 23141,
+    "tokens_out": 361,
+    "cost_usd": 0.002495,
+    "cached": false
+  },
+  "0001666700-26-000060": {
+    "symbol": "DD",
+    "as_of": "2026-11-03",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.45,
+    "confidence": 0.7,
+    "rationale": "Q3 2026 organic sales grew 5% with Operating EBITDA up in both segments, cash flow from operations rose sharply, and buybacks plus a stable dividend signal confidence, though the 38.7% quarterly tax rate, rising legal settlement liabilities, and Middle East and tariff-refund unce",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-11-03"
+      }
+    ],
+    "tokens_in": 15660,
+    "tokens_out": 143,
+    "cost_usd": 0.001638,
+    "cached": false
+  },
+  "0001104659-26-102213": {
+    "symbol": "DE",
+    "as_of": "2026-08-27",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.2,
+    "confidence": 0.55,
+    "rationale": "Q3 sales and net income rose, and management guides to higher 2026 net sales on SAT and CF strength, but large-ag PPA operating profit fell 34% year-to-date, nine-month net income and EPS declined, the tariff recoveries are one-time, and operating cash flow dipped.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-08-27"
+      }
+    ],
+    "tokens_in": 16971,
+    "tokens_out": 425,
+    "cost_usd": 0.00191,
+    "cached": false
+  },
+  "0000313616-26-000199": {
+    "symbol": "DHR",
+    "as_of": "2026-10-21",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.3,
+    "confidence": 0.6,
+    "rationale": "Core sales growth accelerated to 3.0% in Q3 (5.5% ex-respiratory) with sequentially stronger demand and margin expansion, offset by large Masimo acquisition debt, dilution, and China pricing pressure, leaving a moderately positive net outlook.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-21"
+      }
+    ],
+    "tokens_in": 24881,
+    "tokens_out": 121,
+    "cost_usd": 0.002549,
+    "cached": false
+  },
+  "0001628280-26-068208": {
+    "symbol": "ECL",
+    "as_of": "2026-10-29",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.35,
+    "confidence": 0.6,
+    "rationale": "Organic sales rose 7% with pricing and margin gains, Global Water and Life Sciences accelerated, and adjusted EPS grew 5% in Q3 (9% year-to-date). These are offset by reported EPS and net income declines, a jump in net debt/EBITDA from 2.0x to 3.1x after $5B of new debt, and risi",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-29"
+      }
+    ],
+    "tokens_in": 19424,
+    "tokens_out": 380,
+    "cost_usd": 0.002132,
+    "cached": false
+  },
+  "0000032604-26-000054": {
+    "symbol": "EMR",
+    "as_of": "2026-11-09",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.6,
+    "confidence": 0.8,
+    "rationale": "Fiscal 2026 shows solid growth (sales up 5%, GAAP diluted EPS up 20%, adjusted EPS up 10%, free cash flow up 9%), a dividend increase, buybacks, and FY2027 guidance for ~5% sales growth and ~$7.25 adjusted EPS, offset by softer China/Europe/Latin America demand, rising working ca",
+    "sources": [
+      {
+        "doc": "10-K",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-11-09"
+      }
+    ],
+    "tokens_in": 30147,
+    "tokens_out": 362,
+    "cost_usd": 0.003196,
+    "cached": false
+  },
+  "0000821189-26-000227": {
+    "symbol": "EOG",
+    "as_of": "2026-11-05",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.6,
+    "confidence": 0.8,
+    "rationale": "Higher realized oil and gas prices drove a 46% jump in quarterly revenue and a $4.0B increase in nine-month operating cash flow, and the Board raised the dividend 8% and doubled the buyback authorization to $20B, while debt-to-capitalization fell to 19%, though rising costs, taxe",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-11-05"
+      }
+    ],
+    "tokens_in": 19879,
+    "tokens_out": 288,
+    "cost_usd": 0.002132,
+    "cached": false
+  },
+  "0000040545-26-000064": {
+    "symbol": "GE",
+    "as_of": "2026-10-20",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.8,
+    "confidence": 0.9,
+    "rationale": "Strong growth in revenue (+20% nine-month), segment profit (+21%), operating profit margin expansion in Q3, record RPO of $212B, rising FCF, and credit upgrades point to a strongly positive outlook, tempered by a large pending $11.75B acquisition, Insurance charges, and Middle Ea",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-20"
+      }
+    ],
+    "tokens_in": 16843,
+    "tokens_out": 136,
+    "cost_usd": 0.001752,
+    "cached": false
+  },
+  "0000882095-26-000039": {
+    "symbol": "GILD",
+    "as_of": "2026-10-30",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.2,
+    "confidence": 0.6,
+    "rationale": "Core HIV franchise (Biktarvy, Descovy, Yeztugo) and Trodelvy growth, plus new approvals, are positive, but the Biktarvy Medicare Maximum Fair Price cut from 2028, the EVOKE-03 failure, the $1.75B impairment, and heavy acquired IPR&D drive a net-loss swing and margin uncertainty t",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-30"
+      }
+    ],
+    "tokens_in": 30536,
+    "tokens_out": 165,
+    "cost_usd": 0.003136,
+    "cached": false
+  },
+  "0001467858-26-000059": {
+    "symbol": "GM",
+    "as_of": "2026-10-20",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.45,
+    "confidence": 0.7,
+    "rationale": "Strong Q3 results with EBIT-adjusted margin up to 8.7% in GMNA, raised-to-expected 2026 guidance midpoint, $20B new buyback authorization, IEEPA tariff refunds, and ROIC-adjusted of 24.8%, partially offset by China volume declines (-18% industry), rising GM Financial provisions, ",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-20"
+      }
+    ],
+    "tokens_in": 27417,
+    "tokens_out": 167,
+    "cost_usd": 0.002825,
+    "cached": false
+  },
+  "0001628280-26-058715": {
+    "symbol": "HD",
+    "as_of": "2026-08-25",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": -0.1,
+    "confidence": 0.5,
+    "rationale": "Reported Q2 EPS growth of 4.6% is flattered by a one-time ~$685M IEEPA tariff refund credited to cost of goods sold, so underlying operating performance looks weaker: transactions fell, SG&A deleveraged, and ROIC declined, partly offset by positive comparable sales and debt paydo",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-08-25"
+      }
+    ],
+    "tokens_in": 9668,
+    "tokens_out": 433,
+    "cost_usd": 0.001183,
+    "cached": false
+  },
+  "0000773840-26-000143": {
+    "symbol": "HON",
+    "as_of": "2026-10-22",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.1,
+    "confidence": 0.5,
+    "rationale": "Building Automation organic growth of about 8-9% and debt reduction are positive, but reported EPS gains are largely one-time (Quantinuum deconsolidation, Resideo lapping), operating cash flow fell sharply to $743M, Process Automation organic sales grew only about 1%, backlog ros",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-22"
+      }
+    ],
+    "tokens_in": 13915,
+    "tokens_out": 440,
+    "cost_usd": 0.001612,
+    "cached": false
+  },
+  "0000051143-26-000095": {
+    "symbol": "IBM",
+    "as_of": "2026-10-22",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.3,
+    "confidence": 0.6,
+    "rationale": "Q3 2026 shows solid revenue growth (4.7%, 5.6% constant currency), software acceleration with strong Hybrid Cloud and Data growth, EPS up 25% GAAP and operating EPS up 11%, and healthy free cash flow, offset by Consulting weakness, declining signings, IBM Z product-cycle drag, sh",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-22"
+      }
+    ],
+    "tokens_in": 33778,
+    "tokens_out": 172,
+    "cost_usd": 0.003464,
+    "cached": false
+  },
+  "0001571949-26-000015": {
+    "symbol": "ICE",
+    "as_of": "2026-10-29",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.5,
+    "confidence": 0.72,
+    "rationale": "Strong nine-month results (revenue up 13%, operating income up 21%, adjusted EPS up 20%) driven by record derivatives and cash equities volumes, rising data ASV and buybacks, offset by a $6.0B cash MarketAxess acquisition that lifts debt to $23.3B, volume dependence on geopolitic",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-29"
+      }
+    ],
+    "tokens_in": 32899,
+    "tokens_out": 344,
+    "cost_usd": 0.003462,
+    "cached": false
+  },
+  "0001035267-26-000071": {
+    "symbol": "ISRG",
+    "as_of": "2026-10-21",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.3,
+    "confidence": 0.6,
+    "rationale": "Strong top-line growth (revenue +22%, procedures +14%, system placements +28%, 2026 year-to-date gains) is offset by planned 3-5% instrument price cuts, weaker China placements, a new remanufactured-instrument risk factor, and a $450M antitrust settlement charge that cut operatin",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-21"
+      }
+    ],
+    "tokens_in": 33311,
+    "tokens_out": 383,
+    "cost_usd": 0.003523,
+    "cached": false
+  },
+  "0000200406-26-000197": {
+    "symbol": "JNJ",
+    "as_of": "2026-10-21",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.12,
+    "confidence": 0.4,
+    "rationale": "Operational sales grew 6.0% led by strong Innovative Medicine launches (TREMFYA, DARZALEX, CARVYKTI), but Q3 pretax earnings collapsed to near zero on a $5.5B talc charge, IPR&D write-offs, and rising STELARA, OPSUMIT, and SIMPONI erosion, leaving the net outlook mixed.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-21"
+      }
+    ],
+    "tokens_in": 18196,
+    "tokens_out": 473,
+    "cost_usd": 0.002056,
+    "cached": false
+  },
+  "0001628280-26-069523": {
+    "symbol": "JPM",
+    "as_of": "2026-11-03",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.6,
+    "confidence": 0.7,
+    "rationale": "Strong Q3 2026 results (EPS up 10%, net income up 6%, ROTCE 20%, IB fees and asset management fees up, provision down 19%) and FY2026 NII guidance imply solid momentum, tempered by rising expenses (up 12%), a lower Q4 NII guide relative to Markets-heavy revenue, and a higher Card",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-11-03"
+      }
+    ],
+    "tokens_in": 39387,
+    "tokens_out": 157,
+    "cost_usd": 0.004017,
+    "cached": false
+  },
+  "0001628280-26-070754": {
+    "symbol": "KMB",
+    "as_of": "2026-11-05",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": -0.3,
+    "confidence": 0.6,
+    "rationale": "Core organic sales fell 1.3% in the quarter with China diaper disruption and rising input costs (about $250 incremental), and the Kenvue deal adds heavy debt, $3.1B of integration charges, and open litigation (Tylenol, talc, PE), partly offset by 17% adjusted EPS growth and produ",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-11-05"
+      }
+    ],
+    "tokens_in": 21718,
+    "tokens_out": 325,
+    "cost_usd": 0.002334,
+    "cached": false
+  },
+  "0001628280-26-067844": {
+    "symbol": "KO",
+    "as_of": "2026-10-28",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.45,
+    "confidence": 0.7,
+    "rationale": "Strong volume growth (5-6% unit cases and concentrate), margin expansion, 13% operating income growth, and strong operating cash flow are positive, but the BodyArmor impairment, a possible ~$14B IRS tax liability, and rising marketing and SG&A weigh on the outlook.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-28"
+      }
+    ],
+    "tokens_in": 24856,
+    "tokens_out": 126,
+    "cost_usd": 0.002549,
+    "cached": false
+  },
+  "0000059478-26-000108": {
+    "symbol": "LLY",
+    "as_of": "2026-10-29",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.8,
+    "confidence": 0.85,
+    "rationale": "Revenue rose 39% in Q3 and 46% year-to-date, EPS rose 51% for nine months, gross margin expanded, and retatrutide Phase 3 trials met primary endpoints, though lower realized prices, rising debt, and pricing pressure temper the outlook.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-29"
+      }
+    ],
+    "tokens_in": 10323,
+    "tokens_out": 265,
+    "cost_usd": 0.001165,
+    "cached": false
+  },
+  "0001628280-26-066928": {
+    "symbol": "LMT",
+    "as_of": "2026-10-22",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.55,
+    "confidence": 0.7,
+    "rationale": "Q3 2026 sales rose 11% and EPS rose 15%, with strong munitions multi-year contracts, a $1.5T FY2027 defense budget request, and higher free cash flow, partly offset by unfunded F-35 Lot 20 costs, continued fixed-price program charges, and a pending $3.45B acquisition.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-22"
+      }
+    ],
+    "tokens_in": 16272,
+    "tokens_out": 312,
+    "cost_usd": 0.001783,
+    "cached": false
+  },
+  "0001141391-26-000124": {
+    "symbol": "MA",
+    "as_of": "2026-10-29",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.6,
+    "confidence": 0.75,
+    "rationale": "Revenue grew 14% (currency-neutral) and GAAP EPS rose 22% in Q3 with expanding operating margin, supported by cross-border volume growth of 10-19% and $5.6B of remaining buyback authorization. Offsetting concerns include rebates and incentives up about 18-21%, operating cash flow",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-29"
+      }
+    ],
+    "tokens_in": 16962,
+    "tokens_out": 253,
+    "cost_usd": 0.001823,
+    "cached": false
+  },
+  "0001048286-26-000043": {
+    "symbol": "MAR",
+    "as_of": "2026-11-02",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.6,
+    "confidence": 0.8,
+    "rationale": "Strong Q3 2026 RevPAR growth (+6.5%), robust fee revenue growth (+14% gross), a favorable co-branded credit card renewal, and continued buybacks point to a positive outlook, tempered by Middle East disruption, rising interest expense, and the unquantified Starwood data security l",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-11-02"
+      }
+    ],
+    "tokens_in": 10746,
+    "tokens_out": 133,
+    "cost_usd": 0.001141,
+    "cached": false
+  },
+  "0001628280-26-068256": {
+    "symbol": "MDLZ",
+    "as_of": "2026-10-29",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": -0.15,
+    "confidence": 0.5,
+    "rationale": "Q3 Adjusted EPS rose 6.8% and cocoa costs eased, but nine-month Adjusted EPS fell 0.9% (4.1% constant currency), Adjusted Operating Income declined, Europe and North America segment profits fell, volumes are weakening from price elasticity, and tariff and cocoa risks remain eleva",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-29"
+      }
+    ],
+    "tokens_in": 26922,
+    "tokens_out": 423,
+    "cost_usd": 0.002904,
+    "cached": false
+  },
+  "0001628280-26-060473": {
+    "symbol": "MDT",
+    "as_of": "2026-09-03",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.6,
+    "confidence": 0.7,
+    "rationale": "Net sales grew 14% (including a roughly $570M 53rd-week benefit), non-GAAP EPS rose to $1.45 from $1.26, free cash flow more than doubled to $1.29B, and Electrophysiology grew 30%, though the extra week, FX, and pending Diabetes separation muddy the underlying trend.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-09-03"
+      }
+    ],
+    "tokens_in": 23030,
+    "tokens_out": 278,
+    "cost_usd": 0.002442,
+    "cached": false
+  },
+  "0000066740-26-000311": {
+    "symbol": "MMM",
+    "as_of": "2026-10-20",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.3,
+    "confidence": 0.6,
+    "rationale": "Adjusted Q3 organic growth of 3.3%, 12% adjusted EPS growth, margin expansion in Safety and Industrial, improved operating cash flow, and steady buybacks and dividends point positive, but weak Consumer and auto/consumer electronics demand, tariff and PFAS/litigation cash drains, ",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-20"
+      }
+    ],
+    "tokens_in": 15313,
+    "tokens_out": 329,
+    "cost_usd": 0.001696,
+    "cached": false
+  },
+  "0000764180-26-000114": {
+    "symbol": "MO",
+    "as_of": "2026-10-29",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.1,
+    "confidence": 0.5,
+    "rationale": "Adjusted EPS rose 5.1% for the nine months on pricing and OCI gains, but cigarette volumes fell about 4% on an adjusted basis, discount share keeps rising, Marlboro lost retail share, and regulatory and e-vapor risks remain, so the net outlook is only slightly positive.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-29"
+      }
+    ],
+    "tokens_in": 33031,
+    "tokens_out": 373,
+    "cost_usd": 0.00349,
+    "cached": false
+  },
+  "0000310158-26-000248": {
+    "symbol": "MRK",
+    "as_of": "2026-11-04",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.05,
+    "confidence": 0.4,
+    "rationale": "Keytruda, Winrevair, and Welireg growth and 5% total sales growth are offset by generic erosion of Januvia, Bridion, and Dificid, looming IRA and MFN pricing pressure, and German cost-containment, leaving the net outlook roughly neutral.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-11-04"
+      }
+    ],
+    "tokens_in": 32155,
+    "tokens_out": 544,
+    "cost_usd": 0.003488,
+    "cached": false
+  },
+  "0001193125-26-436133": {
+    "symbol": "MSFT",
+    "as_of": "2026-10-28",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.6,
+    "confidence": 0.75,
+    "rationale": "Strong growth across the board (revenue +19%, Azure +48%, commercial RPO +73%, adjusted EPS +18%), tempered by rising AI capex, Microsoft Cloud gross margin compression to 66%, a Windows OEM decline of 22%, and a $28.9B IRS tax dispute.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-28"
+      }
+    ],
+    "tokens_in": 31524,
+    "tokens_out": 319,
+    "cost_usd": 0.003312,
+    "cached": false
+  },
+  "0000723125-26-000023": {
+    "symbol": "MU",
+    "as_of": "2026-10-09",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.6,
+    "confidence": 0.75,
+    "rationale": "Revenue rose 256% with gross margin expanding to 81%, cash and investments reached $73.45B, and the buyback authorization was raised to $35.16B, all strongly positive, though the risks of pricing reversal, capacity-driven oversupply, heavy capex, and customer concentration temper",
+    "sources": [
+      {
+        "doc": "10-K",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-09"
+      }
+    ],
+    "tokens_in": 29634,
+    "tokens_out": 307,
+    "cost_usd": 0.003117,
+    "cached": false
+  },
+  "0001373715-26-000096": {
+    "symbol": "NOW",
+    "as_of": "2026-10-28",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.3,
+    "confidence": 0.6,
+    "rationale": "Revenue growth (+21% in Q3, +22% year-to-date), RPO (+22%), cRPO (+20%), large-customer count (+23%), and non-GAAP operating income (+17% in Q3) are strong, but GAAP operating income fell 33%, subscription gross margin dropped from 80% to 74%, and management guides to further cos",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-28"
+      }
+    ],
+    "tokens_in": 17361,
+    "tokens_out": 362,
+    "cost_usd": 0.001917,
+    "cached": false
+  },
+  "0001193125-26-454565": {
+    "symbol": "NUE",
+    "as_of": "2026-11-10",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.8,
+    "confidence": 0.85,
+    "rationale": "Q3 2026 EPS of $5.80 versus $2.63 a year earlier, record steel mills shipments, rising realized prices, strong cash flow, buybacks, and a Q4 outlook of flat to modestly higher earnings point to a clearly positive near-term directional effect, tempered by the risk that pricing and",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-11-10"
+      }
+    ],
+    "tokens_in": 10970,
+    "tokens_out": 143,
+    "cost_usd": 0.001169,
+    "cached": false
+  },
+  "0001045810-26-000075": {
+    "symbol": "NVDA",
+    "as_of": "2026-08-26",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.35,
+    "confidence": 0.6,
+    "rationale": "Revenue rose 106% year over year with a 75% gross margin and strong Blackwell Ultra demand, but the filing also discloses rapidly growing guarantees, supply and equity commitments ($279B, $105B, $99B), extended customer payment terms, China foreclosure, and heavy customer concent",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-08-26"
+      }
+    ],
+    "tokens_in": 22684,
+    "tokens_out": 328,
+    "cost_usd": 0.002432,
+    "cached": false
+  },
+  "0001193125-26-389274": {
+    "symbol": "ORCL",
+    "as_of": "2026-09-11",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.3,
+    "confidence": 0.6,
+    "rationale": "Revenue grew 30% with cloud infrastructure up 121% and remaining performance obligations up to $664B, but free cash flow fell to -$5.4B on $28.5B of capex, funded partly by $19.9B of share issuance and rising interest expense, and cloud and software margin contracted.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-09-11"
+      }
+    ],
+    "tokens_in": 18316,
+    "tokens_out": 306,
+    "cost_usd": 0.001985,
+    "cached": false
+  },
+  "0000898173-26-000053": {
+    "symbol": "ORLY",
+    "as_of": "2026-11-06",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.6,
+    "confidence": 0.8,
+    "rationale": "Strong 9% sales growth, 7.2% comparable store sales growth, 13% EPS growth, margin expansion, record free cash flow of $1.73B, and comfortable covenant headroom point to a positive outlook, tempered by rising interest expense, higher leverage (2.16x vs 1.93x), and reliance on one",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-11-06"
+      }
+    ],
+    "tokens_in": 10758,
+    "tokens_out": 145,
+    "cost_usd": 0.001148,
+    "cached": false
+  },
+  "0001327567-26-000023": {
+    "symbol": "PANW",
+    "as_of": "2026-09-10",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.2,
+    "confidence": 0.6,
+    "rationale": "Revenue grew 24% with NGS ARR up to $9.1B and RPO up to $21.2B and strong free cash flow, but GAAP operating margin fell to 6.1%, net income dropped to $307M, and the excerpt flags acquisition-driven growth, a $1.1B convertible settlement risk, gross margin compression, and AI-re",
+    "sources": [
+      {
+        "doc": "10-K",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-09-10"
+      }
+    ],
+    "tokens_in": 36901,
+    "tokens_out": 158,
+    "cost_usd": 0.003769,
+    "cached": false
+  },
+  "0000078003-26-000127": {
+    "symbol": "PFE",
+    "as_of": "2026-11-03",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": -0.2,
+    "confidence": 0.6,
+    "rationale": "Revenue is nearly flat, YTD adjusted EPS fell from $2.56 to $2.39, and the filing discloses a failed Phase 3 readout, a Oxbryta withdrawal, a $1.0B legal charge, a $1.1B patent-expiry revenue hit in 2026, and large new restructuring costs, partly offset by growth in Eliquis, Vynd",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-11-03"
+      }
+    ],
+    "tokens_in": 31207,
+    "tokens_out": 514,
+    "cost_usd": 0.003378,
+    "cached": false
+  },
+  "0000080424-26-000256": {
+    "symbol": "PG",
+    "as_of": "2026-10-22",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.05,
+    "confidence": 0.5,
+    "rationale": "Organic sales grew a solid 4% with broad segment strength, but EPS rose only 1% as gross margin fell 160 bp on commodity costs, the $3.9B debt-funded Thorne acquisition adds leverage, and restructuring continues, leaving the net outlook roughly neutral to slightly positive.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-22"
+      }
+    ],
+    "tokens_in": 16123,
+    "tokens_out": 313,
+    "cost_usd": 0.001769,
+    "cached": false
+  },
+  "0001628280-26-066976": {
+    "symbol": "PM",
+    "as_of": "2026-10-23",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.2,
+    "confidence": 0.55,
+    "rationale": "Operating income rose 15.4% and smoke-free growth, ZYN MRTP and ZYN ULTRA authorizations are constructive, but reported diluted EPS fell 7% on impairments and fair-value losses, U.S. ZYN volumes are down 6% year to date, and management expects an abnormally weak Q4 U.S. profitabi",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-23"
+      }
+    ],
+    "tokens_in": 34231,
+    "tokens_out": 421,
+    "cost_usd": 0.003634,
+    "cached": false
+  },
+  "0001628280-26-069377": {
+    "symbol": "PNC",
+    "as_of": "2026-11-03",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.3,
+    "confidence": 0.55,
+    "rationale": "Nine-month EPS rose 19%, net interest income grew 15%, nonperforming assets and delinquencies declined, and full-year guidance points to continued growth, but CET1 fell from 10.6% to 9.8%, quarterly NIM and fee income weakened, and borrowed funds rose 40%.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-11-03"
+      }
+    ],
+    "tokens_in": 36063,
+    "tokens_out": 316,
+    "cost_usd": 0.003764,
+    "cached": false
+  },
+  "0001628280-26-067286": {
+    "symbol": "PSA",
+    "as_of": "2026-10-26",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": -0.1,
+    "confidence": 0.5,
+    "rationale": "Same-store revenue and NOI were flat to down over nine months (NOI -0.5%, realized rent per occupied foot -0.3%, rising property taxes), and Core FFO per share grew only 0.2%, while growth came mainly from acquisitions, heavy transaction costs, and share dilution, with integratio",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-26"
+      }
+    ],
+    "tokens_in": 24196,
+    "tokens_out": 409,
+    "cost_usd": 0.002624,
+    "cached": false
+  },
+  "0001534701-26-000037": {
+    "symbol": "PSX",
+    "as_of": "2026-10-28",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.6,
+    "confidence": 0.8,
+    "rationale": "Q3 2026 earnings of $5.6B versus $133M a year earlier, driven by crack spreads up to $60/bbl, strong operating cash flow, debt reduction toward $17B target, $10B buyback increase and a dividend raise, partly offset by a $947M Propel Fuels accrual and rising 2027 capex.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-28"
+      }
+    ],
+    "tokens_in": 33916,
+    "tokens_out": 138,
+    "cost_usd": 0.003461,
+    "cached": false
+  },
+  "0000872589-26-000034": {
+    "symbol": "REGN",
+    "as_of": "2026-10-30",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.45,
+    "confidence": 0.7,
+    "rationale": "Q3 2026 revenue and net income grew strongly (revenue +36%, Dupixent up 35%, Sanofi collaboration profits up sharply, $1.0B Sanofi upfront and new pipeline deals), offset by a 41% U.S. EYLEA decline, biosimilar pressure, a failed Phase 3 melanoma study, and MFN pricing commitment",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-30"
+      }
+    ],
+    "tokens_in": 39968,
+    "tokens_out": 156,
+    "cost_usd": 0.004075,
+    "cached": false
+  },
+  "0000101829-26-000031": {
+    "symbol": "RTX",
+    "as_of": "2026-10-20",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.72,
+    "confidence": 0.8,
+    "rationale": "Strong Q3 2026 results (organic sales up about 12%, operating profit up 32%, EPS up 34%), a record $340B backlog, large multi-year munitions awards, and improved credit outlooks outweigh risks such as the Pratt & Whitney customer bankruptcy charge, tariff and sanctions exposure, ",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-20"
+      }
+    ],
+    "tokens_in": 25806,
+    "tokens_out": 337,
+    "cost_usd": 0.002749,
+    "cached": false
+  },
+  "0000089800-26-000056": {
+    "symbol": "SHW",
+    "as_of": "2026-10-27",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.1,
+    "confidence": 0.5,
+    "rationale": "Sales grew 7.9% and year-to-date adjusted EPS rose 5.1%, with operating cash flow up. Offsetting that, quarterly gross margin fell about 140 bps on raw material and supply chain inflation, Q3 EPS was nearly flat, and debt and interest expense rose while the current ratio fell to ",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-27"
+      }
+    ],
+    "tokens_in": 18439,
+    "tokens_out": 407,
+    "cost_usd": 0.002047,
+    "cached": false
+  },
+  "0001640147-26-000037": {
+    "symbol": "SNOW",
+    "as_of": "2026-09-04",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.35,
+    "confidence": 0.6,
+    "rationale": "Product revenue grew 37% year over year, net revenue retention edged up to 126%, and $1M+ customers rose to 828 from 654, all pointing to strong consumption growth, but sequential RPO declines, a sharp drop in free cash flow from Q4, rising AI and cloud purchase commitments, and ",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-09-04"
+      }
+    ],
+    "tokens_in": 43409,
+    "tokens_out": 377,
+    "cost_usd": 0.004529,
+    "cached": false
+  },
+  "0000064040-26-000058": {
+    "symbol": "SPGI",
+    "as_of": "2026-10-28",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.5,
+    "confidence": 0.7,
+    "rationale": "Underlying growth is solid, with revenue up 7% (9% year to date), Indices ETF AUM up 26%, investment-grade billed issuance up 28%, free cash flow up 12%, and $4.1B of buybacks, though reported operating profit and EPS growth are inflated by one-time disposition gains and the exce",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-28"
+      }
+    ],
+    "tokens_in": 32090,
+    "tokens_out": 323,
+    "cost_usd": 0.003371,
+    "cached": false
+  },
+  "0000097745-26-000179": {
+    "symbol": "TMO",
+    "as_of": "2026-10-30",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.6,
+    "confidence": 0.8,
+    "rationale": "Strong Q3 2026 results with 9% reported and 6% organic revenue growth, broad-based strength in pharma/biotech, double-digit adjusted EPS growth, margin expansion from productivity gains, and free cash flow up about 39% year to date, partly offset by rising net interest expense an",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-30"
+      }
+    ],
+    "tokens_in": 13345,
+    "tokens_out": 136,
+    "cost_usd": 0.001402,
+    "cached": false
+  },
+  "0000097476-26-000169": {
+    "symbol": "TXN",
+    "as_of": "2026-10-23",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.6,
+    "confidence": 0.8,
+    "rationale": "Revenue up 28% YoY with gross margin expanding to 64%, strong free cash flow ($8.4B TTM, up 249%), cash build, and a dividend increase point to a strongly improving fundamental picture, though the pending $7.5B Silicon Labs acquisition with debt financing and cyclical/capex-linke",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-23"
+      }
+    ],
+    "tokens_in": 7273,
+    "tokens_out": 145,
+    "cost_usd": 0.0008,
+    "cached": false
+  },
+  "0000731766-26-000266": {
+    "symbol": "UNH",
+    "as_of": "2026-11-03",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.3,
+    "confidence": 0.6,
+    "rationale": "Earnings and margins improved sharply (diluted EPS up 75%, MCR down 1.5 points), helped partly by one-time divestiture gains and favorable reserve development, while membership fell 4%, Medicare Advantage and Medicaid margins face continued funding pressure, and three of four age",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-11-03"
+      }
+    ],
+    "tokens_in": 13561,
+    "tokens_out": 329,
+    "cost_usd": 0.001521,
+    "cached": false
+  },
+  "0000100885-26-000321": {
+    "symbol": "UNP",
+    "as_of": "2026-10-22",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.5,
+    "confidence": 0.7,
+    "rationale": "Q3 2026 results were strong, with EPS up about 16%, freight revenue up 15%, carloads up 6%, operating income up 15%, cash flow conversion at 95%, and leverage falling to 4.0x debt/net income. Offsetting risks include a 64% jump in fuel prices, declining service metrics, and the p",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-22"
+      }
+    ],
+    "tokens_in": 16349,
+    "tokens_out": 330,
+    "cost_usd": 0.0018,
+    "cached": false
+  },
+  "0000036104-26-000058": {
+    "symbol": "USB",
+    "as_of": "2026-11-05",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.5,
+    "confidence": 0.7,
+    "rationale": "Earnings grew strongly (Q3 diluted EPS up 9.8%, nine-month EPS up 15.8%), with broad fee and net interest income growth, improving efficiency, lower nonperforming assets and charge-offs, and stable capital, partly offset by a higher provision, rising unrealized securities losses,",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-11-05"
+      }
+    ],
+    "tokens_in": 26544,
+    "tokens_out": 315,
+    "cost_usd": 0.002812,
+    "cached": false
+  },
+  "0001403161-26-000134": {
+    "symbol": "V",
+    "as_of": "2026-11-05",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.6,
+    "confidence": 0.7,
+    "rationale": "Net revenue grew 15%, non-GAAP EPS rose 16%, nominal payments volume grew 10%, litigation provisions fell, and Visa is returning capital through a $20.5B buyback and a 16% dividend increase, though regulatory, competitive, and stablecoin risks temper the outlook.",
+    "sources": [
+      {
+        "doc": "10-K",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-11-05"
+      }
+    ],
+    "tokens_in": 33825,
+    "tokens_out": 304,
+    "cost_usd": 0.003535,
+    "cached": false
+  },
+  "0001628280-26-067679": {
+    "symbol": "VLO",
+    "as_of": "2026-10-28",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.6,
+    "confidence": 0.7,
+    "rationale": "Results are very strong: Q3 net income of $6.8B and nine-month adjusted operating income up $13.2B, plus a new $10B buyback authorization and $13.9B of operating cash flow, though the margin gains are tied to geopolitical supply shocks that could reverse and the Benicia closure a",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-28"
+      }
+    ],
+    "tokens_in": 26255,
+    "tokens_out": 333,
+    "cost_usd": 0.002792,
+    "cached": false
+  },
+  "0000875320-26-000291": {
+    "symbol": "VRTX",
+    "as_of": "2026-11-03",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.3,
+    "confidence": 0.6,
+    "rationale": "Revenue grew 12% in Q3 on ALYFTREK, CASGEVY and JOURNAVX, and the povetacicept PDUFA date is a near-term catalyst. Offsetting this, the $9B Crinetics deal adds $4.5B of debt, TRIKAFTA sales fell 8%, expenses rose sharply, and there is a royalty arbitration risk.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-11-03"
+      }
+    ],
+    "tokens_in": 17544,
+    "tokens_out": 386,
+    "cost_usd": 0.001947,
+    "cached": false
+  },
+  "0000766704-26-000046": {
+    "symbol": "WELL",
+    "as_of": "2026-10-27",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.6,
+    "confidence": 0.7,
+    "rationale": "Strong operating momentum (Q3 NOI up 33%, SSNOI up 17%, rising occupancy, stable coverage ratios, and a $7B acquisition pipeline) points positive, tempered by equity dilution from heavy ATM issuance, rising leverage, and integration and transaction risk.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-27"
+      }
+    ],
+    "tokens_in": 37711,
+    "tokens_out": 320,
+    "cost_usd": 0.003931,
+    "cached": false
+  },
+  "0000072971-26-000327": {
+    "symbol": "WFC",
+    "as_of": "2026-10-28",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": -0.2,
+    "confidence": 0.5,
+    "rationale": "Unrealized losses widened sharply (AFS net loss to about -$10.3B from -$2.2B, HTM to -$43.2B from -$32.2B), which pressures AOCI and tangible book value, while credit quality remains strong (99% investment grade) and realized losses narrowed to -$28M from -$147M.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-28"
+      }
+    ],
+    "tokens_in": 7192,
+    "tokens_out": 389,
+    "cost_usd": 0.000914,
+    "cached": false
+  }
+}

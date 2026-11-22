@@ -1,0 +1,202 @@
+{
+  "0001327567-26-000023": {
+    "symbol": "PANW",
+    "as_of": "2026-09-10",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.15,
+    "confidence": 0.4,
+    "rationale": "FY2026 shows strong 24% revenue growth (partly acquisition-driven), NGS ARR up to $9.1B from $5.6B, RPO up 34% and free cash flow of $4.1B, but gross margin fell 3 points, operating margin dropped to 6.1% from 13.5%, GAAP net income fell 73%, and the filing flags AI-disruption, c",
+    "sources": [
+      {
+        "doc": "10-K",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-09-10"
+      }
+    ],
+    "tokens_in": 36901,
+    "tokens_out": 161,
+    "cost_usd": 0.075412,
+    "cached": false
+  },
+  "0001045810-26-000075": {
+    "symbol": "NVDA",
+    "as_of": "2026-08-26",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.3,
+    "confidence": 0.55,
+    "rationale": "Q2 FY27 results are very strong (revenue +106% YoY to $96.2B, 75% gross margin, Rubin production shipments starting, larger buyback and dividend), but the sharp rise in supply commitments to $279B, a $105B OpenAI/SB Energy guarantee, circular AI-cloud capacity buyback obligations",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-08-26"
+      }
+    ],
+    "tokens_in": 22684,
+    "tokens_out": 181,
+    "cost_usd": 0.047178,
+    "cached": false
+  },
+  "0001640147-26-000037": {
+    "symbol": "SNOW",
+    "as_of": "2026-09-04",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.45,
+    "confidence": 0.6,
+    "rationale": "Product revenue growth accelerated to 37% YoY with NRR rising to 126%, $1M+ customers up 27% YoY, and operating margin improving from -30% to -17%, though RPO declined sequentially, product gross margin slipped to 71%, and large cloud/AI commitments and sustained losses temper th",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-09-04"
+      }
+    ],
+    "tokens_in": 43409,
+    "tokens_out": 136,
+    "cost_usd": 0.088178,
+    "cached": false
+  },
+  "0001628280-26-060473": {
+    "symbol": "MDT",
+    "as_of": "2026-09-03",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.5,
+    "confidence": 0.6,
+    "rationale": "Q1 FY27 shows strong results: net sales up 14% (about 11% excluding the extra week), EPT up 30% on pulsed field ablation, non-GAAP EPS up 15% to $1.45, and free cash flow more than doubled. Offsetting factors are the 53rd-week and tariff-refund tailwinds, heavier acquisition spen",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-09-03"
+      }
+    ],
+    "tokens_in": 23030,
+    "tokens_out": 160,
+    "cost_usd": 0.04766,
+    "cached": false
+  },
+  "0000858877-26-000132": {
+    "symbol": "CSCO",
+    "as_of": "2026-09-02",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.45,
+    "confidence": 0.55,
+    "rationale": "FY2026 shows strong AI-driven growth (revenue +12%, Q4 +18%, EPS +31%, Q4 EPS +52%, networking +22%) with expanding operating margin, but a very large rise in inventory and purchase commitments (+112%), memory cost pressure, hyperscaler concentration, and a new restructuring char",
+    "sources": [
+      {
+        "doc": "10-K",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-09-02"
+      }
+    ],
+    "tokens_in": 40310,
+    "tokens_out": 146,
+    "cost_usd": 0.08208,
+    "cached": false
+  },
+  "0000066740-26-000311": {
+    "symbol": "MMM",
+    "as_of": "2026-10-20",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.3,
+    "confidence": 0.55,
+    "rationale": "Q3 2026 adjusted EPS rose 12% with adjusted margin up 1.1 points, Safety & Industrial organic growth of 7%, much lower litigation cash drain and big buybacks, though total organic growth was only 0.2% GAAP (3.3% adjusted), Transportation & Electronics margins fell, and Asia Pacif",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-20"
+      }
+    ],
+    "tokens_in": 15313,
+    "tokens_out": 154,
+    "cost_usd": 0.032166,
+    "cached": false
+  },
+  "0000313616-26-000199": {
+    "symbol": "DHR",
+    "as_of": "2026-10-21",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.3,
+    "confidence": 0.5,
+    "rationale": "Q3 shows improving underlying demand (core sales ex-respiratory +5.5%, bioprocessing and China strength, Masimo adding revenue), but reported core growth is only 3.0%, EPS was inflated by a $263M discrete tax benefit, the Masimo deal brings margin dilution and higher debt, and Mi",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-21"
+      }
+    ],
+    "tokens_in": 24881,
+    "tokens_out": 151,
+    "cost_usd": 0.051272,
+    "cached": false
+  },
+  "0001628280-26-058235": {
+    "symbol": "AMAT",
+    "as_of": "2026-08-20",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.5,
+    "confidence": 0.65,
+    "rationale": "Q3 FY26 revenue grew 25% YoY to $9.1B with gross margin up 1.5 points to 50.3%, EPS of $3.17 up 43%, and strong AI-driven leading-edge foundry/logic and DRAM demand, though China revenue fell and the quarter's operating strength is partly offset by trade/export risks and a swing ",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-08-20"
+      }
+    ],
+    "tokens_in": 29248,
+    "tokens_out": 154,
+    "cost_usd": 0.060036,
+    "cached": false
+  },
+  "0001628280-26-067844": {
+    "symbol": "KO",
+    "as_of": "2026-10-28",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.45,
+    "confidence": 0.6,
+    "rationale": "Q3 2026 showed strong results: revenue up 7%, concentrate volume up 6%, operating income up 12%, gross margin expanded to 63.2%, and operating cash flow was robust. Offsetting risks are the BodyArmor trademark carried at fair value (further impairment likely if projections slip) ",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-28"
+      }
+    ],
+    "tokens_in": 24856,
+    "tokens_out": 163,
+    "cost_usd": 0.051342,
+    "cached": false
+  },
+  "0000101829-26-000031": {
+    "symbol": "RTX",
+    "as_of": "2026-10-20",
+    "role": "adjudicate",
+    "model_id": "claude-sonnet-5-5",
+    "score": 0.6,
+    "confidence": 0.7,
+    "rationale": "Q3 2026 shows strong organic sales growth (+11.6%), operating margin expanding to 13.4%, EPS up 34% and backlog surging to $340B on ~$59B of defense bookings (Tomahawk, AMRAAM UCAs), with improving credit outlooks; partially offset by a one-time tariff refund benefit, a $0.4B cus",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-10-20"
+      }
+    ],
+    "tokens_in": 25806,
+    "tokens_out": 185,
+    "cost_usd": 0.053462,
+    "cached": false
+  }
+}

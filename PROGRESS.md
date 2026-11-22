@@ -331,3 +331,62 @@ committed — `.env` is git-ignored. Keys live only in the local `.env`.
   recorded as a caveat on the verdict. No Fable audit run. No
   holdout-window filing scored. No paper trading; no live money;
   ALLOW_LIVE stays 0.
+
+## Done — 2026-11-21
+
+- **Freshness test RUN — `exp-technical-plus-llm-freshness-v1` COMPLETE.
+  GATE VERDICT: FAIL. Variant DROPPED per the kill rule. No paper
+  trading of this variant.** User authorized the run Nov 21, 2026.
+  Registered BEFORE scoring (registry entry + design doc
+  `experiments/exp-technical-plus-llm-freshness-v1-design.md`); driver
+  `run_freshness_backtest.py`; results in
+  `experiments/results/exp-technical-plus-llm-freshness-v1.json`;
+  registry record `exp-technical-plus-llm-freshness-v1-results`
+  (status `failed`); Sheet rows A66:L101 (36 rows, read back verified).
+  - Headline pair v4 vs v4+LLM-fresh, holdout 2026-08-18..2026-11-13:
+    net 10bps base −4.33% vs fresh −4.14% (SG1 pass, +0.19pp), net
+    20bps base −8.45% vs fresh −8.38% (SG2 pass, +0.07pp), net 10bps
+    fresh −4.14% < 0 (SG3 fail). Freshness HELPED — fresh beats the
+    stale variant by +0.57pp @10bps (+0.47pp @20bps; stale −4.71% /
+    −8.85%) and turns holdout GROSS positive (+0.29% vs stale −0.39%
+    and base −0.03%), the first gross-positive holdout for any LLM
+    variant — but costs (−4.43pp drag) still sink it to −4.14% net.
+    The technical base itself is −4.33% on the holdout; freshness
+    closes part of the gap but does not create an edge.
+  - Supporting pairs (not gates): v1 fresh −2.18% (best LLM holdout
+    yet: +2.28pp vs base, +1.42pp vs stale); v2/v3 fresh −6.24%
+    (WORSE than stale −5.71% by 0.53pp). The freshness effect is
+    inconsistent across variants, same as Phase 2's LLM effect.
+  - Diagnostics (10bps): Deflated Sharpe 0.0 everywhere (n_trials=26);
+    holdout fresh Sharpe −0.99 (base −1.02, stale −1.11), alpha vs SPY
+    −14.9%/yr (base −15.9%, stale −17.5%), beta 0.17, IR −0.51.
+    Train fresh == stale exactly (−15.55%, asserted by the driver:
+    union current series is identical to Phase 2's on train days).
+    Baselines: holdout SPY −1.70%, EW +1.65%. Nothing beats SPY.
+  - Scoring: 75 in-scope holdout filings (Haiku screen; 75 new, 0
+    cached, 0 failed); Sonnet adjudicated the top 10 by holdout
+    relevance (Haiku conf ≥ 0.6, 2.9-char/token worst-case est $0.7316
+    within the $0.75 sub-budget). Fresh LLM adjustment applied on 320
+    holdout cells vs stale's 126 (4,488 total vs 4,294 stale).
+- **Spend: $0.779766 this run, under the $1.00 run budget** (Haiku
+  $0.19098, Sonnet $0.588786; worst-case estimates $0.2232 / $0.7316
+  held — no sub-budget breach this run, the 2.9 chars/token fix
+  works). Cumulative Nov total $9.668639 (ledger), under the $10.00
+  monthly cap; Anthropic balance remaining $2.10 ($11.77 − $9.668639).
+  `llm_sentiment._estimate_tokens` fixed to ~2.9 chars/token in the
+  same commit as the registration, per the Phase 2 lesson.
+- **Reproducibility**: the driver rebuilds the stale panels from
+  Phase 2's scores in the same run and asserts base + stale train and
+  holdout returns match Phase 2's recorded numbers exactly before the
+  gate is read — the check PASSED. Full test suite 117/117 (5 new
+  offline tests in `test_freshness.py`, incl. the estimator test that
+  pins the 2.9 rate and the subset test that reproduces the Phase 2
+  undercount failure mode).
+- **Consequence**: the LLM leg's staleness was real but is not the
+  whole story. Fresh scores improve the holdout, but no variant —
+  technical, stale-LLM, or fresh-LLM — is net positive on the frozen
+  holdout, and Deflated Sharpe is 0.0 throughout. The signal has no
+  tradeable edge in any tested form. Next steps, if any, need a new
+  registered hypothesis (different signal, different universe, or
+  different cost structure) — not another rescoring of the same
+  filings. No paper trading; no live money; ALLOW_LIVE stays 0.
