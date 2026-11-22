@@ -1,0 +1,75 @@
+{
+  "experiment_id": "exp-llm-long-horizon-v2",
+  "generated_utc": "2026-11-22T06:07:30.149739+00:00",
+  "spend_usd": 0.0,
+  "train_window": "2024-01-02..2026-08-17",
+  "holdout_window": "2026-08-18..2026-11-13",
+  "design": "hold every name with Haiku score >= the day's 5th-highest positive score, equal weight; no tie-break; rebalance 5, min hold 10, max_positions 60",
+  "selection_size": {
+    "train_mean": 25.737082066869302,
+    "holdout_mean": 37.3968253968254,
+    "max": 41
+  },
+  "train_cost_0bps": {
+    "total_return": 0.5950244162227765,
+    "trades": 120,
+    "avg_daily_turnover": 0.0166
+  },
+  "train_cost_10bps": {
+    "total_return": 0.5777121559486711,
+    "trades": 120,
+    "avg_daily_turnover": 0.0166
+  },
+  "train_cost_20bps": {
+    "total_return": 0.5605775141228815,
+    "trades": 120,
+    "avg_daily_turnover": 0.0166
+  },
+  "holdout_cost_0bps": {
+    "total_return": 0.025285317173925792,
+    "sharpe": 0.727,
+    "max_drawdown": -0.0475,
+    "hit_rate": 0.5079,
+    "trades": 43,
+    "avg_daily_turnover": 0.0334,
+    "deflated_sharpe": 0.763,
+    "sharpe_null_max": 0.589,
+    "alpha_annual_vs_spy": 0.1052,
+    "beta_vs_spy": -0.116,
+    "r_squared_vs_spy": 0.014
+  },
+  "holdout_cost_10bps": {
+    "total_return": 0.023121106364190736,
+    "sharpe": 0.661,
+    "max_drawdown": -0.0476,
+    "hit_rate": 0.5079,
+    "trades": 43,
+    "avg_daily_turnover": 0.0334,
+    "deflated_sharpe": 0.731,
+    "sharpe_null_max": 0.561,
+    "alpha_annual_vs_spy": 0.0968,
+    "beta_vs_spy": -0.114,
+    "r_squared_vs_spy": 0.013
+  },
+  "holdout_cost_20bps": {
+    "total_return": 0.02095844774918909,
+    "sharpe": 0.595,
+    "max_drawdown": -0.0478,
+    "hit_rate": 0.5079,
+    "trades": 43,
+    "avg_daily_turnover": 0.0334,
+    "deflated_sharpe": 0.692,
+    "sharpe_null_max": 0.533,
+    "alpha_annual_vs_spy": 0.0884,
+    "beta_vs_spy": -0.111,
+    "r_squared_vs_spy": 0.012
+  },
+  "gate": {
+    "sg1_holdout_net10_gt_v4_base": true,
+    "sg2_holdout_net20_gt_v4_base": true,
+    "sg3_holdout_net10_positive": true,
+    "verdict": "PASS",
+    "v4_base_holdout_net10": -0.0433,
+    "v4_base_holdout_net20": -0.0845
+  }
+}

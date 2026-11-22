@@ -390,3 +390,74 @@ committed — `.env` is git-ignored. Keys live only in the local `.env`.
   registered hypothesis (different signal, different universe, or
   different cost structure) — not another rescoring of the same
   filings. No paper trading; no live money; ALLOW_LIVE stays 0.
+
+## Done — 2026-11-22
+
+- **Calibration sprint RUN — `exp-llm-long-horizon-v2` COMPLETE.
+  GATE VERDICT: PASS — all 3 sub-gates pass. First net-positive
+  holdout in the project.** User authorized running the repo's code
+  Nov 22, 2026 ~00:46 EST ("Yes, run the repo code"), priority
+  PATTERN RECOGNITION FIRST. Registered BEFORE scoring (registry
+  entry + design doc
+  `experiments/exp-llm-long-horizon-v2-design.md`); driver
+  `run_llm_long_horizon_v2.py`; results in
+  `experiments/results/exp-llm-long-horizon-v2.json`; registry record
+  `exp-llm-long-horizon-v2-results` (status `passed`); Sheet rows
+  A102:L107 (6 rows, read back verified).
+  - Pattern recognition (train only, $0): the window is mean-reverting,
+    not trending — momentum features are anti-predictive at 10-60d
+    (composite IC -0.030 @60d, t -4.88); high realized vol is the
+    strongest technical predictor (rvol_20 IC +0.083 @60d, Q-spread
+    +5.59pp) and v4's risk filter excludes exactly those names; the
+    Haiku score predicts at 20-126d (IC +0.060/+0.063), matching its
+    3-12mo prompt, while the engine's 1-day holding wasted it;
+    textual deltas predict at $0 (tone improvement IC +0.094 @20d,
+    filing similarity +0.098 @20d, length growth -0.108 @60d).
+  - Calibration: C2 LLM long-horizon (top-5 by score, rebalance 5,
+    min hold 10) train net10 +153.83%, WF 1.92, 3/4 folds — but
+    Fable 5.2 audit ($0.156336, 3 calls) found the result is driven
+    by the tie-break: ~23 symbols tie at the 5th-place score on
+    131/132 rebalance days, and train results run +53% to +182%
+    across defensible tie-break rules. Verdict: "redesign first."
+    Redesign (this experiment): hold EVERY name with score >= the
+    day's 5th-highest positive score, equal weight — no tie-break.
+    Train net10 +57.77% (gross +59.50%, net20 +56.06%), WF median
+    Sharpe 0.604, 4/4 folds positive, 120 trades, turnover
+    0.017/day. The pattern survives tie-break removal in diversified
+    form (mean 25.7 names; holdout mean 37.4).
+  - Headline, holdout 2026-08-18..2026-11-13: gross +2.53%, net
+    10bps +2.31% (SG1 pass, +6.64pp vs v4 base -4.33%), net 20bps
+    +2.10% (SG2 pass, +10.55pp vs base -8.45%), net 10bps +2.31% > 0
+    (SG3 pass). Sharpe 0.661 @10bps, max DD -4.76%, hit rate 50.8%,
+    43 trades, turnover 0.033/day, alpha vs SPY +9.7%/yr, beta -0.11.
+  - **Honest limits on the PASS:** Deflated Sharpe 0.731 @10bps
+    (n_trials=75) is BELOW the 0.95 significance threshold — the
+    gate passes but the result is not proven once 75 trials are
+    accounted for. LLM knowledge-cutoff contamination: Haiku 5.5 was
+    run Nov 2026 and may know outcomes of the filings it scored;
+    the gate cannot remove it. Holdout is 63 days; universe is not
+    survivorship-free. No paper trading of this variant without a
+    further decision; ALLOW_LIVE stays 0.
+  - Verification done along the way: machinery reproduces
+    exp-technical-v2 train net10 -14.01% (recorded -14.0%) exactly;
+    MU entry verified point-in-time clean (10-Q filed 2025-12-18,
+    Haiku +0.85, entry 2025-12-23, raw +251.71%); beta -0.10 vs SPY
+    verified two ways; C6 textual-delta z-score leakage caught and
+    corrected (full-sample z-scoring inflated +137.79% to a
+    point-in-time +48.97%). Runner-ups recorded for future registered
+    experiments, NOT evaluated on the holdout: C6-rank textual delta
+    (+48.97% train net10, WF 1.87, 3/4), C1c reversion+RSI (+64.06%,
+    WF 1.18, 3/4).
+- **Spend: $0.00 new scoring this run** (all scores reused: Phase 2
+  Haiku 1,166 + freshness Haiku 75). Fable 5.2 audit $0.156336.
+  Cumulative Nov total $9.824975 (ledger $9.806941 + off-ledger
+  $0.018034), under the $10.00 monthly cap; Anthropic balance
+  remaining ~$1.95 ($11.77 − $9.824975); monthly cap headroom $0.175.
+  The user's +$5 Anthropic top-up is UNVERIFIED (no balance
+  endpoint). OpenAI / GPT-6.1 Sol leg: no connector exists, adapter
+  not built — pending, not run.
+- **Reproducibility**: the confirmation driver asserts the union
+  current-filing series equals the stale series on train days and
+  that the train reproduction matches the redesign's +57.77% net10
+  within 0.2pp before the gate is read — both checks PASSED. Full
+  test suite 117/117 passed.
