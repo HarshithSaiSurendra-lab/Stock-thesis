@@ -1,0 +1,427 @@
+{
+  "status": 200,
+  "result": {
+    "eventId": "fcec8650-06f2-4b7d-82ec-844d7790e5d2",
+    "ticker": "AMGN",
+    "eventTitle": "Amgen Inc Q2 FY2026 Earnings Call",
+    "callDate": "2026-04-08T20:30:00+00:00",
+    "fiscalYear": 2026,
+    "fiscalQuarter": 2,
+    "turnCount": 51,
+    "totalTurnCount": 51,
+    "offset": 0,
+    "hasMore": false,
+    "isFiledRecord": false,
+    "data": [
+      {
+        "speakerIndex": 13,
+        "speakerName": "Arvind Sood",
+        "speakerRole": "Head of Investor Relations",
+        "text": "Thank you, Julianne. Good afternoon, everyone, and welcome to our second quarter of 2026. We'll leave the call today and be followed by a broader review of our performance, Jay Bradner and Peter Griffith. Today, performance, and I've provided over to you, Bob.",
+        "startSeconds": 1.14,
+        "endSeconds": 42.88
+      },
+      {
+        "speakerIndex": 9,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Good afternoon, and thank you for joining us. Our strong results were driven by the breadth and depth of our portfolio and once again demonstrate our ability to grow through patent expirations and increased competition. We're pleased with the momentum across our business and expect to reach more patients with our innovative medicines and biosimilars in the second half of the year than ever before, as volume demand for our products continues to grow strongly. This broad-based performance is exactly what our strategy is intended to deliver, and it's why we remain confident in our ability to deliver durable growth well into the next decade. Turning to the quarter, total revenues exceeded $10 billion, a 10% year-over-year increase. Notably, 22 products delivered double-digit sales growth, and 17 products annualized at more than $1 billion based on second quarter sales. These results, including strong earnings and margin performance, were achieved while we increased our investment in innovation, reflecting the sound financial structure of our business. That sound financial structure also gives us the flexibility to invest with discipline in both our internal pipeline and external innovation while supporting the long-term needs of the business. As we've discussed for some time, our six key growth drivers are propelling the business forward. Together, they grew at an aggregate rate of 26% year-over-year and represented nearly 70% of our second quarter product sales. Importantly, many of our first-in-class and best-in-class medicines address large and underpenetrated disease areas, giving us confidence that significant opportunities remain to reach many more patients and contribute to durable long-term growth. For example, while more than a million people in the U.S. are on a path, there are tens of millions more who would benefit from the therapy. As our products continue to grow, we're also investing in expanding their long-term potential. We're adding indications, broadening geographic reach, improving dosage administration, and expanding payer access across our medicines. Our late-stage pipeline is progressing well and also provides additional opportunities for growth. Meritide, Opazoran, and Zaluritamig are advancing through Phase III development and have the potential to address areas of significant unmet medical need. We remain focused on disciplined execution and generating high-quality evidence required to bring these medicines to patients. We'll discuss our progress there in a few moments. Underpinning these efforts are our investments in technology, data, and artificial intelligence, which are helping us advance promising medicines more efficiently, from discovery through development and manufacturing. In summary, the business continues to perform well, and we're excited about the future and our ability to deliver durable growth well into the next decade. Let me take a moment to thank my Amgen colleagues around the world for their dedication to our mission to serve patients and for the quality of their work every day. I'll now turn over to Murdo.",
+        "startSeconds": 43.62,
+        "endSeconds": 254.16
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": "Murdo Gordon",
+        "speakerRole": null,
+        "text": "Thanks, Bob. Our second quarter results reflect not only the breadth of our portfolio, but the strength and consistency of our execution across key brands and geographies. The next phase of Amgen's growth is fueled by six key drivers. Repatha, which grew 37% in the second quarter, Avenity at 38%, Test Buyer at 42%, Rare Disease at 21%, Innovative Oncology at 18%, and Biosimilars at 29%. As Bob mentioned, this combined portfolio of products is now representing approximately 70% of sales. Drivers are delivering strong performance, with the majority of these medicines addressing large areas of public health. In rare disease and innovative oncology, we're sustaining growth through additional indications, international expansion. Together, they're driving durable performance and positioning Amgen for sustained growth well into the next decade. Starting with general medicine, Repatha deliver $953 million in second quarter sales, growing at 37% year-over-year. Momentum continues to build for Repatha, with new-to-brand prescriptions growing more than 50% year-over-year in the U.S., supported by increased urgency to treat, both in secondary prevention and high-risk primary prevention patients. The clinical evidence supporting Repatha is unrivaled in its class. Repatha is the only PCSK9 inhibitor with Phase III outcomes data in both primary and secondary prevention. Our landmark Vesalius-CV trial reinforces that earlier and more intensive LDL-C lowering before cardiovascular events occur can deliver meaningful risk reduction. These data further strengthen the case for Repatha to be the first therapy considered when intensifying LDL-C treatment, Repatha should be central to an aggressive LDL-lowering strategy for the estimated 100 million patients worldwide who are still above their LDL-C goals. Repatha has broad access and is uniquely positioned to close the treatment gap and drive sustained growth into the next decade. Avenity sales increased 38% in the second quarter to $714 million, building on 27% growth in the previous quarter. In the U.S., the opportunity remains significant, with approximately 2 million women at very high risk of a fracture, and Avenity reaching only mid-single-digit penetration today. Avenity continues to lead the U.S. bone builder market and is well positioned to reach even more patients. In Japan, Avenity holds category leadership with more than 55% volume share. One million patients have now been treated in Japan alone, representing a major milestone in clinical adoption. Moving to inflammation, Tespire sales grew 42% year-over-year, reaching $486 million, driven by strong demand in severe uncontrolled asthma. In the second quarter, Tespire was the market leader in new-to-brand prescription share in severe uncontrolled asthma among allergists and continues to grow with pulmonologists. Tespire is reaching more patients today through expanded Medicare access, including coverage for self-administration, with additional opportunity ahead as Part D access improves. Uptake in chronic rhinosinositis with nasal polyps is encouraging and is already extending test buyers' impact beyond severe asthma. We expect additional indications to deliver continued catalysts for growth in the future, and Jail Shaver, more about those. Jeeva combined delivered $1.1 billion in second-quarter sales, a decrease of 33% year-over-year. This is in line with our expectations, given several biosimilar competitors have now launched. Turning to our rare disease portfolio, which grew 21% year-over-year to $1.6 billion, you can clearly see our strategy coming to life. Growth is driven by additional indications, international expansion, by the value these products continue to deliver for patients. The Plizna sales increased 90% year-over-year to $335 million in the second quarter, reflecting sustained momentum across all three approved indications. The compelling biology of a Plizna CD19 targeted mechanism, which is designed to deplete the B cells driving autoimmune pathology, is resonating with both physicians and patients. The Plizna's durable efficacy and convenient twice-yearly dosing further reinforces impact. These attributes, along with broad pair coverage and Amgen's comprehensive patient access services, are enabling rapid initiation and continuity of care across indications. And GMG continues to build, supported by an almost even mix of bio-naive and switch patients. With a doubling of U.S. prescribers, we believe APLISNA is well-positioned to establish market leadership. It also continues in IgG4-related disease, where significant under-diagnosis remains, and increased disease awareness is helping more physicians identify appropriate patients. Recent long-term follow-up data illustrate the durable efficacy profile for patients with IgG4-related disease. From J, we see meaningful opportunity to extend the plasma's growth trajectory through additional indications. The advantages of CD19 directed B14% year-over-year to $576 million in the second quarter. We're seeing strong uptake globally with solid execution in Japan following last year's launch. Tepeza has now launched in 13 countries around the world, with an additional six planned in the coming months. Since approval in the U.S., more than 25,000 patients have been treated. Continuing to build momentum by expanding awareness and broadening the prescriber base, including endocrinologists and ophthalmologists to reach more ahead, the advancement of our subcutaneous on-body injector for Tepeza represents a meaningful step forward. The Phase III data demonstrated comparable efficacy to IV TAPESA, supporting a clear path to subcutaneous administration of oncology. The portfolio grew 18% year-over-year, generating approximately $2 billion of sales in the second quarter. And Delta sales increased 115% year-over-year to $288 million. dollars. After years with little meaningful innovation for patients with small cell lung cancer, M-Deltra has emerged as the best-in-class treatment option to improve overall survival in the second-line setting. We're seeing strong clinical conviction, second-line patient in the first-line adoption. Ropemore portfolio delivered 29% year-over-year growth, generating $855 million in sales to ILEA, increased sales 121% year-over-year to 280% and continues to expand among retina specialists who value Pat Blue's ready-to-use pre-filled syringe format and Amgen's track record of quality in biologics manufacturing and delivering reliable supply. Since our first biosimilar approvals in 2018, the portfolio has generated more than $15 billion in sales. Amgen's deep biologics expertise, global and commercial capabilities differentiate us and surround the world. Our next wave of biosimilars, candidates for ILEA HD, UpDevo, market opportunities, second quarter results reflect focused, high-quality execution, portfolio strength, and continued progress in expanding the impact of our medicines for patients worldwide. Reflecting on these results and the broader set of portfolio opportunities, it's clear that we're delivering a level of consistent, compelling performance that's rarely seen in our industry. Grounded in a portfolio, a team that executes with urgency, and a disciplined approach to access that reduces friction. to position us to unlock future growth and drive durable impact in areas of significant heart, we enjoyed continued progress, advancing our late-stage pipeline and expanding the impact of our inline medicines.",
+        "startSeconds": 254.9,
+        "endSeconds": 910.5
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "Starting with cardiovascular disease, where Amgen is a global leader in developing medicines that target remaining, often genetically defined, cardiometabolic risk factors that anchors our cardiovascular efforts as the only PCSK9 targeting therapy with outcomes data in both primary, and secondary prevention, supported by 51 clinical trials involving more than 57,000 patients and over 100,000 patient years. We need to generate additional insights from Vesalius CV, the landmark study of Repatha in pre-event cardiovascular disease. We recently reported that for patients with high-risk diabetes with and without atherosclerosis, Repatha reduced three-point major adverse cardiovascular events by 29% and produced a nominal 21% reduction in the risk of all the Vesalia CV study. We recently received a positive CHMP opinion, supporting a broader label for Repatha in the EU. Vascular leadership further extends to Olpaciran, targeting lipoprotein A, or LP little a. Elevated LpA is an independent, genetically defined risk factor for cardiovascular disease in one in five people. With a greater than 95% reduction in LpA levels in Phase II, OPCRAN advanced into two ongoing Phase III outcome studies in both primary and secondary prevention. Deep LpA suppression and quarterly dosing position OPCRAN for a potentially best-in-class profilin and modifiable risk factor for cardiovascular disease is, of course, obesity. Our lead obesity asset, Meritide, is fundamentally different from other GLP-1 therapies. It's uniquely designed for monthly therapy per year. Clinical development of Meritide continues to progress rapidly, with nine ongoing and three additional planned Phase III studies across obesity and related serious chronic diseases. On establishing efficacy, these studies will guide how to start and stay on Meritide from other GLP-1-based therapies and stay on Maritide. Maritide Phase III dosing features a simple three-step dose escalation, allowing patients to start Maritide to reach their target dose in only two months, followed by monthly dosing thereafter. Maritide's unique monoclonal antibody backbone with appended GLP-1 peptides is designed for extended dosing. Our Phase III maintenance extension studies will evaluate how patients stay on Maritide to maintain weight loss while transitioning from monthly dosing to as few as four or six doses per year. Obesity treatment is not simply greater weight loss, but achieving long-term persistent benefit. We are therefore evaluating switching from weekly GLP-1 therapies to Meritide in a dedicated phase three study with the goal of enabling patients to move from weekly injections to a maintenance schedule with, again, as few as four or six doses per year. Through this comprehensive program, we aim to establish Meritide as the first monthly or less frequent obesity therapy and make long-term treatment easier for patients to sustain weight loss and enjoy durable health benefits. On our cardiometabolic pipeline, we have decided to stop development of AMG 513, a phase one asset. As I've said before, the bar is high at AMGEN for obesity medicines. Our next generation of differentiated preclinical programs continues to progress, featuring both incretin and non-incretin mechanisms of action. We now turn to rare disease, where we are focused on challenging and rare autoimmune diseases with aplizna, desodolibet, and blenitumumab. A set of CV19-directed B-cell depletion in severe autoimmune diseases, including NMOSD, myasthenia gravis, and IgG4-related disease, with strong efficacy, durable benefit, and twice-yearly maintenance dosing. In IgG4-related disease, we recently completed a one-year open-label extension of the Phase III Mitigate study. Building on the remarkable 87% reduction in flare risk versus placebo in year one of a plasma therapy, 100% of patients who continue to plasma treatment remain flare-free at year two, and 71.4% achieve complete remission without without glucocorticoids. Based on the emerging profound clinical impact of APLISNA in autoantibody mediated disease, we have initiated the registrational mercury study in autoimmune hepatitis, a disease affecting as many as 150,000 patients in the U.S. A phase 3 study in chronic inflammatory demyelinating polyneuropathy, debilitating autoimmune condition, peripheral nerves, 1,000 patients. We are developing DASO-DALIBEP. DASO-DALIBEP targets CD40 ligand-mediated signaling between activated T-cells and B-cells and has been artfully designed to avoid the platelet-related adverse events observed with first-generation CD40 ligand targeting agents. Two dedicated Phase III studies later this year has validated targeting TSLP and the alarming pathway in severe asthma and chronic rhinosinusitis with nasal polyps. We are now extending its potential to other diseases where epithelial-driven inflammation plays a key role. Phase 3 study in eosinophilic esophagitis, or EOE, is expected to complete in the second half of the year. EOE is a chronic, progressive inflammatory disorder characterized by epithelial-driven inflammation, remodeling, and dysfunction of the esophagus, affecting over 400,000 patients. Building on the impact of TESPIRE, we are developing SUNACAMENT, previously AMG-104, as an inhaled anti-TSLP fragment antigen binding protein. In the Phase II Levante dose-ranging study of SUNACAMENT, we observed numerical reductions in composite asthma exacerbation events or compacts as the primary endpoint in 12 weeks. Although the primary endpoint was not statistically significant, we are encouraged by the overall profile and are planning a phase three program with AstraZeneca. In psychology, we continue to expand our bispecific T-cell engager or bite platform across tumor types. Indeltra or torlatumab is becoming a standard of care after first-line treatment for small cell lung cancer, actively advancing Indeltra into earlier treatment lines, where we hope to further impact survival. Success in these early-stage settings would allow Deltra to reach as many as 28,000 addressable patients in the U.S. for convenient administration. Delphi 309 is informing our strategy for extended interval dosing, while the new Phase 3 Delphi 315 study is evaluating subcutaneous tarlabs. Building on the success of our bite platform in solid tumors, Zalarytomic is advancing in two Phase III studies of metastatic, castration-resistant prostate cancer. While we also evaluate opportunities in earlier stages of this, before closing, I'll briefly comment on AMGEN has a differentiated foundation in proprietary human data, high-performance computing, and deep scientific expertise. We are applying AI strategically across discovery, development, manufacturing, and access to impact and insight from these investments are already proving valuable. For example, in Amgen Research, we recently established a frontier AI laboratory that combines advanced models with proprietary data and scientific capabilities unique to Amgen. Workflows to discovery research powerfully augments the insights and ideas of our brilliant research scientists. We look forward to sharing more over time. In closing, I'd like to thank my colleagues across Amgen for their continued focus on patients and their commitment to advancing innovative medicines for serious diseases. Over to Peter for the QJ.",
+        "startSeconds": 911.16,
+        "endSeconds": 1498.18
+      },
+      {
+        "speakerIndex": 14,
+        "speakerName": "Peter Griffith",
+        "speakerRole": "CFO",
+        "text": "This reinforces confidence in our six key growth drivers and our ability to grow through losses of exclusivity. Together, they demonstrate the breadth and continue to provide a strong foundation for our non-GAAP operating margin was 48%. We continue to invest in our portfolio and pipeline while achieving strong operating results, with non-GAAP R&D spending increasing 10% year-over-year in the second quarter. This reflects continued investment in the innovation that will drive future sharing and royalty expenses. Approximately two significant investment in our business, commitment to investing in our business and enabling additional capacity supports our long-term growth well into the next decade. compared to the second quarter of 2025 for the business for the remainder of 2026 and non-GAAP earnings per share, $22.30.50. Let me highlight a few updates to our outlook for the remainder of the year. Your non-GAAP R&D expense to grow a business development transaction, a $100 million upfront payment that will pay non-GAAP, other income and expense to be in the range to remind you of several additional guidance items. This allows us to continue investing behind the next generation of growth drivers while maintaining strong. In addition to the third quarter business development transaction noted earlier, our strong revenue performance has enabled us to make incremental third quarter investments in the pipeline to work with all of our colleagues worldwide in our mission to serve patients.",
+        "startSeconds": 1500.71,
+        "endSeconds": 1807.03
+      },
+      {
+        "speakerIndex": 9,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Okay, thank you for that strong report, Pete. And before we open up to questions, let me just remind you that this is Pete's swan song earnings call with us. So I'll take a few minutes at the end of our Q&A to thank him and recognize his contributions to our firm. But now, Julianne, let's open the line up for questions.",
+        "startSeconds": 1817.6,
+        "endSeconds": 1835.36
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you. If you would like to ask a question, please press star followed by one on your telephone keypad. If for any reason you would like to remove that question, please press star followed by one. Again, to ask a question, press star one. Our first question comes from Michael Yee from UBS. Please go ahead. Your line is open.",
+        "startSeconds": 1836.96,
+        "endSeconds": 1854.78
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": null,
+        "speakerRole": null,
+        "text": "Hi, thanks. This is Dina on for Mike. Just a quick question on the LP little a, two-part question. Just thinking about how you designed the protocol, is that involving an interim? And then maybe just I know that you guys are doing a MACE 3 endpoint, opposed to Novartis is doing MACE 4. Just given that, do you see that the exclusion of strokes to be affecting the time of your study versus having a MACE-4 endpoint? Thank you so much.",
+        "startSeconds": 1856.8,
+        "endSeconds": 1883.62
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "Yeah, thanks for your question. As you note, our development of OPCRAN, which is a potentially best-in-class siRNA for modifying the risk of cardiovascular disease attributable to LQA elevations affect one in five patients. It's a serious and profound unmet need. And it's terrific to see so much attention for what is one of the last known and well-defined genetically modifiable risk factors. We have a terrific study design with OCEAN-A. This is a double-blind randomized control trial, as you asked. 7,297 patients have been enrolled in record time. And there are distinguishing features of our design. One is the requirement for elevations of L to little a above 200, that's nanomoles per liter. And with this, every 12-week dosing, in an event-driven study, we'll read out a primary event, as you shared, of three-point MACE. We focused on three-point MACE after extensive human genetics and population science analysis indicated to us that the association of ischemic stroke and LP-A elevation was not as compelling as other cardiac-specific cardiovascular endpoints. And this is, therefore, a potentially important distinction between this study and others. And you asked, does the stroke, the lack of inclusion of stroke and the endpoint influence the event rate not by our modeling?",
+        "startSeconds": 1885.3,
+        "endSeconds": 1976.0
+      },
+      {
+        "speakerIndex": 13,
+        "speakerName": "Arvind Sood",
+        "speakerRole": "Head of Investor Relations",
+        "text": "Jillian, next question, please.",
+        "startSeconds": 1978.13,
+        "endSeconds": 1979.37
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Our next question comes from Salveen Richter from Goldman Sachs. Please go ahead. Your line is open.",
+        "startSeconds": 1980.37,
+        "endSeconds": 1985.09
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": "Salveen Richter",
+        "speakerRole": "Analyst \u2014 Goldman Sachs",
+        "text": "Good afternoon. Thanks for taking my question. On business development, you have reiterated a focus on securing the best innovation and a peer agnostic on site structure as long as the deal meets your criteria. Walk us through how your latest thinking here is playing out currently and the capital allocation strategy more broadly, and how much of the near-term BD strategy depends on outcomes from clinical readouts from Meritide and LPLA. Thank you.",
+        "startSeconds": 1986.19,
+        "endSeconds": 2015.37
+      },
+      {
+        "speakerIndex": 9,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Well, Salveen, I think our business development strategy is pretty consistent. We've articulated it, I think, in that way now over a number of years. So we're focused on the therapeutic areas where we think we can add value in research and in development. We're focused in the four areas that you've heard us discuss on this call, and we're continuing to look at interesting opportunities there. And we frequently repeat that our objective is to find and advance the best innovation, whether it's generated internally or externally, and that's what we're doing. We just observed that we're seeing some exciting early-stage progress in our industry right now, so I suspect we're not the only ones that are interested in some of the emerging shoots that look intriguing. So we are looking, but primarily in smaller, earlier-stage assets. And the answer to your question about the late Phase III trials is not directly. Obviously, our operational plate is pretty full in the late-stage clinical development right now, for example, in cardiometabolic disease, but we try to be mindful of that as we look for external opportunities, but it's not linked as directly as your question implies. Thanks. Let's move on to the next question, Julia.",
+        "startSeconds": 2016.45,
+        "endSeconds": 2094.85
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Our next question comes from Chris Schott from J.P. Morgan. Please go ahead. Your line is open.",
+        "startSeconds": 2095.67,
+        "endSeconds": 2100.01
+      },
+      {
+        "speakerIndex": 6,
+        "speakerName": null,
+        "speakerRole": null,
+        "text": "Hi, this is Taylor Hanley on for Chris. J.P. Morgan, thank you so much for taking our question. We had a follow-up on LP little a. So, there's competitor LP little a data that's expected shortly. What will you be looking for when this data set reads out? And specifically, if we do see a 13 to 15 percent type benefit from that study, how would you think about the potential read-throughs to a pass around? Thank you.",
+        "startSeconds": 2101.53,
+        "endSeconds": 2129.09
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "Thanks for the interest, Taylor. Again, with a huge unmet need affecting so many humans globally and the American Heart Association recommending testing, it's understandable that there'd be so much attention on LP little a, and we quite like our chances with OPCRAN and its profile. What can we expect from the Pella-Carson data? We're following it with interest. We can expect perhaps directional insight, but not decisional perspective, owing to the superior properties of our molecule that delivers 95% LpA reduction compared to, say, 70% with that molecule, and also some differences in the study design, which we've just described. Great. Next question, Julianne.",
+        "startSeconds": 2130.43,
+        "endSeconds": 2180.93
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Our next question comes from Umar Rafat from Evercore ISI. please go ahead. Your line is open.",
+        "startSeconds": 2181.39,
+        "endSeconds": 2186.71
+      },
+      {
+        "speakerIndex": 16,
+        "speakerName": null,
+        "speakerRole": null,
+        "text": "Hi, guys. Thanks for taking my question. Jay, I have two, if I may, for you. One, based on everything you know right now and all the tetration that's been put into place, how confident are you that the vomiting rates in phase three trials of Maritide will be mid-20s or better? And secondly, are you tracking malignancies on a blinded basis in the ongoing days of hours, get it wrong, on the CD40 trial? I'd be very curious. Thank you.",
+        "startSeconds": 2188.31,
+        "endSeconds": 2213.97
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "Dezo-Dalibep, Boomer. Dezo-Dalibep just rolls right off the tongue. Yes, first regarding the Meritide clinical development program, you know, we are noses down delivering a very compelling phase three data package right now. 2026 is a year of very disciplined data generation. Trial enrollment is strong. I think a clear sign of the remaining unmet need and also an interest in the Meritide profile. We're, you know, executing a broad therapeutic program very well, and we are very confident in the profile of this medicine. Second, around Dezodalibep, as appropriate for any medicine in phase three clinical investigation, especially immunomodulatory medicines, we have a data safety monitoring committee associated with these studies that is just doing their job perfectly. As we would expect, they're capturing all high and potentially associated as well as really any incident effects of the medicine. And we'll learn more about DAZO, DALIBEP, and H2O this year. Next question, please, Julianne.",
+        "startSeconds": 2215.87,
+        "endSeconds": 2282.85
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Our next question comes from Jeroen Werber from TD Cowan. Please go ahead. Your line is open.",
+        "startSeconds": 2283.51,
+        "endSeconds": 2288.53
+      },
+      {
+        "speakerIndex": 1,
+        "speakerName": null,
+        "speakerRole": null,
+        "text": "Thanks so much. A quick question on DAZO as well. You're the only company running both systemic and symptomatic studies, and a lot of the feedback from KOLs is that that's obviously a huge area of interest for them. A lot of the patients that are systemic naturally obviously have glandular manifestations. And so the symptomatic are really extra glandular manifestations. Can you talk about the difference? And at the end, how much of a differentiated label can you get relative to companies who are only working on systemic disease? Thank you.",
+        "startSeconds": 2290.37,
+        "endSeconds": 2324.11
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "Yeah, you're welcome. Thank you. This is a terrific question. As you know, daisodolivep is a potentially first-in-class CD40 ligand, FC chimeric protein. It's just beautifully designed in order to maximize inhibition of CD40 ligand signaling from activated T cells to B cells and epithelial cells that are enriched for CD40 in the milieu of lymphocytic infiltrated glandular tissue, like the salivary glands that you mentioned in your question. We are pursuing the Phase III clinical investigation of Dave Zodalibeth in both the systemic population as well as the symptomatic population because there's tremendous unmet need. There's 350,000 or more patients with Sjogren's disease. There's few effective therapies. Those therapies that are FDA approved are by and large local and symptomatic management therapies. And the signal that we saw in our phase two clinical study, you'll recall there were two populations. Population one had 74 patients with systemic disease. And at day 169, we saw significant movement of the S-Dive score of 6.3 versus 4.1 on placebo. Population two, we had 109 patients with symptomatic disease. At day 169, the S-PRE score in that case, appropriate for that constellation of symptoms was also superior to placebo, negative 1.8 versus negative 0.5. So a big unmet need and activity in these two populations that are rightly studied distinctly, because there are different clinically useful scores that physicians use to follow them, it's just a very nice data package to build upon for phase three. Now we're deep in phase three. We have 621 patients on the systemic study, 434 on the symptomatic. They need to be studied differently for the reasons I've mentioned, and we'll learn more about the impact of this medicine on that disease. We're very hopeful, but, you know, humbled. It's a very challenging disease. Question, please, Julianne.",
+        "startSeconds": 2325.59,
+        "endSeconds": 2450.77
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Next question comes from Courtney Breen from Bernstein. Please go ahead. Your line is open.",
+        "startSeconds": 2451.85,
+        "endSeconds": 2456.11
+      },
+      {
+        "speakerIndex": 12,
+        "speakerName": null,
+        "speakerRole": null,
+        "text": "Hi, guys. Thanks for taking my question. This is Woody Poggle, ladies and gentlemen, for Courtney. I wanted to ask what you guys are seeing on Iketai's impact in the dermatology market. with regards to Otesla, are you seeing a slowdown in volumes in prescribing of Otesla, and how should we think about the future of this drug, especially in light of IRA selection next year? Thanks very much.",
+        "startSeconds": 2457.49,
+        "endSeconds": 2476.43
+      },
+      {
+        "speakerIndex": 9,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Sure.",
+        "startSeconds": 2477.17,
+        "endSeconds": 2477.61
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": "Murdo Gordon",
+        "speakerRole": null,
+        "text": "Myrtle, why don't you ask me a question? One of the things to remember about Otesla is, given the extensive clinical experience with this medicine, the broad label that we have that includes the milder forms of psoriasis, and the really clear coverage from payers, we generally are used as a first-stop systemic agent. And what we're seeing is the new entrants are competing with each other after O-Tesla has tried. And so we're not really necessarily seeing direct competition from the new entrants. We are seeing definitely some pressure on price with O-Tesla, given...",
+        "startSeconds": 2478.13,
+        "endSeconds": 2520.19
+      },
+      {
+        "speakerIndex": 13,
+        "speakerName": "Arvind Sood",
+        "speakerRole": "Head of Investor Relations",
+        "text": "Julianne, next question.",
+        "startSeconds": 2529.63,
+        "endSeconds": 2530.51
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Our next question comes from Terrence Flynn from Morgan Stanley. Please go ahead. Your line is open.",
+        "startSeconds": 2531.92,
+        "endSeconds": 2536.42
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": null,
+        "speakerRole": null,
+        "text": "This is Chris Ahn for Terrence. Thank you for taking our questions. Just a two-part question on PCSK9. Merck-Oreal PCSK9 recently got approved. Can you compare and contract the key label language differences from data pathos? And also, can you comment on the contracted dynamics now that there's an oral option? Thank you.",
+        "startSeconds": 2538.82,
+        "endSeconds": 2560.84
+      },
+      {
+        "speakerIndex": 9,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Sure. Myrta, why don't you...",
+        "startSeconds": 2561.92,
+        "endSeconds": 2563.72
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": "Murdo Gordon",
+        "speakerRole": null,
+        "text": "Yeah, let me take that one. Obviously, the two labels really just don't compare. You have Repatha, as Jay mentioned, over 50,000 patients on clinical trial experience reflected in a broad label that includes primary and secondary prevention. Repatha can be used as monotherapy or in combination with statins. 10 years of real-world experience reflected in data that we've presented at recent scientific meetings. So, you know, as we say, the data behind Repatha are unrivaled. It is the category leader, and indeed the data are unrivaled. I think, though, what's important to remember is that this is a huge market with a lot of patients that are still not at their LDL cholesterol goal. And additional therapies, much like when Inclisirin entered the market, are treating other patients that are not necessarily competing for share with Repatha. And so education still needs to be done. We think that the guidelines are important in this market. And we think that we are effectively given the compelling data that we generated on Vesalius. The other thing that we've experienced with Repatha as we look at persistency data in the market and the real-world analysis is an every-two-week injection is a really easy regimen for patients to adhere to. And we've seen limitations with orals, including with statins, where daily oral therapy does have some compliance and some adherence challenges to it. We're also seeing in the label that there are indeed food restrictions. I think this is in the first place.",
+        "startSeconds": 2563.72,
+        "endSeconds": 2699.56
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Our next question comes from Akash Tawari from Jefferies. Please go ahead. Your line is open.",
+        "startSeconds": 2711.54,
+        "endSeconds": 2716.08
+      },
+      {
+        "speakerIndex": 0,
+        "speakerName": null,
+        "speakerRole": null,
+        "text": "Hey, this is Mano John for Agash. Just one from Auren. One of the concerns around the Horizon LP little A trial is around the extent of LPA effect independent of LDL-C. In Horizon trial, we see the baseline LDL-C is around like 65 mg per deciliter. What's the baseline LDL-C in the ocean trial you're planning or like is it in the same levels? And also, is there a possibility that LP little A effects manifest only in presence of a relatively higher baseline LDL-C effect? Just trying to understand that point.",
+        "startSeconds": 2717.26,
+        "endSeconds": 2747.48
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "Well, thank you for the question. As I shared moments ago, we're enrolling the Ocean A study to target an LP little A that's a little bit higher than the Horizon study. by targeting 200 or higher in OCEAN-A, we bias towards a slightly higher risk group of patients. We believe and have seen data from population studies that LpA elevation to this extent is firmly independent as a risk factor of LDL-C. And if I understand all aspects of your question, correct me, forgive me if I did not, the reduction of LDL-C, even with, you know, improving standard of cardiovascular care to which Repatha contributes meaningfully, would not be sufficient to drop LTa meaningfully from this elevation to protect patients adequately. So, LPA-directed therapy, we believe, is urgently needed. And question for you.",
+        "startSeconds": 2750.47,
+        "endSeconds": 2815.72
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Our next question comes from Mohit Bansal from Wells Fargo. Please go ahead. Your line is open.",
+        "startSeconds": 2816.34,
+        "endSeconds": 2821.7
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": null,
+        "speakerRole": null,
+        "text": "Hi, this is Susan on for Mohit. Quick question on Repasa and then a longer one on DAZO. On Repasa, what portion of growth is coming from broader primary care adoption versus existing prescribers? And how do you see that changing over time? And then on DAZO, historically, symptomatic Shrogan's trials have struggled with endpoint sensitivity and placebo effect. I noticed for the phase three trial that there's two primary endpoints measuring symptom improvement. Can you discuss the rationale for using two endpoints here and what the level concordance is just based on your trial design? Thank you.",
+        "startSeconds": 2823.32,
+        "endSeconds": 2866.92
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": "Murdo Gordon",
+        "speakerRole": null,
+        "text": "All right. Thanks, Susan, for the question. I'll take the first one on Repatha and then hand it over to Jay for the second. end. We are pleased to see that Repatha is growing very nicely, particularly in new-to-brand prescriptions, so new patient starts. We grew about 50% year-over-year in the quarter in new-to-brand prescriptions, and it's being driven by two dynamics. One, cardiologists who already use Repatha for some patients are broadening their use of Repatha, so they're increasing the number of prescriptions they generate on a per-physician basis, treating more patients mostly in secondary prevention or in very high-risk primary prevention. So that's roughly about half of our growth. And then the other half of our growth is coming from primary care physicians, an expansion in the number of primary care physicians in particular who are prescribing Repatha for their high-risk primary prevention patients. And there I would highlight one specific patient type, and that's those patients who have diabetes. The primary care community see that as a patient that they should manage for their cardiovascular risk. And given the Vesalius data and then the subsequent diabetes sub-study, the data there for adding Repatha, for intensifying LDL, cholesterol lowering, are pretty compelling. And we're seeing more and more primary care physicians adopt Repatha for those patients in particular for primary prevention.",
+        "startSeconds": 2867.64,
+        "endSeconds": 2962.56
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "Yeah, thanks. And your second question around the endpoint selected for the Phase III clinical investigation of Dato-Dalibep in Sjogren's disease. As I shared moments ago, and as you clearly understand from your question, we have undertaken to do separate Phase III studies in each of two populations. The systemic, in this case, we use the STI score, which is a score that reports on systemic manifestations of, can have more internal guidance.",
+        "startSeconds": 2963.96,
+        "endSeconds": 3020.43
+      },
+      {
+        "speakerIndex": 13,
+        "speakerName": "Arvind Sood",
+        "speakerRole": "Head of Investor Relations",
+        "text": "Please, Joanne.",
+        "startSeconds": 3048.83,
+        "endSeconds": 3049.55
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Our next question comes from Alex Hammond from Wolf Research. Please go ahead. Your line is open. Hi.",
+        "startSeconds": 3050.27,
+        "endSeconds": 3056.61
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": null,
+        "speakerRole": null,
+        "text": "Thanks for taking the question. So, on MDELTRA, given you have a number of phase three trials underway to bring it into earlier lines, can you provide a little bit of detail on what AMGEN is doing to kind of improve those monitoring requirements? Should we view the reduced monitoring in Europe as a good sign? And as a follow-up, could we potentially see amendments to later line monitoring requirements for MDELTRA in the future? Thank you.",
+        "startSeconds": 3056.81,
+        "endSeconds": 3078.53
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "Yeah. Alex, thanks for the question. This is Jay again. The development of T-cell engagers is an area of significant expertise here at Amgen, having pioneered the field with Blin-Cyto and now bringing Indeltra forward for patients with small cell lung cancer, truly the first T-cell engager to address a common solid tumor. And so building on this experience of establishing strong efficacy, it's a survival benefit to receiving Indeltra in the second line of small cell lung cancer. We're now doing the work needed to expand the impact of this medicine, and part of that work is combination studies, and part of that work is bringing the medicine forward into frontline therapy and preparing the medicine for combination utility. And as you ask, for sure, making the experience of receiving M-Delta for the patient easier and less burdensome for healthcare providers or institutions with regard to monitoring. The second line, phase three, used 16 hours of monitoring at that time appropriate for that stage of development. We now have, you know, real-world experience and ongoing clinical study experience all the way down to one to two hours of monitoring, say, in the context of our limited stage. With this medicine, ICANs, the neurologic consequence, thankfully, is quite infrequent and predominantly was observed at the 100 milligram dose, and so this really opens the door towards sequential reductions in monitoring through prospective clinical investigation as well as longitudinal engagement with federal regulators, actually global regulators, with our accruing safety database. Myrno, anything to add here?",
+        "startSeconds": 3080.64,
+        "endSeconds": 3180.6
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": "Murdo Gordon",
+        "speakerRole": null,
+        "text": "Yeah, thanks, Jay. We're obviously excited, Alex, about the additional data generation that Jay and his team are leading. In the market right now, we've actually been quite successful in getting more and more accounts operationally ready to treat patients with M-Deltra. We've got over 2,000 accounts in the U.S. currently using M-Deltra. The opportunity for growth is to treat even more patients in the second line in the near-term. Survival benefit they are required to M-Deltra in the second line we're unable to achieve. Jillian, next question, please.",
+        "startSeconds": 3181.28,
+        "endSeconds": 3254.01
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Our next question comes from Dave Reisinger from LeeRank Partners. please go ahead. Your line is open.",
+        "startSeconds": 3255.25,
+        "endSeconds": 3260.09
+      },
+      {
+        "speakerIndex": 11,
+        "speakerName": "Dave Reisinger",
+        "speakerRole": "Analyst \u2014 Leerink Partners",
+        "text": "Thanks very much, and thanks for all of the details today and all the commentary on the pipeline. So, my question is for Jay, please. Regarding Meritide's construct, so it's GLP-1 peptides conjugated to a GIP antagonist antibody, of course. Could you discuss the duration of effect of each mechanism and potential implications for duration of efficacy, obviously since the peptide component will last a lot shorter than the antibody. And then if you could also comment on whether you expect real-world patient-led dosing selection for every one, two, or three months maintenance dosing based upon individual experiences, is that the right way that we should be thinking about it? Thanks so much.",
+        "startSeconds": 3262.56,
+        "endSeconds": 3319.28
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "Well, Dave, thank you for the question. I wish only we had more time in a whiteboard to take you through the answer. I'll be succinct. Meritide is truly a singularity. It's the only of its kind antibody peptide conjugate. And because of the antibody design, unlike peptides that through miracles of chemistry last maybe a week in the bloodstream, the antibody design affords a half-life of approximately 21 days. And that's the half-life of the intact molecule of Meritide. Meritide's appending peptides were designed and appended in order to maximize stability to serum esterases and other xenobiotic metabolizing enzymes in tissues and in circulation. And because of this, the duration of effect of the GIPR inhibitory variable chains of the antibody and the GLP-1 receptor agonizing peptides on Maritide is preserved through this long period of exposure. And what that means is that with monthly dosing, as used with starting Maritide, and with the transition to less frequent dosing, maybe four to six doses per year as you start and stay on Maritide, or as you switch from another medicine and then stay on Maritide, that the GLP1 agonism and GIP receptor antagonism is quite persistent as the molecule is quite persistent. Because were that to, say, burn off with metabolism or elimination of the drug, then re-challenge with a therapeutic dose of the drug would be very hard. And that's not what we're seeing. Frequent dosing, merit-tied at target doses, truly differentiating clinical activity. And as for diabetes, it's observed at multiple different doses approaching.",
+        "startSeconds": 3321.21,
+        "endSeconds": 3461.52
+      },
+      {
+        "speakerIndex": 9,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Okay, Julianne, why don't we take one more question?",
+        "startSeconds": 3518.4,
+        "endSeconds": 3520.44
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Our last question today will come from Jay Olson from Oppenheimer. Please go ahead. Your line is open.",
+        "startSeconds": 3521.8,
+        "endSeconds": 3526.82
+      },
+      {
+        "speakerIndex": 15,
+        "speakerName": null,
+        "speakerRole": null,
+        "text": "Oh, hey, congrats to Peter for a great run at Amgen and all the best in retirement. Our question is about your cardiovascular portfolio as you look across Repatha, Opaceran, and Meritide. Amgen is building a comprehensive cardiovascular risk reduction franchise. So how are you thinking about leveraging those three assets with a coordinated strategy? And what are the advantages?",
+        "startSeconds": 3529.09,
+        "endSeconds": 3554.03
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": "Murdo Gordon",
+        "speakerRole": null,
+        "text": "Jay, thank you for the acknowledgement of the opportunity given the foundational strength we have in lowering market and cardiovascular risk reduction market with the leadership position we've established with Repatha. I think what you've heard even on today's call, and you've heard from us prior to this, is the experience that we've gained from Repatha has been applied to the clinical development and the design of the clinical programs behind Opacerin and behind Maritide. We're not just developing Opacerin for secondary prevention, we're looking at primary prevention. We're not just developing Maritide for weight loss, we're developing it for diabetes and for heart failure and for ASCVD. We're looking at all of the different independent metabolic risk factors that travel with losing weight. And so it's our intent to fully explore each of these unique medicines, these best-in-class, potentially first-in-class-of-their-kind molecules, as well as potential combinations thereof. So this is an exciting time for us. We continue to develop additional molecules in the clinic, and we continue to look outside for additional external innovation that could be brought in. So it's an important part of our long-term growth strategy and one that we expect to be durable well into the next decade. Okay, thank you, Murdo. Thank you, Jay, for the question.",
+        "startSeconds": 3565.57,
+        "endSeconds": 3664.7
+      },
+      {
+        "speakerIndex": 9,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Well, as I said, let me just take a minute to thank all of you for joining our call. I hope you can see that our business is in strong shape, and that is indeed a fitting way for Pete to pass the baton to Thomas Dietrich, who will be in the CFO role for our next call. Recall that Thomas returns as a veteran of the Amgen finance team. We're delighted to have him back and grateful to Pete for ensuring another smooth transition of responsibilities at Amgen. I know many of you have worked closely with Pete since he joined us at the end of 2019, and we've all had fun working with him in his role here and are grateful to him for his many ways, or the many ways in which he has strengthened our financial foundations. His disciplined financial leadership has enabled our largest ever investments in research and development, acquisitions, and manufacturing capacity expansion. And he's also helped prepare Amgen for the future through our investments in technology, cybersecurity, and data capabilities that will serve us well in the years to come. So, Pete, on behalf of all of Amgen, thank you for your many contributions. You've been a great colleague and a good friend, and we wish you all the best in your next chapter of life. Thank you all. Bye-bye.",
+        "startSeconds": 3665.1,
+        "endSeconds": 3734.26
+      }
+    ],
+    "corrections": []
+  }
+}

@@ -1,0 +1,419 @@
+{
+  "status": 200,
+  "result": {
+    "eventId": "6ea95945-8cab-47f4-acdc-e884e9ac432a",
+    "ticker": "ABBV",
+    "eventTitle": "AbbVie Inc. Q1 FY2026 Earnings Call",
+    "callDate": "2026-04-29T00:00:00+00:00",
+    "fiscalYear": 2026,
+    "fiscalQuarter": 1,
+    "turnCount": 50,
+    "totalTurnCount": 50,
+    "offset": 0,
+    "hasMore": false,
+    "isFiledRecord": false,
+    "data": [
+      {
+        "speakerIndex": 7,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Good morning and thank you for standing by. Welcome to the AbbVie First Quarter 2026 Earnings Conference Call. All participants will be able to listen only until the question and answer portion of this call. You may ask a question by pressing star 1 on your phone. Today's call is also being recorded. If you have any objections, you may disconnect at this time. I would now like to introduce Ms. Liz Shea, Senior Vice President, Investor Relations. Good morning and thanks for joining us.",
+        "startSeconds": 0.0,
+        "endSeconds": 24.78
+      },
+      {
+        "speakerIndex": 6,
+        "speakerName": "Liz Shea",
+        "speakerRole": "Head of Investor Relations",
+        "text": "Also on the call with me today are Rob Michael, Chairman and Chief Executive Officer, Jeff Stewart, Executive Vice President, Chief Commercial Officer, Rupal Thakkar, Executive Vice President, Research and Development and Chief Financial Officer, and Scott Runtz, Executive Vice President, Chief Financial Officer. Before we get started, I'll note that some statements we make today may be considered forward-looking statements based on our current expectations. Abby cautions that these forward-looking statements are subject to risks and uncertainties that may cause our actual results to differ materially from those indicated in our forward-looking statements. Additional information about these risks and uncertainties is included in our SEC filings. AbbVie undertakes no obligation to update these forward-looking statements except as required by law. On today's conference call, non-GAAP financial measures will be used to help investors understand AbbVie's business performance. These non-GAAP financial measures are reconciled with comparable GAAP financial measures in our earnings release and regulatory filings from today, which can be found on our website. Following our prepared remarks, we'll take your questions. So with that, I'll turn the call over to Rob.",
+        "startSeconds": 25.12,
+        "endSeconds": 84.64
+      },
+      {
+        "speakerIndex": 15,
+        "speakerName": "Rob Michael",
+        "speakerRole": "Chairman",
+        "text": "Thank you, Liz. Good morning, everyone, and thank you for joining us. AbbVie is off to an excellent start to the year, with first quarter results exceeding our expectations across our diverse portfolio. We are delivering top-tier growth and continue to strengthen our long-term outlook with pipeline advancements and strategic transactions. Turning to our first quarter performance, we achieved adjusted earnings per share of $2.65, which is $0.07 above our guidance midpoint. Total net revenues were $15 billion, beating our expectations by $300 million and reflecting robust sales growth of 12.4%. I'm especially pleased with the momentum in immunology and neuroscience, which are both delivering share gains in growing markets. Based on this strong performance, we are raising our full-year adjusted earnings per share guidance by $0.12, and now expect adjusted EPS between $14.08 and $14.28. sense. Turning now to R&D, we are making meaningful progress advancing programs across all stages of development. Recent highlights include the U.S. regulatory submissions of Renvoke for alopecia areata, giving us a potential new source of growth in dermatology, and Skyrisi sub-Q induction in Crohn's, with an approval decision expected later this year. We also saw promising interim data from our Crohn's platform study, combining SkyRizzy and our own alpha-4-beta-7, which has potential to deliver transformational efficacy. In obesity, we announced early-stage data for our amylin analog 295, with very encouraging weight loss results. In oncology, we are now expecting the regulatory submission for etentamig by the end of this year, which is earlier than our previous expectations. We also expanded our emerging oncology pipeline by closing the Remagen agreement, giving us a novel PD-1 VEGF bispecific antibody. We will continue to augment our portfolio with business development to access external innovation. And given our strong growth outlook, we have significant financial capacity to pursue both early and late-stage opportunities. Lastly, as part of AbbVie's $100 billion commitment to U.S. R&D and capital investments over the next decade, we recently announced construction of several new manufacturing sites. This includes a $1.4 billion investment to build a pharmaceutical manufacturing campus in North Carolina and a $380 million investment for two new plants in North Chicago. These strategic investments will strengthen AVI's ability to produce medical breakthroughs in immunology, neuroscience, oncology, and obesity. In summary, the fundamentals of our business are strong, and we are well positioned to deliver top-tier growth for the long term. With that, I'll turn the call over to Jeff for additional comments on our commercial highlights.",
+        "startSeconds": 84.96,
+        "endSeconds": 296.22
+      },
+      {
+        "speakerIndex": 13,
+        "speakerName": "Jeff Stewart",
+        "speakerRole": "Other",
+        "text": "Thank you, Rob. I'll start with the quarterly results for immunology, which delivered total revenues of $7.3 billion, reflecting impressive sales growth of $1 billion. SkyRizzy total sales were $4.5 billion, up 29.2% on an operational basis, exceeding our expectations. We continue to demonstrate exceptional performance across psoriatic disease, where we are gaining share and have clear leadership over all biologics and orals by a very wide margin. The psoriatic market is growing robustly, and we feel extremely confident in SkyRizzi's best-in-class profile, including high and durable efficacy on both skin and joints, as well as simple quarterly dosing, which collectively gives us a distinct advantage relative to all the existing and emerging therapies in this area, and we continue to generate compelling evidence to support scyrizi as the preferred treatment option for psoriatic disease. At the recent AAD meeting, we presented new data highlighting scyrizi's strong efficacy in genital and scalp psoriasis, which are very difficult to treat areas, often leading to significant social and emotional burden to patients. The FDA has recently approved adding the new study results in these high-impact area to the SkyRizzy label. We also now have long-term efficacy in radiographic data in psoriatic arthritis, demonstrating SkyRizzy's durable efficacy, with nearly 90% of patients showing no radiographic progression through five years of treatment. This data will enhance our existing leadership in the important PSA segment, where where SkyRizzy is the frontline in-play patient share leader in both the DERM and ROOM segments. Performance also remains very robust in IBD, where SkyRizzy is on track to deliver more than 30% global sales growth across Crohn's disease and ulcerative colitis this year. Competitive dynamics within IBD are playing out in line with our expectations, with SkyRizzy continuing to capture a leading share of total new patient starts in the U.S. in the quarter, including very significant in-play leadership in the frontline setting, which is the strongest signal of overall physician preference for SkyRizzy. I'm also pleased with the compelling results from our recent subcutaneous induction study for Crohn's with data, particularly in the bio-naive population, that we believe compares very favorably versus the competition, and we look forward to providing an additional dosing option for physicians and IBD patients later this year. Turning now to Renvoke, which is also performing above our expectations. Global sales were $2.1 billion, up 20.2 percent on an operational basis. Demand remained strong across all of Renvoke's indications. We are now achieving high teens in-play patient share in RA and are seeing a nice inflection in prescriptions across gastro, especially in UC, following the recent expanded label supporting access to RINVOC earlier in the treatment paradigm for IBD patients. We are also planning for the potential near-term commercialization of two additional indications, vitiligo and alopecia areata, which will meaningful expand RINVOC's dermatology label, and where we have also recently expanded our field force to support these emerging opportunities. Lastly, in immunology, Humira global sales were $688 million, down 40.3% on an operational basis, reflecting biosimilar competition and in line with our expectations Moving to neuroscience, where we continue to outperform our expectations as well Total revenues were nearly $2.9 billion, up 24.3% on an operational basis In Migraine, our leading portfolio continues to gain market share, with Ubrelvi, Q-Lipta, and Botox Therapeutic, each delivering robust double-digit sales growth. In Psychiatry, Braylar global sales were $905 million, up 18.4%, reflecting strong prescription growth in both bipolar disorder and adjunctive MDD. Braylar has significant leadership, with new prescription share roughly double the next closest branded competitor. And we expect continued momentum following the introduction of new lower doses, allowing prescribing flexibility as well as pediatric usage. Moving to Parkinson's disease, we continue to see encouraging uptake for Violev, which is on track to achieve blockbuster revenue this year. Total sales were $201 million, up approximately 10% on a sequential basis. We are also preparing for the potential approval and launch of Tevapadon in the U.S. later this year, an exciting new oral treatment for patients with Parkinson's and a very complementary addition to our growing Parkinson's portfolio with Violev and Duodopa. Tevapadon has demonstrated strong efficacy as both a monotherapy as well as an add-on to the standard of care, and we believe it will be a sizable commercial opportunity. Moving now to oncology, where total revenues were more than $1.6 billion, down 3% on an operational basis. Venclexta continues to perform very well, especially in CLL as combination use with BTK inhibitors are emerging as a preferred fixed treatment duration globally. We've recently received full approvals in the U.S. and the U.K., as well as positive CHMP opinion for Venclexta's use with BTKs for that fixed treatment course. Total Venclexta sales were $770 million, up 9.7% on an operational basis. Continued sales growth from Elahir, Epkinlee, and Amrelis also helped to partially offset the expected sales decline for Imbruvica, which was down 24.7% due to IRA pricing and competitive share pressure. Turning now to aesthetics, which delivered global sales of nearly $1.2 billion, up 5.1% on an operational basis. Botox cosmetic total revenues were $668 million, up 17%, reflecting a favorable price comparison in the U.S., as well as modest market growth globally. Juvederm global sales were $232 million, down 2.9%, reflecting continued headwinds in key dermal filler markets. While economic headwinds have continued to impact market conditions globally, the long-term prospects for the category remain attractive, given high consumer interest and low penetration rates. As the industry leader, we are investing in promotion and innovation to support patient activation. I'm particularly excited about the potential for Trenobot E, our fast-acting, short-duration toxin, which, once approved, we expect will be market-expanding and complements our toxin portfolio very nicely. While Trenobot E is delayed in the U.S., we continue to anticipate approval and launches this year in key international markets, including Europe, Canada, and Japan. So overall, I'm extremely pleased with the execution and continued strong performance across our commercial portfolio. And with that, I'll turn the call over to Rupal for comments on our R&D highlights. Rupal.",
+        "startSeconds": 297.2,
+        "endSeconds": 758.86
+      },
+      {
+        "speakerIndex": 16,
+        "speakerName": "Roopal Thakkar",
+        "speakerRole": "Other",
+        "text": "Thank you, Jeff. We continue to make good progress across our pipeline. I'll start with dermatology programs in immunology. As Jeff just mentioned, new data was presented at the recent AAD meeting highlighting SkyRizzy's strong efficacy in genital and scalp psoriasis and long-term efficacy, including radiographic data in psoriatic arthritis. These recent presentations add to the growing body of evidence supporting SkyRizzy's best-in-class profile in psoriatic diseases. Its strong, durable efficacy on both skin and joint measures, favorable safety and tolerability profile, and convenient quarterly maintenance dosing give us confidence that Skyrizi will continue to be the preferred first-line treatment option for patients with psoriatic disease. Additionally, discussions are ongoing with the FDA regarding revised label language related to tuberculosis evaluation for SkyRisi. While TB monitoring has become fairly routine prior to initiating treatment with biologics, updated language would allow healthcare providers to use their clinical judgment. Moving to Renvoke, the regulatory application for alopecia areata was recently submitted to the FDA. Approval decisions are anticipated later this year in Europe and Japan and in early 2027 in the U.S. In hydradenitis suprativa, phase 3 studies for both RINVOC and ludicizumab are progressing well and remain on track for 16-week top-line results in the second half of this year. Turning to gastroenterology, all co-primary and key secondary endpoints were met in the phase 3 AFIRM study with SkyRizzi subcutaneous induction in Crohn's disease, demonstrating very high levels of endoscopic response and clinical remission. While not a direct head-to-head comparison, when matching these data against results from the Skyrisi IV induction program, the sub-Q induction achieved numerically higher results across key endpoints. We are extremely pleased with the strong performance demonstrated by subcutaneous induction, especially considering that this study enrolled a very difficult-to-treat patient population. Two-thirds of the patients received prior advanced therapy, with half failing two or more therapies, and a third failing ustekinumab or a JAK inhibitor. Data in those who had not previously experienced advanced therapy were particularly noteworthy, where 61% of SkyRizzy patients achieved endoscopic response, and 73% achieved clinical remission at week 12. This is 45 points higher than placebo on both measures. These are very impressive results, which will continue to support first-line use. These data reinforce SkyRizzy's best-in-class profile and provide an additional induction dosing option for patients with Crohn's disease. Our U.S. regulatory application was recently submitted with an approval decision anticipated later this year. Sub-Q induction for ulcerative colitis is also being assessed, and we will be discussing options with health authorities. Next, on to other gastro programs. An interim analysis was recently completed on our Crohn's disease platform study. In the cohort evaluating SkyRizi plus our novel anti-alpha-4-beta-7 antibody, ABBV-382, the combination resulted in a higher rate of endoscopic remission at week 12 and at week 24. The rate was double that of either monotherapy arm. Endoscopic remission was achieved by approximately 42% of patients receiving the combination at week 24. These results were observed in a broad population that had severe and refractory disease, which included 82% advanced treatment failures and 53% of patients failing two or more advanced Of the patients that previously received advanced therapies, 63% failed an agent with an overlapping mechanism with the combination, and 20% failed a JAK inhibitor. At baseline, patients had a mean Crohn's disease activity index of 325 and a simple endoscopic score of 14, which represents a very treatment refractory patient population. Achieving this level of endoscopic remission in this setting is a particularly meaningful achievement, as this endpoint is an objective measure of mucosal healing and is associated with long-term benefits, including reduced rates of hospitalization, surgery, and disease progression. Safety of the combination was consistent with the profiles of the monotherapies. No new signals were observed. These results demonstrate the potentially transformative level of efficacy that our novel combination can achieve. The study is expected to complete in the third quarter with presentation at a medical meeting anticipated by early next year. A Phase IIb study is planned to begin this summer in patients with Crohn's disease and ulcerative colitis to evaluate SkyRizi in combination with both 3A2 and with our extended half-life TL1A antibody. In parallel, we will be evaluating phase 3 acceleration options for SkyRizi plus 3A2 in Crohn's disease. In the SkyRizi plus Ludikizumab cohort, the combination did not sufficiently differentiate from monotherapy SkyRizi and will not be moving forward. In the early-stage immunology pipeline, we are nearing completion of a Phase I study for an IRAC-4 inhibitor, ABBV848, and plan to begin a Phase II study in rheumatoid arthritis later this year. This potent inhibitor has the potential to provide biologic-like efficacy, a favorable safety profile with no boxed warnings, and convenient once-daily oral dosing. I will now discuss neuroscience. Top-line analysis was recently completed on our Phase 2 trial evaluating ABBV-932 in bipolar depression. In the study, the overall difference observed between the drug-treated and placebo groups was not statistically significant. However, in a pre-specified subgroup analysis of Bipolar I patients, an efficacy signal was observed. The safety profile of 932 was generally similar to placebo, including rates of extrapyramidal events, demonstrating the potential for a more favorable tolerability profile compared to Vralar. We are evaluating next steps to continue 932 development in bipolar I patients. Dose escalation work continues for mRaclidine in both schizophrenia and elderly patients. In schizophrenia, we have cleared the 100-milligram dose and will begin evaluating 150 milligrams. Phase II studies in monotherapy and adjunctive schizophrenia, as well as psychosis related to Alzheimer's, Parkinson's, and Lewy body dementia are planned to begin in the fourth order. Moving to our psychedelic acid, bretosilicin, additional data from an ongoing Phase II study in major depressive disorder will be available this year. Several studies are planned to begin in 2026, including a Phase III trial for single-course acute treatment in MDD, a Phase IIb evaluating repeat dosing for chronic use in MDD, and a proof-of-concept Phase II in post-traumatic stress disorder. And in Parkinson's disease, we remain on track for an approval decision for Tevapidon in the third quarter. Turning to our solid tumors program in oncology, TMAB-A is progressing well across a broad range of tumor types. At the upcoming ASCO meeting, early stage safety and efficacy results for TMAB-A in head and neck and ovarian cancers will be presented. Based on these results, we are engaging with regulators regarding ways to accelerate programs for TMAB-A plus pembrolizumab in frontline head and neck cancer and TMAB-A plus bevacizumab in frontline ovarian cancer. In colorectal cancer, we have made a decision to update our strategy in the third line plus setting and will now focus the pivotal program on TMAB-A in combination with bevacizumab in an all-comers population. as opposed to pursuing monotherapy in CMET-selected patients. Targeting all comers will allow TMAB-A to reach a substantially broader population. TMAB-A plus bevacizumab demonstrated improved response rates and disease control versus current standard of care, regardless of CMET expression levels. Treatment with TMAB-A at 2.4 mg per kg plus BEV achieved an objective response rate of 30 percent and a confirmed disease control rate of 97 percent compared to rates of 0 percent and 70 percent, respectively, for LONSERF plus BEV. Given the expanded patient population for the all-comers Phase III trial, we anticipate faster enrollment compared to the study in CMET-selected patients. Initial data readout is expected in the second half of next year. In lung cancer, TMAB-A received its first breakthrough therapy designation as a monotherapy in second line plus, EGFR wild type, non-squamous, non-small cell lung cancer. We are in the process of planning a phase three trial in this setting. In small cell lung cancer, a Phase III trial for monotherapy ABBV706 recently began in relapsed refractory patients. Two Phase II studies evaluating 706 triplet combinations in frontline patients are also planned to initiate this year. These trials will evaluate 706 in combination with atezolizumab plus DLL3 T-cell engager. Moving to AbbV969, dose escalation data in late-line metastatic castration-resistant prostate cancer will be presented at ASCO. Based on these results, we are in the process of discussing acceleration options with regulators in order to advance into Phase III trials as quickly as possible. We also continue to augment our solid tumor pipeline through investments in external innovation, including one with Kestrel Therapeutics, who recently began a Phase I study to evaluate a pan-KRAS inhibitor in advanced solid tumors harboring KRAS mutations. This next-generation inhibitor has the potential to provide an improved efficacy and safety profile based on increased potency and specificity against the most relevant KRAS mutations, while sparing H and NRAS isoforms. Our strategy is to combine this pan-KRAS inhibitor with TMAB-A in pancreatic, lung, and colorectal cancers. In hematologic oncology, our phase 3 trial, evaluating monotherapy in Tentameg and third-line-plus multiple myeloma is tracking ahead of schedule. We anticipate a response rate readout in the third quarter, with potential to also see an interim analysis on progression-free survival. If this interim analysis is positive, regulatory submissions would occur later this year. Progress continues in earlier lines of therapy as well. The increasing use of anti-CD38 antibodies in earlier treatment settings is driving a need for CD38-free BCMA combinations, particularly those that can provide the convenience of monthly BCMA dosing combined with an oral agent. Plans are underway for a phase 3 study evaluating Intentamig in combination with pomalidomide in second-line-plus patients, including those that were exposed or refractory to a CD38 antibody or who lost response to a BCMA CAR-T or ADC. Moving to other areas of our pipeline, in aesthetics, the FDA issued a complete response letter for our Trenibot-E application related to manufacturing questions. The CRL did not identify any issues related to safety, efficacy, or labeling of TraniBody, nor has the FDA requested any additional clinical trials be conducted. We will be working closely with the FDA to address their feedback and determine next steps for resubmission. In obesity, positive top-line results were announced from a multiple ascending dose study evaluating our long-acting amylin analog, ABBV295. In the study, 295 demonstrated clinically meaningful weight loss of nearly 10% after only 12 weeks of treatment, despite enrolling a predominantly male, non-obese population. 295 was well-tolerated, with mostly mild and transient GI-related adverse events. No cases of severe nausea, vomiting, or diarrhea were reported. These early results are encouraging and reinforce our view that our long-acting amylin analog has the potential to provide strong weight loss with favorable tolerability. In the next phases of development, higher doses of 295 will be tested in patients with obesity, including every other week and monthly regimens. Interim data from our Phase I study in obese patients are anticipated later this year. Our Phase II program is now expected to begin in the third quarter. To summarize, significant progress continues with our pipeline, and we look forward to additional important data readouts, regulatory submissions, and approvals throughout 2026. With that, I'll turn the call over to Scott.",
+        "startSeconds": 759.58,
+        "endSeconds": 1715.84
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Scott T. Reents",
+        "speakerRole": "CFO",
+        "text": "Thank you, Rupal. Starting with our first quarter results, we reported adjusted earnings per share of $2.65, which is $0.07 above our guidance midpoint. These results include a $0.41 unfavorable impact from acquired IPR&D expense. Total net revenues were $15 billion. This reflects top-tier growth of 12.4%, including a 2.1% favorable impact from foreign exchange. Adjusted gross margin was 83.6% of sales. Adjusted R&D expense was 15.1% of sales. And adjusted SG&A expense was 22.7% of sales. The adjusted operating margin ratio was 40.8% of sales, which includes a 5% unfavorable impact from acquired IPR&D expense. Net interest expense was $645 million. The adjusted tax rate was 15.4%. Turning to our financial outlook, we are raising our full-year adjusted earnings per share guidance to between $14.08 and $14.28. Please note that this guidance does not include an estimate for acquired IPR&D expense that may be incurred beyond the first quarter. We now expect total net revenues of approximately $67.3 billion, an increase of $300 million. The impact from foreign exchange on full-year sales growth remains roughly in line with our prior expectations. This upgraded revenue forecast includes the following approximate assumptions for several of our key products and therapeutic areas. We now expect SkyRisi global revenues of $21.6 billion, an increase of $100 million, reflecting demand growth in psoriatic and IBD indications. Renvote global sales of $10.2 billion, an increase of $100 million, reflecting strong performance in the room and gastroindications. Total neuroscience revenues of $12.6 billion, an increase of $100 million, reflecting momentum across the portfolio. Moving to the P&L for 2026, we continue to forecast full-year adjusted gross margin above 84% of sales. adjusted R&D expense of approximately $9.7 billion and adjusted SG&A expense of approximately $14.2 billion. We now anticipate an adjusted operating margin ratio of approximately 47.5% of sales in line with our previous expectations after including the roughly 1% unfavorable impact of acquired IPR&D expense incurred through the first quarter. We also now expect adjusted net interest expense of approximately $2.7 billion, a reduction of $100 million primarily related to favorable rates under debt issuance. Turning to the second quarter, we anticipate net revenues of approximately $16.7 billion. This includes an estimated 0.6% favorable impact from foreign exchange. We are forecasting an adjusted operating margin ratio of approximately 50%. We expect adjusted earnings per share between $3.74 and $3.78. This guidance does not include acquired IPR and expense that may be incurred in the quarter. In closing, ADVI continues to deliver outstanding results, and our financial health remains very strong. Our capital allocation priorities remain focused on the future as we are investing in the business at record levels, have financial flexibility to pursue compelling business development, and are returning capital to shareholders through our strong and growing dividend. With that, I'll turn the call back over to Liz.",
+        "startSeconds": 1717.75,
+        "endSeconds": 1984.88
+      },
+      {
+        "speakerIndex": 6,
+        "speakerName": "Liz Shea",
+        "speakerRole": "Head of Investor Relations",
+        "text": "Thanks, Scott. We will now open the call for questions. In the interest of hearing from as many analysts as possible over the remainder of the call, we ask that you please limit your questions to one or two. Operators, first question, please.",
+        "startSeconds": 1984.88,
+        "endSeconds": 1996.26
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Our first question comes from David Amselim from Piper Sandler. Please go ahead.",
+        "startSeconds": 1997.34,
+        "endSeconds": 2001.44
+      },
+      {
+        "speakerIndex": 0,
+        "speakerName": "David Amselim",
+        "speakerRole": "Analyst \u2014 Piper Sandler",
+        "text": "Thanks. So I appreciate all the metrics you have on Skyrazy, but I wanted to get your thoughts on the competitive landscape, particularly with the rollout of IcoTide. how you're thinking about its impact on SkyRiszy going forward, if any. And give us some color on your counter-detailing messages to practitioners regarding the product as you enter this period with more intensified competition.",
+        "startSeconds": 2003.79,
+        "endSeconds": 2035.39
+      },
+      {
+        "speakerIndex": 13,
+        "speakerName": "Jeff Stewart",
+        "speakerRole": "Other",
+        "text": "Yeah, thank you, David. It's Jeff. I'll give you some flavor on that. And, you know, as I mentioned, SkyRiszy is just such an exceptional product. We see in our audits and our trackers that over the last couple quarters, despite incredibly high share, really over four times basically the in-place share and total share versus the next leading competitor, our MBRX has accelerated and continue to hit all-time highs. And that's because of a few key items, right? The superiority data that we have on skin clearance is just exceptional. So we have head-to-head trials against five mechanisms in psoriasis, including the two oral agents, the TIC2 and Otesla. We can show category-leading durability in the real world. It's just exceptional adherence given the dosing cycle and the ability to keep the disease controlled. We have that leading PSA indication with that new five-year joint stability data that Rupal and I highlighted. And then this new data on hard-to-treat areas like the scalp, the genitals, the hands and feet, you know, head-to-toe for Skyrisi, so to speak. So those are just really, really powerful messages to the physicians who write this medication. I would say there's other things around maybe the new oral competitors you highlighted. Look, the launch is quite early. The way that we look at this is certainly we're able to communicate that it's not an oral skyrizi. The efficacy parameters are quite a bit lower when you match all the controls. You understand the populations, which our medical teams and our commercial teams are able to highlight. Certainly, PSA is a huge market value driver, and there's not a lot of evidence there. There's also some complexities really just even around an oral and the adherence there. And we have some data and evidence on the orals in the category as well. So we're well prepared for this dynamic. So we think that we can navigate this competitor quite well. And we may see, in fact, we saw it with Otesla, you know, over a decade ago, that there's going to be some market expansion as well. So, again, the teams are prepared. We're very confident. And hopefully that gives you a little bit of flavor of the dynamics in the market.",
+        "startSeconds": 2038.87,
+        "endSeconds": 2181.59
+      },
+      {
+        "speakerIndex": 15,
+        "speakerName": "Rob Michael",
+        "speakerRole": "Chairman",
+        "text": "And, David, this is Rob. What I would add is we obviously contemplate competition when we provide guidance. We've obviously now, once again, taken up the guidance for SkyRizzi, continue to see upside to consensus forecast for SkyRizzi going out every year and growing each year. And so we have a tremendous amount of confidence. We are well aware of the competition that's coming in. We factor that in, and you can see the asset continues to perform exceptionally well.",
+        "startSeconds": 2181.77,
+        "endSeconds": 2207.03
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thanks, David. Operator, next question, please. Next, we'll go to Chris Schott from J.P. Morgan. Please go ahead.",
+        "startSeconds": 2208.07,
+        "endSeconds": 2214.37
+      },
+      {
+        "speakerIndex": 11,
+        "speakerName": "Chris Schott",
+        "speakerRole": "Analyst \u2014 J.P. Morgan",
+        "text": "Thanks so much for the questions. Just the first one for me is on the SkyRizzy Alpha 4 Beta 7 program. Can you just comment a little bit on what dosing looks like for this combo and where you see this fitting into a competitive landscape? So is this kind of a second-line drug post-SkyRizzy or something at the front line? And the second question is just maybe building on that and looking at kind of the broader INI competitive landscape. It does seem like there's significant development across concern about this means relative to your portfolio. So can you just kind of address your ability, like how you think about sustaining the competitive position you have in INI, how important the SkyRiszy combo is, your ability, again, freedom to operate with BD and INI? Just help us a little bit in terms of just how you're envisioning that.",
+        "startSeconds": 2215.77,
+        "endSeconds": 2260.12
+      },
+      {
+        "speakerIndex": 16,
+        "speakerName": "Roopal Thakkar",
+        "speakerRole": "Other",
+        "text": "Yeah, thanks, Chris. It's Rupal. I'll start. The dosing, I would say, you know, SkyRiszy, you know the dose. It's already in label. So the other assets, the 3A2, the alpha-4, beta-7, and the TL1A, the goal there is to optimize those. So, in fact, you know, while we start gearing up for a phase 3 study, we have a phase 2B plan. We had pre-planned that ahead of time. And in this quick interim look that we have had, we've already observed a non-flat slope. so meaning an exposure correlation with 3A2, meaning patients with higher exposures did better. So what we'll do in the phase 2B is, in fact, study a higher dose of 3A2 in combination with SkyRizi. So there's a potential that the efficacy could go even higher. The goal with this one will be likely monthly dosing. Co-formulation work is ongoing. And while we're finishing that work, we'll also be speaking with regulators, and there's a potential to further accelerate. I don't think we need to wait for the phase 2B to be totally finished. if we see something while we're conducting the trial, we can pivot relatively quickly. We would anticipate starting, I would say, roughly where we sit today, in about two years in the phase three or even sooner. And the team will be looking ways to accelerate. And as I stated, the TL1A will be added into this platform as well, and we'll be studying ulcerative colitis along with Crohn's. So as you think about IBD and competitive dynamics, what you see coming from AbbVie is next-generational therapies and really raising the bar on efficacy. As we stated on the endpoint in my opening remarks, we doubled the endoscopic data, and that's really what's most critical. It's the most objective, and that's what clinicians are looking for. So as we look to the future, you see that what we're doing, we see other competitors coming, entering, but we see these as monotherapies, and even the phase two data observed to date, regardless of mechanism, the data do not differentiate from where we sit today with RINVOC and SkyRizzy. So the goal here for the whole portfolio that we've spoken about is to raise that standard of care meaningfully higher. And again, RINVOC and SkyRizzy do that very well today, even against emerging competition. And the data that I speak about are battle-tested phase three data in very difficult-to-treat populations. That's going to hold for the near term, and we have not seen a competitor that can beat that, other than us with our own combinations. And we have how we think about immunology.",
+        "startSeconds": 2264.7,
+        "endSeconds": 2469.0
+      },
+      {
+        "speakerIndex": 15,
+        "speakerName": "Rob Michael",
+        "speakerRole": "Chairman",
+        "text": "And Chris, this is Rob. I'll just add to Rupal's comments. The way we've been thinking about business development over the last couple years is to support that strategy. So you've seen us add, through business development, new mechanisms, TL1A, IRAC-4, TREM-1, as we think about this combination approach. We acquired Nimble to give us the oral peptides capability, so that obviously plays an important role in the future of immunology. And then I'd say the one that doesn't get enough attention is the capstan acquisition with the B-cell depletion approach with the in vivo CAR-T platform. As we think about the future of immunology, now we're thinking about growth beyond Skyrisi and Renvoke. We certainly see a trend there. And so we've been very active with business development over the last couple of years to add depth to our immunology pipeline so that we can continue to remain ahead of the competition. And we have a tremendous amount of confidence given our long-term experience here. We obviously have our commercial powerhouse, but I'd say our R&D organization understands this space very well. And I think we position ourselves for long-term growth.",
+        "startSeconds": 2469.42,
+        "endSeconds": 2527.44
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thanks, Chris. Operator, next question, please. Next, we'll go to Mohit Bansal from Wells Fargo. Please go ahead.",
+        "startSeconds": 2528.8,
+        "endSeconds": 2535.56
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": "Mohit Bansal",
+        "speakerRole": "Analyst \u2014 Wells Fargo",
+        "text": "Great. Thank you very much for taking my question. I just want to double-click on the IRAC-4 that you are developing in RA. So rheumatoid arthritis is a space where, you know, after Humira, there's not a lot of options which are safe as well. So, like, what gives you excitement about IRAC-4 compared to what is out there in the world in terms of therapies which are being tested in rheumatoid arthritis? is because everyone is trying to become a ring book without the box warning here. Thank you.",
+        "startSeconds": 2536.48,
+        "endSeconds": 2569.2
+      },
+      {
+        "speakerIndex": 16,
+        "speakerName": "Roopal Thakkar",
+        "speakerRole": "Other",
+        "text": "Thanks, Mohit. It's Rupal. We have very early data. This is a partnership with CREATERNA, and we saw some data, clinical data, in China in a small study. And what we observed there was biologic-like efficacy, so something like existing therapies, including the anti-TNF. class. And what we saw preliminarily in that data, similar to our combo data in IBD, a relationship with PK and response rates. So we have the opportunity here to do this phase 2B study to see if we can push efficacy even higher. And what we like about that is it's another oral and potentially the safety profile as it's played out to date, we don't anticipate a boxed warning. So that would be a differentiator versus the anti-TNF class and the JAK inhibitor class. So that's what gets us excited about this particular molecule, Mohit. Thank you.",
+        "startSeconds": 2571.44,
+        "endSeconds": 2639.98
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thanks, Mohit.",
+        "startSeconds": 2640.24,
+        "endSeconds": 2640.84
+      },
+      {
+        "speakerIndex": 6,
+        "speakerName": "Liz Shea",
+        "speakerRole": "Head of Investor Relations",
+        "text": "Operator, next question, please.",
+        "startSeconds": 2641.16,
+        "endSeconds": 2643.0
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Next, we'll go to Louise Chen from Scotiabank. Please go ahead.",
+        "startSeconds": 2643.82,
+        "endSeconds": 2646.94
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": "Louise Chen",
+        "speakerRole": "Analyst \u2014 Scotiabank",
+        "text": "Hi, congratulations on the quarter, and thanks for taking my questions here. I wanted to ask you first if you could provide more color on your opportunities for an extended half-life IL-23 and also your oral peptide IL-23, and you still plan to enter the clinic with those this year. And then just on your combos, just curious if you plan to look at those for first line or save those for more refractory patients.",
+        "startSeconds": 2648.06,
+        "endSeconds": 2670.06
+      },
+      {
+        "speakerIndex": 16,
+        "speakerName": "Roopal Thakkar",
+        "speakerRole": "Other",
+        "text": "Hi, thanks. It's Rupal. So, yes, we do have about, and that is our asset based on all of our experience with SkyRizzy and IL-23 inhibition, and this is what we'd like to advance, and this would be a longer-acting version, and to your point, the dosing has already initiated. Along those lines, we also anticipate dosing our long-acting IL-23 TL1A bispecific antibody and the nimble anti-IL-23 ASA. Both of those will be first in human this year. The goal of those are to, at least for the long acting, is to be slightly longer acting than SkyRizzy, but not too much longer acting. And the reason for that is, I should state, is that when we take all these factors, given that SkyRizzy is already available as quarterly, and that is very, very convenient, and the data are all very compelling when you look to the maintenance data. I know we've seen some short-term data, but when you look at SkyRizzy, and this extends well beyond week 16, we've demonstrated PASI 100 responses of approximately 60%, PASI 90 responses exceeding 80%, and that's already happening with quarterly dosing. And what I would say there is similar to what Jeff had stated. We also are focused on all of our assets on difficult-to-treat manifestations. That includes palmar plantar, genitals, scalp, psoriasis that Jeff has mentioned. Now, the other important fact here and why I said the long-term duration is important is that 30% or so of patients with psoriasis will go on to develop psoriatic arthritis. And again, that's why durability and long-term data are very important. Now, the reason I made the comment on the half-life of where we want it to be, we want to offer choices in the future. And that will matter, I would say, to most of our clinicians who want to individualize the therapy. for example on this longer half-life. If an infection for example were to occur or there's a tolerability issue and you have a very very long half-life biologic the prolonged pharmacologic persistence could limit the ability to rapidly discontinue a therapy and also you could have clinical scenarios that may necessitate switching therapies prior to a full washout and if you have overlapping mechanisms of actions that could pose challenges. So we are targeting two or two and a half times of where SkyRizzy is today, and that would create another option. And that would be, along with the oral that I said, would also be focused on a slightly longer half-life on that one than what we see today for orals, because what we know, and Jeff pointed this out, The adherence matters with orals. We see it with Renvoke, but we have very potent efficacy. For the oral from Nimble, we would like to see higher potency and a longer half-life in case someone slips up and misses a dose. So that's how these are being developed. And as you stated, they're both in the clinic this year. So we anticipate data hopefully by next year, if not sooner. And then, I apologize, I think I had the combo question on how we're positioning this. Well, the data that we have to date, we're in an all-comers population, and you see particularly refractory. And when we've seen that with SkyRizzi and Rindwok, and you pivot to a naive population, the efficacy getting in higher. So we are not going to restrict at all how we would study patients because it's important to clear second line and third line and even come after Skyrizi. In fact, we had Skyrizi patients in the study. We had vetalizumab patients in the study. We had Renvoke patients in the study. That's an important market because second and third line continue to evolve and grow. But in IBD, the front line is also important. Many of our clinicians want to tackle the inflammation right away in the best possible way they can, because with gut inflammation, you can run into problems that results in hospitalizations, stricturing, and irreversible damage that can result in surgeries. So nobody wants that. So if you have the best therapy, we believe there's many clinicians that will want to use that early on in the course and not hold out. So we're very excited about the data that we've observed because we see that high level of efficacy in this interim analysis across different lines of therapy in IBD.",
+        "startSeconds": 2673.78,
+        "endSeconds": 2998.32
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thanks, Louise. Operator, next question, please. Next, we'll go to Terrence Flynn from Morgan Stanley. Please go ahead.",
+        "startSeconds": 2999.5,
+        "endSeconds": 3006.3
+      },
+      {
+        "speakerIndex": 9,
+        "speakerName": "Terence Flynn",
+        "speakerRole": "Analyst \u2014 Morgan Stanley",
+        "text": "Great. Thanks so much for the question. Rob, I was just hoping you could elaborate on your thoughts on M&A. Obviously, it's been a very active year so far across the space, seeing companies lean in really at that kind of $5 to $10 billion deal size. You mentioned comments on immunology and some of the work you guys have done on the early stage side. But do you see a need here to maybe be more aggressive and also push into other areas quicker than what you're currently doing. We'd just love your broad, high-level thoughts there.",
+        "startSeconds": 3007.88,
+        "endSeconds": 3040.76
+      },
+      {
+        "speakerIndex": 15,
+        "speakerName": "Rob Michael",
+        "speakerRole": "Chairman",
+        "text": "All right. Thanks, Terrence. So I'll take that question. So yes, we have been and continue to be very open to acquiring external innovation, really with a major focus for us in immunology, neuroscience, oncology, and obesity. And to the extent we see a differentiated asset in any of these areas, whether early stage, late stage, or even on market, we are very willing to pursue it. Today, we have an on-market portfolio and an emerging pipeline that gives us a clear line of sight to very strong growth into the 2030s. So we are operating from a position of strength, and we have ample financial capacities. If you think about the last two years, we have added significant depth to our pipeline, including deals with CapSan, as I mentioned earlier, Gilgamesh, IGI, Remagen, 8RX, and Gubra, to name a few. I see each of these opportunities as an opportunity to really drive growth in the next decade and beyond. But that said, while we don't need BD to deliver top-tier growth this decade, we're not opposed to near-term revenue drivers that are differentiated in our core areas of focus.",
+        "startSeconds": 3042.68,
+        "endSeconds": 3105.96
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thanks, Terrence. Operator, next question, please. Next, we'll go to Trung Nguyen from RBC Capital Markets. Please go ahead.",
+        "startSeconds": 3108.79,
+        "endSeconds": 3116.31
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": "Mohit Bansal",
+        "speakerRole": "Analyst \u2014 Wells Fargo",
+        "text": "Hi, guys. Thanks for taking my questions. Just two on SkyRizzy, please. So, first one is, when I look at the 1Q SkyRizzy sales, you look at it versus the IQVIA scripts, it looks like net pricing is flat, so slightly better than that low single-digit erosion you guided. I guess, first, can you clarify if there were any one-off items in 1Q for SkyRizzy, or is that discrepancy from IBD and IV induction? And then, how should we think about that pricing step down through the year if you are on track for low single-digit decline. And then just following on Rinboke's successful exclusivity extension to 2037, what's your confidence in extending SkyRiszy's NOE? Is there any timelines you have there or any timelines you have for potential buy similar settlements?",
+        "startSeconds": 3117.29,
+        "endSeconds": 3168.75
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Scott T. Reents",
+        "speakerRole": "CFO",
+        "text": "I'll take your first question regarding SkyRiszy pricing. You were correct. In the first quarter, SkyRiszy pricing was relatively flat. That was really just a comparison. issue on a year-over-year basis in the quarter a gating if you will on a full year basis we can thank you for standing by Liz you may go ahead okay sorry I think we were in the midst of answering the question about sales but sky rizzi right and yeah go ahead Scott sorry great thanks Liz trying to sorry apologize for the technical difficulty there I'll start from the beginning again with respect to your question on first quarter sky risi you are correct the price was flat in the quarter relatively flat it was just a comparison year-over-year when we look at it from a full-year basis we do continue to expect low single-digit pricing for the full year so that means while we've not given specific get gating guidance if you will you'll see continued low single-digit for the remainder of the year and I think that But when you think about that price, that's something we've talked about, a low single-digit in the immunology franchise across the board from rebates, low single digits over time. And so SkyRiszy is going to be very consistent with that. There was a slight amount of inventory D-stock as well. So the total demand number was consistent at right around 30%. I think that's consistent with what you would have seen in IQVIA.",
+        "startSeconds": 3173.54,
+        "endSeconds": 3259.54
+      },
+      {
+        "speakerIndex": 15,
+        "speakerName": "Rob Michael",
+        "speakerRole": "Chairman",
+        "text": "And then, Truong, this is Rob. I'll take your question on SkyRiszy. Look, although SkyRISD's composition of matter patent expires in 2033, we do have later expiring IP granted and in process that embodies SkyRISD's significant innovation. And this includes patents expiring in the U.S. in the mid-2030s and later. Now, it's important to note that regulatory data protection for SkyRISD does not expire until 2031, so we do not expect to see biosimilar application filings until the end of this decade. but clearly we have a strong track record of vigorously defending our patents and protecting our innovation and I would expect that to continue Thank You Truong operator next question please next we'll go to James Shin from Deutsche Bank please go ahead hey good morning thank you for the question guys I have one for Rupal on Remagen's PD-1 VEGF you know given RC1418 is roughly behind some of the other PD-1 VEGFs we all know is there any angle or differentiation to make up for lost time and then sticking with oncology Rupal",
+        "startSeconds": 3260.68,
+        "endSeconds": 3321.44
+      },
+      {
+        "speakerIndex": 16,
+        "speakerName": "Roopal Thakkar",
+        "speakerRole": "Other",
+        "text": "what should we envision for EPCOR DLBCL4 do you see this being a transformational kind of readout I mean it's getting a competitive space in frontline DLBCL thank you all right thanks for the PD-1 VEGF the the the key for that and what you've heard previously from us and other deals the the KRAS deal that we just talked about, the DLL3 TCE, the key for these assets are in combination with our emerging ADC portfolio, in particular TMAB-A, where I highlighted some readouts to come at ASCO and that for us is the key looking forward especially across colorectal cancer, lung cancer, I noted combinations in pancreatic cancer today so this wherever we see a PD-1 we can utilize that in combination so that That's where the innovation occurs, where we're going to use our ADCs wherever we can to replace chemotherapy, provide higher efficacy, potentially longer durability because of better tolerability, and if the data point us in this particular direction, you could have a biomarker population so physicians are able to individualize care and optimize that benefit at risk. So you would see an efficacy contribution from ADCs and with an asset like 148. The other place that's under consideration is in the FR-alpha space in ovarian. There could be potential for 148 there. So you can see how it can be introduced across multiple tumor types. And regarding DLBCL, discussions will be ongoing with the current readout where we saw improved PFS and no detriment to OS. That discussion is ongoing and then we still have the potential for second-line DLBCL and even frontline DLBCL data this year. And that Frontline is Epkinle plus RCHOP, so I would say a very simple and potentially easily adoptable regimen. So again, potential for readouts this year. And if you do see a benefit there, I would say in Frontline is the largest opportunity for Epkinle.",
+        "startSeconds": 3321.44,
+        "endSeconds": 3496.33
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thanks, Jayme. Operator, next question, please. Next, we'll go to Gary Nachman from Conochord Genuity. Please go ahead.",
+        "startSeconds": 3498.0,
+        "endSeconds": 3505.64
+      },
+      {
+        "speakerIndex": 14,
+        "speakerName": "Gary Jay Nachman",
+        "speakerRole": "Analyst \u2014 Conochord Genuity",
+        "text": "Hi. Thanks for taking the question. So, first for the additional indications for Renvogue. As they start to come through, vitiligo and alopecia areata will be next. Are you still thinking all those indications can be $2 billion in aggregate? Or are you getting more optimistic on that front? So what's your latest thinking on the contribution from those and additional efforts you're putting in the derm space? And then just on Tevapidon and Parkinson's, just how you're thinking about that product, how it'll fit into the treatment paradigm within Parkinson's, mono versus combo, and then the overall opportunity for it, and if you'll put more resources within the Parkinson's franchise as well.",
+        "startSeconds": 3510.4,
+        "endSeconds": 3556.84
+      },
+      {
+        "speakerIndex": 13,
+        "speakerName": "Jeff Stewart",
+        "speakerRole": "Other",
+        "text": "Yeah, thanks. It's Jeff. And I would say that, you know, we have been very, very encouraged over the data that we've seen as these products have read out. And, you know, the first of the, you know, the third wave of the Renvoke indications was giant cell arteritis, which was the smallest of the bunch. What we've observed has been quite interesting. In the rheumatology community, as we've started to highlight the benefits of Renvoke for GCA, it actually has what I would call a spillover effect onto RA and PSA. So the rooms get more and more comfortable. So these indications, we believe, will build on top of each other. You know, we still look at that $2 billion as a reasonable base case, but I would say basically we're leaning towards more, let's say, bullishness. And one of them has to do with certainly the timing of vitiligo. This will be the first truly systemic drug for vitiligo. And we look at the data, and it seems to continue to build over time. Now, this isn't like atopic derm itch, where you get like in one or two days, you get something profound on the symptoms. The patients need to be consistently taking the medication, but it just continues to be this really significant burn in terms of stopping the inflammation. So that's very positive. So the first in vitiligo. I would say the other thing that surprised us is there are approved JAKs in alopecia. We can see their revenue level, but the efforts were not very significant. And basically the RINVOC data, again, cross-study comparison is twice as good. So I would say we're sort of really leaning towards that we can have some upside to that initial approach I would say primarily driven by alopecia areata given the profound changes that we're seeing and I would be remiss if I didn't say that we're also very excited to see how the ultimate readouts are in HS you know we built the HS market and so with vital with with HS with basically Ludi and the readout for Rinvo that's also another nice portfolio play for us so they're They're meaningful approaches that we have as we get closer to that.",
+        "startSeconds": 3560.14,
+        "endSeconds": 3691.46
+      },
+      {
+        "speakerIndex": 15,
+        "speakerName": "Rob Michael",
+        "speakerRole": "Chairman",
+        "text": "And then I'll just add to Renvoke, just maybe to zoom out a little bit. I mean, obviously, we're very excited about this next wave of indications and the impact they can have on the asset. When we look at overall Renvoke expectations, at least for what cell-side consensus is modeling, we still see broadly upside on Renvoke in each year with that number growing each year. And so this will contribute to that. but I'd say the underlying performance of the of the approved indications also is very strong.",
+        "startSeconds": 3692.08,
+        "endSeconds": 3720.04
+      },
+      {
+        "speakerIndex": 13,
+        "speakerName": "Jeff Stewart",
+        "speakerRole": "Other",
+        "text": "And and to move to Tevapadon, Tevapadon again this idea of building these deep portfolios. Obviously we had the small product with Duodopa which had the surgery. Violev is continuing to progress towards that blockbuster status. It's progressed much faster than we thought even 18 months ago. And with the approval of Tevapadon we can actually play with an innovative molecule and brand in front of Violev. So we're bringing this into the oral market, which, you know, is about 85% of the market right now. And as you highlighted, it's attractive in both monotherapy setting as well as an add-on setting to the standard of care levodopa, carbidopa. Our physicians are reacting to the monotherapy side, particularly for patients that are younger, okay? And there are a significant amount of younger patients where they could be on these oral medications for a decade or more, and they try to want to spare, which we've seen like the emergence of dyskinesia if you're sort of using over time too much levodopa, carbidopa. So that's very important. You know, adding on to control the dyskinetic events and sort of spare, again, this march towards dyskinesia that you see is also something that is brought up by the thought leaders. I would also say that the adverse event profile is remarkably different than we've seen with, let's say, the older generation of these agents. So you see, you know, again, far less dyskinesia. You see less edema. You see amazingly low sedation, which is just a horrific side effect of the older medications, as well as basically compulsive disorders. So we're super happy with this. We're looking forward to the launch here, and we've started to build out our team in Parkinson's like we have for dermatology for those additional indications. So a nice catalyst that's coming here at the end of the year.",
+        "startSeconds": 3721.16,
+        "endSeconds": 3833.42
+      },
+      {
+        "speakerIndex": 15,
+        "speakerName": "Rob Michael",
+        "speakerRole": "Chairman",
+        "text": "This is Rob. I'll just add, you know, so Devapadon obviously then complements Violev in giving us a very strong footing in Parkinson's. And we think about, you know, neuroscience overall for the company. I've said before that, you know, we are now the industry leader and we expect to be the industry leader in neuroscience for a very long time. Devapadon, Violev giving us essentially a business of Parkinson's that we expect to peak above $5 billion. dollars that's one of three you know five billion dollar plus franchises you know between psychiatry migraine and Parkinson's that we think can really drive Abby's leadership in neuroscience and probably another area that doesn't get enough attention thanks Gary operator next question please next we'll go to Vamo Devon from Guggenheim securities please go ahead great thanks for taking that question and thanks for all the information on the call today especially on the pipeline so I have one maybe following up on the comments you made around HS data coming later this year so just here's if you can maybe",
+        "startSeconds": 3833.6,
+        "endSeconds": 3891.0
+      },
+      {
+        "speakerIndex": 1,
+        "speakerName": "Vamo Devon",
+        "speakerRole": "Analyst \u2014 Guggenheim Securities",
+        "text": "just level set sort of expectations of what you're hoping to see from both Ludi and Rindbo from those readouts that we should get soon and then the other one tend to make looks like that's moving a little faster than he thought potentially filing this year obviously pretty competitive space just curious if you based on how things are evolving in that market where you see the differentiation for your product would be relative to the competitors. Thanks.",
+        "startSeconds": 3891.0,
+        "endSeconds": 3915.08
+      },
+      {
+        "speakerIndex": 16,
+        "speakerName": "Roopal Thakkar",
+        "speakerRole": "Other",
+        "text": "Yeah. Thanks, Vamo. It's Rupal. On HS, the 16-week data is what we anticipate for RINVOC and Ludikizumab. And the way these are designed, they're slightly different. So Ludikizumab will be enrolling patients that have already been on advanced therapies and treatment-naive patients. And if you go back to the Phase II data, that was 100% TNF-IR and a very refractory patient population with quite severe HS, and we saw very strong data in that setting. We did conduct some data in naive patients, and that data looked even stronger. The issue in HS for all of us in drug development is control of the placebo rate. So for ludicizumab, being in naive and failure populations, we'll be utilizing a high score 75, and hopefully that serves to reduce that placebo rate. But then if that data looked good and had potential for approval, you would have an agent that could play in both areas of the market. And then secondly, on RENVOC, that is going to be 100% biofailure population. And because of that, that has the potential ability to control some of the placebo effects and will have the standardized high score 50. So if both look good and are approved, you'll see a dynamic that's not dissimilar to what we have in IBD, where you have a frontline, very powerful asset, and then one that can come later on in case there's a loss of response, like a RINVOC, and that's consistent with what we see with Crohn's and UC, and I think it'll be beneficial to both assets if approved, if we're able to take them both to market, again, strategically, like we've done the set up in IBD. And what's driving what we see as being the potential of those assets is best-in-class efficacy and, I would say, ease of use. And I think that segues into the 383 and Tentamig question. We do see the crowded market, as you've stated, but the opportunity is still tremendous. And that opportunity exists if you have the right asset with the right profile. And what AtentaMeg brings is very high, substantial efficacy that we've seen. And that is, we think, associated with the strong binding to BCMA. It has a slightly lower affinity for the T-cell side of things and the T-cell engagement. and that has set up what we believe to be a best-in-class safety profile and we have a somewhat extended half-life so what you could then see happening if we're successful is a singular priming or step up dose and immediately going to the full dose you would see very low CRS and if that's the case you have the potential for an outside-of-hospital outpatient-like setting where you could give the asset and it's something consistent but what we've seen very successfully with Epkinle particularly in heme cancers 70-80% of these are treated in the outpatient so Intantameg is designed for that in the community setting and then after the full dose after the priming dose or step-up dose you're immediately able to dose on a monthly basis, which is very convenient for the clinic. You don't take up a chair. And then for the patient who doesn't have to keep coming into the hospital. So that currently, the profile I just described, doesn't exist. So entering a little bit later is okay. We believe if you're bringing the right profile, recall we've had some success with SkyRizzy coming in third as a 23 and Vrnvok as a third JAK inhibitor. But we believe the profile is going to be the key driver of the potential uptake in the future.",
+        "startSeconds": 3917.05,
+        "endSeconds": 4206.63
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thanks, Samuel. Operator, next question, please. Next, we'll go to Asad Hader from Goldman Sachs. Please go ahead.",
+        "startSeconds": 4207.47,
+        "endSeconds": 4214.87
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Asad Hader",
+        "speakerRole": "Analyst \u2014 Goldman Sachs",
+        "text": "Great. Thanks and congrats on the quota. First, Rob, just maybe for you, in the context of the statements that you continue to see upside to consensus forecasts for both SkyRisi and WinVoke going out each year and that upside growing each year, just curious as to how that triangulates with your calculus of no longer updating midterm guidance for these products and related, are there still areas of, you know, where you see meaningful disconnects versus consensus outside of those two products. And then maybe if I could squeeze one in for Rupal, just on obesity, as you think about building a broader portfolio around 295, just what might that look like in the context of Rob's earlier comments on obesity as an area of potential BD interest?",
+        "startSeconds": 4215.79,
+        "endSeconds": 4256.93
+      },
+      {
+        "speakerIndex": 15,
+        "speakerName": "Rob Michael",
+        "speakerRole": "Chairman",
+        "text": "Okay, Asad, it's Rob, I'll take your first question. Now recall our previous long-term guidance really served a very specific purpose ahead of the Humira LOE, but I wouldn't rule out doing it again in the future if it made sense. You know, that said, when I look at the current state of Abby's business, the long-term outlook and the pipeline's replacement power, we have never been in a stronger position. I mean, we are the clear leader in immunology and neuroscience with a portfolio of assets that are demonstrating very significant growth, in many cases north of 20%. And both areas have a pipeline that can deliver transformational improvements over existing therapies. When I look at cell site consensus I mentioned, you know, we do see upside. We see upside for the total company revenue in every year with that upside growing. I already mentioned that we have upside versus the sell side on Skyrisi and Renvoke. We expect to exceed the peak consensus that's in those models. I already mentioned in neuroscience that we see upside versus expectations for migraine and Parkinson's. Right now, what we see in consensus is peaking at below $4 billion. We've said several times, we expect them to each peak in an excess of five. And then we look at our oncology pipeline assets. Rupal just highlighted Etentamig. We haven't really talked about TMAP-A. We believe both of these have significant multibillion-dollar peak potential, and both have really not even been described any value by roughly half of the cell site. And so, you know, we will continue to highlight this in our commentary when we see the upside. Clearly, the previous long-term guidance was very granular, more than really anyone in the industry has ever provided. But we did it at a time where it was important to help investors understand what the company will look like. On the other side of the Humira LOE, we're now in a very strong position. We can deliver top-tier growth for the long term. It puts us in a position of strength to continue investing in the business. I already mentioned our commentary on BD. We're very active in the BD area, open to areas of differentiation within each of our core areas. And so I think the setup is very strong. And so I wouldn't rule out giving another long-term update at some point, but clearly we have a lot of confidence in the outlook, and we'll provide updates as we see Fed.",
+        "startSeconds": 4260.81,
+        "endSeconds": 4391.29
+      },
+      {
+        "speakerIndex": 16,
+        "speakerName": "Roopal Thakkar",
+        "speakerRole": "Other",
+        "text": "And Asad, it's Rupal on 295. As you heard, the initial strategy is to drive as high of efficacy as we can, but clearly balance that with tolerability, because that's what's going to drive ultimate durability. We've seen too many people fall off their current in Cretan assets because of tolerability. So, so far, we see that shaping up nicely and notable weight loss in a non-obese population. So that opportunity still exists and along with our ability to further increase dose and what we saw in the multi-ascending dose. So that strategy will play out over the course of this year and next year before we start designing phase threes. But the key is to optimize that efficacy tolerability to drive that durability so the patient can experience those benefits long-term. That could be in an early patient population, but we understand many of those patients will be coming off of their incretence. The other opportunities they would be looking for externally are anything that can augment that weight loss but maintain tolerability if we see that in a sub-q that's combinable that would be very important an oral would be something that we could be interested in also any other assets that would allow the optimization of being able to retain muscle and have a majority of the weight loss come from fat we still see there's an opportunity there so that would be some other areas that we would be interested in. The other unique areas are in immunology and potential combinations with our own assets. There's a substantial amount of obesity in psoriasis today, and that's a setup and something that we're exploring now, and also even higher rates of obesity in hydradenitis suprativa. So that could be a potential other combination. And recall, with our tremendous amount of experience and presence in the aesthetics channels for any type of asset that comes up, that sets us up very nicely and could have a very good go-to-market synergy because of that aesthetics channel.",
+        "startSeconds": 4392.93,
+        "endSeconds": 4549.87
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thanks, Asad. Operator, next question, please. Next, we'll go to Dave Reisinger from Loring Partners. Please go ahead.",
+        "startSeconds": 4550.57,
+        "endSeconds": 4557.87
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": "Dave Reisinger",
+        "speakerRole": "Analyst \u2014 Loring Partners",
+        "text": "Yes, thanks very much. I missed part of the call, so hopefully I'm not repeating something. But with respect to AbbVie 295, the amylin, Lily has stated that the secret sauce in a lauralintide is that it dialed out the calcitonin. So can you please comment on 295's activation of amylin 1 relative to calcitonin? And also, if you could discuss its half-life, because the press really suggested the potential for monthly dosing and just wanted to get clarity on the half-life and your level of confidence in monthly dosing. Thank you.",
+        "startSeconds": 4560.82,
+        "endSeconds": 4603.04
+      },
+      {
+        "speakerIndex": 16,
+        "speakerName": "Roopal Thakkar",
+        "speakerRole": "Other",
+        "text": "It's Rupal again, and I'll talk about... So, yes, we have a DACRA molecule. It signals through amylin and calcitonin. And I don't think we know yet where the secret sauce is relative to outcomes. As we stated, the weight loss was substantial in only 12 weeks in a mostly male population that had a BMI of around 29. We anticipate in later stages of development, BMIs in the range of 36 and 37, and more than 50% of the patient population would be women where most of the weight loss comes. So we still see a tremendous amount of potential there. The safety profile looked very strong. The potential upside is benefits to bone because of the calcitonin signaling. And as we develop the molecule, we'll be able to obtain, for example, DEXA scans to monitor bone and to see and compare if there's less loss of bone and preservation of bone. That could be very important for women, especially as they get older. And we know with rapid weight loss, you do see loss of bone density. So at this stage, we see this as a potential advantage because of the efficacy and tolerability that we've seen to date. The half-life is approximately 270 hours, and what we did observe is every other week and the potential for monthly. The pharmacodynamic effect should also be considered along with half-life. We've seen examples of that. Skyrizi is a good example. In psoriasis, the half-life is 28 days. If one is considering a dosing interval at around one to two half-lives, You see, Skyrisi is a type of molecule that really over delivers beyond its half-life. And so far, the pharmacodynamic effect with 295 does create the potential for once-a-month dosing, I would say, particularly in the maintenance setting, which would be really important from a tolerability and convenience standpoint.",
+        "startSeconds": 4605.72,
+        "endSeconds": 4750.14
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you. Operator, we have time for one final question. And for our final question, we'll go to Steve Scala from TD Cowan. Please go ahead.",
+        "startSeconds": 4751.86,
+        "endSeconds": 4760.84
+      },
+      {
+        "speakerIndex": 12,
+        "speakerName": "Steve Scala",
+        "speakerRole": "Analyst \u2014 TD Cowan",
+        "text": "Oh, thank you so much. Rob, just to be clear, Skyrisi consensus is $33 billion in 2031. So are you saying there's upside to that? And Renvoke is $16 billion in 2031. Are you saying there's upside to that? And would you care to add whether or not you think it's just marginally low or whether there's significant upside? And then secondly, during periods of past economic uncertainty, I think AbbVie has observed and stated that aesthetics businesses were fairly resilient, but this time it seems to be different. So is my recollection correct? And if so, why is it different this time? Thank you.",
+        "startSeconds": 4761.66,
+        "endSeconds": 4801.68
+      },
+      {
+        "speakerIndex": 15,
+        "speakerName": "Rob Michael",
+        "speakerRole": "Chairman",
+        "text": "All right, Steve, I'll take the first question. Jeff will take the second question. So the numbers that you're quoting are consistent with what we're seeing in terms of cell site consensus. And, yes, we do expect the peak potential for both Sky Ridge and Rainbow to exceed those estimates. Obviously, the sell side doesn't go out much further than that, and we think they obviously have more runway. And so we do think there's significant runway and upside opportunity for both assets.",
+        "startSeconds": 4804.67,
+        "endSeconds": 4833.99
+      },
+      {
+        "speakerIndex": 13,
+        "speakerName": "Jeff Stewart",
+        "speakerRole": "Other",
+        "text": "Yeah, and Steve, you remember correct on, you know, we, several years ago, we referred to some, you know, recessionary type dynamics around, you know, the Great Recession. For example, we had a business then or Allergan had a legacy business where we saw sort of compression and then a more rapid response to robust growth. But in this case, you know, we've seen this more, you know, lingering inflationary dynamic that we haven't seen for 40 years. I think we're seeing relative stability in the markets now. I mean, low single digit growth for toxins, you know, still decline for fillers. I do think it's a different cycle of pressure on the consumer, but you're correct in terms of what we had said previously with different types of recessionary issues. all right thanks steve and that concludes today's conference call if you'd like to listen to a replay of the call please visit our website at investors.abby.com thanks again for joining us thank you all for joining the abby first quarter 2026 earnings conference call that concludes today's conference please disconnect at this time and we hope you have a wonderful rest of your day",
+        "startSeconds": 4834.79,
+        "endSeconds": 4904.25
+      }
+    ],
+    "corrections": []
+  }
+}

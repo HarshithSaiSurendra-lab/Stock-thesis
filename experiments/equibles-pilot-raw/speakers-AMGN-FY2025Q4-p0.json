@@ -1,0 +1,507 @@
+{
+  "status": 200,
+  "result": {
+    "eventId": "74ce380a-2abe-4342-bbc9-9140b6293807",
+    "ticker": "AMGN",
+    "eventTitle": "Amgen Inc Q4 FY2025 Earnings Call",
+    "callDate": "2026-02-03T00:00:00+00:00",
+    "fiscalYear": 2025,
+    "fiscalQuarter": 4,
+    "turnCount": 61,
+    "totalTurnCount": 61,
+    "offset": 0,
+    "hasMore": false,
+    "isFiledRecord": false,
+    "data": [
+      {
+        "speakerIndex": 3,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "My name is Julianne, and I will be your conference facilitator today for the AMGEN Q4 2025 Earnings Conference Call. All lines have been placed on mute to prevent any background noise. There will be a question and answer session at the conclusion of the last speaker's prepared remarks. In order to ensure that everyone has a chance to participate, we would like to request that you limit yourself to asking one question during the Q&A session. To ask a question, please press star and the number one on your telephone keypad. To withdraw your question, please press star 1 again. I would now like to introduce Casey Caporelli, Vice President of Investor Relations. Mr. Caporelli, you may now begin.",
+        "startSeconds": 0.0,
+        "endSeconds": 37.36
+      },
+      {
+        "speakerIndex": 11,
+        "speakerName": "Casey Capparelli",
+        "speakerRole": "Head of Investor Relations",
+        "text": "Thank you, Jillianne. Good afternoon, everyone, and welcome to our fourth quarter 2025 earnings call. Bob Bradway will lead the call today and be followed by a broader review of our performance by Jay Bradner. In the course of our discussion today, we will use non-GAAP financial measures to describe our performance and have provided appropriate reconciliations within the materials that accompany this call. We will also make some forward-looking statements, which are qualified by our Safe Harbor Statement, and please note that actual results can vary materially. Over to you, Bob.",
+        "startSeconds": 38.4,
+        "endSeconds": 72.9
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Okay, thank you, Casey, and good afternoon, everyone. Thank you for joining us today. Today, we'll cover full-year results for 2025 and provide a preview of what to expect from us in 2026. Amgen delivered strong operational performance across the board in 2025, and you can see that in the breadth of our business. Note that 14 of our products achieved blockbuster status with sales of a billion dollars or more, 13 products delivered double-digit sales growth, and 18 products achieved record results for us. The strength of that broad portfolio enabled us to post double-digit growth in revenues and earnings per share for 2025. Looking to 2026, I would highlight six areas of momentum. Three of these, Repatha, Avenity, and Tespire, all grew by more than 30% year-over-year in 2025. These medicines have a few important things in common. First, they're highly effective, innovative therapies that address important public health needs. Second, they're leading products in their fields. And third, while each of these products represents a multi-billion dollar global franchise already, they address areas of large unmet medical need where there are millions of patients yet to be treated. In this sense, they represent growth drivers not just for 2026, but for the rest of the decade. Our portfolio generated more than $5 billion in sales in 2025. Here, too, many of our medicines are early in their life cycle and positioned as leaders in their respective categories. Growth has been fueled by reaching new patients, expanding into additional geographies, and launching new indications. We see further opportunity ahead as we scale these therapies. Uplizna exemplifies this growth opportunity with approvals in IgG4-related disease and generalized myasthenia gravis in 2025. Innovative oncology portfolio grew at 11% year-over-year in 2025, driven by our bite or bispecific T-cell engager medicines. We're excited about M-Deltra, which has rapidly become the standard of care in patients with second-line or later small-cell lung cancer, supported by unprecedented survival benefits. We're an industry leader in biosimilars. Our biosimilars portfolio has contributed more than $13 billion in sales since the launch of our first medicine there in 2018. With $3 billion in 2025 sales, this business is an important contributor to our organization and poised for growth with the next wave of biosimilar launches. You can appreciate the depth of our business through the lens of our research and development activities. 2026 will be a year of disciplined data generation from a number of exciting Phase 2 and Phase 3 programs that will pave the way for long-term growth at Amgen. Our confidence continues to build in Maritide as a differentiated treatment for obesity, type 2 diabetes, and obesity-related conditions. In a field featuring dozens of potential daily oral and weekly injectable medicines, Maritide stands alone as the only therapy in late-stage development to offer the paradigm-changing prospect of strong efficacy and favorable tolerability at monthly, every other month, or even quarterly dosing. In addition to Meritide, we remain excited about Opazoran and what it might represent for patients with elevated LP little A, a heritable risk factor for cardiovascular disease. We see Opazoran as an opportunity to build on our leading positions in cardiometabolic disease. It shouldn't be lost on any of us that Repatha, Opazoran, and Meritide together would represent a very compelling set of cardiometabolic medicines to expand our leadership in the treatment of serious chronic diseases well into the next decade. Beyond the pipeline is a great deal of enthusiasm about the convergence of technology and life science. And based on what we're seeing at Amgen, we believe that enthusiasm for convergent innovation is well placed and will have significant impact on how we discover, develop, and commercialize medicines. I thank my Amgen colleagues around the world for supporting our mission to serve patients. And with that, let me turn it over to Jay for an update in R&D. Thank you, Bob, and good",
+        "startSeconds": 73.8,
+        "endSeconds": 353.86
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "afternoon, everyone. Fourth quarter capped off a year of strong, disciplined execution across R&D. Throughout 2025, we advanced multiple late-stage programs, delivered five key regulatory approvals, and strengthened the evidence base supporting our marketed medicines. Taken together, these contributions demonstrate real scientific rigor and illustrate the breadth of opportunity ahead. Let me begin with Maritide, which continues to develop in meaningful and very encouraging ways. The Maritime Phase 3 program is rapidly advancing with strong enthusiasm from investigators and participants. Both of our Phase 3 chronic weight management studies are fully enrolled and our ASCVD and heart failure outcome studies are progressing well. In parallel, we continue to expand the clinical landscape of Maritide across obesity-related conditions as we begin enrollment of our two Phase III sleep apnea studies in adults with and without positive airway pressure therapy. We now have six global Phase III studies underway with Maritide, collectively designed to deliver a comprehensive evidence. As we shared last month, we've completed Part II of the Maritide Phase II Chronic Weight Management Study. They did the first 24 weeks of the Phase II Type II Diabetes Study that enrolled participants with and without obesity. Results from these two studies further increase our confidence that Meritide can represent a new paradigm in obesity, type 2 diabetes, and other obesity-related conditions. We believe Meritide has the potential to expand what's possible for patients, availing an opportunity for monthly or less frequent dosing. Meritide's strong efficacy, infrequent dosing, and excellent tolerability at target dose have the potential to further enhance the patient experience and, therefore, treatment persistence, a major unmet need in the field. Beyond obesity and general medicine, the fourth quarter brought a landmark contribution to cardiovascular health from ERPASA. In November, full results from the Phase III Visalia-CV trial were presented at the American Heart Association Scientific Sessions and simultaneously published in the New England Journal of Medicine. This study enrolled more than 12,000 patients without a prior heart attack or stroke, testing the impact of Repatha for LDL-C lowering when added to optimized lipid therapy, namely statins, with a median follow-up of approximately 4.5 years. In Visalia-CV, Repatha demonstrated a 25% relative risk reduction in the composite of coronary heart disease death, heart attack, or ischemic stroke, and delivered a 36% reduction in heart attack, with no new safety signals observed. These data clearly demonstrate that intensive LDL-C lowering with Repatha can meaningfully reduce the risk of a first cardiovascular event, reinforcing its role across the full continuum of cardiovascular risk. Our potentially best-in-class small interfering RNA medicine targeting LpA to fully enrolled Ocean-A outcome study continues to progress. As previously discussed, this is an event-driven study and the aggregate endpoint accrual rate remains lower than initial predictions. As the study matures, we will update on the date for primary analysis as our conviction in Olpaciran to reduce cardiovascular risk conferred by elevated LpA remains strong. Grounded in compelling genetic and epidemiologic evidence that established elevated LP little a as an independent risk factor for heart. Moving to rare disease, the fourth quarter was highlighted by important regulatory momentum for APLISNA. In November, the European Commission approved APLISNA for the treatment of adults with active IgG4-related disease. And in December, the FDA approved APLISNA for the treatment of generalized myasthenia gravis. In adults who are anti-acetylcholine receptor or anti-Musk antibody positive. Approval is built on strong phase 3 data demonstrating durable efficacy, a steroid-sparing benefit with every 6-month dosing. This research further extends the impact of CD19-directed B-cell depletion across serious autoimmune diseases. More broadly in B-cell depletion, where we have a number of proof-of-concept studies underway, we expect to initiate two pivotal studies this year. The first is for patients with autoimmune hepatitis, resistant liver inflammation that can lead to progressive scarring, loss of liver function, and ultimately liver failure. The second studies chronic inflammatory demyelinating polyneuropathy, or CIDP, a disabling immune-mediated neuropathy that damages peripheral nerve myelin, resulting in worsening strength, worsening sensation, and for many patients, substantial impairment in daily activity. With Aplizna, we are targeting these diseases at their root cause by depleting pathologic B-cells that drive disease through secreted autoantibodies. In the efficacy of Aplizna and other settings, we're excited about the potential to bring a meaningful new option to patients with these two devastating conditions. Also advancing daisodolibep, our CD40 ligand targeting biotherapeutic, with both phase three studies in Sjogren's disease now fully enrolled and study completion expected in the second half of 2026 to announce positive Phase II data with Daxdilumab, a first-in-class plasmacytoid dendritic cell-depleting monoclonal antibody targeting ILT7 for the immunoglobulin-like transcript 7 protein in patients with primary discoid lupus erythematosus met both primary and key secondary endpoints with an attractive safety profile. Encouraged by these data, We are working to advance dextilumab to the next phase of development in this setting. The test by our Phase III program continues to advance, with ongoing studies in chronic obstructive pulmonary disease and eosinophilic esophagitis, where we expect study completion in the second half of this year. We recently announced the decision to terminate the rocotinlumab development and commercialization collaboration with Keowakirin. With significant breadth and depth across all four therapeutic areas, we took a portfolio decision to focus resources on other late-stage programs. Rokotinlamad will return to our partners at Kiwakirin, who will assume full ownership of the program. In November, the FDA granted full approval to Indeltra for the treatment of adult patients with extensive-stage small cell lung cancer with disease progression on or after platinum-based chemotherapy. It represents a meaningful advancement for patients facing a disease that has seen very little innovation for decades. To extend the impact of M-Deltra, we are presently advancing this medicine as combination therapy in frontline extensive stage small cell, where we observed unprecedented survival in early phase clinical trials. Further, we are also advancing M-Deltra with an ongoing phase three study of limited stage small cell lung cancer. It's a joy to see M-Deltra, like BlinCyto, becoming a standard of care in the management of advanced cancer. The last STEEP-1-directed bispecific T-cell engager, Xelaritamig, continues to advance through Phase III development in prostate cancer. Beyond prostate cancer, we have recently initiated a Phase I-B study in relapsed or refractory Ewing sarcoma, a rare malignancy with high STEEP-1 expression and patients in an urgent need for targeted therapy. Across Indeltre, Blencito, and Xelaritamig, we continue to see meaningful long-term impact from our bispecific T-cell engager platform. We remain committed to bringing transformative and innovative therapies like these to patients To close out oncology, given the previously announced results from Fortitude 101 and Fortitude 102, we have decided not to pursue regulatory approval for bomeratuzumab, our FGFR2B-targeting monoclonal antibody in first-line gastric cancer. Though overall efficacy did not meet our expectations, we observed an emerging signal of punitive survival benefit in a subset of biomarker to find patients. We expect to share these findings with the scientific community in the future. As with rocotinlamab, we took a portfolio decision to focus resources on our other late-stage programs. Both ABP206 and ABP234 biosimilar candidates to Opdivo and Catruida, respectively, have completed enrollment in each of their comparative clinical studies, supporting continued progress of the next wave of our biosimilar portfolio. As described in our press release, we are engaged in an ongoing dialogue with the FDA regarding Tabneos, our medicine for the treatment of a rare and severe disease, Anka-associated vasculitis. We will update you on those discussions as necessary. Now, let me finish by saying that 2025 was a year of consistent execution, real scientific progress, and disciplined decision-making. We expect 2026 to bring another year of strong execution, disciplined data generation, and new scientific advances as we continue to progress our robust pipeline. I want to thank our colleagues across Amgen for their continued focus on patients and their commitment to advancing innovative medicines for serious diseases. With a broad and deep pipeline, we are well positioned to deliver sustained long-term I'll now turn it over to Murdo.",
+        "startSeconds": 353.86,
+        "endSeconds": 971.17
+      },
+      {
+        "speakerIndex": 14,
+        "speakerName": "Murdo Gordon",
+        "speakerRole": null,
+        "text": "Thanks very much, Jay. In 2025, we delivered 10% sales growth, with 13 products achieving double-digit or better performance. 14 products exceeded $1 billion in annual sales, and 18 products achieved record sales. These results underscore the strength and growth potential of our portfolio and demonstrate the disciplined execution of our teams serving patients globally. Starting with general medicine, Repatha sales grew 36% year-over-year in 2025, surpassing $3 billion. This performance was driven by growing urgency to treat patients in both secondary and primary prevention. Today, more than 100 million people around the world still need effective LDL cholesterol lowering. And Repatha remains the first and only PCSK9 inhibitor with outcomes data for patients in both high-risk primary and secondary prevention. As Jay mentioned, the landmark Vesalius-CV trial showed a reduction in the risk of first major cardiovascular events by 25% in high-risk patients. These data strengthen Repatha's position as the most evidence-backed therapy in the PCSK9 class and support this critical role in earlier and more intensive LDL cholesterol management. Given these results and our leadership in this category, we believe there's now a clear opportunity to update clinical guidelines and quality measures. We expect these changes will encourage cardiologists and primary care physicians to manage LDL cholesterol more proactively alongside lifestyle modification and reduce cardiovascular risk in both primary and secondary prevention. In the U.S., we continue to improve patient access to Repatha with broad formulary coverage and the launch of Amgen Now, our new direct-to-patient program. Amgen Now offers a simplified, lower-cost cash pay option for patients to access Repatha. Following a successful launch, we've announced plans to expand this program to additional medicines, and we're excited to make our therapies available through TrumpRx, helping improve affordability for Americans. Ivenity sales increased 34% in 2025, reaching $2.1 billion in sales. Ivenity remains the only treatment that simultaneously builds new bone and reduces bone resorption, a dual mechanism that is proven to rapidly reduce fracture risk in postmenopausal women. In the U.S., Avenity sales grew 41% driven by higher volumes from both established and new prescribers. Avenity leads the bone builder segment with over 60% market share and is now growing faster than the category overall. To date, approximately 300,000 U.S. patients have been treated with Avenity, with a 33% increase of new patients in just one year. Increased investment has helped accelerate this growth, which we expect to continue. Despite strong progress, nearly 90% of the 2 million women at very high risk of fracture remain untreated, presenting a clear opportunity for Avenity to drive growth and impact. Prolia delivered $4.4 billion in sales in 2025, an increase of 1% year-over-year. In 2026, we expect accelerated sales erosion driven by increased competition as multiple biosimilars have launched globally. Our rare disease portfolio grew 14% year-over-year to nearly $5.2 billion and 19% in the quarter, with strong performance across the portfolio. Uplizna sales increased 73% year-over-year to $655 million, reflecting growing patient demand across all three approved indications. In December, Uplizna received FDA approval for the treatment of generalized myasthenia gravis, marking an important milestone for patients with this chronic debilitating disease. Early physician response has been strong across both bio-naive and switch patients. Prescribers have noted the benefits of Uplizna's upstream B-cell mechanism targeting the root cause of the disease and also its demonstrated safety profile and the convenience of its twice-yearly dosing. Uptake of Uplizna for use in IgG4-related disease continues to grow. Since the launch in the U.S., nearly 500 specialists, including rheumatologists, gastroenterologists, among others, have prescribed Uplizna. In addition to the more recent launches, the Plizna continues to lead in NMOSD and remains the most prescribed FDA-approved therapy in the U.S. for this condition, supported by consistent new patient growth and strong adherence across treatment cycles. Tepeza grew 3% to $1.9 billion in 2025, driven by higher net selling price. Over 25,000 patients have received treatment since launch in the U.S., with growing interest from both new and returning prescribers. We continue to see increased prescribing by endocrinologists and a broadening base of specialists. In Japan, approximately 1,200 patients have been treated since launch, reflecting growing awareness of the burden of thyroid eye disease among both patients and prescribers. We plan to launch TAPESA in additional markets in 2026, expanding access to this important therapy globally. TABNEO sales were $459 million in 2025, an increase of 62% year-over-year, driven by strong volume growth. More than 7,000 patients with ANCA-associated vasculitis have now been treated with TABNEOs, with over 4,000 healthcare professionals prescribing the therapy since its launch in 2021. ANCA-associated vasculitis is a serious, potentially life-threatening disease that can cause significant organ damage if not well controlled, and has limited therapeutic options. We remain confident that Tavneos is an important and effective medicine based on clinical data, real-world evidence, and its favorable benefit-risk profile. In inflammation, test buyer sales grew 52% year-over-year to nearly $1.5 billion for the full year. Tespire is well-positioned to reach more patients in the United States due to its differentiated TSLP mechanism that targets multiple inflammatory pathways, driving severe uncontrolled asthma, including in those with coexisting chronic rhinocytosis with nasal polyps. Tespire substantially reduced the need for surgery in this population, reinforcing its value in eosinophilic disease. TESPIRE is now the leading therapy for new-to-brand patients amongst allergists in severe uncontrolled asthma, fueled by strong prescriber confidence and continued expansion across respiratory specialties. Otesla sales increased 7% year-over-year to nearly $2.3 billion for 2026. We expect sales erosion driven by unfavorable pricing in the U.S. and generic launches, particularly in the EU. Our innovative oncology portfolio, which includes Blencito, Imdeltra, Lumicraz, Vectabix, Kyprolis, Endplate, and Xchiva, grew 11% year-over-year, generating $8.7 billion in full-year sales. Imdeltra delivered $627 million in full-year sales, fueled by strong clinical conviction and rapid adoption across care settings. Over 1,600 U.S. sites now administer MDeltra, with the majority of doses provided in the community setting. MDeltra was granted full FDA approval in the fourth quarter, supported by compelling data from the Phase III Delphi 304 trial. NCCN guidelines also recognize MDeltra as the highest recommended therapy, and it has become the standard of care in the second-line setting, reinforcing its leadership position in small cell lung cancer. Blencito grew 28% year-over-year to over $1.5 billion in full-year sales, driven by broad prescribing across both academic and community segments. Blencito is widely recognized as a standard of care in combination with multi-agent chemotherapy for patients with Philadelphia chromosome-negative B-cell ALL. out. Our biosimilar portfolio delivered another strong year, with sales increasing 37% to $3 billion. Our expanding biosimilar portfolio provides meaningful top-line growth, durable cash flow, and broad patient access to high-quality, cost-saving biologic medicines. PAV Blue, a biosimilar to ILEA, continues to gain momentum, reaching $700 million in sales in 2025. Adoption continues to build among retina specialists who value the products ready-to-use, pre-filled syringe format, and the reliability of Amgen's manufacturing and supply chain. We deliver strong results in 2025 with continued momentum across our priority growth brands, and we look forward to serving even more patients with Amgen products in 2026. Now, I'd like to hand it over to Peter.",
+        "startSeconds": 972.94,
+        "endSeconds": 1548.9
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": "Peter Griffith",
+        "speakerRole": "CFO",
+        "text": "Thank you, Murdo. Non-GAAP earnings per $21.60 to $23. Continuing strong rare disease and a paid decline to continued increases in 340B program utilization from denosimab $150 million of in-organization. We project the full-year non-GAAP operating margin that may occur through R&D expense to $25,000, execute six stage assets margin to be the lowest of the year, anticipate non-GAAP a non-GAAP tax rate of 16% to severages not to exceed 26 allocation prior manufacturing capacity.",
+        "startSeconds": 1683.49,
+        "endSeconds": 1906.62
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Okay. Thank you, Peter. And as I hope you all appreciate now, I think we ended 25 with our track record intact for having delivered against the objectives that we set for you at the beginning of the year. And we're determined to do the same now in 2026. So we're entering the year with momentum, excited about what we see ahead. Let's open up the call to questions, Julianne. We'd be",
+        "startSeconds": 1937.38,
+        "endSeconds": 1958.34
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "happy to entertain any of our callers now. Thank you. If you would like to ask a question, please press star followed by one on your telephone keypad. If for any reason you would like to remove that question, please press star followed by one. Again, to ask a question, press star one. Our first question comes from Michael Gee from UBS Financial. Please go ahead.",
+        "startSeconds": 1958.34,
+        "endSeconds": 1980.12
+      },
+      {
+        "speakerIndex": 6,
+        "speakerName": "Michael Gee",
+        "speakerRole": "Analyst \u2014 UBS Financial",
+        "text": "Your line is open. Hey, guys. Good afternoon, and thanks for all the callers. Obviously, obesity is top of mind for everybody and you've disclosed some information on Meritide recently. I was wondering and curious to ask your view of the portfolio overall on obesity given that today are disclosing combinations with monthly or monthly and then combinations and how you see this playing out given you're focused on Meritide but I'm not sure about the rest of it. Okay, thank you, Michael.",
+        "startSeconds": 1980.24,
+        "endSeconds": 2016.55
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "We'll take a stab at answering your question. Connection wasn't great but I think we got most of what you were trying to ask. Jay, you want to kick off?",
+        "startSeconds": 2016.73,
+        "endSeconds": 2022.85
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "Yeah, I'd be happy to. Thanks, Michael. AMGEN is really made for this moment, developing Meritide across so many different indications, a leading cardiovascular company, also a leading respiratory disease company, and there are so many opportunities there for Meritide. We've been in obesity, as you know, a long while, all the way back to the leptin days and enjoyed stable discovery leadership teams since that time. Internally, we have another clinical stage asset called AMG 513. We have yet to disclose the mechanism of that medicine that is progressing in Phase I clinical investigation. And preclinically, we have a rather exciting set of risible as well as non-incretin-based, both injectable as well as oral medicines. And the aperture is always open.",
+        "startSeconds": 2022.85,
+        "endSeconds": 2068.55
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "To be competing broadly in the field, Michael. Okay, let's move on. Next question.",
+        "startSeconds": 2068.71,
+        "endSeconds": 2077.77
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you, Michael. Our next question comes from Jeroen Werber from TD Cowan. Please go ahead. Your line is open.",
+        "startSeconds": 2078.95,
+        "endSeconds": 2084.31
+      },
+      {
+        "speakerIndex": 0,
+        "speakerName": "Jeroen Werber",
+        "speakerRole": "Analyst \u2014 TD Cowen",
+        "text": "Thanks so much. I have a question actually about days of Dalibap for primary Sjogren's syndrome. It looks like both studies are now fully enrolled, and you're saying completion in the second You're the only company with both a systemic and a symptomatic study in Phase 3 based on the Phase 2s. Should we expect the data this year, and do you want to give us any color on the reliability of the phase two into the phase three, just given it's a tough condition. Thank you.",
+        "startSeconds": 2086.07,
+        "endSeconds": 2113.79
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "And thanks for noticing about Tezodalibab. This is a very exciting medicine in the portfolio. This is a CD40 ligand targeting biotherapeutic, and the CD40 pathway has long been postulated to be driving the inflammatory cascade in Sjogren's syndrome. The challenge is only that the biology is somewhat ambiguous, and so we take a really nice and incisive approach with Tezodalibab. As you noted, the two phase 3s that we have open in Sjogren's syndrome will be in moderate to severe symptomatic activity. That's our population one, as well as in patients with a very high symptom burden. Sjogren's has been very challenging for drug development, but we find this hypothesis quite compelling. The second study has already completed enrollment of patients. This is the moderate to high symptom burden group with low systemic disease activity. And we expect completion of the trials later this year and will inform later of those medicines We're confident going into phase three and can't wait to look at the results.",
+        "startSeconds": 2116.98,
+        "endSeconds": 2202.45
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you, Jaron. Our next question comes from David Amselim from Piper Sandler. Please go ahead. Your line is open.",
+        "startSeconds": 2208.1,
+        "endSeconds": 2215.4
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": "David Amsellem",
+        "speakerRole": "Analyst \u2014 Piper Sandler",
+        "text": "Hey, thanks. So I had a couple of Uplizna-related questions. Can you talk about the extent to which the underlying IgG4-related disease population is larger than what literature has suggested historically and what that means for the underlying opportunity. And then secondly, I know it's early in GMG, but just can you talk about how the product's being used to date and what kind of role do you think it's going to have in an admittedly more crowded treatment armamentarium?",
+        "startSeconds": 2217.08,
+        "endSeconds": 2248.96
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Yeah, let's tackle this in two parts. Jay, if you take the first part, and then maybe, Murdo, you can jump in on the second.",
+        "startSeconds": 2250.32,
+        "endSeconds": 2255.16
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "You know, there is, in medicine, an experience where the availability of a targeted therapy, a really effective therapy, can actually increase the incidence of a disease through awareness of the disease. Why take a diagnosis unless you have reason to intervene effectively? And that may, in the fullness of time, be the case here. Limiting a precise description of the epidemiology, even over the last five to 10 years, is the lack of really coherent registry data as well as appropriate coding that would allow such an analysis from electronic medical record data. And so I think it's a good question. I think it's a moving object, and we'll have better precision on that in the few years to come. Myrtle, what are your instincts?",
+        "startSeconds": 2255.5,
+        "endSeconds": 2302.96
+      },
+      {
+        "speakerIndex": 14,
+        "speakerName": "Murdo Gordon",
+        "speakerRole": null,
+        "text": "I think that's a very clear description, Jay. I think the availability of the ICD-10 coding, as you alluded to, is really about a three-year presence in the market. Right now, we estimate the diagnosed population to be in the neighborhood of 35,000, and that could grow. As you outlined, there are mentions in the literature of higher numbers. However, we're obviously focused on those that are already diagnosed, already in care, and we're trying to build that awareness that you spoke of, Jane. So far, so good. Plizna is doing extremely well in its uptake in IgG4-related diseases. We see a nice breadth of prescribing across a number of different specialties that see these patients because of the end organ involvement in the inflammatory condition. And we'll continue to make sure that we do our part to improve that awareness, improve that diagnosis. these patients undergo a very complicated patient journey in that this disease can masquerade as many other things but so far so good and we're happy to be able to help these patients finally get a treatment the only one FDA approved that can help with their symptoms and obviously the long-term health outcomes particularly for their target organs just on the plasma and GMG we're very pleased with the initial uptake As you said, Dave, it's very early in the launch, but I mentioned this in my opening remarks, is that roughly half of the patients who are being treated, or this is a dissatisfied category where the current treatments have limitations, whether that be dosing inconvenience, whether that be duration of efficacy and perhaps some waning efficacy in this category. And so far, what we've seen is a very strong interest in Uplizna for its mechanism, as well as for the convenience that it represents for patients. So, so far, so good. Excited about Uplizna overall in the broader rare disease portfolio. Okay, thanks. Let's go to the next question.",
+        "startSeconds": 2303.6,
+        "endSeconds": 2449.08
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you, David. Our next question comes from Selvien Richter from Goldman Sachs. Please go ahead. Your line is open.",
+        "startSeconds": 2450.0,
+        "endSeconds": 2455.6
+      },
+      {
+        "speakerIndex": 15,
+        "speakerName": "Selvien Richter",
+        "speakerRole": "Analyst \u2014 Goldman Sachs",
+        "text": "Good afternoon. Thanks for taking my question. Just a follow-up here on Aplenza, walk us through what's given you confidence here in moving forward with a Phase III study in CIDP and the opportunity in that indication. And if you could also just separately touch on Repatha and how you're thinking about potential impact from the launch of Merck's oral PCSK9 and how you're adapting your commercial strategy there. Thank you.",
+        "startSeconds": 2456.42,
+        "endSeconds": 2484.5
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Two ends of the spectrum there, from the very rare to the very common. So let's do, Jay, you do the first question, and then, Murdo, you can take a second.",
+        "startSeconds": 2485.14,
+        "endSeconds": 2492.2
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "Thanks, Alvin. We are, as Murdo shared, very bullish about APLISNA, specifically this unique mechanism of action that targets and depletes the CD19 pathologic B cell. These, as you surely know, CD19, the B cell compartment, is evident on mature B cells, like CD20 targeted by rituximab and other medicines of that type, but also the pre-B cell, the more naive B cell, the cell that expands and elaborates many of these autoantibodies. And so now seeing efficacy of aplizna in so many immunoglobulin-related disorders, like IgG4-related disease, like myasthenia gravis, the chance to bring it to additional autoantibody-mediated immune conditions is just a great chance to help patients with these severe diseases. In some cases, there are signals from CD20s that we intend to follow up with a broader, more active, and hopefully much more convenient aplizna. Autoimmune hepatitis, which I mentioned earlier, is associated with autoantibodies. You see ANA, you see anti-smooth muscle, you see anti-actin, you see anti-LC1. And the same is true, though, to a lower proportion with CIDP as well, where maybe 5% to 10% of patients will have autoantibodies to what are called perinodal proteins, C and TN1. I could go on for a long time. And so this biology being driven by the compartment that a plizna targets makes for a really great chance to extend the benefits of",
+        "startSeconds": 2492.94,
+        "endSeconds": 2596.27
+      },
+      {
+        "speakerIndex": 14,
+        "speakerName": "Murdo Gordon",
+        "speakerRole": null,
+        "text": "targeting B cells in both of these conditions. Myrtle? Yeah, just the size of the opportunity here is interesting. Roughly the prevalent pool in the U.S. is estimated to be about 35,000 patients, maybe 7,000 to 10,000 incident new diagnosed cases per year in the U.S. So hopefully we can develop this drug and offer some benefit for these patients, which is yet another steroid intensive condition. And we believe that we can do better than that. So let's hope for that best outcome in those clinical trials. On Repatha, I alluded to what our strategy is in my opening remarks. We are excited by the landmark data that were revealed at the American Heart Association last year in November, where we can now clearly promote Repatha for the prevention of first heart attack or first stroke in a high-risk patient population and or a high-risk primary prevention population. And so that is our focus right now. And we are the only PCSK9 that has both secondary and primary prevention data in our label. The Vesalius data are being met very positively by both cardiologists and primary care physicians, in particular for the primary care physician for the diabetes patients that were enrolled in the trial who did very well. So we are focused on making sure there's high awareness of these data. Repatha enjoys great access, broadly preferred on national template formularies by PBMs and health plans around the country and around the world. And of course, we know that there's an immense amount of trust now in the profile by prescribers. And for the millions of patients that have received treatment and are taking Repatha, there's strong acceptance that every two-week injection to lower cholesterol to the 45 milligrams per deciliter target dose that was achieved in the Repatha arm in Vesalius so that patients can reduce their cardiovascular risk. So we've got a lot to talk about. We've maintained all along that there is a lot of room in this market for other therapies to come in, but they will not have the data package and profile that Repatha has established, and we'll continue to remind prescribers and others. Thank you, Salveen. Our next question comes from",
+        "startSeconds": 2596.27,
+        "endSeconds": 2753.46
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Mohit Bansal from Wells Fargo. Please go ahead. Your line is open.",
+        "startSeconds": 2753.46,
+        "endSeconds": 2757.02
+      },
+      {
+        "speakerIndex": 13,
+        "speakerName": "Mohit Bansal",
+        "speakerRole": "Analyst \u2014 Wells Fargo",
+        "text": "Great. Thank you very much for taking my question, and congrats on all the growth progress here. Maybe just, again, the question on PCSK9 at this point. So, Murdo, can you please remind us what percentage of your prescriptions are coming from primary care at this point? And with the Vesalius data, how do you see the primary care segment of the market evolving",
+        "startSeconds": 2758.52,
+        "endSeconds": 2785.22
+      },
+      {
+        "speakerIndex": 14,
+        "speakerName": "Murdo Gordon",
+        "speakerRole": null,
+        "text": "over time. Thank you. Yeah, thanks, Mohay. I put a number out before the Vesalius data promotion started where roughly 40% of our prescriptions were coming from patients who were considered primary prevention patients who have not yet had an event where physicians were looking to lower those patients' LDL cholesterol. I would imagine that that will increase and grow over time. What we're seeing is equal interest, quite frankly, from cardiologists who are excited by the Vesalius data and the consistency of both the primary endpoint, the secondary endpoint, the MI subgroup. Quite frankly, the overall incidence of death in the trial was also something that attracted attention from specialists. So the cardiology group has seen this as an affirmation of what they were already doing and being aggressive and treating LDL cholesterol. And primary care physicians, as I mentioned, are much more intent and aligned to adding Repatha to the optimized statin therapy that most patients are on. As for how much, we don't give product-specific guidance, but hopefully you can tell I am extremely excited about the momentum that we have on Repatha right now. I'm really pleased with the execution of our teams around the world. We've made incremental investments in advance of the opportunity of promoting the Vesalius data, and I expect that momentum to continue.",
+        "startSeconds": 2785.22,
+        "endSeconds": 2884.22
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Okay, thank you. Let's go to the next question.",
+        "startSeconds": 2885.5,
+        "endSeconds": 2887.26
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you, Mohit. Our next question comes from Louise Chen from Scotiabank. Please go ahead. Your line is open.",
+        "startSeconds": 2888.34,
+        "endSeconds": 2893.66
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Louise Chen",
+        "speakerRole": "Analyst \u2014 Scotiabank",
+        "text": "Hi, thanks for taking my question. I wanted to ask you about Tepeza and your thoughts on another potential competitor coming to market and then also where you stand with AMG 732 for TED.",
+        "startSeconds": 2894.46,
+        "endSeconds": 2906.92
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Okay, great. Maybe, again, we could do this in two chunks. Jay, you want to talk about the clinical piece and then Murdo, talk about the commercial piece?",
+        "startSeconds": 2908.52,
+        "endSeconds": 2916.1
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "Thanks, Luis. Tepeza is proving to be just a very important medicine for the management of thyroid eye disease. We have established a very strong evidence base in both the high clinical activity score and lower clinical activity score patient populations that are quite proud of this data generation and also the apparent impact that it's having. We have an ongoing subcutaneous Phase III clinical study in moderate to severe active TED, fully enrolled, as we had shared, and we expect to complete this study in the second half of this year. So we have a really terrific medicine that's increasingly a standard of care that's helping a lot of patients and a strong data set that it sits on top of. Before handing off to Myrta, I'll just quickly comment on AMG 732. Thank you for noticing. This is an IGF-1R targeting monoclonal antibody, also achieves subcutaneous administration, phase two studies enrolling, initially studied in moderate to severe and active TED, and we'll have more to say on that in the future.",
+        "startSeconds": 2916.5,
+        "endSeconds": 2980.94
+      },
+      {
+        "speakerIndex": 14,
+        "speakerName": "Murdo Gordon",
+        "speakerRole": null,
+        "text": "Yeah, thanks, Jay. As Jay mentioned, we're expanding our thyroid eye disease into the lower clinical activity score patient population who tend to be managed by different specialists than the higher clinical activity score patients. We have historically been able to drive very strong penetration with oculoplastic surgeons and gen prescribing. So that's in the U.S. and we expect that we'll continue to broaden our treatment of the low clinical activity score patients while maintaining our share of the higher clinical activity score patients, but also our international launches. Our launch in Japan has gone extremely well. We're seeing nice uptake there. We're seeing a very well-received product for higher clinical activity score patients, and we're in the process of launching in multiple markets around the world as we speak. So overall, Tepeza will be a good growth driver for us this year. Thank you. Let's go to the next question.",
+        "startSeconds": 2981.82,
+        "endSeconds": 3057.74
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you, Louise. Our next question comes from Terrence Flynn from Morgan Stanley. Please go",
+        "startSeconds": 3058.96,
+        "endSeconds": 3063.28
+      },
+      {
+        "speakerIndex": 1,
+        "speakerName": "Terence Flynn",
+        "speakerRole": "Analyst \u2014 Morgan Stanley",
+        "text": "ahead. Your line is open. Hi. Thanks for taking the question. I had one on the Meritide Phase 3 program. I appreciate all the details today, but just was wondering if you have any update in terms of how to think about the design of the type 2 diabetes CVOT trial, particularly the control arm, as I know that's something that you guys were debating here post the, you know, seeing some of the data from some of the competitors, but just wondering how you're thinking about control arm in that setting.",
+        "startSeconds": 3063.28,
+        "endSeconds": 3089.16
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Sure. Jay, you want to?",
+        "startSeconds": 3091.0,
+        "endSeconds": 3092.46
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "I'm happy to share, Terrence. We're just thrilled by the opportunity to develop Meritide for patients with type 2 diabetes, and this is really where we see a potential paradigm shift in the management of that disease. In my medical training, we practiced with insulin and insufficient orals and titrating dosing. And here, we have a medicine that can be dosed monthly. We've seen efficacy in chronic weight management bimonthly. We've recently described maintenance approach using quarterly dosing. This is just a new paradigm in management of diabetes. We've shared the major insights at J.P. Morgan from the Phase II type 2 diabetes study, which is ongoing. There are additional parts to this trial. It's importantly given us an experience with low BMI patients and also seeing A1C across the dose range. And so the robust findings of this trial position us very well to start to pursue phase three clinical investigation. The specific design of these studies, control arms and the patients recruited, will be a subject for a future engagement.",
+        "startSeconds": 3093.02,
+        "endSeconds": 3160.78
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Okay. Thank you. Let's go to the next question.",
+        "startSeconds": 3162.34,
+        "endSeconds": 3164.08
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you, Terrence. Our next question comes from Chris Schott from J.P. Morgan. Please go ahead.",
+        "startSeconds": 3165.58,
+        "endSeconds": 3169.76
+      },
+      {
+        "speakerIndex": 9,
+        "speakerName": "Chris Schott",
+        "speakerRole": "Analyst \u2014 J.P. Morgan",
+        "text": "Your line is open. Great. Thanks so much. Just another Maritide question and just on the topic of less frequent than monthly dose, even more infrequent. Do you think you'd need to see for that to have a role in the market? An interesting question. Murdo, do you want to",
+        "startSeconds": 3169.86,
+        "endSeconds": 3204.95
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "take a shot at what we think we see in the marketplace and why we believe Maritide has the potential to address what is emerging as a very large unmet need in the field?",
+        "startSeconds": 3204.95,
+        "endSeconds": 3215.37
+      },
+      {
+        "speakerIndex": 14,
+        "speakerName": "Murdo Gordon",
+        "speakerRole": null,
+        "text": "Yeah, I'll make a few comments here, Bob. Thanks for the opportunity. I think it's pretty clear as we look at the market as it exists today that there's dissatisfaction with the weekly GLP-1s. And I think you can actually see that in a fairly dramatic way with the advent of oral SEMA and how rapidly it's been taken up in the market, that tells you that clearly patients and prescribers are looking for other opportunities. Now, what I like is the opportunity that we have to deliver what has been mentioned a couple of times in this call as a paradigm-changing therapy, and that's the ability to come into a weekly market, bring a monthly therapy that can achieve similar weight loss in a very well-tolerated regimen, and then for those patients who achieve their weight goal, for them to convert to every eight-week or every 12-week dosing regimen to maintain that weight and or the metabolic benefits of their therapy. And I think that's a pretty compelling offering. I think that we're targeting that kind of profile and we'll have multiple ways of generating data to that effect.",
+        "startSeconds": 3216.31,
+        "endSeconds": 3300.03
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Chris, maybe we'll have Jay just address a piece as well.",
+        "startSeconds": 3301.03,
+        "endSeconds": 3303.59
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "Yeah, Chris, thanks for the question. If you don't mind, I'm going to reject part of the premise of your question, This idea of less frequent dosing being an absolute tradeoff for efficacy, we're not certain that we will see that. Having observed the large majority of patients maintaining weight on low dose and on quarterly dosing, in the field of obesity, they call this the defended fat mass. And the capacity to avoid weight regain is a sign that the reset of body weight has been achieved. We have seen with all medicines to date dose-ranging effects on weight loss. And here, we might expect to see schedule-ranging effects on weight loss that would be individualized for patients. And so, I wouldn't necessarily assume that we'll see a big trade-off with less frequent dosing of Maritide.",
+        "startSeconds": 3303.81,
+        "endSeconds": 3358.77
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Okay. Let's go to the next question.",
+        "startSeconds": 3359.37,
+        "endSeconds": 3361.13
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you, Chris. Our next question comes from Umar Rafat from Evercore ISI. Please go ahead. Your line is open.",
+        "startSeconds": 3362.01,
+        "endSeconds": 3367.65
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Umar Rafat",
+        "speakerRole": "Analyst \u2014 Evercore ISI",
+        "text": "Hi, guys. Thanks for taking my question. I'm really, really lost today. I'm trying to figure out what happened all of a sudden. Why did FDA decide to ask you to pull the chemocentrics rug? Was there some litigation or some correspondence? Like what prompted it in the first place? And then if I dig in a little more specifically, they're saying that nine patients need to be re-adjudicated. Is that referring to the primary endpoint on week 26 remission or the week 52 sustained remission. I asked because the week 26 endpoint was not inferior anyway. So even if you re-adjudicate those, it's still not inferior. So I'm just really lost today. Jay, you addressed a",
+        "startSeconds": 3368.67,
+        "endSeconds": 3412.16
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "question. You may want to just remind people what Tavniose is, say a few words about the disease that it addresses. It's obviously a very small product in our portfolio relative to the other things we have going on, but it may be a medicine that's less familiar to most of our callers.",
+        "startSeconds": 3412.16,
+        "endSeconds": 3428.8
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "Yes, sir. Thanks, Umar. And just by way of background, Ben, ANCA-associated vasculitis is a group of very serious, rare, and destructive inflammatory illnesses that targets blood vessels and can therefore damage vital organs like kidneys, lungs, skin, nerves, even heart. The prior treatment paradigm for tabniose was chemotherapy with azathioprine and rituximab accompanied by long-term steroid use. And chronic use of steroids proved very common, but also very challenging. Hyperglycemia, lipid dystrophy, bone health, mood disorders, immune suppression. And then enter Tavniose or Avacopan. This is an oral complement factor 5A receptor blocker. And so it blocks complement mediated destruction. in. We acquired Tavniose from Chemocentric in 2022 after it had been on the market for a year based on approval for the Advocate Phase III study that you referenced as published in the New England Journal. This established the efficacy of Tavniose over prednisone steroid tapering for sustained remission out to 52 weeks when it was added to induction therapy with, at that time, standard of care rituximab. As we shared, the FDA requested a voluntary withdrawal on January 16th. We were surprised by this. There were concerns raised by chemocentrics to re-adjudicate primary endpoint results for nine of the 331 patients. And we're in discussions with FDA, and we'll answer questions as we talk with them. Okay. Let's go on to the next question.",
+        "startSeconds": 3428.8,
+        "endSeconds": 3528.63
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you, Umar. Our next question comes from Alex Hammond from Wolf Research. Please go ahead.",
+        "startSeconds": 3529.63,
+        "endSeconds": 3534.19
+      },
+      {
+        "speakerIndex": 12,
+        "speakerName": "Alex Hammond",
+        "speakerRole": "Analyst \u2014 Wolfe Research",
+        "text": "Your line is open. Hey, guys. Thanks for taking the question. So, you did another strong quarter with Pavlu, I guess, how do you kind of expect to maintain this leadership position when other manufacturers launch their biosimilars in the second half of the year? I guess, essentially, can you kind of help level-side growth expectations for this year?",
+        "startSeconds": 3534.29,
+        "endSeconds": 3551.23
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Well, obviously, we're not giving guidance on an individual product, Alexander, but Murdo, go ahead and talk a little bit about the strong performance that we've observed so far for our",
+        "startSeconds": 3552.75,
+        "endSeconds": 3561.15
+      },
+      {
+        "speakerIndex": 14,
+        "speakerName": "Murdo Gordon",
+        "speakerRole": null,
+        "text": "biosimilar Pavlu. Yes, I think what we've been able to do thus far is establish good inroads with the largest national retina specialist networks. And I think what I would say is they tend to want to pick a product that they know allows them to manage their patients effectively. We think we've got a great device that helps them do that. We obviously are competing effectively against the innovator. And given that we have a lot of biosimilar experience, will compete effectively when others enter the market, whenever that may be.",
+        "startSeconds": 3561.15,
+        "endSeconds": 3600.57
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "We'll take one last question as we're right up against the bottom of the 30-minute mark here of the hour. So why don't we take one last question, and then, as always, Casey and his team will be around to answer questions if we didn't get to you on this call. Julianne, last question.",
+        "startSeconds": 3601.77,
+        "endSeconds": 3616.97
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you, Alex. Our last question will come from Courtney Breen from Bernstein. Please go ahead. Your line is open. Okay, Courtney, bring us home.",
+        "startSeconds": 3617.79,
+        "endSeconds": 3626.17
+      },
+      {
+        "speakerIndex": 16,
+        "speakerName": "Courtney Breen",
+        "speakerRole": "Analyst \u2014 Bernstein",
+        "text": "Fantastic. Thanks so much for squeezing this in. I am going to bounce you back to Maritide. And just as we think about maintenance and that kind of less frequent dosing opportunity, can you describe how you might think about the role of this product in the market? Is it only post-Maritide weight loss? Or how should we be thinking about kind of that switching opportunity and the type of data that you might demonstrate for that positioning over time. Thanks so much.",
+        "startSeconds": 3627.69,
+        "endSeconds": 3656.71
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Yeah, I can imagine there's probably a lot of interest in that. Murdo, do you want to share any thoughts at this point? Well, thanks, Courtney.",
+        "startSeconds": 3657.35,
+        "endSeconds": 3662.83
+      },
+      {
+        "speakerIndex": 14,
+        "speakerName": "Murdo Gordon",
+        "speakerRole": null,
+        "text": "Obviously, we think we've got, as has been said now many times, and I'll repeat it again, a product that changes the paradigm of weight loss, diabetes, ASCVD, heart failure management. And we see it as both an effective product to start patients on, to get to Waco, and also for patients who, to receive the medical benefit of their treatment, need to be on these therapies for multiple years, this opportunity for Maritide's profile to deliver a convenient, well-tolerated, efficacious regimen that could be monthly, could be every eight weeks, and could be quarterly. We think that's really exciting. And then, of course, as you hinted at, there may be patients out there on other therapies that want to switch to something as convenient and as well-tolerated as Maritide. So the answer is all of the above.",
+        "startSeconds": 3663.13,
+        "endSeconds": 3720.57
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Okay. So, again, thank you all for your interest. We appreciate your joining our call. I'll just reiterate, if we didn't get to you, please reach out directly to Casey and his team. In the meanwhile, I hope we've left you confident about the momentum that we're carrying into 2026. And again, I would just reiterate that we're excited about the year that we have in prospect here, a year which, as Peter has described, we view as a springboard to the future growth here at Amgen. So excited about the hand that we have and look forward to sharing it with you during the course of the year. Thank you.",
+        "startSeconds": 3721.83,
+        "endSeconds": 3752.05
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "This concludes our Amgen Q4 2025 earnings conference call. You may now disconnect.",
+        "startSeconds": 3752.45,
+        "endSeconds": 3758.56
+      }
+    ],
+    "corrections": []
+  }
+}

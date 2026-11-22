@@ -1,0 +1,491 @@
+{
+  "status": 200,
+  "result": {
+    "eventId": "da0385cb-debc-4868-b716-df265875aa2f",
+    "ticker": "AMGN",
+    "eventTitle": "Amgen Inc Q3 FY2026 Earnings Call",
+    "callDate": "2026-11-03T21:30:00+00:00",
+    "fiscalYear": 2026,
+    "fiscalQuarter": 3,
+    "turnCount": 59,
+    "totalTurnCount": 59,
+    "offset": 0,
+    "hasMore": false,
+    "isFiledRecord": false,
+    "data": [
+      {
+        "speakerIndex": 3,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Good afternoon, everyone, and welcome to our third quarter of 2026 earnings call. Bob Bradway will lead the call today and be followed by a broader review of our performance by Murdo Gordon, Jay Bradner, and Thomas Dietrich. Through the course of our discussion today, we will use non-GAAP financial measures to describe our performance and have provided appropriate reconciliations within the materials that accompany this call. We'll also make some forward-looking statements, which are qualified by our Safe Harbor Statement, and please note that actual results can vary materially. Over to you, Bob.",
+        "startSeconds": 0.46,
+        "endSeconds": 38.8
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Good afternoon, and thank you for joining our call. Our results through the first three quarters of the year reflect the strength of our business across a broad range of products and pipeline molecules. This is exactly the kind of performance our strategy was designed to achieve. Strong commercial and operations execution and continued innovation from our research and development organization reinforce our confidence and Amgen's ability to deliver durable, long-term growth. For the latest quarter, total revenues grew a strong 8% year-over-year to $10.4 billion. Our six key growth drivers grew 27% year-over-year. and represented over 70% of our third-quarter product sales. Across the portfolio, 17 products delivered double-digit sales growth, and 17 products are now annualizing at more than $1 billion based on third-quarter sales. We see significant opportunity to build on this momentum. Many of our medicines address large. Under-penetrated disease areas, where the majority of patients remain untreated. Repatha, Avenity, and Tess Spire are clear examples of that. Our strong financial performance gives us the flexibility to invest in innovation and the capabilities needed to support future growth while delivering attractive returns to shareholders. In the third quarter, we generated $3.7 billion in free cash flow. Increased our investment in research and development by 11% year-over-year, and invested another $600 million in the business through capital expenditures. This was another productive quarter for our R&D organization. We reported positive Phase III results from three important programs. M-Deltra in small cell lung cancer, where we are working to establish it as the cornerstone therapy. Nezspire in eosinophilic esophagitis, an area with significant unmet need, and Dezodalabep in Sjogren's disease, where no approved disease-modifying therapies currently exist. I would note that each of these represents an established or potential first-in-class medicine with the opportunity to make a meaningful difference for patients while providing additional Thank you. Progress reflects the strength of our science and our commitment to pursuing novel approaches for serious diseases. That same focus guides our investment in programs such as Maritide, which is advancing through Phase III development. Jay will discuss these programs and our other clinical advances in more detail shortly. We're also leveraging technology, data-driven insights, and artificial intelligence across Amgen to improve the speed and efficiency of how we discover, develop, manufacture, and deliver medicine to patients. Our performance this quarter and our broad portfolio, continued investment, and advancing pipeline give us confidence in Amgen's ability to deliver durable growth well into the next decade. I want to thank our colleagues around the world for their dedication to our mission to serve patients and for the quality of their work every day. With that, we'll turn it over to Murdo.",
+        "startSeconds": 39.74,
+        "endSeconds": 255.2
+      },
+      {
+        "speakerIndex": 13,
+        "speakerName": "Murdo Gordon",
+        "speakerRole": null,
+        "text": "Thanks, Bob. Looking back at the third quarter, what stands out for me is the remarkable progress we've made across our late-stage pipeline and broad in-line portfolio. We've seen important positive clinical readouts, regulatory milestones, and record sales performance for several of our key medicines. The consistency of these achievements reflects the breadth and strength of Amgen today and reinforces our confidence in the growth opportunities ahead. The commercial performance reflects its progress. Product sales grew 8% year-over-year, and we have 17 products annualizing at more than $1 billion in sales. All six of our key growth drivers delivered double-digit growth in the quarter, together growing 27% year-over-year and now representing more than 70% of product sales. Starting with General Medicine, Repatha delivered $1.1 billion in third-quarter sales, growing 37% year-over-year. Repatha's momentum continues to accelerate, with U.S. average weekly new-to-brand prescriptions increasing over 60% compared with the prior year. This growth is supported by increased urgency to treat in both secondary prevention and high-risk primary prevention patients. With the landmark Vesalia-CV results, Repatha is now the only PCSK9 inhibitor with Phase III cardiovascular outcomes evidence in both primary and secondary prevention. Deepening conviction and adoption among cardiologists and accelerating use in primary care. The updated ACC and AHA guidelines reinforce earlier, more intensive LDL cholesterol lowering and support the use of PCSK9 inhibitors without requiring prior treatment with azetamide. The new guidelines, supported by Repatha's differentiated outcomes data, strengthen clinical conviction that Repatha should be the first choice When additional LDL cholesterol lowering is needed, be This year alone, we expect more than 3 million. and to help more patients. 21% year-over-year to $1.6 billion, reflecting continued momentum from additional indications and disciplined execution. of last year. International adoption continues to build. for trial demonstrated a 40% reduction. In combination with them. I'm a clinical guideline organization.",
+        "startSeconds": 255.95,
+        "endSeconds": 901.86
+      },
+      {
+        "speakerIndex": 14,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "All three targeted by specific T cell engager currently approved in second line or later small cell lung cancer. At the European Society for Medical Oncology Conference, we presented practice-changing results for IMDELTRA from the Delphi. Ultra, plus, and FIMSI. The call from Indeltra to Infinzi brought a median overall survival of 21.1 months. The safety profile of ImDeltra and Delphi 305 was consistent with the clinical experience to date. Cytokine release syndrome and ICANs were primarily low-grade and occurred mostly after the first two doses. Delphi 305 permitted one to two-hour monitoring time, which could Support outpatient administration and broader uptake. Given the transformative benefit observed, we are now working to rapidly file with regulatory authorities around the world. If approved in first-line maintenance, Indeltra could address the needs of 23,000 patients in the U.S. alone, importantly used earlier in the treatment journey and for a longer duration of therapy. We are pursuing a broad clinical program to establish Indeltra as the cornerstone therapy for patients with small cell lung cancer. This program includes evaluating imdeltra in earlier-stage disease, novel combinations, including antibody-drug conjugates, and in other DLL-3-expressing cancers. Turning to TESPIRE, which targets TSLP, an upstream driver of inflammation in airways and other tissues, we recently presented positive results from the CROSSING study in eosinophilic esophagitis, or EOE. EOE is another epithelial-driven eosinophilic inflammatory disease alongside severe asthma and chronic rhinocytocitis with nasal polyps. EOE affects more than 470,000 people in the U.S. Nearly half of patients with this devastating disease remain inadequately controlled with existing treatments. The Phase III Crossing Study evaluated TESPIRE in adolescents and adults with Symptomatic Uncontrolled EOE. At week 24, the study met both co-primary endpoints, demonstrating improved histologic remission and improved swallowing symptoms compared with placebo. These benefits were sustained through week 52. This is the first time sustained efficacy through 52 weeks has been shown for a biologic in a placebo-controlled EOE trial. Multiple secondary endpoints were also met, as test-fire improved measures of underlying Inflammation. Swallowing symptoms, and endoscopic disease activity. Together with every four-week dosing, these results support TESPIR's potential as an important treatment option for patients with EOE and add to the evidence for targeting TSLP across serious diseases driven by eosinophilic inflammation. For patients with Sjogren's disease, we are targeting CD40 ligand signaling with daisodolivep in two Phase III trials It's systemic. And in symptomatic disease. Sjogren's can affect multiple organ systems and cause persistent dryness, fatigue, and pain. There are no approved disease modifying therapies for Sjogren's disease. In systemic Sjogren's disease, we are excited by the positive clinically meaningful results of dasodalibeth in the placebo-controlled Phase 3 OASIS-301 study. The study met its primary endpoint with statistically significant improvement from baseline S-Di of 5.6 points with monthly dosing and 5.2 points with quarterly dosing, or 1.8 and 1.4-point placebo-adjusted improvement, respectively. The treatment effect was observed as early as week 4 and sustained through the end of study at week 48. Importantly, Dezo-Dalibep also met key secondary endpoints for patient-reported dryness, with statistically significant improvements in DASPRI and ESPRI scores with monthly dosing. Dezo-Dalibep was generally well-tolerated, whether administered monthly or quarterly. We'll present the detailed data at ACR on November 11th and await the completion of our second Phase III study in symptomatic Sjogren's disease expected later this year. Beyond these three important Phase III advances, we recently reported, at EADV, the positive Phase II data for dexdilimumab in primary discoid lupus, or DLE. Dexdilimumab targets ILT7 to reduce plasma cytoid dendritic cells and address type I interferon-mediated inflammation. DLE can cause permanent scarring, skin pigment changes, and hair loss. In the study, both doses of daxodilumab met the primary endpoint, with improvement in active skin disease observed as early as week 4 and sustained through week 24. At week 24, daxodilumab improved baseline Classy A by 10.2 points at the lower dose and 9.9 points at the higher dose. Corresponding placebo-adjusted Class A improvements of 6.0 and 5.7 points, respectively, were both statistically significant. Dextilumab was well-tolerated, with no serious adverse events or deaths reported. Based on these results, we are advancing dextilumab into Phase III development. As you can see, we've been working hard to execute the late-stage portfolio. Evan enjoyed terrific results this quarter. Elsewhere in the portfolio, we are focused on developing important new medicines in our late-stage pipeline. For patients with prostate cancer, we are rapidly advancing xyliridimic in both early-stage and advanced disease, extending the reach of our T-cell engager platform. For individuals with obesity and related conditions, we are advancing our comprehensive Phase III maritime development program. This quarter, we completed enrollment of both Phase III sleep apnea studies, our cardiovascular outcome study, and initiated the first of three Phase III studies in type 2 diabetes. Maritide is emerging as the first monthly therapy for obesity, with the potential for as few as four or six doses per year. The Maritime Program is designed to establish how individuals can start and stay on Maritime. And how others can switch from other GLP-1-based medicines and stay on Meritide. Our goal is to make long-term treatment easier for patients, to sustain weight loss, and enjoy durable health benefits. I'd like to thank my colleagues across Amgen for their continued focus on patients and their commitment to advancing innovative medicines for serious diseases. I'll now turn it over to Thomas for the financial update.",
+        "startSeconds": 980.14,
+        "endSeconds": 1458.96
+      },
+      {
+        "speakerIndex": 0,
+        "speakerName": "Thomas Dittrich",
+        "speakerRole": "CFO",
+        "text": "Thank you, Jay. As many of you know, this is my second chapter at Amgen. I spent nearly a decade here earlier in my career working with Bob and the team. Since then, I've served as CFO of three public companies with responsibilities spanning finance, strategy, transformation, and operations. I also gained experience in a more consumer-focused healthcare environment and in a rare disease setting. I come back to Amgen knowing the company well, but also looking at it with fresh eyes, informed by my experiences over the past 12 years. Today, I'm pleased to join you for my first quarterly earnings call as Amgen's CFO. I look forward to maintaining Amgen's active engagement with the investment community and the financial discipline that investors expect. My top priorities are straightforward. One, two, three, four, five, six, seven, seven, seven, seven, seven, seven, seven, seven, seven, Working with my colleagues as a team to drive long-term growth through consistent execution of our strategy and operational efficiency. Two, maintaining Amgen's disciplined approach to capital allocation. You should expect continuity here as we balance investment in the best innovation and future growth with returning capital to shareholders. Let's now turn to our third quarter of financial results. Our strong third quarter performance reinforces confidence in our six key growth drivers. Together, they reflect the breadth and depth of our business and continue to provide a strong foundation for durable growth well into the next decade. We continue to invest in advancing our pipeline while delivering strong operating results. In the third quarter, our non-GAAP operating margin was 47%. Non-GAAP R&D spending increased 11% year-over-year, driven by higher spend in research and early pipeline, including business development activity. We continue to invest in the innovation that will drive future growth, including Maritide, Dazodalibab, and Xaluridomik, as well as our marketed medicines, including Imdeltra, Repasa, and Aplizna. SG&A expenses decreased. We generated $3.7 billion in free cash flow, reflecting continued momentum across the business and enabling us to continue investing for future growth. Capital expenditures were $600 million in the quarter. Including investments across our U.S. manufacturing sites in North Carolina, Ohio, and Puerto Rico. We continue to expect capital expenditures of approximately $2.6 billion in 2026 to scale manufacturing capacity for commercial growth and to prepare for a potential Maritite launch. In addition, we returned capital to shareholders through attractive dividend payments of $2.52 per share, representing a 6% increase compared to the third quarter of 2025. Turning now to the outlook for the business for the remainder of 2026. We are pleased with the strength of our execution and are raising our 2026 guidance ranges for both revenue and non-GAAP EPS. We now expect 2026 total revenues in the range of $38.9 billion to $39.7 billion and non-GAAP earnings per share between $22.90 and $23.70. And let me highlight several additional guidance items. We now anticipate non-GAAP other income and expense to be in the range of two. We continue to expect the full-year non-GAAP operating margin as a percentage of product sales to be roughly 45 to 46 percent. As we look to the fourth quarter, we expect a meaningful sequential increase in operating expenses consistent with our established pattern of higher spending in the final quarter of the year. Specifically, We expect a sequentially higher cost of sales margin due to changes in our sales mix and higher profit share expenses and higher SG&A expense due to the aforementioned timing of investments in the third quarter and continued investment in our marketed products. We expect other revenue. To be approximately $1.9 billion for the full year. We expect a non-GAAP tax rate in the range of 15 to 16.5%. We expect share repurchases not to exceed $3 billion. Looking ahead to 2027, we do not anticipate a step down in operating margin compared with our 2026 guidance. We will continue to allocate resources efficiently, balancing investment in growth with disciplined expense management. As we close out the year, we remain focused on executing our strategy, advancing our growth drivers, investing in the best innovation, and maintaining our rigorous financial discipline that supports our ability to deliver durable growth well into the next decade. I am grateful to work with all our colleagues worldwide in our mission to serve patients. This concludes our financial update. I will now hand it over to Bob for Q&A.",
+        "startSeconds": 1459.95,
+        "endSeconds": 1831.8
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Okay, let's open up the line for questions, and why don't you remind our callers of the procedure.",
+        "startSeconds": 1833.86,
+        "endSeconds": 1838.96
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you. If you would like to ask a question, please press star followed by one on your telephone keypad. If for any reason you would like to remove that question, please press star followed by one. Again, to ask a question, press star one. Our first question comes from Salvine Richter from Goldman Sachs. Please go ahead. Your line is open.",
+        "startSeconds": 1840.18,
+        "endSeconds": 1858.46
+      },
+      {
+        "speakerIndex": 1,
+        "speakerName": "Salveen Richter",
+        "speakerRole": "Analyst \u2014 Goldman Sachs",
+        "text": "Thanks. Good afternoon. On the back of the positive Phase III results in systemic Sjogren's disease, could you help us to think about the confidence or kind of handicap, how we should think about the readout here in the symptomatic patients, and then speak to the regulatory path for this program overall? Thank you.",
+        "startSeconds": 1860.08,
+        "endSeconds": 1882.18
+      },
+      {
+        "speakerIndex": 14,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "Thanks, Alvin. This is Jay. We're delighted by the results of the systemic study, 301, and the efficacy that we observe for both the primary endpoint on STI placebo-adjusted, as well as the impact on secondary dryness are quite encouraging. It is hard to read through, though, from 301 into 303, the systemic to the symptomatic. These are different patient populations. They're being studied separately, and this is important to tease out the possibility of impact on these 434 patients in the 303 study. So we'll have more to say shortly after we see data in Q4 of this year. Regarding the regulatory path going forward, you know, this is a very competitive space of late, which is good for patients because for years there was very little progress. DAZO really represents the first therapeutic to show efficacy in the systemic setting also on symptoms and durable out-to-end-of-study. So we have nothing to say here today, but we look forward to a consideration of these data. Okay, let's go to the next question.",
+        "startSeconds": 1884.14,
+        "endSeconds": 1954.77
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you, Salveen. Our next question comes from Terrence Flynn from Morgan Stanley. Please go ahead. Your line is open.",
+        "startSeconds": 1955.71,
+        "endSeconds": 1961.03
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Terence Flynn",
+        "speakerRole": "Analyst \u2014 Morgan Stanley",
+        "text": "Great. Thanks for taking the questions, and congrats on all the progress. I know, Thomas, you talked about some of the CapEx investments that you guys are making for ahead of the Meritide launch. Is there any consideration to maybe ramping down the biosimilars business to make even more capacity for that launch? Would that also be on the table? And then the kind of related question is, can you tell us, Jay, if you guys have access to the blinded tolerability data from the ongoing Maritide Phase III trials? Thank you.",
+        "startSeconds": 1962.06,
+        "endSeconds": 1994.8
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "I can answer that for you, Terrence, and Bob. Obviously, we consider all options when it comes to managing capacity, but we feel very confident about our ability to continue to be a reliable supplier of high-quality biosimilars. So that's not a strain for us, and our capacity expansion is really designed for larger quantities of protein than what you're referring to with the biosimilars program. On the other question, Jay, do you want to take a shot?",
+        "startSeconds": 1996.46,
+        "endSeconds": 2026.7
+      },
+      {
+        "speakerIndex": 14,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "Sure. Thanks, Terrence, for the question. We are, in 2026, just noses down with discipline data generation on Maritide, and the Maritide studies are being carried out with, you know, total adherence to good clinical practices. We'll have more to share around the efficacy and tolerability of Maritide at the time that these studies read out.",
+        "startSeconds": 2027.16,
+        "endSeconds": 2050.99
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Next question, please, Julianne.",
+        "startSeconds": 2052.93,
+        "endSeconds": 2054.67
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Our next question comes from Akash Shawari from Jefferies. Please go ahead. Your line is open.",
+        "startSeconds": 2055.34,
+        "endSeconds": 2059.74
+      },
+      {
+        "speakerIndex": 16,
+        "speakerName": "Akash Shawari",
+        "speakerRole": "Analyst \u2014 Jefferies",
+        "text": "Hey, thanks so much. You know, hearing your team talk about the phase three Sjogren's data versus phase two in systemic, I think one of the things I've noticed is your team was surprised with the onset of effect, and it might have been better than what you saw in phase two. Can you talk about what we are seeing on onset of effect with the systemic trial and how that reads across to the symptomatic study that's coming up? And then just any comment on the Maritime Penn study. I know you just started a study looking at Maritide with an at-home auto-injector. What gave you the confidence to start that study now, and do we have any visibility on what auto-injector dose you would be having in that trial? Thank you.",
+        "startSeconds": 2060.56,
+        "endSeconds": 2104.18
+      },
+      {
+        "speakerIndex": 14,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "Thanks. I'll take the questions. This is Jay. As I shared a moment ago, we were delighted, but maybe not surprised, by the impact of dasodolivep and Sjogren's disease. We were building on a very strong Phase II data set, after all. The significant 1.8 placebo-adjusted improvement with monthly dosing on the S-Di and 1.4 on the Q12 week are in line with our expectations and strong results. And the effect on dryness as well, we were hoping and expecting to see as well. The read-through, I think I've already covered a moment ago, but you asked about onset. And, you know, here is a potential advantage of something that targets active inflammatory signaling like CD40 and CD40 ligand. We got a lot of experience at this company with B-cell depletion. And with B-cell depletion, there can be a delay in onset in some circumstances, though in many diseases, we haven't experienced that with aplizna. So to see effect at week four is highly consistent with our mechanistic thesis. That as an inhibitor of CD40 ligand, CD40 signaling, you have this chance for an immediate inhibition on B-cell-driven inflammation. But moreover, as CD40 is also highly expressed on salivary gland ductile epithelial cells and can therefore drive local inflammation through interaction with activated T-cells or otherwise, Otherwise, it could be sensible that desodalybev would work as early as four weeks, where we saw statistically significant improvement already that proved durable through the end of study. So, thanks for calling out that feature. It is a nice feature of a molecule directed at an active signaling pathway that it might, in some circumstances, work faster.",
+        "startSeconds": 2105.87,
+        "endSeconds": 2215.56
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Kesh asked a second question about the auto-injector. Obviously, we've got a... A ton of experience with auto-injectors, Akesh, so I don't think there's anything particularly interesting about the study that you're referencing, but Jay, feel free to add anything more if you'd like.",
+        "startSeconds": 2216.92,
+        "endSeconds": 2230.03
+      },
+      {
+        "speakerIndex": 14,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "No, we've been pretty consistent in sharing that Meritide's expected ultimately to be delivered in a patient-friendly, single-chamber, handheld auto-injector. We have significant experience here, as Bob shared. We've taken a fairly standard approach to its development and going well so far.",
+        "startSeconds": 2230.25,
+        "endSeconds": 2246.11
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Okay, let's go to the next question and maybe just remind our callers that we can try to get to everybody tonight. If you could hold yourself to one question, that would be great. Casey and his team will be around and all of us are available if you have other questions you need to get in front of us later in the day. But let's go ahead to the next caller.",
+        "startSeconds": 2246.95,
+        "endSeconds": 2261.49
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Our next question comes from Michael Yee from UBS. Please go ahead. Your line is open.",
+        "startSeconds": 2262.61,
+        "endSeconds": 2266.63
+      },
+      {
+        "speakerIndex": 15,
+        "speakerName": "Michael Yee",
+        "speakerRole": "Analyst \u2014 UBS",
+        "text": "Great, thanks. One question for Bob. Bob, Amgen has been quieter, I guess, on the M&A front in a period of record M&A dealmaking. Could you just comment about your perspective about what you think is going on? Is your desperation factor not high? You're very busy. Maybe you're just more excited about what you've got. Maybe just talk a little bit about that and whether we should or should not necessarily continue to expect bolt-ons or whatever you're thinking. Thank you.",
+        "startSeconds": 2268.66,
+        "endSeconds": 2296.02
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Well, I'm not sure, Michael, that I would acknowledge the premise of the question, but what I would say is our business development focus is very consistent. As we've said for some time, we're looking for opportunities that align well with our four therapeutic areas of focus. You know, we're focused on delivering consistent long-term growth, and we feel confident we're on track to do that, you know, through time. Obviously, a meaningful portion of our revenues come from molecules that we license or acquired, and I think that will continue to be true through time. So we'd like to think that we're disciplined, Michael, in the way that we allocate capital both internally and externally, And I like to think, particularly when we go externally, that we see a path for our shareholders to earn a return and not just for the selling shareholders to earn a return. Next question, please, Julianne.",
+        "startSeconds": 2297.52,
+        "endSeconds": 2349.38
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Our next question comes from Jeroen Werber from TD Cowan. Please go ahead. Your line is open.",
+        "startSeconds": 2350.06,
+        "endSeconds": 2354.58
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Jeroen Werber",
+        "speakerRole": "Analyst \u2014 TD Cowan",
+        "text": "Great. Thanks so much. So maybe a quick question on the upcoming Sjogren's data. The efficacy looked very good on a monthly and Q3 month. DASPRI is sort of a new endpoint that you're validating from the phase two. Is that going to support the U.S. filing while ESPRI is going to support the European filing for the symptomatic study? And then, if you don't mind, can you file for both Q4 and Q3 months, given they both hit on the primary, but only Q months hit on the secondary in the first study on dryness? Thank you.",
+        "startSeconds": 2355.42,
+        "endSeconds": 2387.78
+      },
+      {
+        "speakerIndex": 14,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "Jeroen, thank you. Especially in between the readouts of these two Phase 3s, we're probably not going to go deep today on our full regulatory strategy, but you are correct that there are different preferences around endpoints in the U.S. and rest of the world, and we've taken this very much at heart in the design of these two studies, in the primary and secondary endpoints.",
+        "startSeconds": 2389.52,
+        "endSeconds": 2407.0
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Great. Next question, please, Julianne.",
+        "startSeconds": 2408.52,
+        "endSeconds": 2410.26
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Our next question comes from Chris Schott from JPMorgan. Please go ahead. Your line is open.",
+        "startSeconds": 2411.28,
+        "endSeconds": 2415.54
+      },
+      {
+        "speakerIndex": 6,
+        "speakerName": "Chris Schott",
+        "speakerRole": "Analyst \u2014 JPMorgan",
+        "text": "Great. Thanks so much. Just had a question on ImDeltra. Can you just elaborate a little bit more about how you're thinking about the opportunity to unlock with the 305 data, and maybe as part of that, how quickly you believe the product can ramp following the ESMO data? As part of that answer, can you also talk about the reduced monitoring requirements for the drug as well? I'm just trying to get a sense of how much of a hurdle monitoring had been for uptake in the later line settings, and that obviously seems to be addressed in this earlier line setting as well. Thanks so much.",
+        "startSeconds": 2416.72,
+        "endSeconds": 2445.92
+      },
+      {
+        "speakerIndex": 13,
+        "speakerName": "Murdo Gordon",
+        "speakerRole": null,
+        "text": "Thanks, Chris. It's Myrtle here. So, on the monitoring, we've got an improvement already just approved by the FDA that's now in our label in the second line setting with monitoring of less than six hours now. So that improves from the 22 to 24 hours that we're in the original label, and now we're in a much shorter monitoring period. So that's already helping the ability for primarily community oncology clinics to be able to initiate second-line patients with Indeltra. As Jay mentioned in the 305 study, the monitoring actually goes down to one to two hours, and so there'll be hopefully a further improvement in the label as we extend that to the frontline maintenance indication. And then M-Delta becomes a very straightforward, very simple product to initiate in that frontline maintenance setting with, obviously, a profound survival benefit to be had. So I think this is a medicine, given how novel it is that we've been very careful to ensure patient safety, we're now evolving in our understanding of it. And as with Lincito, as we've moved into earlier disease settings, we see that this is a much, much better tolerated medicine. We really only had one patient in Delphi-305 with cytokine release syndrome of grade 3. All the other patients that experienced cytokine release syndrome experienced grades 1 and 2. So what does that mean for the opportunity? Well, it means that... We believe we've established a new cornerstone therapy. We believe that nothing else thus far in the category has been able to demonstrate the kind of profound overall survival effect that we have, and I would expect that with things like updated NCCN guidelines with additional awareness of these data, the behavior change in the clinic will be rapid. Obviously, we're moving as quick as we can to ensure regulatory filings and approvals and all the rest of it, but we are ready to support the rate of change that clinicians will affect. You know, I'll just say, you know, I've been talking to our field medical teams who have been out there this week and last week post-presentation of the data at ESMO, and, you know, I'm not alone in my enthusiasm for these data. Our practicing oncologists. We are blown away by just the magnitude of effect and the safety profile that we're seeing now in an earlier disease setting. Julianne, next question, please.",
+        "startSeconds": 2447.26,
+        "endSeconds": 2628.63
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Our next question comes from Umar Rafat from Evercore ISI. Please go ahead. Your line is open.",
+        "startSeconds": 2629.55,
+        "endSeconds": 2634.23
+      },
+      {
+        "speakerIndex": 17,
+        "speakerName": "Umar Rafat",
+        "speakerRole": "Analyst \u2014 Evercore ISI",
+        "text": "Hi, guys. Thanks again for taking my question, and I just wanted to echo the sentiment from ESMO on the groundbreaking data. Murdo, maybe just to expand on Chris's question and just to make it easier for investors to understand the magnitude of what we're dealing with here, is it possible or is it realistic for us to assume something approaching 20,000-plus patients in the U.S. being on tarlatumab, and do you envision the maintenance opportunity in Firstline alone being $5 billion-plus with induction trial next year adding additional upside? Thank you very much.",
+        "startSeconds": 2635.15,
+        "endSeconds": 2666.09
+      },
+      {
+        "speakerIndex": 13,
+        "speakerName": "Murdo Gordon",
+        "speakerRole": null,
+        "text": "Well, Boomer, I think you know me by now and you know the Amgen team by now that we don't issue product-specific guidance, but you can tell by the answer to Chris's question that we're extremely excited about the data set that have been generated here. You know, the opportunity is definitely an interesting one, given how rapidly patients progress in this disease area. And so in second line, you're quite limited as to the addressable patient population, because unfortunately not many patients make it to second line. Their disease progresses too rapidly, and they end up in hospice, and they end up dying. And so, as you move into the earlier lines, you know, the small cell lung cancer addressable population in the U.S. is 35,000. So, it's a decent-sized patient population. The question is, you know, how big is it in each setting in frontline maintenance? But as I said to Chris, this is going to be a very rapid adoption, and we're going to see, hopefully, many patients on imdeltra for a long period of time, and so the duration of treatment here might be quite long as well. But I would like to turn it over to Jay on other clinical development work that we're doing on the molecule.",
+        "startSeconds": 2667.16,
+        "endSeconds": 2750.11
+      },
+      {
+        "speakerIndex": 14,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "Yes, thanks, Umur. The development of MDeltra remains a source of real activity here at Amgen. We're working hard to complete the limited-stage small cell lung cancer study that is an event-driven study, as well now having seen the benefit of MDeltra used in the maintenance setting of frontline induction and maintenance use of MDeltra. We've completed, as you may know, a study of imdeltra that establishes an alternate dosing capability. And this is very helpful as we start to imagine combinations of imdeltra with emerging agents, such as antibody drug conjugates. And Deltra is showing dramatic data when combined with chemotherapy, and there's every expectation then that ADCs delivering chemotherapy should be comparably active. And we have undertaken studies with B7H3 and DLL3, and we'll have more to share there in the future. But just as Murdoch said, not only do these combinations and advances in use of M-Deltra as a cornerstone of small cell lung cancer therapy lead to increased response rates, but durability. And we're very hopeful that as the data from the Delphi study presented in the Presidential at ESMO and published in the New England Journal recently, That is, these data mature, the patients will reveal to us the full benefit of the medicine. The Phase 1B frontline maintenance study, Delfi-303, that was also presented at ESMO, has matured. And with a median follow-up of 30.8 months, we saw a median overall survival of 37.9 months, which is just unheard of in this disease setting. So we're very pleased with the development so far, but we have a lot of wood to chop for these patients going forward. Julian, next question, please.",
+        "startSeconds": 2750.99,
+        "endSeconds": 2857.32
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Our next question comes from David Anselm from Piper Sandler. Please go ahead. Your line is open.",
+        "startSeconds": 2858.22,
+        "endSeconds": 2863.34
+      },
+      {
+        "speakerIndex": 12,
+        "speakerName": "David Anselm",
+        "speakerRole": "Analyst \u2014 Piper Sandler",
+        "text": "Hey, thanks. So I have a dextilumab question. On the phase three, are you going to explore a broader cutaneous lupus population, or will it be specific to discoid lupus? That's number one. And then just thinking about this market, can you talk about sizing in terms of how you think about cutaneous lupus in that population relative to the SLE population and how these are two distinct populations and how that informs your physician targeting? Is this a dermatology call point or a rheumatology call point or a bit of both?",
+        "startSeconds": 2865.34,
+        "endSeconds": 2905.38
+      },
+      {
+        "speakerIndex": 14,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "Thanks for the question. I'll start, Myrtle, and maybe you can weigh in on the outlook for the medicine. Thanks for asking about Daxilumab. We're very pleased with the activity observed so far in discoid lupus, a prevalent disease, 20 to 50 humans per 100,000, and 5 to 10 percent may progress to SLE. You surely appreciate that there have been innumerable mechanisms of action that have failed patients with lupus and its various manifestations, and in our phase two study, the effect on class EA, where an improvement from seven points from baseline is considered clinically meaningful broadly in this population of those greater than or equal to eight at baseline, improvements that we saw were negative 10 and negative 9.9 for the lower and the higher doses at week 24. And so we're very taken with this medicine in the cutaneous manifestations of lupus. We have not as yet described completely our phase 3 design, and we will do that in the future. But it's not lost on us that we've stumbled upon a very exciting and hopeful mechanism targeting these plasmacytoid dendritic cells in this disease.",
+        "startSeconds": 2907.98,
+        "endSeconds": 2982.22
+      },
+      {
+        "speakerIndex": 13,
+        "speakerName": "Murdo Gordon",
+        "speakerRole": null,
+        "text": "No, I would just add that, you know, the prescribing population of physicians here, primarily dermatologists, which obviously we have good Amgen capabilities and experience there. And for the few rheumatologists that will pick it up, again, we have, you know, strong medical and field commercial teams covering those customers.",
+        "startSeconds": 2983.08,
+        "endSeconds": 3003.54
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Julianne, next question, please.",
+        "startSeconds": 3004.8,
+        "endSeconds": 3006.04
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Our next question comes from Evan Seegerman from BMO Capital Markets. Please go ahead. Your line is open.",
+        "startSeconds": 3006.96,
+        "endSeconds": 3012.04
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": "Evan Seegerman",
+        "speakerRole": "Analyst \u2014 BMO Capital Markets",
+        "text": "Hi, guys. Thank you so much for taking my question. I think, Jay, when we met in that small group meeting back in September, you suggested that although Maritide is administered monthly or even less frequently, the side effect duration is comparable in length to what you get with weekly anchortons. I would love it if you could expand more on how you can measure that in kind of a phase, you know, in any of your trials, and more broadly, just given how much the space and obesity has rapidly evolved even since then, you know, remind us how maritime fits within kind of this evolving landscape. Thank you so much.",
+        "startSeconds": 3012.85,
+        "endSeconds": 3044.97
+      },
+      {
+        "speakerIndex": 14,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "Thanks. Why don't I start to talk, Myrtle, about the interesting and reassuring, if not exciting, dissociation between the pharmacokinetics of Meritide and the duration of symptomatology, if you could pick up the back half of the question about segmentation. First, I would just say, irrespective of why I think it is true, it is true that this medicine that has a very long half-life, designed for tonic activation of GLP-1 receptors, as well as inhibition of GIP receptors, that has conferred activity for weight loss and type 2 diabetes with monthly dosing, every 8-week dosing, and as we described, every 12-week dosing. It is a fact born out of prospective clinical investigation that though the durable disease activity of the medicine is quite long-lived like the molecule, the symptoms aren't. This is true also for weakly injectable GLP-1 peptides, and so we're not surprised to see it. Now, how do we measure it, you ask? Here, we've done very exhaustive diaries in early phase clinical investigation to understand the onset, frequency, severity, and duration of symptoms. We've shared some of these early plots that we call Manhattan plots that reveal the duration of symptoms should they arise. To date, Meritide is proven very well tolerated. It's target doses and, like all GLP-1s, benefits from dose escalation. But the durable activity of the medicine does not come with a durable side effect profile, where side effects to date are, where observed, mostly mild, sometimes moderate, and rather short-lived for a few days. Myrtle?",
+        "startSeconds": 3046.35,
+        "endSeconds": 3164.22
+      },
+      {
+        "speakerIndex": 13,
+        "speakerName": "Murdo Gordon",
+        "speakerRole": null,
+        "text": "Yeah, it's an interesting observation, Evan, on the amount of activity in this category. There are certainly a lot of daily orals being developed. There's a lot of weekly injectables. Being developed, some even trying to stretch to monthly, but what we've not seen is, you know, a bona fide monthly drug in development that could be dosed as infrequently as six times or four times a year, and we continue to believe that Maritide is unique and differentiated in that aspect. It's a simple three-step dose escalation. Two months, you're up to your first maintenance dose, and then you can find the most convenient dose for your weight loss journey thereafter. So I feel like we've got a compelling offering. We're obviously looking forward to seeing the Phase 3 data when they read out, and we're excited about coming into the market and helping many, many patients. Reach their weight loss goals. We've also got a broad clinical program, as you know, and that means that we'll also be able to help patients with type 2 diabetes and ASCVD and sleep apnea, among others.",
+        "startSeconds": 3165.07,
+        "endSeconds": 3239.78
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Jillian, next question, please.",
+        "startSeconds": 3240.98,
+        "endSeconds": 3242.24
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Our next question comes from Jeff Meacham from Citi. Please go ahead. Your line is open.",
+        "startSeconds": 3243.18,
+        "endSeconds": 3247.22
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": "Jeff Meacham",
+        "speakerRole": "Analyst \u2014 Citi",
+        "text": "Hey, guys. Thanks for taking the question. I had a similar one for Jay or for Murdo. So ahead of the Meritide data next year, I wanted to ask how you guys are thinking about the commercial approach, so mostly thinking about the dynamics of the new Medicare bridge program, you know, payer receptivity, how you're thinking about the OUS markets in advance of data. Thank you.",
+        "startSeconds": 3248.38,
+        "endSeconds": 3270.04
+      },
+      {
+        "speakerIndex": 13,
+        "speakerName": "Murdo Gordon",
+        "speakerRole": null,
+        "text": "Thanks for the question, Jeff. Look, I think I would start first with we're very focused on making sure that consumers and patients are very much in the focus of our go-to-market strategy. I think what we've seen in this category is that patients have a much more important role to play. So, first and foremost, that is absolutely the priority. We will scale and size accordingly. We obviously have a great cardiometabolic team here at Amgen, and we'll be ready to go to market with Maritide. I think on the access and reimbursement front, we expect our unique differentiated profile to help secure access and coverage, and obviously we're interested in seeing what other government access programs. I think it's good that we've got Medicare access in this category. I think it should be expanded. XUS, I think, is going to be tougher. I think it's going to continue to be very much a consumer-driven market, XUS. But we are hopeful with outcomes data in ASCVD and with type 2 diabetes data and other quote-unquote hard endpoint clinical programs. Then that we'll be able to secure reimbursement in many markets outside the U.S. as well.",
+        "startSeconds": 3271.63,
+        "endSeconds": 3364.44
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Okay. Let's take two more questions, and then we'll, as I said earlier, be available if some of you didn't get a chance to ask questions on the call. Let's go two more.",
+        "startSeconds": 3365.54,
+        "endSeconds": 3374.26
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Our next question comes from Matt Phipps from William Blair. Please go ahead. Your line is open.",
+        "startSeconds": 3375.72,
+        "endSeconds": 3379.94
+      },
+      {
+        "speakerIndex": 9,
+        "speakerName": "Matt Phipps",
+        "speakerRole": "Analyst \u2014 William Blair",
+        "text": "Nice to take my question, Chris, and a good quarter. With both the Opdivo and Keytruda BLAs filed, I'm just curious what your assumptions are around being able to \u2013 when you can commercially launch those, and how do you think about penetrating the market that is kind of being moved to subcutaneous formulation? Thank you.",
+        "startSeconds": 3381.96,
+        "endSeconds": 3401.42
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Yeah, obviously, this is a competitive space here, so we're not going to have a whole lot to share with you at this point, Matt, but as you heard from Murdo's remarks, Our focus is on developing these medicines, having them available for patients, and again, we've established a pretty good track record here as a leader in biosimilars, but Murdo, feel free to jump in if you want to add any further, Keller.",
+        "startSeconds": 3402.84,
+        "endSeconds": 3425.32
+      },
+      {
+        "speakerIndex": 13,
+        "speakerName": "Murdo Gordon",
+        "speakerRole": null,
+        "text": "Well, as we always say about our focus on biosimilars, we'll be first or first wave with those launches, which is really important to establish decent competitive position, and we believe...",
+        "startSeconds": 3425.8,
+        "endSeconds": 3439.68
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "All right. Let's go to the last question, please.",
+        "startSeconds": 3443.09,
+        "endSeconds": 3444.57
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Our last question comes from Alex Hammond from Wolf Research. Please go ahead. Your line is open.",
+        "startSeconds": 3445.85,
+        "endSeconds": 3450.39
+      },
+      {
+        "speakerIndex": 11,
+        "speakerName": "Alex Hammond",
+        "speakerRole": "Analyst \u2014 Wolf Research, LLC",
+        "text": "Hey, guys. Thanks for squeezing me in. So, unlike small-tail lung cancer, a large share of prostate cancer care occurs in neurology groups and community practices that have little experience managing CRS. So, I guess, how are you planning to bring Zaliurita MIG to those sites, and how much could the fully outpatient cohort or sub-Q version change that? And I guess, also, how important is it to not need a biomarker to help adoption compared to other treatments that require them? Thank you.",
+        "startSeconds": 3451.89,
+        "endSeconds": 3477.18
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "Terrific. Thanks for the question.",
+        "startSeconds": 3478.18,
+        "endSeconds": 3479.28
+      },
+      {
+        "speakerIndex": 14,
+        "speakerName": "Jay Bradner",
+        "speakerRole": null,
+        "text": "Jay, why don't you share your thoughts? Yeah, I'll share on the back two sides. And, Murdo, perhaps you could talk about implementing T-cell engagers where we just have so much experience, truly the leading company in the sector. So, for sure, helping the adoption of this medicine is experience with it, and building a comfort with T-cell engagers as a therapeutic isn't as much about the doctor as it is about the care environment, I can say, as a doctor. The reduced monitoring will go a long way to helping, as well as a fully outpatient cohort, which we have presented at ESMO in Phase 1B, which demonstrated for Zaloritimig, our Steep 1 CD3 bispecific that you referenced, the feasibility for a more convenient administration setting. I will say this is not trivial, but those same centers approach many other non-trivial medicines and so we have every expectation that through clinical investigation as well as evidence generation, we will establish confidence and comfort for prescribing urologists as needed. You sort of threw me the basketball right under the hoop with your question around biomarkers. It helps a lot to not need a biomarker in order to enroll patients and bring access to a medicine. We have some medicines that, of course, require it, but here, the quite high, if not characteristic, expression of STEEP-1 in prostate cancer affords a chance to bring this medicine to patients without the need for stratification or qualification by a confirmatory biomarker.",
+        "startSeconds": 3479.38,
+        "endSeconds": 3575.04
+      },
+      {
+        "speakerIndex": 13,
+        "speakerName": "Murdo Gordon",
+        "speakerRole": null,
+        "text": "Myrda? Yeah, we've got obviously extensive experience, as Jay mentioned, in bringing bispecific T-cell engagers into different therapeutic contexts. We've learned a lot from our work in hematology with Blancito, now in solid tumor with Indeltra, and we've established... An actual field organization we call our bispecific operations team who help with the operationalization in clinics on how to make sure that patients get the appropriate monitoring, the appropriate information at point of care. So that team is up and running. We've had it since before the launch of Indeltra. We're now running it at scale for Indeltra, and we would apply that to the GU oncology space as well. We've established a field medical presence with these customers and these clinicians. And we also partner very closely with patient advocacy organizations. This was a key success factor in small cell where the patient advocates are very good at making patients aware of how to self-monitor and how to identify any type of side effect profile that could be. The cytokine release syndrome, so really a lot of experience being applied to the GU space that I think will be very helpful in ensuring patient safety.",
+        "startSeconds": 3575.1,
+        "endSeconds": 3661.78
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Bob Bradway",
+        "speakerRole": "CEO",
+        "text": "All right. Well, thank you all for joining our call. I think I can speak for the group here that we're heartened by your focus on sources of long-term growth that have emerged with clinical data over the last few weeks. As again, I hope you can appreciate the businesses performing well, the leadership executing well, and we're looking forward to finishing the year strong, and we'll look forward also to gathering with all of you next year to review the fourth quarter and to get launched into 2027. So thanks for your support. We'll talk to you soon.",
+        "startSeconds": 3664.14,
+        "endSeconds": 3695.97
+      }
+    ],
+    "corrections": []
+  }
+}

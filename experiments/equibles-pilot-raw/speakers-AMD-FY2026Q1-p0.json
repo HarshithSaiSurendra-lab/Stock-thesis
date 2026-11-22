@@ -1,0 +1,427 @@
+{
+  "status": 200,
+  "result": {
+    "eventId": "3305332e-b54d-4a52-8a30-83a182b8c6ec",
+    "ticker": "AMD",
+    "eventTitle": "Advanced Micro Devices Inc Q1 FY2026 Earnings Call",
+    "callDate": "2026-05-05T00:00:00+00:00",
+    "fiscalYear": 2026,
+    "fiscalQuarter": 1,
+    "turnCount": 51,
+    "totalTurnCount": 51,
+    "offset": 0,
+    "hasMore": false,
+    "isFiledRecord": false,
+    "data": [
+      {
+        "speakerIndex": 7,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Greetings, and welcome to the AMD First Quarter 2026 Conference Call. At this time, all participants are in a listen-only mode. A question-and-answer session will follow the formal presentation. If anyone should require operator assistance during the conference, please press star zero on your telephone keypad. And please note that this conference is being recorded. I will now turn the conference over to Matt Ramsey, Vice President of Financial Strategy, NIR. Thank you, Matt. You may begin.",
+        "startSeconds": 0.0,
+        "endSeconds": 27.12
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Matt Ramsey",
+        "speakerRole": "Head of Investor Relations",
+        "text": "Thank you, and welcome to AMD's first quarter 2026 Financial Results Conference Call. By now, you should have had the opportunity to review a copy of our earnings press release and the accompanying slides. If you have not had a chance to review these materials, they can be found on the Investor Relations page of AMD.com. We will refer primarily to non-GAAP financial measures during today's call. The full non-GAAP to GAAP reconciliations are available in today's press release and slides posted on our website. Participants on today's conference call are Dr. Lisa Su, our Chair and CEO, and Gene Hu, Executive Vice President, CFO, and Treasurer. This is a live call and will be replayed via webcast on our website. Before we begin the call, I would like to note that Gene Hu will present at the Bank of America Global TMT Conference on Tuesday, June 2nd in San Francisco. Today's discussion contains forward-looking statements based on current beliefs, assumptions, and expectations, speak only as of today, and as such involve risks and uncertainties that could cause actual results to differ materially from our current expectations. Please refer to our cautionary statement in our press release for more information on factors that could cause actual results to differ materially. With that, I will hand the call over to Lisa.",
+        "startSeconds": 27.12,
+        "endSeconds": 110.94
+      },
+      {
+        "speakerIndex": 1,
+        "speakerName": "Lisa Su",
+        "speakerRole": "CEO",
+        "text": "Thank you, Matt, and good afternoon to all those listening in today. We delivered an outstanding start to the year, driven by accelerating demand for AI infrastructure across our portfolio. Growth was broad-based, with every segment increasing year-over-year, led by 57% data center revenue growth. Order revenue increased 38% year-over-year to $10.3 billion. Earnings grew more than 40%, and free cash flow more than tripled to a record $2.6 billion, driven by significantly higher sales of Epic CPUs, Instinct GPUs, and Ryzen processors. These results mark a clear inflection in our growth trajectory and a structural shift in our business. Datacenter is now the primary driver of our revenue and earnings growth. And as AI adoption scales, demand is increasing not only for accelerators, but also for the high-performance CPUs that power and orchestrate those workloads. Turning to our segments, data center revenue increased 57% year-over-year to a record $5.8 billion, led by strong demand for our EPIC CPUs and Instinct GPUs. In server, we delivered our fourth consecutive quarter of record server CPU revenue. Revenue increased more than 50% year-over-year, with sales to both cloud and enterprise customers each growing more than 50%. Share gains accelerated year-over-year, reflecting the ramp of 5th-gen EPIC turned CPUs and continued strength of 4th-gen EPIC processors across a wide range of workloads. workloads. In cloud, AI was the primary driver of growth in the quarter, as every major cloud provider expanded their EPIC footprint to support a broad range of AI workloads, from general purpose compute and data processing to head nodes for accelerators and emerging agentic applications. Cloud instances increased nearly 50% year-over-year to more than 1,600, with instances optimized for virtually every enterprise workload and expanded availability across the largest global cloud providers. In enterprise, demand accelerated with record revenue and record sell-through in the quarter. We expanded our customer base with new wins across financial services, healthcare, industrial, and digital infrastructure companies, while also building momentum with mid-market and SMB customers. We are well-positioned to continue gaining share as more enterprises standardize on EPIC across on-prem and hybrid environments based on our leadership performance and TCO. Looking ahead, our 6th Gen EPIC Venice Processor, built on our Zen 6 architecture and 2 nanometer process technology, is designed to extend our leadership across cloud, enterprise, and AI workloads. The Venice family spans a broad set of CPUs optimized for throughput, performance per watt, and performance per dollar, including Verano, our first Epic CPU purpose-built for AI infrastructure. Across the portfolio, Venice widens our competitive advantage, delivering substantially higher performance per socket and per watt versus competitive x86 offerings, and more than 2x throughput per socket versus leading ARM-based AI solutions. Customer demand is very strong, with more customers validating and ramping platforms at this stage than with any prior Epic generation. and we remain on track to launch Venice later this year. More broadly, we are seeing a meaningful acceleration in customer demand driven by the rapid scaling of AI workloads across both cloud and enterprise. Inferencing and agentic AI are increasing the need for server CPU compute, as these workloads require additional CPU processing for orchestration, data movement, and parallel execution, in addition to serving as the head nodes for GPUs and accelerators. As a result, we are seeing both stronger near-term demand and deeper engagement with customers on long-term capacity planning. At our Financial Analyst Day in November, we outlined the server CPU market growing at approximately 18% annually over the next three to five years. Based on the demand signals we are seeing today and the structural increase in CPU compute requirements driven by agentic AI, we now expect the server CPU TAM to grow at greater than 35% annually, reaching over $120 billion by 2030. In response to this demand, we are working closely with our supply chain partners to meaningfully increase our wafer and back-end capacities to support this growth. As a result, we now expect server CPU revenue to grow by more than 70% year-over-year in the second quarter with robust growth continuing through the second half of 2026 and into 2027 as we ramp our next-generation EPIC processors now turning to our data center AI business revenue grew by a significant double digit percentage year-over-year as adoption of instinct accelerates across cloud enterprise sovereign and supercomputing customers we're seeing strong momentum as customers move from pilots to large-scale production deployments particularly in inference where our leadership memory capacity and bandwidth are key advantages this momentum is driving deeper long-term customer engagements including large-scale multi-generation deployments a key example is our expanded strategic partnership with meta to deploy up to six gigawatts of AMD instinct GPUs spanning several product generations our agreement includes a custom GPU accelerator based on our MI450 architecture, co-designed to support Meta's next-generation AI workloads. Tripments are on track to begin in the second half of the year, leveraging our Helios Rack Scale architecture, which integrates Instinct GPUs with Epic Venice CPUs to deliver fully optimized, high-performance AI infrastructure. Together with our previously announced OpenAI partnership, these engagements position AMD as a core partner to the world's largest AI infrastructure builders with deep co-engineering relationships and multi-year visibility into large-scale deployments more broadly instinct adoption continues to expand across AI native and enterprise customers for both training and inference workloads existing partners are expanding instincts across broader set of workloads while a growing number of new partners are deploying production AI workloads on instinct highlighting the maturity of our hardware and software stack on the software front we continue to make strong progress with rockin improving performance scalability and enabling customers to reach production faster in our latest ml perf results and my 355x delivered strong competitive performance across the full suite with leadership results in multiple categories we also expanded day zero support for the leading open models including the latest Google Gemma FourFamily, Quen, Kimi, and others, enabling customers to deploy new models quickly with optimized performance. To build on this momentum, we have significantly accelerated our Rackham development cadence through increased software investments and agent-based coding workflows, enabling faster performance improvements and more rapid deployment of new capabilities. Looking ahead, customer pull for Helios is very strong, driven by our leadership performance, memory bandwidth, and scale-out capacity. Helios development is progressing well with strong execution across silicon software and systems as we advance through key milestones. We have begun sampling MI450 series GPUs to lead customers and remain on track to ramp Helios production shipments in the second half of the year. As we approach production, demand for MI450 series GPUs continues to strengthen, with lead customer forecasts now exceeding our initial plans, and a growing number of new customers engaging on large-scale deployments, including additional multi-gigawatt opportunities. With this expanded visibility, we have strong and increasing confidence in our ability to deliver tens of billions of dollars in annual data center AI revenue in 2027, and to exceed our long-term growth target of greater than 80% in the coming years. I look forward to sharing more on our next generation instinct GPUs epic processors Helios rack scale platform and our growing customer engagements at our advancing AI event in July turning to client and gaming segment revenue increased 23 percent year-over-year to 3.6 billion in client revenue grew 26 percent year-over-year to 2.9 billion led by strong sales of our latest rise in processors and continued share gains across consumer and commercial markets. In desktop, we strengthened our Ryzen lineup, including our latest X3D processors that deliver leadership performance across gaming, content creation, and professional workloads. We also introduced the Ryzen AI 400 series and Ryzen AI Pro 400 series desktop CPUs, sending our AI PC offerings across both consumer and commercial systems. In mobile, we delivered strong growth driven by a richer product mix as Ryzen 400 mobile PC shipments ramped and commercial adoption increased. Commercial was a key highlight in the quarter, with sell-through of Ryzen Pro PCs increasing more than 50% year-over-year as Dell, HP, and Lenovo broadened their AMD offerings. We also closed new enterprise wins across large technology, financial services, healthcare, and aerospace customers. Looking ahead, we expect demand for our Ryzen CPUs to remain solid in the second quarter. However, we are planning for second-half PC shipments to be lower due to higher memory and component costs. Against this backdrop, we still expect our client revenue to grow year-over-year and outperform the market, driven by the strength of our Ryzen portfolio and expanding commercial adoption. In gaming, revenue increased 11% year-over-year to $720 million. Semi-custom revenue declined year-over-year, as expected at this stage of the console cycle, while engagements with customers on next-generation platforms remained strong. In graphics, revenue increased year-over-year, led by demand for our latest generation Radeon 9000-series GPUs. We also strengthened our Radeon portfolio with updates to our FSR software that improved performance and visual quality across a broad set of gaming workloads. Similar to the PC market, we believe that second-half demand in gaming will be impacted by higher memory and component costs, and we are planning the business accordingly. Turning to our embedded segment, revenue increased 6% year-over-year to $873 million, driven by strength in test, measurement and emulation, aerospace and defense, and communications, as well as increased adoption of our embedded x86 products. Designwind momentum grew by a double-digit percentage year-over-year, with billions of dollars in new wins across markets, reflecting the continued expansion of our embedded business from a primarily FPGA-focused portfolio to a broader set of adaptive embedded x86 and semi-custom solutions, significantly expanding our TAM. Our semi-custom engagements also expanded in the quarter, as data center communications and other embedded customers leverage our broad IP portfolio and high-performance expertise to build differentiated solutions in summary our first quarter results mark a clear step up in our growth trajectory with accelerating momentum across the business our client business continues to outperform the market driven by rise in adoption and share gains while an embedded design with momentum and demand are strengthening across our expanded adaptive and x86 portfolio at the same time our data center business is inflecting with strong demand for both of Epic and Instinct products driving significant growth. While we are still in the early stages of the AI infrastructure cycle, the pace and scale of deployments we are seeing today reinforce both the magnitude and durability of the opportunity ahead. As inferencing and agentic AI deployment scale, they are fundamentally increasing compute requirements, driving both larger scale accelerator deployments and significantly more CPU compute. AMD is uniquely positioned to lead in this next phase of AI, with leadership products across high-performance server CPUs and AI accelerators, and the ability to optimize them together as fully integrated rack-scale solutions. We have a world-class supply chain and are making significant investments to expand capacity and execute at scale. With the momentum we are seeing across the business and the expanding market opportunity, we see a clear path to exceed our long-term financial targets, results, including delivering more than $20 in EPS over the strategic timeframe. Now I will turn the call over to Jean to provide additional color on our first quarter results. Jean.",
+        "startSeconds": 111.94,
+        "endSeconds": 970.69
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Jean Hu",
+        "speakerRole": "CFO",
+        "text": "Thank you, Lisa, and good afternoon, everyone. I'll start with a review of our first quarter financial results and then provide our current outlook for the second quarter of fiscal 2026. We are pleased with our outstanding first quarter results delivering accelerated revenue growth and earnings expansion driven by strong execution and operating leverage. First quarter revenue was $10.3 billion, exceeding the high end of our guidance, growing 38% year-over-year, driven by strong growth in the data center and client gaming segments, and the return to growth in the embedded segment. Revenue was flat sequentially with the continued growth in the data center segment offset by seasonality in the client and the gaming segment and the embedded segment. Growth margin was 55%, up 170 basis points versus a year goal, driven by a favorable product mix, including a higher data center revenue contribution. Operating expenses were $3.1 billion, an increase of 42% year-over-year, as we continue to invest in R&D to support our AI roadmap and the long-term growth opportunities and go-to-market activities. As the business scales, operating income grew faster than top-line revenue. Operating income was $2.5 billion, representing a 25% operating margin. taxes, interest, and other resulting in a net expense of approximately $275 million. For the quarter, diluted earnings per share was $1.37, up 43% year-over-year, underscoring the significant operating leverage in our model as we scale. Now turning to our reportable segment, Starting with the data center segment, revenue was a record of 5.8 billion, up 57% year-over-year and 7% sequentially, given by strong demand for epic processors and continued ramp of instant GPUs. Data center segment operating income was 1.6 billion, or 28% of revenue compared to 932 million, or 25% a year ago. Client on the gaming segment revenue was $3.6 billion, up 23% year-over-year. On a sequential basis, revenue was down 9% consistent with seasonality. The client on the business revenue was $2.9 billion, up 26% year-over-year, driven by strong demand for our latest rising prices, favorable product mix, and continued share gains across consumer and commercial markets. Sequentially, client revenue was down 7% due to seasonality. The gaming business revenue was $720 million, up 11% year-over-year, primarily driven by a higher demand for Radeon GPUs partially offset by lower semi-customer revenue. Sequentially, gaming revenue was down 15%, consistent with our expectations. In addition, as Lisa mentioned earlier, we expect second-half demand in gaming to be impacted by higher memory and component cost. We now expect second-half gaming revenue to decline more than 20 percent compared to the first half. Decline on the gaming segment operating income was $575 million or 16 percent of revenue compared to $496 million, or 17% a year ago. Embedded segment revenue was $873 million, up 6% year-over-year as demand strengthened across several end markets. Sequentially, embedded revenue was seasonally down 8%. Embedded segment operating income was $338 million, or 39% of revenue compared to 328 million or 40% a year ago. Turning to the balance sheet and the cash flow, during the quarter we generated $3 billion in cash from continuing operations and the record $2.6 billion in free cash flow or 25% of revenue, demonstrating the cash generating power of our business model. inventory was roughly flat at $8 billion. At the end of the quarter cash cash equivalents and short-term investment was $12.3 billion. In the quarter we repurchased 1.1 million shares and returned $221 million to shareholders. We ended the quarter with $9.2 billion authorization remaining and our share repurchase program. Now turning to our second quarter, 2026 outlook we expect revenue to be approximately 11.2 billion plus or minus 300 million at the middle point of our guidance revenue is expected to be up 46 percent year-over-year driven by a very strong growth in our data center segment growth in our client and the gaming segment and the double-digit growth in our embedded segment. Sequentially, we expect revenue to be up approximately 9%, driven by double-digit growth in both our data center and the embedded segments and the modest growth in our client on the gaming segment. In addition, we expect second quarter non-GAAP growth margin to be approximately 56%. Non-GAAP operating expenses to be approximately $3.3 billion. Non-GAAP other income and expense to be, again, of approximately $60 million. Non-GAAP effective tax rate to be 13%, and the diluted share count is expected to be approximately $1.66 billion shares. In closing, the first quarter of 2026 was an outstanding quarter for AMD, reflecting strong momentum across the business with accelerated revenue and earnings expansion. We are very well positioned to build on the momentum as we scale our data center business, expand the margins, drive continued earnings growth, and the long-term shareholder value creation. With that, I'll turn it back to Matt for the Q&A session.",
+        "startSeconds": 972.27,
+        "endSeconds": 1382.69
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Matt Ramsey",
+        "speakerRole": "Head of Investor Relations",
+        "text": "Thank you, Gene. Operator, we're ready to start the Q&A session now. I would ask the callers to limit yourself to one question and one brief follow-up, but please go ahead and poll for questions. Thank you.",
+        "startSeconds": 1382.69,
+        "endSeconds": 1396.44
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you, Matt. We will now be conducting a question and answer session. If you would like to ask a question, please press star 1 on your telephone keypad. A confirmation tone will indicate that your line is in the queue. You may press star 2 if you'd like to remove a question from the queue.",
+        "startSeconds": 1397.78,
+        "endSeconds": 1411.44
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Matt Ramsey",
+        "speakerRole": "Head of Investor Relations",
+        "text": "For participants using speaker equipment, it may be necessary to pick up your handset before pressing the star keys.",
+        "startSeconds": 1411.92,
+        "endSeconds": 1417.0
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "We ask that you please limit yourself to one question and one follow-up thank you. One moment, please, while we pull for questions. And the first question comes from the line of Joshua Buckwalter with TD Cowan. Please proceed with your question.",
+        "startSeconds": 1417.5,
+        "endSeconds": 1434.08
+      },
+      {
+        "speakerIndex": 9,
+        "speakerName": "Joshua Buckhalter",
+        "speakerRole": "Analyst \u2014 TD Cowan",
+        "text": "Hey, guys. Congrats on the results, and thanks for taking my question. Actually going to start with CPUs, which hasn't happened in a bit. It hasn't been that long since you announced the $60 billion server CPU TAM for 2030 at the Analyst Day, and it's very quickly doubled. Agentec AI has obviously gotten a lot of attention in recent months, but would be helpful to hear your thoughts on how this TAM is inflecting and changing so meaningfully in such a short amount of time. And maybe you could also speak to your confidence in hitting that greater than 50% share target from the analyst day. As your x86 competitor seems to be improving its supply, and also there seems to be more momentum on the merchant and custom ARM CPU side.",
+        "startSeconds": 1435.38,
+        "endSeconds": 1475.68
+      },
+      {
+        "speakerIndex": 1,
+        "speakerName": "Lisa Su",
+        "speakerRole": "CEO",
+        "text": "Yeah, sure, Josh. Thanks for the question. So first of all, back to when we think about CPU TAM, we've always said that CPUs are a very critical part of data center infrastructure, and that's been where we've invested. And we saw the first signs of, let's call it, AI demand, really pulling CPU demand last year, and that was the reason we updated the TAM to, let's call it, the 18% CAGR, or approximately $60 billion. And, you know, what we've seen is, you know, all of the things that we believed in terms of, you know, agentic AI and inferencing and all the CPU compute that is required is just happening and it's happening at a much faster pace. So, you know, over the last, you know, let's call it the last few months, as we've talked to our customers and we've seen how AI adoption is really unfolding, you know, we're seeing a significant more CPU demand from really every major cloud provider as well as, you know, enterprise customers. And, you know, the way that comes across is at AI adoption scales, you need more inferencing. At inferencing scales, you know, and you do more, you have more, you know, agents and agentic AI. They all require CPUs for, you know, all of the orchestration and the data processing and these other tasks. So, you know, with that, we've looked at it both, you know, bottoms up, you know, in terms of talking to customers and having them, you know, give us longer term forecasts, as well as just doing some, you know, clear workload analysis. And, yeah, I mean, it's a very exciting time. I think it's exciting to see, you know, CPUs growing, you know, greater than 35 percent to, you know, over $120 billion. dollars. And then when you think about AMD in the context of that, CPUs are critical for so many tasks that you are seeing a lot more discussion about CPUs in the market. But we actually view it in three categories. There's general purpose compute. There's the head nodes that really support the AI accelerators. And then there are CPUs just for all of the agentic AI work. And to do all of this, our belief is you need a broad portfolio of CPUs, and that's really what we have been focused on is building not just one type but really broader in terms of throughput optimized, power optimized, cost optimized, AI infrastructure optimized as we've done in the Venice family. So when you put all that together, we're very excited about the larger TAM and we're also very happy with the traction that we're getting. We're clearly feeling like we're seeing significant share gain as we're going into our turn portfolio that has ramped very nicely. Venice is extremely well positioned, and we're working with customers right now beyond Venice and what we're doing in those architectures. So we feel really good about the market as well as our opportunity to grow to a greater than 50% share of that market.",
+        "startSeconds": 1477.32,
+        "endSeconds": 1662.18
+      },
+      {
+        "speakerIndex": 9,
+        "speakerName": "Joshua Buckhalter",
+        "speakerRole": "Analyst \u2014 TD Cowan",
+        "text": "Okay, thank you for all the color there. I wanted to ask about the instinct side. So in the press release, you mentioned that MI450 and Helios engagements are strengthening with customer forecasts exceeding the expectations and the pipeline growing. You know, you certainly have the big public open AI and meta deals.",
+        "startSeconds": 1664.35,
+        "endSeconds": 1681.37
+      },
+      {
+        "speakerIndex": 1,
+        "speakerName": "Lisa Su",
+        "speakerRole": "CEO",
+        "text": "Was this comment referring to those engagements upsizing versus the announced initial deployments, or was it other customers and maybe the increase on the MI450 timeline, or is it MI 500 and beyond thank you for Josh so we are very excited about MI 450 and Helios we're seeing significant customer interest in those products as well so you know we have certainly talked about our large partnerships with open AI and meta and those are going really well we appreciate the deep co-engineering that has gone on there you know when we look at the totality of let's call it you know based on our current visibility you know how those forecasts are coming in with all of our customers we're actually seeing it above our you know initial plans that we had planned for 2027 and I think the encouraging thing is we're seeing a breadth of customers who are now very interested in deploying at significant scale and my 450 series and those and those are for both training and inference workloads although the largest deployments are for inference and you know based on you know all of that and the scale of new customer interest, you know, we see a path to really get to exceed our, you know, original, you know, targets of greater than 80% CAGR. And these are really, you know, 2027 timeframe. Obviously, when we talk to customers, we're talking to them about, you know, MI-355. There's a lot of, you know, good traction we're seeing there. MI-450 and Helios, I think, for significant large-scale deployments. And then many customers are also very engaged with us on the MI 500 series and all of the opportunities there. So we feel like very, very good progress. And the key is that we're continuing to broaden and widen the scope of both customers as well as workloads.",
+        "startSeconds": 1681.59,
+        "endSeconds": 1798.25
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "And the next question comes from the line of Thomas O'Malley with Barclays. Please proceed with your question.",
+        "startSeconds": 1801.37,
+        "endSeconds": 1806.73
+      },
+      {
+        "speakerIndex": 0,
+        "speakerName": "Thomas O\u2019Malley",
+        "speakerRole": "Analyst \u2014 Barclays",
+        "text": "Hey, guys. Thanks for taking my question. Lisa, if I get your numbers correct here in the March quarter, it sounds like, you know, the server processor side of the CPU side grew over 50%. If you take it just at the word, it looks like maybe the data center GPU side actually grew in Q1. So I was curious around the cadence of this year, kind of previously, you had talked about really a back half-weighted and then kind of more so Q4-weighted year. Could you talk about if that's changed at all? And then the second part of the question is, as you go into 2027, clearly, you're pointing out a lot of upside from the larger customers and then kind of the ecosystem around them with new customers as well. But when you look at supply, that's a major issue in the ecosystem today. Could you talk about where you're concerned on supply, if you are, and then any gating factors as you look into next year, whether that be power, data center build-outs, et cetera, or do you feel really good about the ability to grow? Thank you very much.",
+        "startSeconds": 1807.75,
+        "endSeconds": 1855.93
+      },
+      {
+        "speakerIndex": 1,
+        "speakerName": "Lisa Su",
+        "speakerRole": "CEO",
+        "text": "Yeah, okay. A lot of pieces of that question, Tom, so let me try to get through it. So first of all, on the data center segment in Q1, the server business was greater than 50% year-over-year, as we said in the prepared remarks. The data center AI was actually down modestly because of the China transition. We had more China revenue \u2013 I'm sorry, sequentially, more China revenue in Q4, and it was less in Q1. But as we go forward, I think we see strong growth in both segments. So we guided data center Q2 up sequentially double digits, and that's double digits in both server as well as data center AI. And the progression as we go forward, so first on the server CPU side, we talked about growing to over 70% year over year in Q2, and that continuing into the second half of the year. And on the data center AI side, we will be ramping Helios in the second half of the year. So let's call it starting with initial volume in Q3 with a significant ramp in Q4 and then continuing to ramp in Q1. So that's kind of a little bit of the progression. And then to your questions about customers and supply, I think I answered, Josh, the customer question. I think we have very good visibility now into the deployments that are on track for 2027. And when I say good visibility, it's visibility down to which data centers are the GPUs going to be installed in, and so that's necessary just given all of the constraints out there. We feel that there is tightness in the supply chain. There is certainly tightness in sort of data center buildouts. But we are confident in our ability to supply to the levels of growth that we're talking about and to exceed the levels of growth that we're talking about. And we're also working very closely with our customers and our partners to ensure that we have good visibility to data center power. And there is much more power that's coming online in 2027. And so with all those things in mind, I think, again, lots of things to manage. It's a complex ramp, but we're very pleased with the progress on the ramp.",
+        "startSeconds": 1856.75,
+        "endSeconds": 1996.39
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Matt Ramsey",
+        "speakerRole": "Head of Investor Relations",
+        "text": "All right, Tom, I think you shotgunned to approach the multiple questions there. So, operator, maybe we can go on to the next caller, please.",
+        "startSeconds": 1999.11,
+        "endSeconds": 2005.49
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you. The next question comes from the line of Ross Seymour with Deutsche Bank. Please proceed with your question.",
+        "startSeconds": 2007.9,
+        "endSeconds": 2012.92
+      },
+      {
+        "speakerIndex": 12,
+        "speakerName": "Ross Seymour",
+        "speakerRole": "Analyst \u2014 Deutsche Bank",
+        "text": "Thanks for letting me ask a couple questions. The first one is just on the EPIC competition. Lisa, you went through some of the statistics of you versus X86 and you versus ARM, But I wanted to dive a little bit deeper into that. How do you see AMD truly differentiating, especially when you're signing \u2013 well, you see some of your competition signing up the same customers from the ARM side and the x86 competition having more supply? So I just wanted to see if you could dig a little bit deeper into how you think the market share is going to trend over time.",
+        "startSeconds": 2014.5,
+        "endSeconds": 2042.72
+      },
+      {
+        "speakerIndex": 1,
+        "speakerName": "Lisa Su",
+        "speakerRole": "CEO",
+        "text": "We're very engaged with every major hyperscaler in terms of understanding their needs on the CPU side. I think we have very much wanted to, let's call it, optimize our CPU roadmap for the various workloads. I think we were early to call this AI component of CPUs, and so we've been actually optimizing very closely with those customers. The way to think about this, Ross, is that you're going to need a broad portfolio of CPUs. Not all CPUs are the same. Frankly, you're going to need different CPUs for whether you're talking about general purpose operations or you're talking about head nodes or you're talking about agentic AI tasks. They're going to be optimized differently. And we thought through that and we are absolutely optimizing across the various workloads. So from a competitive standpoint, we feel very good about where things are. And from a deep relationship with the customer set, I think we feel very good about that. So from our current standpoint, I think the depth of our roadmap just expands as we go forward. And you shouldn't think about it as people are going to do one or the other. I think you're going to see people actually use x86, you know, and ARM for many of the large hyperscalers. And, you know, even for those who are developing their own, they're still buying lots of CPUs in the merchant market for the reason that I just stated, which is you need different CPUs for the different types of workloads. And, you know, there's very high demand at the moment.",
+        "startSeconds": 2048.38,
+        "endSeconds": 2149.78
+      },
+      {
+        "speakerIndex": 12,
+        "speakerName": "Ross Seymour",
+        "speakerRole": "Analyst \u2014 Deutsche Bank",
+        "text": "Thanks for that. I guess for my follow-up, maybe more for Gene on the gross margin side of things. It's nice to see the gross margin popping up in the second quarter guide, but I just wanted to get some trends longer term, maybe not specific numbers, but how should we think about when Helios and the instinct side really ramps in the fourth quarter and more so next I could see some offsets with that carrying a below corporate average gross margin, but then everything that Lisa talked about with the epic side of things being significantly stronger might be more of an offset than it was in the past.",
+        "startSeconds": 2151.48,
+        "endSeconds": 2180.62
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Jean Hu",
+        "speakerRole": "CFO",
+        "text": "So just walk us through the puts and takes of that and maybe directionally where you think gross margin goes over the next year or two yeah thanks for the question we are very pleased with how our gross margin is trending it can be really strong in q1 and also as you mentioned we guided the q2 higher at the 56% I think as we think about the second half or quarter over quarter as you know they are some puts and takes right I would just say from a tailwind perspective we actually have a multiple tailwinds really are going to help our growth margin first is the server CPU you know Lisa talked about the server CPU to expect it to grow more than 70% in Q2 and you know continue to be really strong in second half or that really helps our growth margin secondly in the second half for gaming actually is going to come down and our client the business actually continue to go up the stack so from applying on the gaming segment the gross margin actually it's going to be also very helpful embedded actually it's very accretive to our gross margin its momentum actually is continuing in the second half so we are really pleased to be that all the tailwinds we have on the other side MI 450 will start ramping Q3 and the ramps significantly in Q4, that is below-corporate average, so that will have different puts and takes in Q4 in the gross margin side, but when we sit here, when we look at all the positive trends we have to really offset some of the gross margin dilution from MI450 side, we actually feel really good about the setup of the gross margin for 2026, and into next year, I think some of the tailwinds I talk about that will actually continue. That's why we feel confident about continuing to drive the gross margin. We actually, during our financial analyst day, we outlined a long-term gross margin in the range of 55 to 58 percent. We think for the first year, we're making good progress there.",
+        "startSeconds": 2180.76,
+        "endSeconds": 2318.02
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "And the next question comes from the line of Timothy Arcuri with UBS. Please proceed with your question.",
+        "startSeconds": 2322.4,
+        "endSeconds": 2327.62
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": "Timothy Arcuri",
+        "speakerRole": "Analyst \u2014 UBS",
+        "text": "Timothy Arcuri Thanks a lot. I wanted to ask about units versus ASP for server CPU. If I look at the June guidance, it sort of implies up 25% to 30% for server CPU. And, you know, Lisa, you had mentioned second half of the year. It sort of implies that server CPU could grow like 70%, you know, maybe a little more this year. And so I guess my question is how much of that growth either in June or for the year is like units versus pricing? Are these price increases sort of, you know, mostly captured in June, or is that also helping in the back half of the year?",
+        "startSeconds": 2328.88,
+        "endSeconds": 2359.22
+      },
+      {
+        "speakerIndex": 1,
+        "speakerName": "Lisa Su",
+        "speakerRole": "CEO",
+        "text": "Yeah, Tim, the way I would say it is, maybe let me bring you back to Q1 for a moment. So if you look at our significant growth in the server business, it was actually, although we were up on a year-over-year basis for both ASPs and units, it was actually much more unit-driven. So we are shipping more CPUs across not just the high-end Turin family, but we're actually shipping a lot of Genoa's, sort of the Zen 4 family as well. As we go forward for Q2 and into the second half, we are, you know, guiding for a significant amount of growth. I think there's a little bit of ASP in there, but, you know, the way we're thinking about pricing, to be fair, is we are in a range where the supply chain is tight, and so there are some inflationary pressures, costs have gone up a bit, and we are, you know, sharing some of that with our customers, but we are also being very thoughtful in, like, this is, you know, we're playing out for the long term, and, you know, that means that we are, our goal is to ship more units and a lot more units, and so from that standpoint, you should imagine that the majority of the growth is unit-driven, and, you know, the ASPs are just really to help cover, you know, some of the inflationary pressures.",
+        "startSeconds": 2360.48,
+        "endSeconds": 2438.32
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Jean Hu",
+        "speakerRole": "CFO",
+        "text": "And just to add what Lisa said, our ASP is increasing because of the mix where actually each new generation, the call counts, those are increasing. That actually drives the ASP up.",
+        "startSeconds": 2439.1,
+        "endSeconds": 2450.98
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": "Timothy Arcuri",
+        "speakerRole": "Analyst \u2014 UBS",
+        "text": "Thanks a lot for that. And then I guess, Lisa, also, so there's a lot of new architectures that are being used from multi-tenancy all the way to low latency. And your competitor has talked about the low latency part of the market being 20% plus, and they, of course, added to their portfolio there. Can you talk about how you see that part of the market? I mean, obviously, you have enough business right now.",
+        "startSeconds": 2452.96,
+        "endSeconds": 2472.54
+      },
+      {
+        "speakerIndex": 1,
+        "speakerName": "Lisa Su",
+        "speakerRole": "CEO",
+        "text": "You don't need to worry about that probably for now. but can you talk about that thanks yeah sure so look I think what we're seeing is what we expected in the sense that you know as you go you know as the AI adoption continues and the volumes you know continue to go up and the the overall market goes up you are going to see let's call it different compute architectures being used because you want to get more cost optimization from that so we expect that you know even in that situation you know obviously the vast majority of the time is still going to be you know let's call it data center GPUs as the primary accelerator but you may choose to do optimization around inference around you know low latency around you know certain parts of the stack whether it's decode versus prefill I think that's very natural the way we look at it is you know we're developing a full compute portfolio so So that's CPUs, that's GPUs, that's the ability to connect to all accelerators, as well as the ability to do customization for certain customers, and we've also talked about our semi-custom capabilities. And with all of those sort of compute capabilities in our tool chest, I think we will be able to address very effectively a large portion of this market, including the low latency portion of the market. So, you know, from our standpoint, this is kind of a natural evolution. Now, how fast it goes depends, you know, a bit on the technology in terms of what share of the TAM these things become. But we should expect that there will be different variants, and we're well prepared to address those different variants.",
+        "startSeconds": 2472.54,
+        "endSeconds": 2572.7
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you. And the next question comes from the line of Vivek Aria with Bank of America. Please proceed with your question.",
+        "startSeconds": 2576.65,
+        "endSeconds": 2582.25
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": "Vivek Aria",
+        "speakerRole": "Analyst \u2014 Bank of America",
+        "text": "Thanks for taking my question. Lisa, do you think agentic CPU growth is incremental or is it coming at the expense of GPUs conceptually? So if you are raising server CPU TAM, are you also implicitly kind of raising AI TAM? So I'm interested in your perspective on what did you think a server CPU was as a percentage of AI TAM before and what is it now with this $120 billion number?",
+        "startSeconds": 2583.69,
+        "endSeconds": 2611.21
+      },
+      {
+        "speakerIndex": 1,
+        "speakerName": "Lisa Su",
+        "speakerRole": "CEO",
+        "text": "Sure, Vivek, so the way we're thinking about it is it's largely additive to the TAMs, so you should think about we need all of the accelerators to run these foundational models, and then as these agents do work, they spawn more CPU tasks, so I would say largely incremental. The key is to make sure what we're seeing is in these deployments, the key is to make sure the ratio of CPUs to GPUs are the right ratio. So if you're installing a gigawatt of compute, the ratio, the percentage of CPU as part of that gigawatt will increase. Some of the conversation in the industry has been about CPU to GPU ratios. And it's very hard to call exactly, but we certainly see the movement towards where in the past, the CPU to GPU ratio was primarily, you know, just as a host node, you know, in like a one to four, one to eight configuration, you know, now changing and getting closer to a one to one configuration, or, you know, even, you know, you can even imagine if you get lots and lots of agents that you could have more CPUs and GPUs. So, but, you know, all in all, to answer your question, I think it's largely additive to the TAM. And, you know, the key is that everyone is now planning and thinking about CPUs at the same time that they're thinking about, you know, their accelerator deployments, which is a good thing.",
+        "startSeconds": 2611.89,
+        "endSeconds": 2701.17
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": "Vivek Aria",
+        "speakerRole": "Analyst \u2014 Bank of America",
+        "text": "And for my follow-up, Lisa, you know, we continue to see memory prices go up. I imagine that is both kind of a cost inflation for you, but perhaps an opportunity to take price as well. I'm curious, how is that dynamic playing out for AMD and especially for your customers because a greater part of their CapEx increase is really kind of this memory inflation tax that they have to pay. So how is this dynamic playing out for you and for your customers? And the part that I'm really interested in is that have you secured enough supply versus your other larger competitor who has disclosed a lot of prepayments and other things? So just how is this memory inflation dynamic playing out and, you know, are you kind of adequately supplied from that perspective?",
+        "startSeconds": 2703.38,
+        "endSeconds": 2753.72
+      },
+      {
+        "speakerIndex": 1,
+        "speakerName": "Lisa Su",
+        "speakerRole": "CEO",
+        "text": "Sure. So, Vivek, let me answer the second one first. I think from a supply standpoint, we are very happy with our partnerships with the memory vendors, and we have secured enough supply to, you know, certainly meet and exceed our targets. So it is a tight memory environment, let me be clear, But I think we are very deep partnerships with the memory providers. And then back to your comments on the inflationary pressures. I mean, look, this is something that everyone in the industry is working with. In the time of tight supply, we are seeing some cost increases on the memory side. I think we are all working through that. The way we're seeing it unfold in the market is actually on the data center side, you know, because of the, let's call it the demand for AI compute, I mean, people are largely, you know, focused on supply and ensuring that the supply assurance is there. The corollary of that, you know, the larger impact that we're watching is, you know, the impact on the consumer markets. And, you know, as we said in the prepared remarks, you know, we are expecting that there There could be some demand impact as a result of the memory price increases on things like the PC business in the second half of the year, as well as the gaming business. So we're taking that into account in our overall model. And we continue to work closely with the memory providers as well as our customers to ensure that every time we ship a CPU or GPU that it's paired with the memory on the other side so that we don't have compute that is not being deployed.",
+        "startSeconds": 2754.64,
+        "endSeconds": 2861.06
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "And the next question comes from the line of Aaron Rakers with Wells Fargo. Please proceed with your question.",
+        "startSeconds": 2864.7,
+        "endSeconds": 2870.34
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Aaron Rakers",
+        "speakerRole": "Analyst \u2014 Wells Fargo",
+        "text": "Yeah, thanks for taking the question and congrats on the results. I want to stick on the topic of CPU to GPU. And as we think about the chart that you had outlined at the analyst day, There was obviously broken out between traditional CPUs and then the AI bucket on top of that. Obviously, I think the new forecast has a lot to do with the AI, you know, CPU expansion. I'm just curious, when you're doing a CPU in an AI workload, is there structurally a different level of ASP tied to that kind of CPU optimized for AI relative to a general purpose server CPU? Any kind of color or help on that would be useful.",
+        "startSeconds": 2871.5,
+        "endSeconds": 2910.22
+      },
+      {
+        "speakerIndex": 1,
+        "speakerName": "Lisa Su",
+        "speakerRole": "CEO",
+        "text": "Sure, Erin. So let me start with the broader question. The broader question, you know, regarding, you know, the way we think about the CPU TAM is, again, think about it as three categories. So there is a, you know, traditional, you know, CPUs, let's call it general purpose CPU TAM that, you know, is increasing, but let's call it increasing at, you know, a low rate, maybe let's call it low double digits then you have your AI head node which is connecting to accelerators which is you know also growing but it's it's it's smaller and then the largest piece of the growth is this agentic AI you know piece which you know we think is is really stemming from all of the agentic processes I don't I don't have a a number that I can tell you in terms of relative ASPs, because it really depends on the workload that is being run, and what we see going forward is, as core counts increase, obviously we will see ASP increase, and that's the direction that we're going in as we go forward. But the main point is, the largest portion of this is the agentic AI, the CPUs that are serving these agentic AI workloads in terms of the TAM increase.",
+        "startSeconds": 2912.64,
+        "endSeconds": 2990.78
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Aaron Rakers",
+        "speakerRole": "Analyst \u2014 Wells Fargo",
+        "text": "And as a quick follow-up, I'm curious, you know, how do you characterize the competitive landscape as we see, you know, some of the ARM introductions in the market? Just curious of your views on the competitive landscape and server CPUs. Thank you.",
+        "startSeconds": 2993.9,
+        "endSeconds": 3008.4
+      },
+      {
+        "speakerIndex": 1,
+        "speakerName": "Lisa Su",
+        "speakerRole": "CEO",
+        "text": "Yeah, Aaron, the best way to think about the server CPU landscape is, you know, again, number one, everyone is talking about CPUs. So that tells you how, you know, critical they are for the AI infrastructure, and I think that's a good thing. We feel like we're very well positioned. No question, you know, ARM is good architecture. It has a place in the data center market. You know, we view it as more, you know, point products relative to a portfolio where, you know, from an AMD standpoint, we built this, you know, broad portfolio of CPUs going forward which you're going to need for all of these different workloads and you know we have in the Venice timeframe added an AI optimized CPU with Verano in addition to our throughput optimized and you know sort of cost optimized points so from that standpoint I think we're very competitive we're continuing to innovate on you know architecture we're continuing to innovate on, you know, both advanced packaging as well as, you know, all of the architectural pieces. So we feel very well positioned going forward. And the key is that TAM is much, much larger than anybody thought. And so there's a lot of opportunity for, you know, for different products to be successful in this area.",
+        "startSeconds": 3009.24,
+        "endSeconds": 3091.1
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "And the next question comes from the line of CJ Mews with Cantor Fitzgerald. Please proceed with your question.",
+        "startSeconds": 3094.93,
+        "endSeconds": 3100.45
+      },
+      {
+        "speakerIndex": 11,
+        "speakerName": "CJ Mews",
+        "speakerRole": "Analyst \u2014 Cantor Fitzgerald",
+        "text": "Yeah, good afternoon. Thank for taking the question um i guess first question was hoping to speak a bit more about client for all of calendar 26. uh you talked about growth expected growth but would love to hear you know your thoughts around uh seasonality in the second half and i'm assuming that you are repurposing certain logic tiles from client uh over to the data center uh and and would love to kind of better understand what the implications are for um asps on the client side looking into the second ask for so CJ I think the client business has performed really well for us I think if we look at you know q1 it actually was a little bit stronger than",
+        "startSeconds": 3101.45,
+        "endSeconds": 3142.53
+      },
+      {
+        "speakerIndex": 1,
+        "speakerName": "Lisa Su",
+        "speakerRole": "CEO",
+        "text": "what we expected we are seeing some mixed shift in the client business the mix that we're seeing is the you know the MNC or the notebook business is actually growing especially the premium portion we're making very good progress in the commercial PC arena with our AI PCs. We did see desktops a little bit softer, just given desktop is a more consumer-focused market. And so in that market, it's more impacted by some of the memory pricing and the component price increases. When we look at the full year, our commentary is we are planning for some demand impact in the second half due to the memory pricing. But even in that environment, what we're focused on is ensuring that we continue to make good progress on the commercial business and continuing to focus on the premium segments of the market. So we believe that we will continue to grow on a year-over-year basis for the client business compared to last year. And as it relates to ASPs, again, it's a little bit of puts and takes between notebook and desktop. But overall, I think we're feeling good about our opportunity to outperform the market and client going forward.",
+        "startSeconds": 3142.53,
+        "endSeconds": 3220.05
+      },
+      {
+        "speakerIndex": 11,
+        "speakerName": "CJ Mews",
+        "speakerRole": "Analyst \u2014 Cantor Fitzgerald",
+        "text": "That was perfect. Thank you. And then I guess a question on instinct gross margins, you know, with compute essentially sold out, and obviously you're building a business, so, you know, one has to be, I guess, conservative on that front. But I would think outside of kind of passing through HBM that, you know, given the very tight wafer environment that this would be a place where you know you could look to drive your your instinct margins closer to your corporate average how are you thinking about that you know either today or you know in the coming one two three years hi cj you know at this stage we really focus on drive the top line revenue growth on our uh instinct of family for product I think on the gross margin side, you're absolutely right, you know, it's really tied to the demand for compute is tremendous.",
+        "startSeconds": 3223.09,
+        "endSeconds": 3277.13
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Jean Hu",
+        "speakerRole": "CFO",
+        "text": "We actually are very strategic how we think about how we work with the customers, and of course, different customers also have different gross margin. I think over time, once we start to ramp our revenue, we'll have a lot of opportunities to improve gross margin, both on the ASP side, but also, more importantly, on the cost side when we scale our business.",
+        "startSeconds": 3277.59,
+        "endSeconds": 3301.45
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you. And the next question comes from the line of Stacy Rasgen with Bernstein Research. Please proceed with your question.",
+        "startSeconds": 3305.66,
+        "endSeconds": 3311.86
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": "Stacy Rasgen",
+        "speakerRole": "Analyst \u2014 Bernstein Research",
+        "text": "Hi, guys. Thanks for taking my questions. For the first one, I just wanted to make sure I have the near-term AI GPU trajectory correct. I know you said it was down sequentially in Q1 because of China. You had like $390 million of China revenue in Q4. Did the AI business in Q1 actually grow sequentially ex-China? Because it doesn't feel like it given the server outlook. and then I look at what's maybe suggested for Q2 I mean are you thinking GPUs and servers kind of grow similar right sequentially because it would probably put GPUs in Q2 below though the overall level we were in a Q4 which seems low to me I'm just trying to tile that out um could you help with that please yeah so I think Stacy appreciate the question I think if you look at the Q1 we didn't mentioned data center ai was done model space up sequentially uh primarily due to lower china revenue in the quarter i think on your second question regarding q2 you're right both data",
+        "startSeconds": 3313.06,
+        "endSeconds": 3383.98
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Jean Hu",
+        "speakerRole": "CFO",
+        "text": "center ai and the server will grow double digit in q2 yeah but you didn't answer my my question didn't q1 did it grow sequentially x the china step down i guess is what i'm asking the China for our businesses in q1 it's not material so I think I already believe what I just said is that yeah the revenue China revenue in q1 is not material okay okay so you don't want to answer you okay um second question opx um you for spending but it sort of continues to blow past the targets you kind of give an opx guide and and then it blows through it and then you guide higher so again i'm not i'm not bothered by the spending i'm just wondering why is the opx been so hard to forecast and how should we think about that for the rest of the revenue revenue growth yeah thanks Stacy for that question I think the most important thing is given the tremendous market opportunities we have we actually are investing aggressively if you look at the past several quarters we really leaning in investing but all the AI investment are driving the revenue momentum so if you look at the q1 we revenue was 38% up but then q2 it We guided the 46% up. The investments are driving the revenue momentum. Some of the OPEX increase of cost is tied to the revenue. When you look at our bid on the revenue side versus our guidance, we did bid on the revenue side, right? So that impacts a little bit, but also at the same time, we have a lot of customer engagement with our data center AI business. we do continue to make sure we have the resources to support all different customers thank you very much operator I think we have time for one more caller on the call thank you very thank you thank you our final question comes from the line of Blaine Curtis with Jeffries please proceed with your question you well thanks for squeezing me in we just want to go back to the supply side there was a lot of story about your competitor restarting 7a I mean I'm just kind of curious as you look at that landscape which is quite robust through the end of",
+        "startSeconds": 3383.98,
+        "endSeconds": 3538.2
+      },
+      {
+        "speakerIndex": 1,
+        "speakerName": "Lisa Su",
+        "speakerRole": "CEO",
+        "text": "decade do you think that the older products will stay around longer and is there a way to think about the implications or gross margin such a strong market is that actually a negative um actually Blaine I don't think we see the older products hanging around longer in our case I think you know it might be company specific stuff in our case we actually see first of all we turn is very strong we actually crossed over you know 50% of our revenue being turned this quarter Genoa is very strong you know we're still shipping some Milan but I would say that's come down over time so it's in general people want to use the newer products because they're just more efficient in every aspect from performance, from cost structure, from a power standpoint. So that's what we're seeing. By the way, I should also mention, in addition to what we're seeing in the cloud segment of server, we're seeing really nice, strong pickup in enterprise. And there, as well, we're seeing our newer products do very well. So from our standpoint, it is all about ensuring that we ship what the customer needs. And in this case, it typically is our newer products, and we expect that to continue. As we transition into Venice later this year, we will expect Turin and Genoa to continue shipping. but there's a lot of goodness in going to the new products. And on the supply chain side, I know there's been a lot of discussion about how tight the supply chain is. The supply chain is tight. I would definitely say that. But I also think this is an area where we excel. We have very deep relationships across the supply chain, on the wafer side, on the back end capacity side. And we are seeing meaningful improvements in that. And as our customers come to us with more demand, we are getting more supply. And the good thing about this is we're now talking about 27 CPU demand. We're talking about 28 CPU demand. And so that allows us to just plan much better as we go forward.",
+        "startSeconds": 3538.2,
+        "endSeconds": 3683.3
+      },
+      {
+        "speakerIndex": 6,
+        "speakerName": "Blaine Curtis",
+        "speakerRole": "Analyst \u2014 Jefferies",
+        "text": "Excellent. And just a quick one for Gene. I'm just curious to follow up on Stacey's question on OpEx. I guess I was a little surprised that SG&A is kind of outpacing R&D. I was just kind of curious, is that startup costs? Because in a strong market, you wouldn't think you would have to discount or have a big sales effort. So I'm just kind of curious for the year how you think about R&D growth versus SG&A.",
+        "startSeconds": 3684.54,
+        "endSeconds": 3706.36
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Jean Hu",
+        "speakerRole": "CFO",
+        "text": "I think for the year, you should expect us to grow R&D much faster than SG&A. I think in the past few quarters, we have been really building our go-to-market machine and we have been investing more in sales and marketing side. But going forward, you should expect the year-of-year growth, R&D will grow faster than SG&A growth.",
+        "startSeconds": 3707.54,
+        "endSeconds": 3731.46
+      },
+      {
+        "speakerIndex": 1,
+        "speakerName": "Lisa Su",
+        "speakerRole": "CEO",
+        "text": "Yeah, and if I just add to that, Blaine, the places that we invest, Gene's absolutely right. We're investing in R&D ahead of sales and marketing. But the places that we're investing in sales and marketing are paying off. So the investments are going into enterprise servers. They're going into commercial PCs. They're going into mid-market, small and medium business. These are places where AMD traditionally didn't invest. But now that we have a much broader portfolio, both on the server CPU and on the commercial PC side, it makes sense for us to invest because that's sort of the very best part of those markets.",
+        "startSeconds": 3732.24,
+        "endSeconds": 3773.44
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Matt Ramsey",
+        "speakerRole": "Head of Investor Relations",
+        "text": "All right. Thank you very much, everybody, for joining in your interest in AMG. John, you can go ahead and close the call now.",
+        "startSeconds": 3774.52,
+        "endSeconds": 3779.54
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you. And ladies and gentlemen, that does conclude the question and answer session, and that also concludes today's teleconference. We thank you for your participation. Please disconnect your lines and have a wonderful day.",
+        "startSeconds": 3781.89,
+        "endSeconds": 3791.95
+      }
+    ],
+    "corrections": []
+  }
+}

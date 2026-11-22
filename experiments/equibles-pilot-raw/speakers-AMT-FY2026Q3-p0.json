@@ -1,0 +1,483 @@
+{
+  "status": 200,
+  "result": {
+    "eventId": "9f139e73-e1d7-4505-bb3d-50d522a0ea73",
+    "ticker": "AMT",
+    "eventTitle": "Q3 2026 American Tower Earnings Conference Call",
+    "callDate": "2026-10-27T12:30:00+00:00",
+    "fiscalYear": 2026,
+    "fiscalQuarter": 3,
+    "turnCount": 58,
+    "totalTurnCount": 58,
+    "offset": 0,
+    "hasMore": false,
+    "isFiledRecord": false,
+    "data": [
+      {
+        "speakerIndex": 5,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Ladies and gentlemen, thank you for standing by. Welcome to the American Tower third quarter 2026 earnings conference call. As a reminder, today's conference call is being recorded. Following the prepared remarks, we will open the call for questions. If you'd like to ask a question, please press star 11 on your telephone. You will then hear an automated message advising your hand is raised. To withdraw your question, please press star 11 again. I would now like to turn the call over to your host, Spencer Kern, Senior Vice President of Investor Relations. Please go ahead.",
+        "startSeconds": 0.0,
+        "endSeconds": 37.06
+      },
+      {
+        "speakerIndex": 10,
+        "speakerName": "Spencer Kern",
+        "speakerRole": "Head of Investor Relations",
+        "text": "Thank you, and good morning. Welcome to our third quarter 2026 earnings call. Joining me on the call today are Steve Vondran, our President and CEO, and Rod Smith, our Executive Vice President, CFO, and Treasurer. Following our prepared remarks, we will open the call for your questions. Before we begin, I need to call your attention to our safe harbor statement. It says that some of our comments today may be forward-looking. As such, they are subject to risks and uncertainties described in American Tower SEC filings, and results may differ materially. Additional information is available on our Investor Relations website. I'll now turn the call over to Steve. Steve?",
+        "startSeconds": 41.28,
+        "endSeconds": 86.5
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Steven O. Vondran",
+        "speakerRole": "CEO",
+        "text": "Thanks, Spencer. Good morning, everybody, and thanks for joining today's call. We delivered another solid quarter with our global tower leasing business performing consistently with expectations and our data center business continuing to outperform. The momentum we're seeing across the company, combined with the benefit of our share repurchase activity, gives us confidence to raise our full-year outlook for the third time this year. Our third quarter performance reinforces the durability of our business model and the quality of the portfolio we've built. We're operating from a position of strength supported by resilient tower cash flows, a differentiated and rapidly growing data center platform, a healthy balance sheet, and a more focused portfolio following the actions we've taken over the past several years. As we enter the final quarter of the year, our strategic priorities remain unchanged, driving durable revenue growth, enhancing operational efficiency, and allocating capital with discipline. Starting with revenue growth, our tower business remains on track to deliver approximately 4% organic tenant billings growth, excluding one-time disrelated impacts. At the same time, CoreSight's continued outperformance is enabling us to raise our outlook for data center revenue growth to 16%, up from our expectation of 15% last quarter and 13% at the start of the year. The long-term outlook for wireless infrastructure remains very favorable. Last quarter, I discussed four major catalysts that we believe can create overlapping investment cycles and support network demand well into the next decade. The evidence supporting each of those catalysts continues to strengthen. The first catalyst is the capacity phase of 5G. Early deployments were primarily focused on coverage. The next phase will increasingly be about adding capacity, improving performance, and densifying networks as traffic continues to grow. That requires carriers to add equipment to existing sites and increase cell site density where demand is greatest, and we're already beginning to see that activity emerge. Recent industry data reinforces the scale of that opportunity. CTIA reported that Americans consumed a record 159 trillion megabytes of wireless data in 2025, an increase of more than 20% year-over-year, and projects total wireless demand will grow fourfold by 2032. These trends point to sustained investment simply to keep pace with growing consumer and enterprise demand. The second catalyst is a new spectrum deployment cycle. Approximately 800 megahertz of additional mobile spectrum is expected to become available over the coming years, beginning with upper C-band in 2027 and potentially followed by additional deployments across bands such as 2.7 gigahertz, 4 gigahertz, and 7 gigahertz. Historically, new spectrum deployments have led to elevated amendment activity and equipment upgrades, and we expect the next cycle to do the same. The third catalyst is the transition to 6G. While commercial deployment is still ahead of us, the industry is increasingly aligned around network architectures that will be more intelligent, more distributed, and more reliant on edge computing. Those characteristics point to increased equipment requirements, greater network density, and expanding role for communications infrastructure. The fourth catalyst is AI, which we believe has the potential to significantly reshape wireless network demand. CTIA expects AI traffic to grow three times faster than traditional wireless traffic and account for nearly one-third of broadband traffic by 2034. Importantly, AI is not simply creating more traffic. AI-powered devices, agents, connected vehicles, robotics, and real-time applications are expected to create traffic that's more persistent, more interactive, and increasingly uplink intensive. Supporting these use cases will require additional spectrum, network capacity, lower latency, and greater density. In our view, AI has the potential to extend and deepen the wireless investment cycle beyond what's embedded in traditional traffic forecast today. Taken together, these catalysts reinforce one another. The capacity phase of 5G, future spectrum deployments, the transition to 6G, and AI-driven traffic growth all point to a future requiring more capacity, greater density, and increasingly sophisticated digital infrastructure. We believe that American Tower is uniquely positioned to support that evolution we're also seeing growing interest from satellite providers seeking to participate more directly in the u.s wireless market we view satellite and terrestrial wireless infrastructure as complementary technologies satellite can extend coverage and support specific use cases but delivering broad reliable and high capacity wireless service continues to require terrestrial infrastructure. Any provider seeking to compete at scale in the U.S. will ultimately require a terrestrial network layer that includes towers, fiber, backhaul, power, and edge interconnection. For American Tower, the emergence of additional participants represents an incremental opportunity. Our nationwide footprint and neutral host operating model allow both existing and emerging providers to deploy quickly, efficiently, and at scale. Many of these same secular trends continue to drive strong performance at Coresight. Coresight delivered another strong quarter, with customer demand and pricing both exceeding our expectations. Momentum remained broad-based across cloud, network, enterprise, and AI customers, and demand has continued to accelerate into the fourth quarter. As organizations deploy larger and more sophisticated AI workloads, they require greater connectivity between clouds, networks, computer environments, and enterprise applications. This is driving increased demand for highly connected campuses and contributing to continued growth in our interconnection business. CoreSight's unique position at the intersection of cloud, network, and AI ecosystems remains a key competitive advantage and gives us confidence in the platform's long-term growth trajectory. Given the strength of customer demand and leasing activity, we're once again raising our full-year outlook. We remain confident in our ability to execute against a development pipeline that can nearly triple our current capacity while continuing to evaluate opportunities to accelerate capacity additions where customer demand and expected returns support additional investment. Moving to our second strategic priority, operational efficiency. Our tower operations continue to perform with the consistency and discipline that we expect. We remain focused on simplifying processes, scaling shared capabilities, and using technology to improve productivity. These actions support our objective of expanding tower cash EBITDA margins by 200 to 300 basis points by 2030, while maintaining the service quality our customers depend on. We also continue to evaluate practical applications for AI across the organization. Our focus is on opportunities that improve decision-making, automate repetitive work, and make our teams more effective while maintaining the appropriate controls and oversight. We believe these capabilities can create incremental value over time and reinforce our culture of operational excellence. Our third strategic priority is disciplined capital allocation. Over the past several years, we have reshaped American Tower around higher quality assets, developed markets, and businesses with attractive growth and return profiles. This quarter, we took another meaningful step forward by entering into an agreement to sell Canada business. The transaction allows us to recycle capital toward opportunities with greater potential to drive long-term AFFO per share growth, including investments in our tower portfolio and core site, debt reduction, and share repurchases. During the quarter, we repurchased approximately $315 million of common stock. And subsequent to quarter end, our board approved an increase to our share repurchase authorization. Together, these actions reflect our continued confidence in the value of the company, as well as the flexibility provided by our balance sheet and cash flow generation. We continue to apply a disciplined capital allocation framework. We'll first fund the dividend and attractive organic investment opportunities, maintain leverage within our target range, and then allocate incremental capital across share-y purchases, selective M&A, and further deleveraging based on relative returns and market conditions. The result is a more focused American Tower with a higher quality earnings base, multiple avenues for growth, and the financial flexibility to invest through the cycle. We believe that combination positions us to deliver durable, industry-leading AFFO per share growth over time. In summary, I am pleased with our performance through the first nine months of the year and encouraged by the momentum that we continue to see across the business. Our premier global tower portfolio, differentiated interconnection-focused data center platform, strong balance sheet, and disciplined approach to capital allocation positions us exceptionally well to capitalize on the next wave of investment in wireless, cloud, and AI infrastructure. I want to thank our employees around the world for their continued dedication and execution, as well as our customers, shareholders, and business partners for their ongoing trust and support. With that, I'll turn the call over to Rod to review the financial results and outlook in more detail. Rod?",
+        "startSeconds": 86.5,
+        "endSeconds": 748.2
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Rod Smith",
+        "speakerRole": "CFO",
+        "text": "Thanks, Steve, and thank you all for joining the call. As Steve mentioned, we've carried our strong momentum into the third quarter and are increasing our 2026 outlook for the third time this year. I'll start by reviewing our third quarter results, and then I'll touch on our revised full year outlook. Slide seven shows a snapshot of our third quarter highlights. Consolidated property revenue grew approximately 5% year-over-year when excluding non-cash straight-line revenue and FX impacts. Normalized for the impact of one-time dish churn, property revenue grew approximately 7% on a cash FX neutral basis. Our growth was primarily driven by organic tenant billings growth of approximately 1% or approximately 4% when normalized for the impact of one-time dish churn, complemented by data center cash revenue growth of approximately 16%. Adjusted EBITDA grew over 2% when excluding net straight line and FX impacts. Normalized for the impact of one-time dish churn, adjusted EBITDA grew over 5% on a cash FX neutral basis. Cash adjusted EBITDA margins declined approximately 50 basis points year over year, primarily due to dish-related churn and lower services contributions. Excluding DISH-related churn, cash-adjusted EBITDA margins grew 10 basis points year over year. Attributable AFFO per share grew over 1% when excluding FX impacts. Normalized for the impact of one-time DISH churn and excluding the impact of refinancing costs, attributable AFFO per share grew approximately 6% on an FX-neutral basis. Moving to Q3, organic growth and data center growth on slide 8. Across each of our tower segments, organic growth was in line with the expectations we laid out earlier this year, supported by solid demand across our global portfolio. In the U.S. and Canada, organic growth was flat and approximately 4% when excluding dish churn, consistent with our expectations for durable growth in the mid-single digits. We remain confident that 2026 represents a trough year for U.S. and Canada organic growth and continue to expect organic growth to accelerate in 2027. In Africa and APAC, organic growth was over 8%, modestly ahead of our expectations for organic growth of 7% in the second half of the year. In Europe, organic growth was over 4%. percent. And in Latin America, organic growth declined approximately two percent, primarily driven by elevated churn in Brazil, consistent with our expectations laid out at the start of the year. We remain encouraged by the prospects of an earlier than expected market repair in Brazil and the forthcoming acceleration in Latin America organic growth in 2027. Finally, on the right side of the slide, data center property revenue growth was over 16% when excluding non-cash straight-line revenue. As Steve mentioned, this quarter marked another very strong quarter of new leasing activity for Corsight, and we remain on track for 2026 to represent another year of record leasing activity. Now, let's turn to our revised full-year outlook. We are raising guidance for property revenue and AFFO per share, while maintaining our adjusted EBITDA outlook, reflecting consistent growth across our global tower portfolio, data center, outperformance, and capital allocation decisions. Starting with property revenue outlook on slide 9, we are raising our outlook by $55 million at the midpoint, representing an increase of approximately 1% relative to our prior outlook. Our revised outlook now implies over 4% year-over-year growth when excluding non-cash straight-line revenue and FX impacts. Normalized for the impact of one-time dish-related churn, our outlook implies nearly 7% growth on a cash FX neutral basis. The increase to outlook was primarily driven by approximately $10 million of data center outperformance and $45 million from other items, including pass-through and straight-line revenue. We are reiterating our organic growth assumptions across all regions and continue to expect organic tenant billings growth of approximately 1%, or approximately 4% when excluding dish churn, and raising our outlook for data center growth to approximately 16% year-over-year. As Steve mentioned, we recently entered into an agreement to sell our Canada portfolio for approximately $202 million, which is expected to close in the fourth quarter. At an implied multiple of approximately 26 times 2026 expected EBITDA, the transaction underscores the significant value embedded within our North America Tower portfolio. Combined with the opportunity to recycle proceeds into share repurchases, debt reduction, and other higher growth investments, we expect the transaction to be immediately accretive to AFFO per share while enhancing our long-term AFFO per share growth profile. Consistent with our Outlook policy, the impact of the transaction will be reflected in Outlook once it closes. Our 2026 outlook, therefore, includes full contribution from our Canada portfolio, including $13 million of revenue, $8 million of adjusted EBITDA, and $8 million of AFFO. Moving to adjusted EBITDA on slide 10, we are holding our adjusted EBITDA outlook flat to our prior outlook. Compared to our prior outlook, outperformance of approximately $10 million in data centers and approximately $5 million in other items, including straight line, was offset by approximately $15 million of lower network services contribution, reflecting timing shifts in certain customer projects that we had expected to commence in the second half of the year. Our outlook continues to imply over 2% growth year-over-year, excluding non-cash net straight-line and FX impacts. Normalized for one-time impact of dish-related churn, our outlook for adjusted EBITDA implies over 5% growth on a cash FX neutral basis. Turning to AFFO on slide 11, we are raising our attributable AFFO outlook by $0.02 per share, primarily reflecting share repurchase activity during the quarter. our revised outlook now implies growth of over 3% year over year. Normalized for the impact of one-time dish-related churn and excluding the impact of refinancing costs, our outlook for attributable AFFO per share growth implies approximately 6% growth on an FX-neutral basis. We continue to expect our services business growth to represent an approximately 1% headwind to attributable AFFO per share growth this year. Similarly, we expect debt refinancings to represent an approximately 1% headwind to attributable AFFO per share growth this year. We continue to believe this year represents a trough for attributable AFFO per share growth. Heading into 2027, we're confident that we can deliver a meaningful inflection in growth and return to our long-term expectation of AFFO per share growth in the mid- to high single-digit range. Turning to capital allocation and our balance sheet on slide 12, our capital allocation strategy remained focused on balance sheet strength, disciplined investment, and long-term value creation. In 2026, our growth capital plan remains largely consistent with our prior outlook. We continue to expect to spend approximately 85% of our discretionary capital within our developed markets platforms, including over $700 million in success-based investments in our data center portfolio to replenish elevated levels of capacity, purchase of land beneath our tower sites, and continued investment in our European new build program. Relative to our prior outlook, we are reducing discretionary capital spending by approximately $40 million, primarily reflecting the timing of certain international tower development projects. This adjustment does not reflect any change in our long-term investment priorities or demand outlook. As Steve mentioned, during the quarter, we entered into an agreement to sell our Canada business as we continue to simplify our portfolio and support our strategy of recycling capital into higher growth opportunities across the business. We also repurchased approximately $315 million of American Tower stock during the quarter, plus an additional $68 million through October 20th, bringing our total share repurchases since we started buying back stock in Q4 of 2025 to over $950 million. And as Steve mentioned, subsequent to quarter end, our board authorized an additional $2 billion under our share repurchase program, bringing remaining repurchase capacity to approximately $3.1 billion. The actions we've taken over the last several years have positioned us with significant financial flexibility. We ended the quarter with leverage of 4.9 times, comfortably within our target range of three to five times, while maintaining the highest credit rating among our peer group. As demand for digital infrastructure continues to grow, our balance sheet remains a key strategic asset that enables us to pursue opportunities from a position of strength. Turning to slide 13, our third quarter results reflect the durability of our business model and the consistent execution of our strategy. We continue to see favorable demand trends supported by rising mobile data usage, sustained investment in communications networks, and the increasing need for critical digital infrastructure. Together, with our high-quality portfolio, disciplined capital allocation strategy, and financial flexibility, these trends reinforce our confidence and our ability to generate durable growth and create long-term value for our shareholders. With that, operator, please open the line for questions.",
+        "startSeconds": 749.36,
+        "endSeconds": 1396.9
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you. As a reminder, to ask a question, please press star 11 on your telephone and wait for your name to be announced. To withdraw your question, please press star 11 again. Please stand by while we compile the Q&A roster. And our first question comes from Bache Levy of UBS. Your line is open.",
+        "startSeconds": 1397.64,
+        "endSeconds": 1418.88
+      },
+      {
+        "speakerIndex": 0,
+        "speakerName": "Bache Levy",
+        "speakerRole": "Analyst \u2014 UBS",
+        "text": "Great. Thank you. Can you provide a bit more color on the application volume you're seeing in the U.S. today? There was a bit of a step down in new leasing in the quarter. What would you attribute that to? And how should we expect new leasing to pace as we exit the year and into 27? And maybe another question on \u2013 we're hearing a lot of discussions on potential Starlink terrestrial wireless network build. Can you provide maybe a bit more color in terms of the level of engagement you're seeing from them today? And how would you characterize how you're positioned to capture this opportunity? Do you anticipate new business to follow all the tower companies in the U.S. or maybe be positioned to one or two? And when would you expect that opportunity to be meaningful? Thank you so much.",
+        "startSeconds": 1420.24,
+        "endSeconds": 1477.58
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Rod Smith",
+        "speakerRole": "CFO",
+        "text": "Hey, Bache. Good morning. This is Rod. I'll take the first part of that question, and then Steve will address the second part relative to Starlink. So in terms of our new business level, you're correct in seeing that our new business contribution numbers have stepped down in Q3, and I'll talk about that in just a bit. I'd first highlight that the activity level that we're seeing and the new business levels that we're seeing for the year remain at very healthy levels. We continue to see the carriers deploying 5G, kind of the late stages of 5G, and they're also transitioning to the early stages of network densification. I'd also highlight that not all carriers are active at the moment. And I would highlight here that that means that what you are seeing is that the new business, as it paces through the year, is front end loaded. And we are experiencing a step down in the second half of the year. That is entirely consistent with the outlook that we put out at the very beginning of the year. So it's in line with our expectation without a doubt. And it also for the full year, new business is expected to contribute about 250 basis points towards organic tenant billings growth in the U.S. And that is consistent with the level of new business contribution to organic tenant billings growth we saw in 2025 X dish. So there is an element of consistency there regarding the new biz, as well as its contribution to organic tenant fillings growth. With that said, we're firmly on track regarding the full year OTBG in the U.S. that we expect, as well as, again, that new business contribution. And that puts our U.S. full year OTBG outlook at about 50 basis points. And I'll just highlight that that includes about 400 basis points of headwind from dish churn. Relative to going forward, I'm not going to address 27 specifically at all, of course, as you would expect. But looking beyond 2026, we do expect OTBG in the U.S. to increase to more normal levels as we move forward. This is primarily two broad reasons. One is the elimination or the non-recurrence of the dish churn and the corresponding headwind it has on OTBG, as well as we anticipate increased carrier activity in an environment going forward where all carriers would be active in the future, as well as some of the catalysts that Steve mentioned earlier in the call and in the prior call that could be catalysts for upside from that. So as a result, you put all this together, we are confident that 2026 represents a trough year for both organic tenant billings growth as well as AFFO per share growth and that our portfolio, global portfolio of tower assets and data center assets are well positioned to have an inflection point up in both of those metrics going forward.",
+        "startSeconds": 1478.42,
+        "endSeconds": 1660.58
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Steven O. Vondran",
+        "speakerRole": "CEO",
+        "text": "Yeah, and Bhatia, I would just add, you know, when you kind of zoom out and think about the carrier environment and what's going on today, you know, I focus back on the mobile data growth that you're seeing in the U.S. And when you look at those numbers that are coming out of CTIA and the growth that we saw year over year in total mobile data growth consumption going up about 20% year over year this year and projecting that to accelerate even further in the next few years, that really tells you that the carriers will have to continue investing in their networks to provide more capacity. And that's exactly what we thought we would see at this stage of that evolution. And we are seeing them start to evolve more into a capacity play. We're seeing all the carriers becoming more interested in densification, adding more sites. And so we believe that we'll see the back half of 5G play out just as we've talked about in the past on that. And then when you think about the other catalyst that could accelerate that even further, you've got the spectrum auctions that are coming up and the deployment of that spectrum. Plus, there's some other spectrum kind of out there being held in private hands that could come into play as well. So you've got a lot of spectrum that could come on board. Traditionally, more spectrum means more equipment and more leasing for towers. And then pretty soon we're going to be talking about 6G transitioning into that. And we haven't even started seeing a lot of equipment going on sites yet for AI. And we think as AI becomes more prevalent, you're going to see an uptick in that as well. So when you kind of zoom out as to what's going on in the overall ecosystem, there are a lot of positive tailwinds that really make us feel confident that you're going to see that new leasing environment continue to be healthy like it is today, but actually increase over time as well. And then I'll address your questions on Starlink. we're really excited about the prospect of maybe having a new customer at scale in the US and we're really encouraged by their public statements and what they're saying that they plan to do and also by the concrete steps that they're taking to build that layer cake of spectrum that you need to be a viable player in the US market so those are all really encouraging signs that we're seeing there it also reinforces what we've been saying all along which is satellites are a complementary technology to terrestrial networks that you need a terrestrial presence if you're going to try to operate in the wireless space in the U.S. And so this, again, it's playing out the way we thought it was going to. You're seeing some positive momentum there. In terms of specifics with us, with Starlink, we're not going to get into any specific discussions that we're having, but you should assume that anybody who wants to build a network in the U.S. at scale, is going to come to American Tower as one of their premier tower vendors, if not the premier tower vendor. We have an unmatched portfolio in the U.S. in terms of where our sites are located, the quality of those sites, and we can get them on air faster than anybody else. So we should be the first call that everybody makes. You should assume that that's kind of what's happening there. And again, we're excited about the prospect. And in terms of timing and things like that, we'll let them speak to what their network plans and their deployment cadence will be.",
+        "startSeconds": 1661.02,
+        "endSeconds": 1860.02
+      },
+      {
+        "speakerIndex": 0,
+        "speakerName": "Bache Levy",
+        "speakerRole": "Analyst \u2014 UBS",
+        "text": "Thank you.",
+        "startSeconds": 1861.4,
+        "endSeconds": 1862.14
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you. And our next question comes from Rick Prentice of Raymond James. Your line is open.",
+        "startSeconds": 1863.64,
+        "endSeconds": 1871.85
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": null,
+        "speakerRole": null,
+        "text": "Hey, good morning, everybody. Good morning, Rick. Hey, appreciate the questions. First, hey, I want to follow up on Boccia's comments a little bit. Um, how many sites did you guys have out of the 24,000 sites that dish has on air?",
+        "startSeconds": 1873.21,
+        "endSeconds": 1888.47
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Steven O. Vondran",
+        "speakerRole": "CEO",
+        "text": "Yeah, Rick, we're not going to put out specific numbers on that. We were a significant player in their build and And very proud of our contribution to that and it was a significant piece of that But we're not going to put out specific numbers on that Okay, but I figure it was use your revenue maybe as a guide, but you've already kind of reported when you took DISH out. We got a bunch of sides, Rick.",
+        "startSeconds": 1890.17,
+        "endSeconds": 1914.07
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": null,
+        "speakerRole": null,
+        "text": "Yeah, okay, cool. Who owns that DISH equipment that's sitting on the towers? Obviously, the DISH had it, you terminated the agreement, then it got in bankruptcy court. Has it been officially abandoned, and could that be of interest to some potential players, the equipment that's on the towers? Because we think the 800 spectrum might actually already be on some of them.",
+        "startSeconds": 1915.19,
+        "endSeconds": 1935.69
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Steven O. Vondran",
+        "speakerRole": "CEO",
+        "text": "There is an abandonment order in the bankruptcy. So yes, we own that equipment as of the date of that order. As to the interest, other people may have that equipment. I'll let them speak to what they want to do with that. But we do own it and we can provide access to that to all interested parties.",
+        "startSeconds": 1936.55,
+        "endSeconds": 1953.29
+      },
+      {
+        "speakerIndex": 3,
+        "speakerName": null,
+        "speakerRole": null,
+        "text": "Great. That makes sense. And as we think about, you know, your earlier comments that, you know, satellite providers need terrestrial. We've seen a lot of satellite companies. Amazon has their LEO, ASTS. You've got even Rocket Lab buying Iridium, ASTS. Are you having discussions with a broader universe of satellite companies that might want terrestrial beyond just what's kind of been mentioned about Starlink SpaceX? Rick, you can assume that anybody who wants to play in the wireless space is exploring all their available options including you know building buying or renting a network and that we're talking to all those parties so anybody who has wireless ambitions is probably somebody that we're talking to great and last one for me um obviously the data center business continues to outperform you raise guys because of data centers revenue growth right there can you help us understand a little bit about the return on capital that you're seeing from spending that almost 700 million dollars to continue to increase the supply out there yeah thanks rick i'll touch",
+        "startSeconds": 1954.31,
+        "endSeconds": 2023.71
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Steven O. Vondran",
+        "speakerRole": "CEO",
+        "text": "on some of the demand drivers and if rod wants to get any specifics he can on this but when you think about that that core site business you know again i want to distinguish it from other types of data centers it is an interconnection platform that brings together their clouds, networks, enterprises, and now AI companies so that they can communicate together. And what that allows us to do is be very specific in curating our customer mix, but it also gives us the ability to price the way we need to, to continue to underwrite mid-teens or better stabilized yields on the incremental capital that we're investing. And so we continue to underwrite that. Quite frankly, we're outperforming it in many instances, but that's kind of the baseline assumption that we have for all the capital that we're deploying in Coresight is kind of in that range for all of our organic builds.",
+        "startSeconds": 2023.71,
+        "endSeconds": 2079.37
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Rod Smith",
+        "speakerRole": "CFO",
+        "text": "And Rick, I would just add a couple of metrics. You've seen our double-digit revenue growth that we posted for the quarter, and the outlook continues to look at double-digit revenue growth expectations for Coresight. That also comes with expanding margins and some really interesting results in cash mark-to-markets, which is also a double digit, which is a significant increase from the traditional three to 4% increase. So we are having a fantastic Q2 and Q3 relative to cash mark-to-market. I would just caution you that for the full year, we do expect that to be more in the mid-single-digit range, in the 6% range. we're also we're experiencing low churn in the second half of the year here and um and the business is performing exceptionally well and just as steve said the capital that we're putting out in this business we expect mid-teen stabilized returns and as the environment if the environment continues to drive the way it is and stabilize deals we get beyond that and have more utilization and continue to have the pricing leverage there's certainly upside from there great thanks guys I appreciate it.",
+        "startSeconds": 2080.15,
+        "endSeconds": 2148.19
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you. And our next question comes from Cameron McVeigh of Morgan Stanley. Your line is open.",
+        "startSeconds": 2149.13,
+        "endSeconds": 2157.19
+      },
+      {
+        "speakerIndex": 11,
+        "speakerName": "Cameron McVeigh",
+        "speakerRole": "Analyst \u2014 Morgan Stanley",
+        "text": "Hi, thank you. Just had a couple. First, on the U.S. services, so there was a $15 million headwind EBITDA this year versus the prior outlook. Can you just give any more color on the timing shifts you had mentioned? And I might have missed it, but is there a services revenue outlook? And then secondly, on the core site cross-connects, it looks like there was a step up in cross-connects this quarter. Is that just lumpiness, or do you think AI is driving an increasing level of cross-connections going forward? Thank you.",
+        "startSeconds": 2158.87,
+        "endSeconds": 2189.83
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Rod Smith",
+        "speakerRole": "CFO",
+        "text": "Morning, Cameron. Thanks for joining the call. I'll start with the services piece. As you see in our outlook, we did update our outlook that reflects now a modest pullback in services revenue down to about $220 million of revenue. The first thing I would highlight is that number is still a very compelling, strong number up against historical standards. It wasn't that long ago that our services revenue was typically in the $100 million range. The pullback itself is related to the timing of certain activity projects from a certain customer that we now expect to be delayed and not happening in Q3 and potentially not in Q4. So that $220 million pullback in revenue, it does have roughly a $15 million reduction in the EBITDA levels within our outlook. The one thing that I would also highlight here is that the services revenue pullback is not directly related to any organic new business reduction. Those two metrics at this point really are decoupled. And the services is activity exactly at the site. Services work where our new business is more tied to terms and conditions within holistic agreements that we have and other MLA types. Over the years, we have expanded our network services operations to now include end-to-end solutions, including zoning, permitting, and construction management. And the increase in revenue that we've seen in the services business over the years really reflects and demonstrates the value of our network services capability to our customers in terms of helping them get new equipment deployed on our sites efficiently and quickly.",
+        "startSeconds": 2190.65,
+        "endSeconds": 2296.13
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Steven O. Vondran",
+        "speakerRole": "CEO",
+        "text": "And just touching on the interconnection, we are absolutely seeing an increase in interconnection kind of quarter over quarter. I don't think it's lumpy-nosed. I think that you're seeing a different demand characteristic. And it's definitely driven partially by AI, but it's not just AI. You're seeing an increase in these ecosystems where more and more customers are talking to each other. And so it's enterprise to cloud. It's enterprise to AI. It's AI to cloud. It's networked AI. it's really all of those different components are seeing an increase in cross-connects.",
+        "startSeconds": 2299.98,
+        "endSeconds": 2333.72
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you. And our next question comes from Michael Rollins of Citi. Your line is open.",
+        "startSeconds": 2339.09,
+        "endSeconds": 2351.54
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": "Michael Rollins",
+        "speakerRole": "Analyst \u2014 Citi",
+        "text": "Thanks and good morning. Just a few follow-ups if I could. So first, Rod, going back to some of your comments on domestic leasing. So if it's 250 basis points of core leasing contribution this year and you take that against the nearly 5.1 million you ended with last year. That's about $127 million and you did $93 million to date. So is your indication that these dollars are expected to bounce back towards that $34 million level just by that math that you saw quarterly in the first half of the year? And then I'll just And after that, follow up with a couple of others, if I could, please.",
+        "startSeconds": 2354.18,
+        "endSeconds": 2398.36
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Rod Smith",
+        "speakerRole": "CFO",
+        "text": "Yeah, Michael, thanks for the question. I would just highlight kind of that the new business is in line with our expectations. You know, you are correct in terms of the math that you're laying out when you look at the new business numbers in our full year expectations. So we continue to believe that we'll be broadly in that range of the two and a half percent contribution from new business. In terms of the actual new business number for Q4, I mean, you know, we've kind of moved away from guiding to a new business dollar amount. But we do expect that new business to be consistent in Q4 as we saw in Q3. And that is where it's consistent with our original outlook that we provided, which is we did expect the second half to be lower than the first half.",
+        "startSeconds": 2400.68,
+        "endSeconds": 2445.38
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": "Michael Rollins",
+        "speakerRole": "Analyst \u2014 Citi",
+        "text": "Appreciate the extra color on that. um secondly i was just curious if there's an um more of an update on you know just some of the um litigation processes that you're going through so uh the situation in mexico with at&t mexico and if uh the pending divestiture by at&t has any impact on that process and then also So, in terms of the potential mediation that you're in with DISH, is there just a range of outcomes that you can update us on, you know, in terms of, like, what the high watermark is and, like, maybe where the downside risk is, just to sort of range-bound what could develop on that front?",
+        "startSeconds": 2448.13,
+        "endSeconds": 2495.97
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Steven O. Vondran",
+        "speakerRole": "CEO",
+        "text": "Sure. Well, there's really not much new to report. So we did, you know, as we had told you guys, we had the arbitration hearing in Q3. We don't expect a ruling on that until 2027, early 2027. And so there's really no update on that. And the potential sale of that business doesn't really affect that at all. In terms of DISH, you know, there is a mediation, which is common in these types of scenarios for that to happen. I'm not going to speculate on a range of outcomes on that. You know, I think the range of outcomes has kind of consistently been, you know, the same options that are out there. I will just remind everyone that we have de-risked our business by taking DISH completely out of all of our numbers and projections and things like that. And so, you know, whatever happens there would be incremental to any of the projections and the numbers that we've given you guys. And, you know, just a reminder to everyone, the DISH churn that we saw this year is what has been weighing on OTBG. And so that will be gone next year. So we will see an inflection in growth next year as a result of the non-recurrence of that churn. And so those processes will just keep playing out. And when there's a resolution, we'll let you guys know.",
+        "startSeconds": 2497.33,
+        "endSeconds": 2573.53
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Rod Smith",
+        "speakerRole": "CFO",
+        "text": "And Michael, I would just ask you to keep in mind too that relative to AT&T in Mexico, we did make a reserve of about $30 million in 2025 up for the revenue there. And 2026, We're currently reserving $8 to $10 million per quarter. So think about $26 as adding about $40 million to that reserve. So at the end of this year, we expect revenue reserves regarding AT&T Mexico to be at about $70 million. So you can think about that in terms of run rates and eventual resolution here and how that may fit into the picture.",
+        "startSeconds": 2574.09,
+        "endSeconds": 2608.45
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": "Michael Rollins",
+        "speakerRole": "Analyst \u2014 Citi",
+        "text": "That's helpful. And one last one, if I could, please. And this may be a tougher question, but appreciate the opportunity to ask it. So you mentioned earlier that part of what was happening with the services business was a delay from a customer. And another tower company talked about a customer delay where that customer was purchasing low-band spectrum. That process got delayed in terms of approvals. Is that a similar delay that you're experiencing? And does that also then infer some conviction on the ramp for 2027?",
+        "startSeconds": 2610.05,
+        "endSeconds": 2650.51
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Steven O. Vondran",
+        "speakerRole": "CEO",
+        "text": "If we get too specific about our customer builds, they get very grumpy with me. So we're not going to touch too much on what that was. But what I will say is the delay that we're seeing is just a change in timing, not expectation. So we fully expect to get that business, both the services and the rental revenue associated with that, when the customer builds, not if the customer builds.",
+        "startSeconds": 2651.67,
+        "endSeconds": 2673.09
+      },
+      {
+        "speakerIndex": 7,
+        "speakerName": "Michael Rollins",
+        "speakerRole": "Analyst \u2014 Citi",
+        "text": "Thank you so much.",
+        "startSeconds": 2674.43,
+        "endSeconds": 2675.57
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you. And our next question comes from Nick Del Dio of Moffitt-Nationson. Your line is open.",
+        "startSeconds": 2677.56,
+        "endSeconds": 2686.15
+      },
+      {
+        "speakerIndex": 9,
+        "speakerName": "Nick Del Dio",
+        "speakerRole": "Analyst \u2014 Moffitt-Nationson",
+        "text": "Hey, morning, guys. Thanks for taking my questions. Morning, Nick. Hey, first, you've been experimenting with some smaller multi-megawatt purpose-built data centers at some of your tower sites. One of your peers has talked about potentially supporting deployments, you know, in order of magnitude smaller, maybe a couple hundred kilowatts or so per site. I guess, have you received any interest from potential customers about the latter concept? And how would you view its appeal versus the model that you've been developing in recent years?",
+        "startSeconds": 2687.85,
+        "endSeconds": 2714.85
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Steven O. Vondran",
+        "speakerRole": "CEO",
+        "text": "Yeah, thanks for the question, Nick. We're excited about everyone by getting excited about Edge. It's something that we've been working on for a few years now. And Edge means something different to every person you talk to. And so there are a number of proofs of concepts that are going on with various parties at various sizes. So, yes, we're seeing interest from various parties for smaller deployments on sites as well. our raleigh facility which is the kind of the first that that we've built of its kind i'm happy to say that the the first megawatt leased up already and we're about to to go live on the second megawatt and it's almost completely leased up as well so we're absolutely seeing demand for a little bit larger scale deployments as well at the edge as well as the smaller scale deployments And so when you think about the Edge ecosystem, the momentum is very positive. And that's something that we're excited about. We think the TAM is expanding because there are multiple parties interested in different models there. And we continue to believe in our thesis that connecting those Edge data centers back to CoreSight gives us a right to win in that space. And it makes us a more interesting partner. So we'll continue to iterate on that. And when there's something more material to announce, we'll tell you guys that, and we'll keep you up to date on our efforts with Raleigh. And if we decide to build a couple more of those small ones to iterate on that concept, we're confident those are going to lease up as well, because we are seeing a lot of demand in that space.",
+        "startSeconds": 2715.57,
+        "endSeconds": 2813.75
+      },
+      {
+        "speakerIndex": 9,
+        "speakerName": "Nick Del Dio",
+        "speakerRole": "Analyst \u2014 Moffitt-Nationson",
+        "text": "Okay, that's great to hear. Maybe pivoting a bit to capital allocation, you've obviously been leaning more heavily into share repurchases, I think for reasons that you've described in your past call. I guess I was wondering if you've been seeing any changes in seller expectations, you know, in the M&A market, given rising interest rates and whatnot, that might suggest that the relative positioning of opportunities to put capital work might be shifted at all in your priority list?",
+        "startSeconds": 2815.03,
+        "endSeconds": 2839.81
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Steven O. Vondran",
+        "speakerRole": "CEO",
+        "text": "What I would say is we haven't seen material opportunities where you had a willing counterparty, the constructive regulatory environment, and the economics all came together for us. And you really have to have those three for more material M&A. In some of the smaller tower deals in the U.S., we're seeing a little bit of rationality in some of the multiples, but nothing that's been of scale and nothing that we've actioned on recently of any type of scale in that space. So I'd say that there are opportunities out there. There are people talking about things, but we haven't been able to bring those three components together on anything material.",
+        "startSeconds": 2842.43,
+        "endSeconds": 2882.77
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Rod Smith",
+        "speakerRole": "CFO",
+        "text": "And Nick, I would just add to that and maybe update the listeners here on our overall capital allocation strategy and approach. And I think that entire process is underpinned by management, Steve and I and the executive team as well as the board being very disciplined in terms of our approach to capital allocation. And I think you've seen that. First and foremost, we do allocate capital towards our dividend. As a REIT, we are required to dividend out about 90% of our REIT taxable income. We choose to dividend out about 100%. We think that's most efficient for our shareholders, and we enjoy returning capital to our shareholders. Next, we look at internal capital programs, and you see us this year investing between $1.8 and $1.9 billion, and pretty consistent level. Within that, 85% of that is being allocated towards developed markets, which is exactly in line with the strategy that Steve outlined a couple years ago in terms of leaning into developed markets, high quality economies with high quality counterparties, which gives us a more stable return outlook and an easier, clearer path to value creation for our shareholders. Next, we look at M&A. And in the US, we're doing some small M&A. You'll see that tucked into our cash flow statement and our balance sheet, but nothing material, but we do look at M&A in the U.S. and in Europe and Corsight and Towers, but we're very disciplined, so we don't feel a need to jump in in a way that would be undisciplined. We don't mind allocating capital towards continued debt reduction in this environment, and we also don't mind buying back shares. We actually like that, and at certain times it can be the best use of capital depending on all the factors that come into play. So we're constantly scanning the dashboard when it comes to capital allocation, being very disciplined. You know, we have multiple levers to pull. So that is good. We have a lot of flexibility and it allows us to make really good decisions on behalf of our shareholders. With that said, even with the nearly, a little over $900 million that we've allocated back to share repurchases, the $1.8 to $1.9 billion that we look to deploy in internal CapEx this year, as well as the $3.3 billion we're dividending back to our shareholders. We have an incredibly strong balance sheet, stronger than all of our peers. We have a triple B plus credit rating, the lowest leverage out there. And we do view that as a strategic asset that puts us in a really strong position to be flexible and opportunistic as we go forward. All right.",
+        "startSeconds": 2882.77,
+        "endSeconds": 3045.17
+      },
+      {
+        "speakerIndex": 9,
+        "speakerName": "Nick Del Dio",
+        "speakerRole": "Analyst \u2014 Moffitt-Nationson",
+        "text": "Great.",
+        "startSeconds": 3045.45,
+        "endSeconds": 3045.59
+      },
+      {
+        "speakerIndex": 6,
+        "speakerName": "Michael Funk",
+        "speakerRole": "Analyst \u2014 Bank of America",
+        "text": "Thank you, guys. thank you and our next question comes from michael funk of bank of america your line is open yeah good morning guys thank you again for for the question so you know why don't you go back to a potential leo terrestrial build and get your thoughts on time required to build out nationwide network using existing equipment if possible versus doing more of a greenfield build It's using your expertise to think about timing around that. And then, you know, looking at the cost line in the services business, it didn't come down as much as I would have expected given the drop-off in revenue there. So what does that tell us about anticipation of maybe, you know, increased work in the services side?",
+        "startSeconds": 3045.79,
+        "endSeconds": 3094.4
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Steven O. Vondran",
+        "speakerRole": "CEO",
+        "text": "Sure, I'll take the first part, and Rod, you can take the second part. we we don't want to speculate on the scope of what people are going to do in terms of their network so it's very hard to to guess at what a timeline would be for deployment on that so again on that i think i have to direct you back to the parties who might build it there's just too many variables for us to start speculating on timelines what i can tell you is that american tower can get them on air faster than anybody else and we can offer end-end services which kind of leads into your second question you know part of what we do for our customers is take them from application and zoning all the way through construction and that'll lead right into the second question with",
+        "startSeconds": 3095.9,
+        "endSeconds": 3138.74
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Rod Smith",
+        "speakerRole": "CFO",
+        "text": "rod yeah Michael what I would say about the services is that you really have to consider the mix and I don't want to get into too much detail there in terms of all the different end-to-end services that we provide in the different margins but of course you can imagine construction management is a much different margin profile than the zoning and permitting we do with the engineering. So it is a mix of the services revenue and particularly where the reduction came primarily. And I would just highlight that we now have construction management runs at about half of our overall services revenue. So that's been increasing quite a bit. And you'll see that reflected in the overall margins from services, the gross margins, which are running now north of 40% from a level that used to be around 50%. That is primarily the mix and the increase in volume that we're seeing in the construction management.",
+        "startSeconds": 3138.74,
+        "endSeconds": 3191.86
+      },
+      {
+        "speakerIndex": 6,
+        "speakerName": "Michael Funk",
+        "speakerRole": "Analyst \u2014 Bank of America",
+        "text": "Great. Thank you both.",
+        "startSeconds": 3193.7,
+        "endSeconds": 3194.84
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you. And our next question comes from Richard Cho of J.P. Morgan. Your line is open.",
+        "startSeconds": 3196.82,
+        "endSeconds": 3205.25
+      },
+      {
+        "speakerIndex": 1,
+        "speakerName": null,
+        "speakerRole": null,
+        "text": "Great. I wanted to follow up on the data center opportunity. What are you seeing in terms of your pipeline of deals and then in terms of the renewals you mentioned the six percent marked market but are you seeing different our customers asking for different things in terms of terms of and conditions that you think is a good sign going forward for your existing base uh sure well the the demand is is really higher than we've ever seen before in terms of of core site.",
+        "startSeconds": 3206.57,
+        "endSeconds": 3239.23
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Steven O. Vondran",
+        "speakerRole": "CEO",
+        "text": "And that's giving us a lot of flexibility in terms of curating the customer mix and making sure that we're optimizing the yield on those assets. The mark to market is, and remember, that's on top of kind of annual escalators that we get in that business. So that's just a reflection of pricing in the industry going up, which is a factor of the supply and demand dynamics that are there. And so when you look at our pipeline, Richard, it's very robust. And, you know, again, we try to curate that customer mix. We want people who build the ecosystem, who have a lot of cross connects, who are going to be there for the long term. And because of the demand cycle that we're in, we're able to be very selective on our counterparties and curate that customer mix even better than we have in the past. So we're very confident in the long term trajectory and the durability of both that revenue and the ability to grow it. When you think about the growth that we're seeing, what we've been very confident in saying is we still see double digit growth for the foreseeable future in terms of revenue and core site. And that's not coming at the expense of the quality. We're increasing the quality of the earnings there. We're putting better counterparties in. So I would say it's a very healthy environment.",
+        "startSeconds": 3239.77,
+        "endSeconds": 3319.39
+      },
+      {
+        "speakerIndex": 1,
+        "speakerName": null,
+        "speakerRole": null,
+        "text": "And we're excited to be to be growing and investing in that business and one follow-up on the interconnection side you talked about it a little bit but how are you seeing interconnection kind of evolve or connectivity evolve and then with your more ai kind of centric customers or enterprises that are adopting it because there's some question on how many cross connects would it end up taking how would you monetize it um can you give us a sense of what you're seeing um we're just seeing an explosion in in growth you know when you when there are massive cross connects to people who are operating llms but it's really the way to think about it is everyone's becoming more connected to each other",
+        "startSeconds": 3319.61,
+        "endSeconds": 3365.34
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Steven O. Vondran",
+        "speakerRole": "CEO",
+        "text": "and so you're seeing these cross connects between parties that historically didn't cross connect in the past, because they're transferring, you know, petabytes of data back and forth. And you just can't backhaul that across the country over the internet and things like that. And that's really what's driving demand. People want to be in a neutral host co-location facility next to other people where they can get direct cross connects. And that's really what's feeding this ecosystem growth and the cross connect growth.",
+        "startSeconds": 3365.34,
+        "endSeconds": 3393.38
+      },
+      {
+        "speakerIndex": 1,
+        "speakerName": null,
+        "speakerRole": null,
+        "text": "Great. Thank you.",
+        "startSeconds": 3396.58,
+        "endSeconds": 3397.46
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you. And our next question comes from Brendan Lynch of Barclays. Your line is open.",
+        "startSeconds": 3398.86,
+        "endSeconds": 3407.27
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Brendan Lynch",
+        "speakerRole": "Analyst \u2014 Barclays",
+        "text": "Great. Thanks for taking my questions. Rod, you remain confident that 2026 is going to be the trough year in organic growth and also mentioned that FFO pressure should be accelerating in 2027. Is that dependent on contribution from the satellite operators that could deploy terrestrial networks, or would that be incremental?",
+        "startSeconds": 3409.09,
+        "endSeconds": 3428.19
+      },
+      {
+        "speakerIndex": 8,
+        "speakerName": "Rod Smith",
+        "speakerRole": "CFO",
+        "text": "Yeah, thanks for the question, Brendan. I would say, let me step back and just look at our AFFO per share growth algorithm that we've laid out in prior calls. I'll start by just highlighting that this year for 2026, in our most recent outlook, that has a 3% AFFO per share growth rate. On an FX neutral basis, that's much tighter to 0%. That includes contributions from DISH headwind of about 400 basis points. It also includes about 100 basis points of headwind from refinancing costs. And the services step down is another 100 basis points of headwind. So if you look at that, you know, approximately 0% FX neutral reported AFFO per share growth for 2026. And you look at DISH churn as being non-recurring, that adds 400 basis points, sort of going forward on an average kind of run rate basis, we are moving through the refinancing curve and the refinancing headwind is becoming muted relative to where it was a couple of years ago. So we're growing into the higher interest rate environment, but that's another 100 basis points. And then the services reduction is another 100 basis points. That puts us at an AFFO per share number equivalent to approximately 7% if you think of those items as non-recurring and going forward. So outside of those items, our global portfolio of assets is really well positioned for that mid-single to better than mid-single digit AFFO per share growth. And that comes with a few distinct expectations. One is the developed markets, both US and Europe. We expect revenue growth in the mid-single digits from those businesses, very high quality economies, very consistent activity levels. We expect higher growth from our emerging market tower businesses, and we expect double digit growth from Coresight, you know, as we move forward into the next few years, you combine that revenue growth with our high operating leverage, our high financial leverage and very smart capital allocation and disciplined capital allocation. That makes it very attainable to have an AFFO per share growth in that mid to upper mid single digit rates before you account for the impacts of FX and interest rates. So that algorithm is fully intact. And I would say when you think of satellite players, we're not really building any of that into the long term. So there could be some upside there. If that's modest, I wouldn't expect a lot of changes to our overall algorithm. But depending on the nature of those investments and the ambition of any particular satellite carriers, some of that could certainly represent upside.",
+        "startSeconds": 3429.89,
+        "endSeconds": 3591.83
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Brendan Lynch",
+        "speakerRole": "Analyst \u2014 Barclays",
+        "text": "Great. Thanks for walking us through those dynamics. And, Steve, just to follow up on your comment about the DISH equipment, I understand that you own it now, but is there any dispute about that in the legal proceedings with DISH, or are you free and clear to sell that equipment to whoever you choose right now?",
+        "startSeconds": 3593.35,
+        "endSeconds": 3609.91
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Steven O. Vondran",
+        "speakerRole": "CEO",
+        "text": "Nope. We are good. We can do whatever we want to with it.",
+        "startSeconds": 3610.27,
+        "endSeconds": 3613.51
+      },
+      {
+        "speakerIndex": 2,
+        "speakerName": "Brendan Lynch",
+        "speakerRole": "Analyst \u2014 Barclays",
+        "text": "Great. Thank you.",
+        "startSeconds": 3614.73,
+        "endSeconds": 3615.87
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you. Our last question comes from Eric Luchow of Wells Fargo. your line is open.",
+        "startSeconds": 3622.47,
+        "endSeconds": 3629.63
+      },
+      {
+        "speakerIndex": 12,
+        "speakerName": "Eric Luchow",
+        "speakerRole": "Analyst \u2014 Wells Fargo",
+        "text": "Great. Thank you. I wanted to touch on the data center core site business a little bit. Maybe you can talk about any steps or things you're evaluating to get the higher multiple data center business even more reflected in your stock price today. Are there opportunities to ramp CapEx spending even further as we look into 27 or 28? Are there any inorganic opportunities out there, whether it's portfolios or specific assets that, you know, could drive an even higher contribution to your attributable AFFO?",
+        "startSeconds": 3631.41,
+        "endSeconds": 3665.87
+      },
+      {
+        "speakerIndex": 4,
+        "speakerName": "Steven O. Vondran",
+        "speakerRole": "CEO",
+        "text": "Sure. Thanks for the question. We are continuing to look for opportunities to invest in CoreSight. And if you kind of reflect back on what we said about our pipeline, you know, we have line of sight into almost tripling the megawatts under service that we have today over time. And we'll continue to look at adding scale there. We are exploring some new market entries there from an organic built perspective. We haven't announced any yet because we're still working through the process of making sure that we got all the entitlements on those before we announced that, but we do think that that's an avenue. We will continue to invest in our existing campuses. We're pushing the teams to accelerate that build pipeline. We have all the entitlements we need for our near-term build, but as you may have heard, It's a little bit difficult to accelerate some of the timelines where you don't have permits, so we're working hard on that. We've got a 30-year track record on the tower side of navigating those headwinds, so we think we're better positioned than anybody else to do that. But we are trying to accelerate that investment, and we do think that that will be something that gains a little bit more attention for Coresight. When it comes to inorganic opportunities, like we would do on the tower side, we'll always evaluate what's out there. And if we can find an opportunity that makes sense, then we'll take action on it. But nothing to announce on that front today. But we certainly believe in the business. We believe in the connection between towers and data centers. We think that that's going to continue to evolve and become more apparent. And we think it's a great asset that we intend to continue growing. So thanks for the question.",
+        "startSeconds": 3667.39,
+        "endSeconds": 3765.13
+      },
+      {
+        "speakerIndex": 11,
+        "speakerName": "Cameron McVeigh",
+        "speakerRole": "Analyst \u2014 Morgan Stanley",
+        "text": "Thank you.",
+        "startSeconds": 3766.95,
+        "endSeconds": 3767.55
+      },
+      {
+        "speakerIndex": 5,
+        "speakerName": null,
+        "speakerRole": "Operator",
+        "text": "Thank you. This concludes our question and answer session on today's conference call. Thank you for participating, and you may now disconnect.",
+        "startSeconds": 3768.83,
+        "endSeconds": 3776.23
+      }
+    ],
+    "corrections": []
+  }
+}
