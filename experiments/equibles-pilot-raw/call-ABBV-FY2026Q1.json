@@ -1,0 +1,46 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "ABBV",
+    "companyName": "AbbVie Inc.",
+    "guidance": [],
+    "guidanceStatus": "notExtracted",
+    "corrections": [],
+    "id": "6ea95945-8cab-47f4-acdc-e884e9ac432a",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "AbbVie Inc. Q1 FY2026 Earnings Call",
+    "callDate": "2026-04-29T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 1,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://edge.media-server.com/mmc/p/o3mif4f8",
+    "transcriptDocumentId": "a111f991-dbd9-49bb-bd9a-343b2b5037f8",
+    "earningsReleaseDocumentId": "c0b33fa7-ae32-46cd-be21-de404b0f921c",
+    "hasAudio": true,
+    "hasSlides": false,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "failed",
+        "reason": "Slide deck could not be captured",
+        "lastAttemptAt": "2026-11-01T23:12:38.675954+00:00",
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

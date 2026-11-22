@@ -1,0 +1,91 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "AEP",
+    "companyName": "American Electric Power Co Inc",
+    "guidance": [
+      {
+        "metric": "2026 operating earnings guidance",
+        "period": "full-year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 6.25,
+        "high": 6.55,
+        "midpoint": 6.4,
+        "unit": "USD/share",
+        "basis": "Non-GAAP",
+        "fromTable": false,
+        "quote": "AEP is raising its full-year 2026 operating earnings guidance to $6.25 to $6.55 per share from its previous guidance range of $6.15 to $6.45 per share to reflect strong performance through the first half of the year and expected results for the remainder of the year.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Raised",
+        "priorGuidanceRange": {
+          "filedDate": "2026-05-05",
+          "low": 6.15,
+          "high": 6.45
+        }
+      },
+      {
+        "metric": "Estimated GAAP EPS Guidance",
+        "period": "2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 6.16,
+        "high": 6.46,
+        "midpoint": 6.31,
+        "unit": "USD/share",
+        "basis": "GAAP",
+        "fromTable": false,
+        "quote": "Reflecting certain items recorded through the second quarter, the estimated earnings per share on a GAAP basis would be $6.16 to $6.46 per share.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Raised",
+        "priorGuidanceRange": {
+          "filedDate": "2026-05-05",
+          "low": 6.12,
+          "high": 6.42
+        }
+      }
+    ],
+    "guidanceStatus": "approved",
+    "corrections": [],
+    "id": "7d9b9cd5-dcd6-451c-b329-e8c628ad64f3",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "American Electric Power Co Inc Q2 FY2026 Earnings Call",
+    "callDate": "2026-07-30T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 2,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "http://www.aep.com/webcasts",
+    "transcriptDocumentId": "5bdef354-42d2-41ab-a497-b76e3e89d9a9",
+    "earningsReleaseDocumentId": "8c03459f-c174-48ea-b81d-41a356b5599a",
+    "hasAudio": true,
+    "hasSlides": false,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "failed",
+        "reason": "Slide deck could not be captured",
+        "lastAttemptAt": "2026-10-19T07:42:41.391302+00:00",
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

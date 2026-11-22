@@ -1,0 +1,109 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "ADBE",
+    "companyName": "Adobe Inc.",
+    "guidance": [
+      {
+        "metric": "non-GAAP operating margin",
+        "period": "third quarter FY2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "low": 44.0,
+        "high": 44.0,
+        "midpoint": 44.0,
+        "unit": "percent",
+        "basis": "Non-GAAP",
+        "fromTable": false,
+        "quote": "Targets assume non-GAAP operating margin of ~44.0%, GAAP tax rate of ~23.0%, non-GAAP tax rate of ~18.0% and diluted share count of ~395 million for third quarter FY2026.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      },
+      {
+        "metric": "Total Adobe ending ARR growth",
+        "period": "FY2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 10.2,
+        "high": 10.2,
+        "midpoint": 10.2,
+        "unit": "percent",
+        "basis": null,
+        "fromTable": true,
+        "quote": "Total Adobe ending ARR growth | 10.2% year over year",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Maintained",
+        "priorGuidanceRange": {
+          "filedDate": "2025-12-10",
+          "low": 10.2,
+          "high": 10.2
+        }
+      },
+      {
+        "metric": "non-GAAP operating margin",
+        "period": "FY2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 45.0,
+        "high": 45.0,
+        "midpoint": 45.0,
+        "unit": "percent",
+        "basis": "Non-GAAP",
+        "fromTable": false,
+        "quote": "Targets assume non-GAAP operating margin of ~45.0%, GAAP tax rate of ~22.5%, non-GAAP tax rate of ~18.0% and diluted share count of ~399 million for FY2026.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Maintained",
+        "priorGuidanceRange": {
+          "filedDate": "2025-12-10",
+          "low": 45.0,
+          "high": 45.0
+        }
+      }
+    ],
+    "guidanceStatus": "approved",
+    "corrections": [],
+    "id": "34a14d9c-0bec-480e-8df1-a70d7192c1ee",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "Adobe Inc. Q2 FY2026 Earnings Call",
+    "callDate": "2026-06-11T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 2,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://www.youtube.com/watch?v=KIEkxdEffNE",
+    "transcriptDocumentId": "c00ea621-32f2-4776-8e4c-b8607be33aa9",
+    "earningsReleaseDocumentId": "43142e46-d2f5-440f-91d0-4eb5e58eec8d",
+    "hasAudio": true,
+    "hasSlides": true,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "available",
+        "reason": "Slide deck captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

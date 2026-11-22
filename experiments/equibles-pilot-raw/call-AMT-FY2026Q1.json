@@ -1,0 +1,157 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "AMT",
+    "companyName": "American Tower Corp",
+    "guidance": [
+      {
+        "metric": "U.S. & Canada segment property revenue",
+        "period": "Full Year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 5060000000.0,
+        "high": 5120000000.0,
+        "midpoint": 5090000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Includes U.S. & Canada segment property revenue of $5,060 million to $5,120 million",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Maintained",
+        "priorGuidanceRange": {
+          "filedDate": "2026-02-24",
+          "low": 5060000000.0,
+          "high": 5120000000.0
+        }
+      },
+      {
+        "metric": "Latin America property revenue",
+        "period": "Full Year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 1730000000.0,
+        "high": 1750000000.0,
+        "midpoint": 1740000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Latin America property revenue of $1,730 million to $1,750 million",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Raised",
+        "priorGuidanceRange": {
+          "filedDate": "2026-02-24",
+          "low": 1645000000.0,
+          "high": 1665000000.0
+        }
+      },
+      {
+        "metric": "Africa & APAC property revenue",
+        "period": "Full Year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 1595000000.0,
+        "high": 1615000000.0,
+        "midpoint": 1605000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Africa & APAC property revenue of $1,595 million to $1,615 million",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Raised",
+        "priorGuidanceRange": {
+          "filedDate": "2026-02-24",
+          "low": 1535000000.0,
+          "high": 1555000000.0
+        }
+      },
+      {
+        "metric": "Europe property revenue",
+        "period": "Full Year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 1025000000.0,
+        "high": 1055000000.0,
+        "midpoint": 1040000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Europe property revenue of $1,025 million to $1,055 million",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Maintained",
+        "priorGuidanceRange": {
+          "filedDate": "2026-02-24",
+          "low": 1025000000.0,
+          "high": 1055000000.0
+        }
+      },
+      {
+        "metric": "Data Centers segment property revenue",
+        "period": "Full Year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 1175000000.0,
+        "high": 1195000000.0,
+        "midpoint": 1185000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Data Centers segment property revenue of $1,175 million to $1,195 million",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Maintained",
+        "priorGuidanceRange": {
+          "filedDate": "2026-02-24",
+          "low": 1175000000.0,
+          "high": 1195000000.0
+        }
+      }
+    ],
+    "guidanceStatus": "approved",
+    "corrections": [],
+    "id": "74fa0d6a-e13a-4736-9747-2248d1b58484",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "American Tower Corp /Ma/ Q1 FY2026 Earnings Call",
+    "callDate": "2026-04-28T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 1,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://edge.media-server.com/mmc/p/rckv4abo",
+    "transcriptDocumentId": "9d5220e0-a6e3-473d-af4f-2ddbf7da3282",
+    "earningsReleaseDocumentId": "e1690733-973f-456d-b742-e82d85ba4b53",
+    "hasAudio": true,
+    "hasSlides": false,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "failed",
+        "reason": "Slide deck could not be captured",
+        "lastAttemptAt": "2026-10-31T21:27:49.581538+00:00",
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

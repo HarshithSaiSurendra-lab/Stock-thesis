@@ -1,0 +1,91 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "AXP",
+    "companyName": "American Express Co",
+    "guidance": [
+      {
+        "metric": "REVENUE GROWTH GUIDANCE",
+        "period": "FY 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 10.0,
+        "high": 10.0,
+        "midpoint": 10.0,
+        "unit": "percent",
+        "basis": null,
+        "fromTable": false,
+        "quote": "AMERICAN EXPRESS RAISES FY 2026 REVENUE GROWTH GUIDANCE TO 10%",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Raised",
+        "priorGuidanceRange": {
+          "filedDate": "2026-04-23",
+          "low": 9.0,
+          "high": 10.0
+        }
+      },
+      {
+        "metric": "full-year EPS",
+        "period": "full-year",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 17.3,
+        "high": 17.9,
+        "midpoint": 17.6,
+        "unit": "USD/share",
+        "basis": null,
+        "fromTable": false,
+        "quote": "We continue to expect full-year EPS of $17.30 to $17.90.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Maintained",
+        "priorGuidanceRange": {
+          "filedDate": "2026-04-23",
+          "low": 17.3,
+          "high": 17.9
+        }
+      }
+    ],
+    "guidanceStatus": "approved",
+    "corrections": [],
+    "id": "30608dc6-4b61-4cab-84e8-373999b8365b",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "Q2 2026 American Express Earnings Conference Call",
+    "callDate": "2026-07-24T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 2,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://events.q4inc.com/attendee/475264006",
+    "transcriptDocumentId": "a2a9b501-723d-4a03-8c19-ff2b6af8de69",
+    "earningsReleaseDocumentId": "072e598b-21f3-4f69-9d1c-38b49acf8ee2",
+    "hasAudio": true,
+    "hasSlides": true,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "available",
+        "reason": "Slide deck captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

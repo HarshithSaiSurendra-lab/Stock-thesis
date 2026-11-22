@@ -1,0 +1,83 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "AMZN",
+    "companyName": "Amazon Com Inc",
+    "guidance": [
+      {
+        "metric": "Net sales",
+        "period": "second quarter 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "low": 194000000000.0,
+        "high": 199000000000.0,
+        "midpoint": 196500000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Net sales are expected to be between $194.0 billion and $199.0 billion, or to grow between 16% and 19% compared with second quarter 2025. This guidance anticipates an unfavorable impact of approximately 10 basis points from foreign exchange rates.",
+        "actual": 200606000000.0,
+        "actualVerdict": "above",
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      },
+      {
+        "metric": "Operating income",
+        "period": "second quarter 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "low": 20000000000.0,
+        "high": 24000000000.0,
+        "midpoint": 22000000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Operating income is expected to be between $20.0 billion and $24.0 billion, compared with $19.2 billion in second quarter 2025.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      }
+    ],
+    "guidanceStatus": "approved",
+    "corrections": [],
+    "id": "ea1f8b24-6297-46c7-a0ff-8c776937b596",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "Amazon Com Inc Q1 FY2026 Earnings Call",
+    "callDate": "2026-04-29T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 1,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://www.youtube.com/watch?v=sWaKcqdqh2U",
+    "transcriptDocumentId": "d3694c77-a7a9-4c37-9cbd-8f786d5f0569",
+    "earningsReleaseDocumentId": "395177d0-7706-4928-a0fe-2779c9081777",
+    "hasAudio": true,
+    "hasSlides": false,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "notPublished",
+        "reason": "No slide deck was published",
+        "lastAttemptAt": "2026-10-18T22:40:46.716895+00:00",
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

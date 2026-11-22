@@ -1,0 +1,83 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "AMGN",
+    "companyName": "Amgen Inc",
+    "guidance": [
+      {
+        "metric": "GAAP diluted EPS guidance",
+        "period": "Year Ending December 31, 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 15.45,
+        "high": 16.94,
+        "midpoint": 16.195,
+        "unit": "USD/share",
+        "basis": "GAAP",
+        "fromTable": false,
+        "quote": "GAAP diluted EPS guidance $ 15.45 \u2014 $ 16.94",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      },
+      {
+        "metric": "Non-GAAP diluted EPS guidance",
+        "period": "Year Ending December 31, 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 21.6,
+        "high": 23.0,
+        "midpoint": 22.3,
+        "unit": "USD/share",
+        "basis": "Non-GAAP",
+        "fromTable": false,
+        "quote": "Non-GAAP diluted EPS guidance $ 21.60 \u2014 $ 23.00",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      }
+    ],
+    "guidanceStatus": "approved",
+    "corrections": [],
+    "id": "74ce380a-2abe-4342-bbc9-9140b6293807",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "Amgen Inc Q4 FY2025 Earnings Call",
+    "callDate": "2026-02-03T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2025,
+    "fiscalQuarter": 4,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://www.youtube.com/watch?v=NhtoQYCQ-V8",
+    "transcriptDocumentId": "350c0164-9035-4dec-8db3-a6f810387a5a",
+    "earningsReleaseDocumentId": "d9db57af-2f90-4464-aabb-c0b79f280768",
+    "hasAudio": true,
+    "hasSlides": false,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "pending",
+        "reason": "Slide capture scheduled",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

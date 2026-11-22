@@ -1,0 +1,46 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "ADBE",
+    "companyName": "Adobe Inc.",
+    "guidance": [],
+    "guidanceStatus": "notExtracted",
+    "corrections": [],
+    "id": "eb83a8d9-539d-42ea-a589-fd0ee9a43cb2",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "Adobe Inc. Q1 FY2026 Earnings Call",
+    "callDate": "2026-03-12T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 1,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://www.youtube.com/watch?v=6ZeC-khoEbg",
+    "transcriptDocumentId": "ec11130f-5ca1-4a55-a447-0cbbc22a583a",
+    "earningsReleaseDocumentId": "997d4372-7861-414f-895d-ebd406864294",
+    "hasAudio": true,
+    "hasSlides": false,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "notPublished",
+        "reason": "No slide deck was published",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

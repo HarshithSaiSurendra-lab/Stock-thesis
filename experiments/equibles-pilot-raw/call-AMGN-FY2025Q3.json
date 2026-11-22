@@ -1,0 +1,69 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "AMGN",
+    "companyName": "Amgen Inc",
+    "guidance": [
+      {
+        "metric": "GAAP diluted EPS guidance",
+        "period": "Year Ending December 31, 2025",
+        "fiscalYear": 2025,
+        "fiscalQuarter": null,
+        "low": 13.76,
+        "high": 14.6,
+        "midpoint": 14.18,
+        "unit": "USD/share",
+        "basis": "GAAP",
+        "fromTable": true,
+        "quote": "GAAP diluted EPS guidance | $ | 13.76 | \u2014 | $ | 14.60 |",
+        "actual": 14.23,
+        "actualVerdict": "within",
+        "actualIsDerived": false,
+        "changeVsPrior": "Raised",
+        "priorGuidanceRange": {
+          "filedDate": "2025-08-05",
+          "low": 10.97,
+          "high": 12.11
+        }
+      }
+    ],
+    "guidanceStatus": "approved",
+    "corrections": [],
+    "id": "05685860-33ae-4c32-95f8-6f2a24b17077",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "Amgen Inc Q3 FY2025 Earnings Call",
+    "callDate": "2025-11-04T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2025,
+    "fiscalQuarter": 3,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": null,
+    "transcriptDocumentId": "2ee190f4-af0e-45b4-b31d-131f9374ce90",
+    "earningsReleaseDocumentId": "6759362a-1782-4fa5-9642-390a4fd926d8",
+    "hasAudio": false,
+    "hasSlides": false,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "failed",
+        "reason": "Audio could not be captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "pending",
+        "reason": "Slide capture will retry",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

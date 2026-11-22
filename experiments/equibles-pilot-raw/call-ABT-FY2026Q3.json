@@ -1,0 +1,83 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "ABT",
+    "companyName": "Abbott Laboratories",
+    "guidance": [
+      {
+        "metric": "adjusted diluted earnings per share",
+        "period": "full-year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 5.5,
+        "high": 5.55,
+        "midpoint": 5.525,
+        "unit": "USD/share",
+        "basis": "Non-GAAP",
+        "fromTable": false,
+        "quote": "Abbott projects full-year 2026 adjusted diluted earnings per share of $5.50 to $5.55.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      },
+      {
+        "metric": "adjusted diluted earnings per share",
+        "period": "fourth-quarter 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "low": 1.62,
+        "high": 1.67,
+        "midpoint": 1.645,
+        "unit": "USD/share",
+        "basis": "Non-GAAP",
+        "fromTable": false,
+        "quote": "Abbott projects fourth-quarter 2026 adjusted diluted earnings per share of $1.62 to $1.67.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      }
+    ],
+    "guidanceStatus": "approved",
+    "corrections": [],
+    "id": "a3af2db8-2f27-4464-bf10-912b34e200dd",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "Abbott Laboratories Q3 FY2026 Earnings Call",
+    "callDate": "2026-10-21T13:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 3,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://edge.media-server.com/mmc/p/gxn96ftv/",
+    "transcriptDocumentId": "e164423d-e1e0-4a49-8d2b-3f23049ffeae",
+    "earningsReleaseDocumentId": "c36cb9f4-2575-4e23-b61d-7a31d776d1e7",
+    "hasAudio": true,
+    "hasSlides": false,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": "2026-10-21T15:34:07.586688+00:00",
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "notPublished",
+        "reason": "No slide deck was published",
+        "lastAttemptAt": "2026-10-21T11:52:36.359198+00:00",
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

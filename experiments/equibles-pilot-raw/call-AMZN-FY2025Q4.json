@@ -1,0 +1,101 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "AMZN",
+    "companyName": "Amazon Com Inc",
+    "guidance": [
+      {
+        "metric": "capital expenditures",
+        "period": "2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 200000000000.0,
+        "high": 200000000000.0,
+        "midpoint": 200000000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "we expect to invest about $200 billion in capital expenditures across Amazon in 2026, and anticipate strong long-term return on invested capital.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      },
+      {
+        "metric": "Net sales",
+        "period": "first quarter 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "low": 173500000000.0,
+        "high": 178500000000.0,
+        "midpoint": 176000000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Net sales are expected to be between $173.5 billion and $178.5 billion, or to grow between 11% and 15% compared with first quarter 2025.",
+        "actual": 181519000000.0,
+        "actualVerdict": "above",
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      },
+      {
+        "metric": "Net sales growth",
+        "period": "first quarter 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "low": 11.0,
+        "high": 15.0,
+        "midpoint": 13.0,
+        "unit": "percent",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Net sales are expected to be between $173.5 billion and $178.5 billion, or to grow between 11% and 15% compared with first quarter 2025.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      }
+    ],
+    "guidanceStatus": "approved",
+    "corrections": [],
+    "id": "6bf3b5a1-b7a1-4dbf-b629-103246452fae",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "Amazon Com Inc Q4 FY2025 Earnings Call",
+    "callDate": "2026-02-05T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2025,
+    "fiscalQuarter": 4,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://www.youtube.com/watch?v=klfQrC6vhzQ",
+    "transcriptDocumentId": "b4d0b761-f011-4768-b53e-35d6555ed765",
+    "earningsReleaseDocumentId": "1197657a-ca71-4cf0-9ba8-d8dc8371cedf",
+    "hasAudio": true,
+    "hasSlides": false,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "notPublished",
+        "reason": "No slide deck was published",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

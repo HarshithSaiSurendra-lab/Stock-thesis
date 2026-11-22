@@ -1,0 +1,87 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "AEP",
+    "companyName": "American Electric Power Co Inc",
+    "guidance": [
+      {
+        "metric": "operating earnings per share",
+        "period": "full-year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 6.15,
+        "high": 6.45,
+        "midpoint": 6.3,
+        "unit": "USD/share",
+        "basis": "Non-GAAP",
+        "fromTable": false,
+        "quote": "AEP reaffirms its 2026 operating earnings guidance of $6.15 to $6.45 per share",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Maintained",
+        "priorGuidanceRange": {
+          "filedDate": "2025-10-29",
+          "low": 6.15,
+          "high": 6.45
+        }
+      },
+      {
+        "metric": "GAAP earnings per share",
+        "period": "full-year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 6.12,
+        "high": 6.42,
+        "midpoint": 6.27,
+        "unit": "USD/share",
+        "basis": "GAAP",
+        "fromTable": false,
+        "quote": "Reflecting certain items recorded through the first quarter, the estimated earnings per share on a GAAP basis would be $6.12 to $6.42 per share.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      }
+    ],
+    "guidanceStatus": "approved",
+    "corrections": [],
+    "id": "2031a84d-0ac7-4b41-b987-9a2ed5b17e43",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "American Electric Power Co Inc Q1 FY2026 Earnings Call",
+    "callDate": "2026-05-05T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 1,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://www.youtube.com/watch?v=YOnr03JTbOw",
+    "transcriptDocumentId": "2aaddbef-f28a-4263-bccc-0ec06f459263",
+    "earningsReleaseDocumentId": "e2382400-7076-4c2b-a3c7-79a20b7037bb",
+    "hasAudio": true,
+    "hasSlides": false,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "failed",
+        "reason": "Slide deck could not be captured",
+        "lastAttemptAt": "2026-10-20T21:56:43.392734+00:00",
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

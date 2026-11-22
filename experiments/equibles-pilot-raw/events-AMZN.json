@@ -1,0 +1,317 @@
+{
+  "status": 200,
+  "result": {
+    "data": [
+      {
+        "id": "1593032f-ccac-4833-9729-f1ef9534c946",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Q3 2026 Amazon.com, Inc. Earnings Conference Call",
+        "callDate": "2026-10-29T21:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://events.q4inc.com/attendee/533302838",
+        "transcriptDocumentId": "2b029372-2a21-485a-afbc-49e5a01d262e",
+        "earningsReleaseDocumentId": "3c8795ef-06a5-48b7-a9e2-e063bfbcf33c",
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": "2026-10-30T02:36:18.34909+00:00",
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "notPublished",
+            "reason": "No slide deck was published",
+            "lastAttemptAt": "2026-10-29T21:16:34.923857+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "ebea8095-da28-4044-8140-5ece826256c9",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Q2 2026 Amazon.com, Inc. Earnings Conference Call",
+        "callDate": "2026-07-30T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://events.q4inc.com/attendee/915225528",
+        "transcriptDocumentId": "6095c94c-ac9a-4e38-97ed-15eab141f5e6",
+        "earningsReleaseDocumentId": "1aaddc1c-3f5d-4dfd-8ba6-af5cbe285c97",
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "notPublished",
+            "reason": "No slide deck was published",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "ea1f8b24-6297-46c7-a0ff-8c776937b596",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Amazon Com Inc Q1 FY2026 Earnings Call",
+        "callDate": "2026-04-29T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://www.youtube.com/watch?v=sWaKcqdqh2U",
+        "transcriptDocumentId": "d3694c77-a7a9-4c37-9cbd-8f786d5f0569",
+        "earningsReleaseDocumentId": "395177d0-7706-4928-a0fe-2779c9081777",
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "notPublished",
+            "reason": "No slide deck was published",
+            "lastAttemptAt": "2026-10-18T22:40:46.716895+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "6bf3b5a1-b7a1-4dbf-b629-103246452fae",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Amazon Com Inc Q4 FY2025 Earnings Call",
+        "callDate": "2026-02-05T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://www.youtube.com/watch?v=klfQrC6vhzQ",
+        "transcriptDocumentId": "b4d0b761-f011-4768-b53e-35d6555ed765",
+        "earningsReleaseDocumentId": "1197657a-ca71-4cf0-9ba8-d8dc8371cedf",
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "notPublished",
+            "reason": "No slide deck was published",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "6afca082-130b-4833-b38b-e5d5472a215a",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Amazon Com Inc Q3 FY2025 Earnings Call",
+        "callDate": "2025-10-30T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": null,
+        "transcriptDocumentId": "88741532-9e37-4c6f-b5de-832ac688dab9",
+        "earningsReleaseDocumentId": "25ba6584-754c-44b3-8a9c-0a6b299655b6",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "failed",
+            "reason": "Audio could not be captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Slide capture will retry",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "84abfaff-715a-424f-ac6a-6da4714a7583",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Amazon Com Inc Q2 FY2025 Earnings Call",
+        "callDate": "2025-07-31T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": null,
+        "transcriptDocumentId": "1d6c57d1-fcd7-4dda-846e-cde621579f01",
+        "earningsReleaseDocumentId": "8aedeefe-ca76-4c89-9ea2-a00d5ba705f5",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "failed",
+            "reason": "Audio could not be captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Slide capture will retry",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "32b17337-395d-4a73-a69d-775f11f4958c",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Amazon Com Inc Q1 FY2025 Earnings Call",
+        "callDate": "2025-05-01T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": null,
+        "transcriptDocumentId": "c611d415-5564-4f8e-aea7-fcb9af1e5c51",
+        "earningsReleaseDocumentId": "71843d00-7ffe-4f1f-9afa-c09d056db234",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "failed",
+            "reason": "Audio could not be captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Slide capture will retry",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "62d013ac-e06a-4332-9287-bd80e7760d76",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Amazon Com Inc Q4 FY2024 Earnings Call",
+        "callDate": "2025-02-06T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": null,
+        "transcriptDocumentId": "4814040e-6fe5-4547-bd3b-998e8c536dd7",
+        "earningsReleaseDocumentId": "577e2a40-0a44-4c24-9f5f-806380a14bd2",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "failed",
+            "reason": "Audio could not be captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Slide capture scheduled",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      }
+    ],
+    "meta": {
+      "limit": 8,
+      "offset": 0,
+      "count": 8,
+      "hasMore": true
+    }
+  }
+}

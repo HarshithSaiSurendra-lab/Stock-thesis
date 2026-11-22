@@ -1,0 +1,317 @@
+{
+  "status": 200,
+  "result": {
+    "data": [
+      {
+        "id": "349e2799-eb89-4583-8ae2-65ab9cfffdb8",
+        "eventType": "Conference",
+        "eventTypeName": "Conference",
+        "title": "American Express Company at Goldman Sachs Financial Services Conference",
+        "callDate": "2026-12-08T18:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Scheduled",
+        "statusName": "Scheduled",
+        "webcastUrl": "https://isolate.menlosecurity.com/1/3735928037/https:/cc.webcasts.com/gold006/120726a_js/?entity=47_8MC7V88",
+        "transcriptDocumentId": null,
+        "earningsReleaseDocumentId": null,
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": false,
+        "materials": {
+          "transcript": {
+            "status": "pending",
+            "reason": "Call has not happened yet",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "pending",
+            "reason": "Call has not happened yet",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Call has not happened yet",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "8d66c7d0-4c8b-482c-a777-59525e062e11",
+        "eventType": "Conference",
+        "eventTypeName": "Conference",
+        "title": "Goldman Sachs U.S. Financial Services Conference",
+        "callDate": "2026-12-08T18:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Scheduled",
+        "statusName": "Scheduled",
+        "webcastUrl": "http://ir.americanexpress.com",
+        "transcriptDocumentId": null,
+        "earningsReleaseDocumentId": null,
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": false,
+        "materials": {
+          "transcript": {
+            "status": "pending",
+            "reason": "Call has not happened yet",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "pending",
+            "reason": "Call has not happened yet",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Call has not happened yet",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "01f749a9-5705-4761-b429-dd57e17f0ab8",
+        "eventType": "Conference",
+        "eventTypeName": "Conference",
+        "title": "KBW Fintech Ecosystem Conference",
+        "callDate": "2026-11-11T17:25:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://event.summitcast.com/view/9tRsoHWdA82KWsyxVSFu6o/FE3UewP8YpT2Hmx2mJ9v4d",
+        "transcriptDocumentId": "e873b766-6923-44b1-8929-c228d349114f",
+        "earningsReleaseDocumentId": null,
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": "2026-11-11T19:34:53.290606+00:00",
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-11-15T10:34:01.27879+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "07995338-8544-4951-9b93-c67069da546d",
+        "eventType": "Conference",
+        "eventTypeName": "Conference",
+        "title": "American Express Company at KBW Fintech Ecosystem Conference",
+        "callDate": "2026-11-11T17:25:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://event.summitcast.com/view/9tRsoHWdA82KWsyxVSFu6o/FE3UewP8YpT2Hmx2mJ9v4d",
+        "transcriptDocumentId": "eefda960-c67b-42ca-8715-56b22f0e041e",
+        "earningsReleaseDocumentId": null,
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": "2026-11-11T19:28:22.814112+00:00",
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-11-15T14:42:54.880262+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "1b4a6ce1-a3b9-47e4-8bae-055e0ce4bfab",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Q3 2026 American Express Earnings Conference Call",
+        "callDate": "2026-10-23T12:30:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://events.q4inc.com/attendee/328168234",
+        "transcriptDocumentId": "71e73ec6-a70e-4fed-af93-6b60f3182c2b",
+        "earningsReleaseDocumentId": "ad6cf351-e05c-417b-846c-81720174384f",
+        "hasAudio": true,
+        "hasSlides": true,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "available",
+            "reason": "Slide deck captured",
+            "lastAttemptAt": "2026-10-23T12:32:15.812281+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "3495956d-c1d3-48b7-b344-0ea8efbb7e94",
+        "eventType": "Conference",
+        "eventTypeName": "Conference",
+        "title": "American Express Company at Barclays Global Financial Services Conference",
+        "callDate": "2026-09-16T13:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://cc.webcasts.com/barc002/091426a_js/?entity=37_2TB2SGG",
+        "transcriptDocumentId": "ad2eacdf-8c85-4b25-9c4c-ad5b7e7f54f0",
+        "earningsReleaseDocumentId": null,
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-10-18T11:07:47.816218+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "bea503e9-9559-4d64-b51b-d46e1155be46",
+        "eventType": "Conference",
+        "eventTypeName": "Conference",
+        "title": "Barclays Global Financial Services Conference",
+        "callDate": "2026-09-16T13:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "http://ir.americanexpress.com",
+        "transcriptDocumentId": "17faa06d-4880-450f-9725-b4600cdeddfb",
+        "earningsReleaseDocumentId": null,
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-10-18T11:11:48.7161+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "30608dc6-4b61-4cab-84e8-373999b8365b",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Q2 2026 American Express Earnings Conference Call",
+        "callDate": "2026-07-24T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://events.q4inc.com/attendee/475264006",
+        "transcriptDocumentId": "a2a9b501-723d-4a03-8c19-ff2b6af8de69",
+        "earningsReleaseDocumentId": "072e598b-21f3-4f69-9d1c-38b49acf8ee2",
+        "hasAudio": true,
+        "hasSlides": true,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "available",
+            "reason": "Slide deck captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      }
+    ],
+    "meta": {
+      "limit": 8,
+      "offset": 0,
+      "count": 8,
+      "hasMore": true
+    }
+  }
+}

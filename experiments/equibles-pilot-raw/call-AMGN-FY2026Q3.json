@@ -1,0 +1,197 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "AMGN",
+    "companyName": "Amgen Inc",
+    "guidance": [
+      {
+        "metric": "Total revenues",
+        "period": "For the full year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 38900000000.0,
+        "high": 39700000000.0,
+        "midpoint": 39300000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Total revenues in the range of $38.9 billion to $39.7 billion.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Raised",
+        "priorGuidanceRange": {
+          "filedDate": "2026-08-04",
+          "low": 38200000000.0,
+          "high": 39400000000.0
+        }
+      },
+      {
+        "metric": "GAAP EPS",
+        "period": "For the full year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 18.34,
+        "high": 19.28,
+        "midpoint": 18.81,
+        "unit": "USD/share",
+        "basis": "GAAP",
+        "fromTable": false,
+        "quote": "On a GAAP basis, EPS in the range of $18.34 to $19.28, and a tax rate in the range of 14.5% to 16.0%.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Raised",
+        "priorGuidanceRange": {
+          "filedDate": "2026-08-04",
+          "low": 15.8,
+          "high": 17.08
+        }
+      },
+      {
+        "metric": "non-GAAP EPS",
+        "period": "For the full year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 22.9,
+        "high": 23.7,
+        "midpoint": 23.3,
+        "unit": "USD/share",
+        "basis": "Non-GAAP",
+        "fromTable": false,
+        "quote": "On a non-GAAP basis, EPS in the range of $22.90 to $23.70, and a tax rate in the range of 15.0% to 16.5%.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Raised",
+        "priorGuidanceRange": {
+          "filedDate": "2026-08-04",
+          "low": 22.3,
+          "high": 23.5
+        }
+      },
+      {
+        "metric": "GAAP tax rate",
+        "period": "For the full year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 14.5,
+        "high": 16.0,
+        "midpoint": 15.25,
+        "unit": "percent",
+        "basis": "GAAP",
+        "fromTable": false,
+        "quote": "On a GAAP basis, EPS in the range of $18.34 to $19.28, and a tax rate in the range of 14.5% to 16.0%.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Maintained",
+        "priorGuidanceRange": {
+          "filedDate": "2026-08-04",
+          "low": 14.5,
+          "high": 16.0
+        }
+      },
+      {
+        "metric": "non-GAAP tax rate",
+        "period": "For the full year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 15.0,
+        "high": 16.5,
+        "midpoint": 15.75,
+        "unit": "percent",
+        "basis": "Non-GAAP",
+        "fromTable": false,
+        "quote": "On a non-GAAP basis, EPS in the range of $22.90 to $23.70, and a tax rate in the range of 15.0% to 16.5%.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Maintained",
+        "priorGuidanceRange": {
+          "filedDate": "2026-08-04",
+          "low": 15.0,
+          "high": 16.5
+        }
+      },
+      {
+        "metric": "Capital expenditures",
+        "period": "For the full year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 2600000000.0,
+        "high": 2600000000.0,
+        "midpoint": 2600000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Capital expenditures to be approximately $2.6 billion.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Maintained",
+        "priorGuidanceRange": {
+          "filedDate": "2026-08-04",
+          "low": 2600000000.0,
+          "high": 2600000000.0
+        }
+      },
+      {
+        "metric": "Share repurchases",
+        "period": "For the full year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": null,
+        "high": 3000000000.0,
+        "midpoint": 3000000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Share repurchases not to exceed $3.0 billion.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      }
+    ],
+    "guidanceStatus": "approved",
+    "corrections": [],
+    "id": "da0385cb-debc-4868-b716-df265875aa2f",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "Amgen Inc Q3 FY2026 Earnings Call",
+    "callDate": "2026-11-03T21:30:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 3,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://amgen2.rev.vbrick.com/#/videos/aa9cc5cd-ee95-48ea-89d9-58a2a2ac9085",
+    "transcriptDocumentId": "04ecccb0-778d-4777-bf20-a9b24737661f",
+    "earningsReleaseDocumentId": "489e5ad4-06e8-4b42-9532-3b3ab43389b8",
+    "hasAudio": true,
+    "hasSlides": false,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": "2026-11-03T23:32:47.963693+00:00",
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "failed",
+        "reason": "Slide deck could not be captured",
+        "lastAttemptAt": "2026-11-11T08:45:30.252385+00:00",
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

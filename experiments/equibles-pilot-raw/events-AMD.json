@@ -1,0 +1,317 @@
+{
+  "status": 200,
+  "result": {
+    "data": [
+      {
+        "id": "9dc61cb8-3466-4495-8dd2-eba1e0c9b44b",
+        "eventType": "Conference",
+        "eventTypeName": "Conference",
+        "title": "Barclays 24th Annual Global Technology Conference",
+        "callDate": "2026-12-09T17:55:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Scheduled",
+        "statusName": "Scheduled",
+        "webcastUrl": "https://ir.amd.com/news-events/ir-calendar/detail/20261209-barclays-24th-annual-global-technology-conference",
+        "transcriptDocumentId": null,
+        "earningsReleaseDocumentId": null,
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": false,
+        "materials": {
+          "transcript": {
+            "status": "pending",
+            "reason": "Call has not happened yet",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "pending",
+            "reason": "Call has not happened yet",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Call has not happened yet",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "1d40325f-b7ff-4e88-bf28-c7320bcd2dfe",
+        "eventType": "Conference",
+        "eventTypeName": "Conference",
+        "title": "UBS Global Technology and AI Conference",
+        "callDate": "2026-12-01T17:55:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Scheduled",
+        "statusName": "Scheduled",
+        "webcastUrl": "https://ir.amd.com/news-events/ir-calendar/detail/20261201-ubs-global-technology-and-ai-conference",
+        "transcriptDocumentId": null,
+        "earningsReleaseDocumentId": null,
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": false,
+        "materials": {
+          "transcript": {
+            "status": "pending",
+            "reason": "Call has not happened yet",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "pending",
+            "reason": "Call has not happened yet",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Call has not happened yet",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "c05e46fa-291f-4258-8ee3-18d98923c740",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "AMD Fiscal Third Quarter 2026 Financial Results",
+        "callDate": "2026-11-03T22:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://edge.media-server.com/mmc/p/3p98okid/",
+        "transcriptDocumentId": "06fee4d5-82cd-49bb-b285-bd03d14b236a",
+        "earningsReleaseDocumentId": "58f4d4fb-5beb-4574-a6ee-ed82e2ce7dce",
+        "hasAudio": true,
+        "hasSlides": true,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "available",
+            "reason": "Slide deck captured",
+            "lastAttemptAt": "2026-11-04T06:05:21.022781+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "edf6dfda-3462-4159-aa22-a4e722d4041a",
+        "eventType": "Conference",
+        "eventTypeName": "Conference",
+        "title": "Goldman Sachs Communacopia + Technology Conference",
+        "callDate": "2026-09-11T15:50:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://cc.webcasts.com/gold006/090826a_js/?entity=69_23QKXHI",
+        "transcriptDocumentId": "3b9dffb1-c82e-4194-ae88-0745bc0d6dfb",
+        "earningsReleaseDocumentId": null,
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-10-18T13:27:34.064274+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "8111bdea-de5e-4b92-bcfa-89df13d370da",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Advanced Micro Devices Inc Q2 FY2026 Earnings Call",
+        "callDate": "2026-08-04T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://edge.media-server.com/mmc/p/nucz8m7v/",
+        "transcriptDocumentId": "c30261dc-d762-431e-8981-2667e0c26e14",
+        "earningsReleaseDocumentId": "a0750e47-7d49-48c5-9aab-21a00ed339db",
+        "hasAudio": true,
+        "hasSlides": true,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "available",
+            "reason": "Slide deck captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "c9df234e-a398-4c9c-9b5f-3925c355b719",
+        "eventType": "Conference",
+        "eventTypeName": "Conference",
+        "title": "Bank of America Global Technology Conference",
+        "callDate": "2026-06-02T18:20:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://bofa.veracast.com/webcasts/bofa/globaltech2026/rR735X.cfm",
+        "transcriptDocumentId": "7134320c-b0b6-43cd-acb3-bc915c561e0b",
+        "earningsReleaseDocumentId": null,
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-10-24T13:33:14.997854+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "f90a894d-c0d4-41cf-9ff6-c8290498b3f5",
+        "eventType": "AGM",
+        "eventTypeName": "Annual General Meeting",
+        "title": "2026 Annual Meeting of Stockholders",
+        "callDate": "2026-05-13T17:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://www.virtualshareholdermeeting.com/AMD2026",
+        "transcriptDocumentId": "dc04f432-6083-4083-baed-4288c57c1cf9",
+        "earningsReleaseDocumentId": null,
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-10-27T11:27:30.198536+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "3305332e-b54d-4a52-8a30-83a182b8c6ec",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Advanced Micro Devices Inc Q1 FY2026 Earnings Call",
+        "callDate": "2026-05-05T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://www.youtube.com/watch?v=zV00rljp-8A",
+        "transcriptDocumentId": "3e5fee04-102f-4026-9885-d02bf7f0db72",
+        "earningsReleaseDocumentId": "c90de4bd-0376-4964-98ea-5943896b8f08",
+        "hasAudio": true,
+        "hasSlides": true,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "available",
+            "reason": "Slide deck captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      }
+    ],
+    "meta": {
+      "limit": 8,
+      "offset": 0,
+      "count": 8,
+      "hasMore": true
+    }
+  }
+}

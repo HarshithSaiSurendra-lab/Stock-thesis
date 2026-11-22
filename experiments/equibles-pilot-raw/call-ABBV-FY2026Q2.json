@@ -1,0 +1,69 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "ABBV",
+    "companyName": "AbbVie Inc.",
+    "guidance": [
+      {
+        "metric": "adjusted diluted EPS",
+        "period": "full year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 13.87,
+        "high": 14.07,
+        "midpoint": 13.97,
+        "unit": "USD/share",
+        "basis": "Non-GAAP",
+        "fromTable": false,
+        "quote": "AbbVie is updating its adjusted diluted EPS guidance range for the full year 2026 from $13.91 - $14.11 to $13.87 - $14.07, reflecting a change of $0.04 at the midpoint.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Lowered",
+        "priorGuidanceRange": {
+          "filedDate": "2026-04-29",
+          "low": 14.08,
+          "high": 14.28
+        }
+      }
+    ],
+    "guidanceStatus": "approved",
+    "corrections": [],
+    "id": "0cbc010f-84a7-4d27-b9c2-57b44101cd9e",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "AbbVie Inc. Q2 FY2026 Earnings Call",
+    "callDate": "2026-07-31T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 2,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://edge.media-server.com/mmc/p/m9vcn44b",
+    "transcriptDocumentId": "241a1983-90c9-47ec-b746-7e971355f7f7",
+    "earningsReleaseDocumentId": "8969db84-5621-478e-8e3e-33e0bbb4558e",
+    "hasAudio": true,
+    "hasSlides": false,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "failed",
+        "reason": "Slide deck could not be captured",
+        "lastAttemptAt": "2026-10-19T11:59:16.916838+00:00",
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "AAPL",
+    "companyName": "Apple Inc.",
+    "guidance": [],
+    "guidanceStatus": "notExtracted",
+    "corrections": [],
+    "id": "b1632050-152a-4e9e-82f8-252551b6924f",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "Apple Inc. Q3 FY2026 Earnings Call",
+    "callDate": "2026-07-30T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 3,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://www.apple.com/investor/earnings-call/",
+    "transcriptDocumentId": "2a43f09c-d782-4787-89b8-bc8365d8521f",
+    "earningsReleaseDocumentId": "4ecb9cca-c8bf-46b7-bd86-a9aba68524eb",
+    "hasAudio": true,
+    "hasSlides": false,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "notPublished",
+        "reason": "No slide deck was published",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "AAPL",
+    "companyName": "Apple Inc.",
+    "guidance": [],
+    "guidanceStatus": "notExtracted",
+    "corrections": [],
+    "id": "dc372c67-591a-4a7e-a6ce-cf25332d4041",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "Apple Inc. Q2 FY2026 Earnings Call",
+    "callDate": "2026-04-30T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 2,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://investor.apple.com/event-details/2026/FY-26-Second-Quarter-Results/default.aspx",
+    "transcriptDocumentId": null,
+    "earningsReleaseDocumentId": "d3ac5ef9-93d5-4ebe-8667-8f3759b4e559",
+    "hasAudio": false,
+    "hasSlides": false,
+    "hasTranscript": false,
+    "materials": {
+      "transcript": {
+        "status": "notAttempted",
+        "reason": "No transcript source available",
+        "lastAttemptAt": "2026-11-21T02:43:35.842028+00:00",
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "failed",
+        "reason": "Audio could not be captured",
+        "lastAttemptAt": "2026-11-21T02:43:35.842028+00:00",
+        "nextAttemptAt": "2026-11-28T02:44:43.156375+00:00"
+      },
+      "slides": {
+        "status": "notPublished",
+        "reason": "No slide deck was published",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

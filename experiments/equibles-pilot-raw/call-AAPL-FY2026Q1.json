@@ -1,0 +1,46 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "AAPL",
+    "companyName": "Apple Inc.",
+    "guidance": [],
+    "guidanceStatus": "notExtracted",
+    "corrections": [],
+    "id": "7ec353bd-b78e-489e-a41d-5c2e47f8a0a6",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "Apple Inc. Q1 FY2026 Earnings Call",
+    "callDate": "2026-01-29T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 1,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://investor.apple.com/event-details/2026/FY-26-First-Quarter-Results/default.aspx",
+    "transcriptDocumentId": "a348b8f8-f55a-42f4-900d-2a20755c4c32",
+    "earningsReleaseDocumentId": "5eee8192-5498-4041-8904-15e98025dd02",
+    "hasAudio": true,
+    "hasSlides": false,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "notPublished",
+        "reason": "No slide deck was published",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "AAPL",
+    "companyName": "Apple Inc.",
+    "guidance": [],
+    "guidanceStatus": "notExtracted",
+    "corrections": [],
+    "id": "4bacbc6b-b423-4267-9d20-2d49fb417904",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "FY 26 Fourth Quarter Results",
+    "callDate": "2026-11-02T22:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 4,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://investor.apple.com/event-details/2026/FY-26-Fourth-Quarter-Results/default.aspx",
+    "transcriptDocumentId": null,
+    "earningsReleaseDocumentId": "43c6810b-3065-42da-acd0-0d3dfcaa2fa6",
+    "hasAudio": false,
+    "hasSlides": false,
+    "hasTranscript": false,
+    "materials": {
+      "transcript": {
+        "status": "notAttempted",
+        "reason": "No transcript source available",
+        "lastAttemptAt": "2026-11-03T06:24:23.223306+00:00",
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "failed",
+        "reason": "Audio could not be captured",
+        "lastAttemptAt": "2026-11-03T06:24:23.223306+00:00",
+        "nextAttemptAt": "2026-11-24T06:36:52.8196+00:00"
+      },
+      "slides": {
+        "status": "pending",
+        "reason": "Slide capture will retry",
+        "lastAttemptAt": "2026-11-22T07:18:32.498283+00:00",
+        "nextAttemptAt": "2026-11-29T07:18:32.498283+00:00"
+      }
+    }
+  }
+}

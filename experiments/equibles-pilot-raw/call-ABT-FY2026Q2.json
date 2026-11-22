@@ -1,0 +1,56 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "ABT",
+    "companyName": "Abbott Laboratories",
+    "guidance": [],
+    "guidanceStatus": "notExtracted",
+    "corrections": [
+      {
+        "metricLabel": "Nutrition sequential sales increase",
+        "transcriptQuote": "expectations for the second consecutive quarter sequentially by $125 million",
+        "transcriptValue": "$125 million",
+        "filingValue": "$127 million",
+        "filingForm": "8-K",
+        "filingFiledDate": "2026-07-16",
+        "note": "Nutrition sequential sales increase: the transcript reads \u201c$125 million\u201d, but the company's 8-K filed 2026-07-16 reports $127 million."
+      }
+    ],
+    "id": "e7213171-3b7f-462d-9f8c-ec7142bd503c",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "Abbott Laboratories Q2 FY2026 Earnings Call",
+    "callDate": "2026-07-16T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 2,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://www.youtube.com/watch?v=ZNoldAEUbCA",
+    "transcriptDocumentId": "a8cca4f6-0b85-4edd-b615-b945ad6b44a4",
+    "earningsReleaseDocumentId": "92309c20-2596-49cf-a129-ea7921572866",
+    "hasAudio": true,
+    "hasSlides": false,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "notPublished",
+        "reason": "No slide deck was published",
+        "lastAttemptAt": "2026-10-24T05:10:13.63337+00:00",
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

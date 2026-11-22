@@ -1,0 +1,83 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "AMD",
+    "companyName": "Advanced Micro Devices Inc",
+    "guidance": [
+      {
+        "metric": "revenue",
+        "period": "fourth quarter of 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "low": 17000000000.0,
+        "high": 17000000000.0,
+        "midpoint": 17000000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "For the fourth quarter of 2026, AMD expects revenue to be approximately $17 billion, plus or minus 3%.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      },
+      {
+        "metric": "Non-GAAP gross margin",
+        "period": "fourth quarter of 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "low": 55.0,
+        "high": 55.0,
+        "midpoint": 55.0,
+        "unit": "percent",
+        "basis": "Non-GAAP",
+        "fromTable": false,
+        "quote": "Non-GAAP gross margin is expected to be approximately 55%.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      }
+    ],
+    "guidanceStatus": "approved",
+    "corrections": [],
+    "id": "c05e46fa-291f-4258-8ee3-18d98923c740",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "AMD Fiscal Third Quarter 2026 Financial Results",
+    "callDate": "2026-11-03T22:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 3,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://edge.media-server.com/mmc/p/3p98okid/",
+    "transcriptDocumentId": "06fee4d5-82cd-49bb-b285-bd03d14b236a",
+    "earningsReleaseDocumentId": "58f4d4fb-5beb-4574-a6ee-ed82e2ce7dce",
+    "hasAudio": true,
+    "hasSlides": true,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "available",
+        "reason": "Slide deck captured",
+        "lastAttemptAt": "2026-11-04T06:05:21.022781+00:00",
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

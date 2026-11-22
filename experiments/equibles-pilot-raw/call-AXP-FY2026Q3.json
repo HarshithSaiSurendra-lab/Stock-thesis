@@ -1,0 +1,109 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "AXP",
+    "companyName": "American Express Co",
+    "guidance": [
+      {
+        "metric": "EPS",
+        "period": "FY\u201926 Guidance Range",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 18.3,
+        "high": 18.6,
+        "midpoint": 18.45,
+        "unit": "USD/share",
+        "basis": "GAAP",
+        "fromTable": true,
+        "quote": "| GAAP Diluted EPS | $15.38 | $18.30 | $18.60 | 19% | 21% |",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Raised",
+        "priorGuidanceRange": {
+          "filedDate": "2026-07-24",
+          "low": 17.3,
+          "high": 17.9
+        }
+      },
+      {
+        "metric": "revenue growth",
+        "period": "2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 10.0,
+        "high": 10.0,
+        "midpoint": 10.0,
+        "unit": "percent",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Given our performance year-to-date, we are raising our full-year EPS guidance to between $18.30 and $18.60 ($17.60-$17.90 adjusted),4 and we're on track to deliver another year of 10 percent revenue growth.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Maintained",
+        "priorGuidanceRange": {
+          "filedDate": "2026-07-24",
+          "low": 10.0,
+          "high": 10.0
+        }
+      },
+      {
+        "metric": "Adjusted Diluted EPS",
+        "period": "FY\u201926 Guidance Range",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 17.6,
+        "high": 17.9,
+        "midpoint": 17.75,
+        "unit": "USD/share",
+        "basis": "Non-GAAP",
+        "fromTable": true,
+        "quote": "| Adjusted Diluted EPS | $15.38 | $17.60 | $17.90 | 14% | 16% |",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Initiated",
+        "priorGuidanceRange": null
+      }
+    ],
+    "guidanceStatus": "approved",
+    "corrections": [],
+    "id": "1b4a6ce1-a3b9-47e4-8bae-055e0ce4bfab",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "Q3 2026 American Express Earnings Conference Call",
+    "callDate": "2026-10-23T12:30:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 3,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://events.q4inc.com/attendee/328168234",
+    "transcriptDocumentId": "71e73ec6-a70e-4fed-af93-6b60f3182c2b",
+    "earningsReleaseDocumentId": "ad6cf351-e05c-417b-846c-81720174384f",
+    "hasAudio": true,
+    "hasSlides": true,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "available",
+        "reason": "Slide deck captured",
+        "lastAttemptAt": "2026-10-23T12:32:15.812281+00:00",
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

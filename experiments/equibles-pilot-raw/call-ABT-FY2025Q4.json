@@ -1,0 +1,83 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "ABT",
+    "companyName": "Abbott Laboratories",
+    "guidance": [
+      {
+        "metric": "organic sales growth",
+        "period": "full-year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 6.5,
+        "high": 7.5,
+        "midpoint": 7.0,
+        "unit": "percent",
+        "basis": "Non-GAAP",
+        "fromTable": false,
+        "quote": "Abbott projects full-year 2026 organic sales growth to be in the range of 6.5% to 7.5%.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      },
+      {
+        "metric": "adjusted diluted earnings per share",
+        "period": "first-quarter 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "low": 1.12,
+        "high": 1.18,
+        "midpoint": 1.15,
+        "unit": "USD/share",
+        "basis": "Non-GAAP",
+        "fromTable": false,
+        "quote": "Abbott projects full-year 2026 adjusted diluted earnings per share of $5.55 to $5.80 and first-quarter 2026 adjusted diluted earnings per share of $1.12 to $1.18.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      }
+    ],
+    "guidanceStatus": "approved",
+    "corrections": [],
+    "id": "c2578610-d77a-4bf0-a09e-544bba1818f7",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "Abbott Laboratories Q4 FY2025 Earnings Call",
+    "callDate": "2026-01-22T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2025,
+    "fiscalQuarter": 4,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://www.youtube.com/watch?v=uxpzzUQwo-Y",
+    "transcriptDocumentId": "6e973578-15fd-4674-a96c-c09901753dda",
+    "earningsReleaseDocumentId": "6b9701f7-b41d-471f-b352-452e80eb507d",
+    "hasAudio": true,
+    "hasSlides": false,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "pending",
+        "reason": "Slide capture scheduled",
+        "lastAttemptAt": "2026-11-21T07:58:31.860697+00:00",
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

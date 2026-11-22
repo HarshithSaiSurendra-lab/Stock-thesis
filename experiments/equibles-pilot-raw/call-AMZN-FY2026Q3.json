@@ -1,0 +1,119 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "AMZN",
+    "companyName": "Amazon Com Inc",
+    "guidance": [
+      {
+        "metric": "Net sales",
+        "period": "fourth quarter 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "low": 240000000000.0,
+        "high": 247000000000.0,
+        "midpoint": 243500000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Net sales are expected to be between $240.0 billion and $247.0 billion, or to grow between 12% and 16% compared with fourth quarter 2025.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      },
+      {
+        "metric": "year-over-year growth",
+        "period": "fourth quarter 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "low": 12.0,
+        "high": 16.0,
+        "midpoint": 14.0,
+        "unit": "percent",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Net sales are expected to be between $240.0 billion and $247.0 billion, or to grow between 12% and 16% compared with fourth quarter 2025.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      },
+      {
+        "metric": "Operating income",
+        "period": "fourth quarter 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "low": 28500000000.0,
+        "high": 33500000000.0,
+        "midpoint": 31000000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Operating income is expected to be between $28.5 billion and $33.5 billion, compared with $25.0 billion in fourth quarter 2025.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      },
+      {
+        "metric": "cash capital expenditures",
+        "period": "2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 220000000000.0,
+        "high": 220000000000.0,
+        "midpoint": 220000000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "We continue to expect 2026 cash capital expenditures to be approximately $220 billion.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      }
+    ],
+    "guidanceStatus": "approved",
+    "corrections": [],
+    "id": "1593032f-ccac-4833-9729-f1ef9534c946",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "Q3 2026 Amazon.com, Inc. Earnings Conference Call",
+    "callDate": "2026-10-29T21:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 3,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://events.q4inc.com/attendee/533302838",
+    "transcriptDocumentId": "2b029372-2a21-485a-afbc-49e5a01d262e",
+    "earningsReleaseDocumentId": "3c8795ef-06a5-48b7-a9e2-e063bfbcf33c",
+    "hasAudio": true,
+    "hasSlides": false,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": "2026-10-30T02:36:18.34909+00:00",
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "notPublished",
+        "reason": "No slide deck was published",
+        "lastAttemptAt": "2026-10-29T21:16:34.923857+00:00",
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

@@ -1,0 +1,317 @@
+{
+  "status": 200,
+  "result": {
+    "data": [
+      {
+        "id": "b6f458b5-1e0a-450a-8f3b-0972f3e279b2",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Q4 & FY2026 earnings call Wednesday, December 9, 2026 2:00pm Pacific Time",
+        "callDate": "2026-12-09T22:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "status": "Scheduled",
+        "statusName": "Scheduled",
+        "webcastUrl": null,
+        "transcriptDocumentId": null,
+        "earningsReleaseDocumentId": null,
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": false,
+        "materials": {
+          "transcript": {
+            "status": "pending",
+            "reason": "Call has not happened yet",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "pending",
+            "reason": "Call has not happened yet",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Call has not happened yet",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "4e956de0-f556-43a6-b3e2-23bc8eaa4eac",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Adobe Inc. Q3 FY2026 Earnings Call",
+        "callDate": "2026-09-10T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://www.youtube.com/watch?v=rJRfOREq9NM",
+        "transcriptDocumentId": "b589b552-217b-4018-a1ec-4e2a9c7348e1",
+        "earningsReleaseDocumentId": "c44e8bd0-ce0f-4966-8683-9c73764e0f55",
+        "hasAudio": true,
+        "hasSlides": true,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "available",
+            "reason": "Slide deck captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "34a14d9c-0bec-480e-8df1-a70d7192c1ee",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Adobe Inc. Q2 FY2026 Earnings Call",
+        "callDate": "2026-06-11T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://www.youtube.com/watch?v=KIEkxdEffNE",
+        "transcriptDocumentId": "c00ea621-32f2-4776-8e4c-b8607be33aa9",
+        "earningsReleaseDocumentId": "43142e46-d2f5-440f-91d0-4eb5e58eec8d",
+        "hasAudio": true,
+        "hasSlides": true,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "available",
+            "reason": "Slide deck captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "dd8001e5-b8ce-4f49-9183-f24ed00fb457",
+        "eventType": "AGM",
+        "eventTypeName": "Annual General Meeting",
+        "title": "2026 Annual Meeting of Stockholders",
+        "callDate": "2026-04-15T16:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://www.virtualshareholdermeeting.com/ADBE2026",
+        "transcriptDocumentId": "356b8b11-5d74-443f-882c-b6c0c9b04269",
+        "earningsReleaseDocumentId": null,
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": "2026-11-07T12:20:00.499628+00:00",
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-11-15T04:49:08.019488+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "eb83a8d9-539d-42ea-a589-fd0ee9a43cb2",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Adobe Inc. Q1 FY2026 Earnings Call",
+        "callDate": "2026-03-12T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://www.youtube.com/watch?v=6ZeC-khoEbg",
+        "transcriptDocumentId": "ec11130f-5ca1-4a55-a447-0cbbc22a583a",
+        "earningsReleaseDocumentId": "997d4372-7861-414f-895d-ebd406864294",
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "notPublished",
+            "reason": "No slide deck was published",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "1ed7e55d-47a0-4be3-a3f2-7160cd80d0fe",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Adobe Inc. Q4 FY2025 Earnings Call",
+        "callDate": "2025-12-10T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://event.webcasts.com/starthere.jsp?ei=1768312&tp_key=738bd75c1b&tp_special=8",
+        "transcriptDocumentId": "429ab2c9-86d7-47fc-8d27-00789d1f7735",
+        "earningsReleaseDocumentId": "a4eb8196-97b5-43f4-8129-b59205d40f18",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "failed",
+            "reason": "Audio could not be captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-11-20T10:30:09.024379+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "e644cc43-335a-4aa5-a696-1c7d0d42fc1c",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Adobe Inc. Q3 FY2025 Earnings Call",
+        "callDate": "2025-09-11T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": null,
+        "transcriptDocumentId": "b9f14748-2931-418d-8b27-7cb15d7cdc48",
+        "earningsReleaseDocumentId": "7d0b898d-8dfe-4af2-866b-edead30f4f7a",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "failed",
+            "reason": "Audio could not be captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Slide capture will retry",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "1174b685-fd11-4572-90e8-094d3edfed61",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Adobe Inc. Q2 FY2025 Earnings Call",
+        "callDate": "2025-06-12T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": null,
+        "transcriptDocumentId": "c909a5bb-babc-4e31-8932-24eb7bc61599",
+        "earningsReleaseDocumentId": "af783828-67c4-4479-b514-9a4189dacb73",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "failed",
+            "reason": "Audio could not be captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Slide capture will retry",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      }
+    ],
+    "meta": {
+      "limit": 8,
+      "offset": 0,
+      "count": 8,
+      "hasMore": true
+    }
+  }
+}

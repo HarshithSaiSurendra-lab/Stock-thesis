@@ -1,0 +1,46 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "AEP",
+    "companyName": "American Electric Power Co Inc",
+    "guidance": [],
+    "guidanceStatus": "notExtracted",
+    "corrections": [],
+    "id": "d52bd4fa-514d-4aae-85e2-90d21cda684f",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "American Electric Power Co Inc Q4 FY2025 Earnings Call",
+    "callDate": "2026-02-12T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2025,
+    "fiscalQuarter": 4,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://www.youtube.com/watch?v=SqB3lFAnLDU",
+    "transcriptDocumentId": "772c5c30-9e42-4850-86f6-ecc9b5a68eb2",
+    "earningsReleaseDocumentId": "d742124c-4b0e-4f3c-ade3-f62e6e0a7699",
+    "hasAudio": true,
+    "hasSlides": false,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "failed",
+        "reason": "Slide deck could not be captured",
+        "lastAttemptAt": "2026-11-19T15:03:36.418058+00:00",
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

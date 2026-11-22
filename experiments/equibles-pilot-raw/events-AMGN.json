@@ -1,0 +1,317 @@
+{
+  "status": 200,
+  "result": {
+    "data": [
+      {
+        "id": "da0385cb-debc-4868-b716-df265875aa2f",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Amgen Inc Q3 FY2026 Earnings Call",
+        "callDate": "2026-11-03T21:30:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://amgen2.rev.vbrick.com/#/videos/aa9cc5cd-ee95-48ea-89d9-58a2a2ac9085",
+        "transcriptDocumentId": "04ecccb0-778d-4777-bf20-a9b24737661f",
+        "earningsReleaseDocumentId": "489e5ad4-06e8-4b42-9532-3b3ab43389b8",
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": "2026-11-03T23:32:47.963693+00:00",
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-11-11T08:45:30.252385+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "719b3672-c409-47a8-8fbc-de6385717400",
+        "eventType": "Conference",
+        "eventTypeName": "Conference",
+        "title": "Morgan Stanley 24th Annual Global Healthcare Conference",
+        "callDate": "2026-09-15T15:30:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://event.webcasts.com/starthere.jsp?ei=1773792&tp_key=c66afdc61f&tp_special=8",
+        "transcriptDocumentId": "c4603b6c-f52e-4d31-8480-40c72c0a2492",
+        "earningsReleaseDocumentId": null,
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": "2026-10-24T07:54:30.278266+00:00",
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "notPublished",
+            "reason": "No slide deck was published",
+            "lastAttemptAt": "2026-10-24T07:50:38.257909+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "c6807e8e-1d16-4de7-aad8-c1a0365d179d",
+        "eventType": "Conference",
+        "eventTypeName": "Conference",
+        "title": "Goldman Sachs 47th Annual Global Healthcare Conference",
+        "callDate": "2026-09-06T13:20:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://investors.amgen.com/events/event-details/goldman-sachs-47th-annual-global-healthcare-conference",
+        "transcriptDocumentId": "dbf88f16-2da6-4e90-8c8e-fe9eed897a8a",
+        "earningsReleaseDocumentId": null,
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "notPublished",
+            "reason": "No slide deck was published",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "fcec8650-06f2-4b7d-82ec-844d7790e5d2",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Amgen Inc Q2 FY2026 Earnings Call",
+        "callDate": "2026-04-08T20:30:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://amgen2.rev.vbrick.com/#/videos/34c44b08-3be0-4e03-b6b1-fa3b4ca20478",
+        "transcriptDocumentId": "7f72c614-2d20-4880-ac59-0f246a1c2e51",
+        "earningsReleaseDocumentId": "9711786a-2c65-4abb-8ca5-063f9fe59e28",
+        "hasAudio": true,
+        "hasSlides": true,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "available",
+            "reason": "Slide deck captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "74ce380a-2abe-4342-bbc9-9140b6293807",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Amgen Inc Q4 FY2025 Earnings Call",
+        "callDate": "2026-02-03T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://www.youtube.com/watch?v=NhtoQYCQ-V8",
+        "transcriptDocumentId": "350c0164-9035-4dec-8db3-a6f810387a5a",
+        "earningsReleaseDocumentId": "d9db57af-2f90-4464-aabb-c0b79f280768",
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Slide capture scheduled",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "05685860-33ae-4c32-95f8-6f2a24b17077",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Amgen Inc Q3 FY2025 Earnings Call",
+        "callDate": "2025-11-04T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": null,
+        "transcriptDocumentId": "2ee190f4-af0e-45b4-b31d-131f9374ce90",
+        "earningsReleaseDocumentId": "6759362a-1782-4fa5-9642-390a4fd926d8",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "failed",
+            "reason": "Audio could not be captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Slide capture will retry",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "437f4d65-5757-4312-b564-ae19d6c67832",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Amgen Inc Q2 FY2025 Earnings Call",
+        "callDate": "2025-08-05T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://www.amgen.com/investors",
+        "transcriptDocumentId": "fbb1d2bb-625b-4f29-bcbe-eddfeea25b4e",
+        "earningsReleaseDocumentId": "4c7bb999-0d60-4ef1-a9a7-7fabac0bde9f",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "failed",
+            "reason": "Audio could not be captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Slide capture will retry",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "fabea0d7-40ce-400e-9715-57c3779aad6a",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Amgen Inc Q1 FY2025 Earnings Call",
+        "callDate": "2025-05-01T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "http://investors.amgen.com/",
+        "transcriptDocumentId": "d87bd055-42ed-42d7-a767-e4ca12c3ae74",
+        "earningsReleaseDocumentId": "d765eb13-e4cf-4c17-b552-3413cf5157ad",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "failed",
+            "reason": "Audio could not be captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Slide capture will retry",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      }
+    ],
+    "meta": {
+      "limit": 8,
+      "offset": 0,
+      "count": 8,
+      "hasMore": true
+    }
+  }
+}

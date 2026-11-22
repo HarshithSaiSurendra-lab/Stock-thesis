@@ -1,0 +1,197 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "AMGN",
+    "companyName": "Amgen Inc",
+    "guidance": [
+      {
+        "metric": "Total revenues",
+        "period": "full year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 38200000000.0,
+        "high": 39400000000.0,
+        "midpoint": 38800000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Total revenues in the range of $38.2 billion to $39.4 billion.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Raised",
+        "priorGuidanceRange": {
+          "filedDate": "2026-04-30",
+          "low": 37100000000.0,
+          "high": 38500000000.0
+        }
+      },
+      {
+        "metric": "EPS",
+        "period": "full year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 15.8,
+        "high": 17.08,
+        "midpoint": 16.44,
+        "unit": "USD/share",
+        "basis": "GAAP",
+        "fromTable": false,
+        "quote": "On a GAAP basis, EPS in the range of $15.80 to $17.08, and a tax rate in the range of 14.5% to 16.0%.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Raised",
+        "priorGuidanceRange": {
+          "filedDate": "2026-04-30",
+          "low": 15.62,
+          "high": 17.1
+        }
+      },
+      {
+        "metric": "Capital expenditures",
+        "period": "full year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 2600000000.0,
+        "high": 2600000000.0,
+        "midpoint": 2600000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Capital expenditures to be approximately $2.6 billion.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Maintained",
+        "priorGuidanceRange": {
+          "filedDate": "2026-04-30",
+          "low": 2600000000.0,
+          "high": 2600000000.0
+        }
+      },
+      {
+        "metric": "EPS",
+        "period": "full year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 22.3,
+        "high": 23.5,
+        "midpoint": 22.9,
+        "unit": "USD/share",
+        "basis": "Non-GAAP",
+        "fromTable": false,
+        "quote": "On a non-GAAP basis, EPS in the range of $22.30 to $23.50, and a tax rate in the range of 15.0% to 16.5%.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Raised",
+        "priorGuidanceRange": {
+          "filedDate": "2026-04-30",
+          "low": 21.7,
+          "high": 23.1
+        }
+      },
+      {
+        "metric": "Share repurchases",
+        "period": "full year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": null,
+        "high": 3000000000.0,
+        "midpoint": 3000000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Share repurchases not to exceed $3.0 billion.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      },
+      {
+        "metric": "Non-GAAP tax rate guidance",
+        "period": "Year Ending December 31, 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 15.0,
+        "high": 16.5,
+        "midpoint": 15.75,
+        "unit": "percent",
+        "basis": "Non-GAAP",
+        "fromTable": true,
+        "quote": "Non-GAAP tax rate guidance | 15.0% | \u2014 | 16.5% |",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Maintained",
+        "priorGuidanceRange": {
+          "filedDate": "2026-04-30",
+          "low": 15.0,
+          "high": 16.5
+        }
+      },
+      {
+        "metric": "GAAP tax rate guidance",
+        "period": "Year Ending December 31, 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 14.5,
+        "high": 16.0,
+        "midpoint": 15.25,
+        "unit": "percent",
+        "basis": "GAAP",
+        "fromTable": true,
+        "quote": "GAAP tax rate guidance | 14.5% | \u2014 | 16.0% |",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Maintained",
+        "priorGuidanceRange": {
+          "filedDate": "2026-04-30",
+          "low": 14.5,
+          "high": 16.0
+        }
+      }
+    ],
+    "guidanceStatus": "approved",
+    "corrections": [],
+    "id": "fcec8650-06f2-4b7d-82ec-844d7790e5d2",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "Amgen Inc Q2 FY2026 Earnings Call",
+    "callDate": "2026-04-08T20:30:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 2,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://amgen2.rev.vbrick.com/#/videos/34c44b08-3be0-4e03-b6b1-fa3b4ca20478",
+    "transcriptDocumentId": "7f72c614-2d20-4880-ac59-0f246a1c2e51",
+    "earningsReleaseDocumentId": "9711786a-2c65-4abb-8ca5-063f9fe59e28",
+    "hasAudio": true,
+    "hasSlides": true,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "available",
+        "reason": "Slide deck captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

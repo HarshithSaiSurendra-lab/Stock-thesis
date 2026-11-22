@@ -1,0 +1,123 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "ADBE",
+    "companyName": "Adobe Inc.",
+    "guidance": [
+      {
+        "metric": "Total revenue",
+        "period": "FY2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 26576000000.0,
+        "high": 26626000000.0,
+        "midpoint": 26601000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": true,
+        "quote": "| Total revenue | $26.576 billion to $26.626 billion | |",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      },
+      {
+        "metric": "Business Professionals & Consumers subscription revenue",
+        "period": "FY2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 7470000000.0,
+        "high": 7490000000.0,
+        "midpoint": 7480000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": true,
+        "quote": "| Business Professionals & Consumers subscription revenue | $7.470 billion to $7.490 billion | |",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      },
+      {
+        "metric": "Creative & Marketing Professionals subscription revenue",
+        "period": "FY2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 18242000000.0,
+        "high": 18272000000.0,
+        "midpoint": 18257000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": true,
+        "quote": "| Creative & Marketing Professionals subscription revenue | $18.242 billion to $18.272 billion | |",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      },
+      {
+        "metric": "Total Adobe ending ARR growth",
+        "period": "FY2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 10.2,
+        "high": 10.2,
+        "midpoint": 10.2,
+        "unit": "percent",
+        "basis": null,
+        "fromTable": true,
+        "quote": "| Total Adobe ending ARR growth | 10.2% year over year | |",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Maintained",
+        "priorGuidanceRange": {
+          "filedDate": "2026-06-11",
+          "low": 10.2,
+          "high": 10.2
+        }
+      }
+    ],
+    "guidanceStatus": "approved",
+    "corrections": [],
+    "id": "4e956de0-f556-43a6-b3e2-23bc8eaa4eac",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "Adobe Inc. Q3 FY2026 Earnings Call",
+    "callDate": "2026-09-10T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 3,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://www.youtube.com/watch?v=rJRfOREq9NM",
+    "transcriptDocumentId": "b589b552-217b-4018-a1ec-4e2a9c7348e1",
+    "earningsReleaseDocumentId": "c44e8bd0-ce0f-4966-8683-9c73764e0f55",
+    "hasAudio": true,
+    "hasSlides": true,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "available",
+        "reason": "Slide deck captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

@@ -1,0 +1,317 @@
+{
+  "status": 200,
+  "result": {
+    "data": [
+      {
+        "id": "56026df6-6fb3-4ece-b8c1-86c383102d9f",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "AbbVie Inc. Q3 FY2026 Earnings Call",
+        "callDate": "2026-10-30T13:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://edge.media-server.com/mmc/p/qvczs2fg",
+        "transcriptDocumentId": "67df6a93-c1d4-4f40-a666-95d3df4859dc",
+        "earningsReleaseDocumentId": "49786322-3f6f-4147-9953-411002f31071",
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": "2026-10-30T15:01:40.71857+00:00",
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Slide capture will retry",
+            "lastAttemptAt": "2026-11-22T12:53:49.33086+00:00",
+            "nextAttemptAt": "2026-11-29T12:53:49.33086+00:00"
+          }
+        }
+      },
+      {
+        "id": "9aa16ddc-2198-4d11-9419-01b7c1c247c7",
+        "eventType": "Conference",
+        "eventTypeName": "Conference",
+        "title": "Morgan Stanley 24th Annual Global Healthcare Conference",
+        "callDate": "2026-09-15T14:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://event.webcasts.com/starthere.jsp?ei=1773801&tp_key=756e5e03ad&tp_special=8",
+        "transcriptDocumentId": "e3aaac9e-5536-424b-b5af-36b18997fb20",
+        "earningsReleaseDocumentId": null,
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-10-18T11:08:44.05634+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "f531a36d-443f-4a3b-8dfb-389f96c3edb6",
+        "eventType": "Conference",
+        "eventTypeName": "Conference",
+        "title": "Wells Fargo 21st Annual Healthcare Conference",
+        "callDate": "2026-09-09T14:15:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://event.summitcast.com/view/aMepMFxWv3z5SRZ9meKJzp/guest_book?session_id=Q4KnXCNL6NEz4VGGpDqbmp",
+        "transcriptDocumentId": "928cc8dd-c83c-45a1-aeae-a7bfad6c9fae",
+        "earningsReleaseDocumentId": null,
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-10-19T00:34:04.009326+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "0cbc010f-84a7-4d27-b9c2-57b44101cd9e",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "AbbVie Inc. Q2 FY2026 Earnings Call",
+        "callDate": "2026-07-31T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://edge.media-server.com/mmc/p/m9vcn44b",
+        "transcriptDocumentId": "241a1983-90c9-47ec-b746-7e971355f7f7",
+        "earningsReleaseDocumentId": "8969db84-5621-478e-8e3e-33e0bbb4558e",
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-10-19T11:59:16.916838+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "579e6ec7-c11b-4e59-9dba-0441f4f4c208",
+        "eventType": "Conference",
+        "eventTypeName": "Conference",
+        "title": "AbbVie Apogee Acquisition Conference Call",
+        "callDate": "2026-06-22T13:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://investors.abbvie.com/events/event-details/abbvie-apogee-acquisition-conference-call",
+        "transcriptDocumentId": "8078d94b-825a-4393-98d2-c7e0036b06a9",
+        "earningsReleaseDocumentId": null,
+        "hasAudio": true,
+        "hasSlides": true,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "available",
+            "reason": "Slide deck captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "1e9217e1-e9a2-45e7-8946-3c9660b2f908",
+        "eventType": "Conference",
+        "eventTypeName": "Conference",
+        "title": "Goldman Sachs 47th Annual Global Healthcare Conference",
+        "callDate": "2026-06-09T14:40:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://event.webcasts.com/starthere.jsp?ei=1764447&tp_key=12f65cc36d&tp_special=8",
+        "transcriptDocumentId": "e9b8c6f6-388f-4f41-9252-f587f2968ce6",
+        "earningsReleaseDocumentId": null,
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-10-20T14:56:31.556665+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "5772d96e-f60e-47a3-9c53-aa6f4694aa0d",
+        "eventType": "Conference",
+        "eventTypeName": "Conference",
+        "title": "Bank of America Securities Healthcare Conference",
+        "callDate": "2026-05-13T18:20:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://investors.abbvie.com/events/event-details/bank-america-securities-healthcare-conference-2",
+        "transcriptDocumentId": "a5c7b0d4-920d-4f92-afe0-9f4cc7481c6d",
+        "earningsReleaseDocumentId": null,
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": "2026-10-18T07:14:53.432934+00:00",
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-10-27T18:42:59.250951+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "6ea95945-8cab-47f4-acdc-e884e9ac432a",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "AbbVie Inc. Q1 FY2026 Earnings Call",
+        "callDate": "2026-04-29T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://edge.media-server.com/mmc/p/o3mif4f8",
+        "transcriptDocumentId": "a111f991-dbd9-49bb-bd9a-343b2b5037f8",
+        "earningsReleaseDocumentId": "c0b33fa7-ae32-46cd-be21-de404b0f921c",
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-11-01T23:12:38.675954+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      }
+    ],
+    "meta": {
+      "limit": 8,
+      "offset": 0,
+      "count": 8,
+      "hasMore": true
+    }
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "AMD",
+    "companyName": "Advanced Micro Devices Inc",
+    "guidance": [
+      {
+        "metric": "Non-GAAP gross margin",
+        "period": "second quarter of 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "low": 56.0,
+        "high": 56.0,
+        "midpoint": 56.0,
+        "unit": "percent",
+        "basis": "Non-GAAP",
+        "fromTable": false,
+        "quote": "Non-GAAP gross margin is expected to be approximately 56%.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      },
+      {
+        "metric": "Effective Tax Rate",
+        "period": "Q2'26",
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "low": 13.0,
+        "high": 13.0,
+        "midpoint": 13.0,
+        "unit": "percent",
+        "basis": "Non-GAAP",
+        "fromTable": false,
+        "quote": "Q2\u201926 13% of pre-tax incomeEffective Tax Rate",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      }
+    ],
+    "guidanceStatus": "approved",
+    "corrections": [],
+    "id": "3305332e-b54d-4a52-8a30-83a182b8c6ec",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "Advanced Micro Devices Inc Q1 FY2026 Earnings Call",
+    "callDate": "2026-05-05T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 1,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://www.youtube.com/watch?v=zV00rljp-8A",
+    "transcriptDocumentId": "3e5fee04-102f-4026-9885-d02bf7f0db72",
+    "earningsReleaseDocumentId": "c90de4bd-0376-4964-98ea-5943896b8f08",
+    "hasAudio": true,
+    "hasSlides": true,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "available",
+        "reason": "Slide deck captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

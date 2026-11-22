@@ -1,0 +1,69 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "ABBV",
+    "companyName": "AbbVie Inc.",
+    "guidance": [
+      {
+        "metric": "adjusted diluted EPS",
+        "period": "full year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 13.95,
+        "high": 13.99,
+        "midpoint": 13.97,
+        "unit": "USD/share",
+        "basis": "Non-GAAP",
+        "fromTable": false,
+        "quote": "AbbVie is raising its adjusted diluted EPS guidance for the full year 2026 from $13.76 - $13.96 to $13.95 - $13.99, which includes an unfavorable impact of $0.69 per share related to acquired IPR&D and milestones expense incurred year-to-date through the third quarter 2026.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Raised",
+        "priorGuidanceRange": {
+          "filedDate": "2026-10-05",
+          "low": 13.76,
+          "high": 13.96
+        }
+      }
+    ],
+    "guidanceStatus": "approved",
+    "corrections": [],
+    "id": "56026df6-6fb3-4ece-b8c1-86c383102d9f",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "AbbVie Inc. Q3 FY2026 Earnings Call",
+    "callDate": "2026-10-30T13:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 3,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://edge.media-server.com/mmc/p/qvczs2fg",
+    "transcriptDocumentId": "67df6a93-c1d4-4f40-a666-95d3df4859dc",
+    "earningsReleaseDocumentId": "49786322-3f6f-4147-9953-411002f31071",
+    "hasAudio": true,
+    "hasSlides": false,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": "2026-10-30T15:01:40.71857+00:00",
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "pending",
+        "reason": "Slide capture will retry",
+        "lastAttemptAt": "2026-11-22T12:53:49.33086+00:00",
+        "nextAttemptAt": "2026-11-29T12:53:49.33086+00:00"
+      }
+    }
+  }
+}

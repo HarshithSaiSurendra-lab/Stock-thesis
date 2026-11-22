@@ -1,0 +1,149 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "AMD",
+    "companyName": "Advanced Micro Devices Inc",
+    "guidance": [
+      {
+        "metric": "revenue",
+        "period": "third quarter of 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "low": 13000000000.0,
+        "high": 13000000000.0,
+        "midpoint": 13000000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "For the third quarter of 2026, AMD expects revenue to be approximately $13 billion, plus or minus $300 million.",
+        "actual": 13377000000.0,
+        "actualVerdict": "above",
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      },
+      {
+        "metric": "Non-GAAP gross margin",
+        "period": "third quarter of 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "low": 56.0,
+        "high": 56.0,
+        "midpoint": 56.0,
+        "unit": "percent",
+        "basis": "Non-GAAP",
+        "fromTable": false,
+        "quote": "Non-GAAP gross margin is expected to be approximately 56%.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Maintained",
+        "priorGuidanceRange": {
+          "filedDate": "2026-06-27",
+          "low": 56.0,
+          "high": 56.0
+        }
+      },
+      {
+        "metric": "Operating Expenses",
+        "period": "Q3'26",
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "low": 3650000000.0,
+        "high": 3650000000.0,
+        "midpoint": 3650000000.0,
+        "unit": "USD",
+        "basis": "Non-GAAP",
+        "fromTable": false,
+        "quote": "Operating Expenses ~$3.65 Billion",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Maintained",
+        "priorGuidanceRange": {
+          "filedDate": "2026-06-27",
+          "low": 3650000000.0,
+          "high": 3650000000.0
+        }
+      },
+      {
+        "metric": "Other Income (Expense) net of Interest Expense",
+        "period": "Q3'26",
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "low": 55000000.0,
+        "high": 55000000.0,
+        "midpoint": 55000000.0,
+        "unit": "USD",
+        "basis": "Non-GAAP",
+        "fromTable": false,
+        "quote": "Other Income (Expense) net of Interest Expense ~$55 Million",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      },
+      {
+        "metric": "Effective Tax Rate",
+        "period": "Q3'26",
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "low": 13.0,
+        "high": 13.0,
+        "midpoint": 13.0,
+        "unit": "percent",
+        "basis": "Non-GAAP",
+        "fromTable": false,
+        "quote": "Effective Tax Rate 13% of pre-tax income",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Maintained",
+        "priorGuidanceRange": {
+          "filedDate": "2026-06-27",
+          "low": 13.0,
+          "high": 13.0
+        }
+      }
+    ],
+    "guidanceStatus": "approved",
+    "corrections": [],
+    "id": "8111bdea-de5e-4b92-bcfa-89df13d370da",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "Advanced Micro Devices Inc Q2 FY2026 Earnings Call",
+    "callDate": "2026-08-04T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 2,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://edge.media-server.com/mmc/p/nucz8m7v/",
+    "transcriptDocumentId": "c30261dc-d762-431e-8981-2667e0c26e14",
+    "earningsReleaseDocumentId": "a0750e47-7d49-48c5-9aab-21a00ed339db",
+    "hasAudio": true,
+    "hasSlides": true,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "available",
+        "reason": "Slide deck captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

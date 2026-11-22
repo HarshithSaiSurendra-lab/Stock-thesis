@@ -1,0 +1,193 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "AMT",
+    "companyName": "American Tower Corp",
+    "guidance": [
+      {
+        "metric": "AFFO attributable to AMT common stockholders per Share",
+        "period": "Full Year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 11.0,
+        "high": 11.17,
+        "midpoint": 11.085,
+        "unit": "USD/share",
+        "basis": "Non-GAAP",
+        "fromTable": true,
+        "quote": "AFFO attributable to AMT common stockholders per Share | $ | 11.00 | to | $ | 11.17 | 3.0 | % |",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      },
+      {
+        "metric": "U.S. & Canada segment property revenue",
+        "period": "Full Year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 5060000000.0,
+        "high": 5120000000.0,
+        "midpoint": 5090000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Includes U.S. & Canada segment property revenue of $5,060 million to $5,120 million, Latin America property revenue of $1,790 million to $1,810 million, Africa & APAC property revenue of $1,620 million to $1,640 million, Europe property revenue of $1,025 million to $1,055 million and Data Centers segment property revenue of $1,200 million to $1,220 million, reflecting midpoint growth rates of (3.0)%, 9.6%, 14.6%, 10.9% and 14.9%, respectively.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Maintained",
+        "priorGuidanceRange": {
+          "filedDate": "2026-04-28",
+          "low": 5060000000.0,
+          "high": 5120000000.0
+        }
+      },
+      {
+        "metric": "Latin America property revenue",
+        "period": "Full Year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 1790000000.0,
+        "high": 1810000000.0,
+        "midpoint": 1800000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Includes U.S. & Canada segment property revenue of $5,060 million to $5,120 million, Latin America property revenue of $1,790 million to $1,810 million, Africa & APAC property revenue of $1,620 million to $1,640 million, Europe property revenue of $1,025 million to $1,055 million and Data Centers segment property revenue of $1,200 million to $1,220 million, reflecting midpoint growth rates of (3.0)%, 9.6%, 14.6%, 10.9% and 14.9%, respectively.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Raised",
+        "priorGuidanceRange": {
+          "filedDate": "2026-04-28",
+          "low": 1730000000.0,
+          "high": 1750000000.0
+        }
+      },
+      {
+        "metric": "Africa & APAC property revenue",
+        "period": "Full Year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 1620000000.0,
+        "high": 1640000000.0,
+        "midpoint": 1630000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Includes U.S. & Canada segment property revenue of $5,060 million to $5,120 million, Latin America property revenue of $1,790 million to $1,810 million, Africa & APAC property revenue of $1,620 million to $1,640 million, Europe property revenue of $1,025 million to $1,055 million and Data Centers segment property revenue of $1,200 million to $1,220 million, reflecting midpoint growth rates of (3.0)%, 9.6%, 14.6%, 10.9% and 14.9%, respectively.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Raised",
+        "priorGuidanceRange": {
+          "filedDate": "2026-04-28",
+          "low": 1595000000.0,
+          "high": 1615000000.0
+        }
+      },
+      {
+        "metric": "Europe property revenue",
+        "period": "Full Year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 1025000000.0,
+        "high": 1055000000.0,
+        "midpoint": 1040000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Includes U.S. & Canada segment property revenue of $5,060 million to $5,120 million, Latin America property revenue of $1,790 million to $1,810 million, Africa & APAC property revenue of $1,620 million to $1,640 million, Europe property revenue of $1,025 million to $1,055 million and Data Centers segment property revenue of $1,200 million to $1,220 million, reflecting midpoint growth rates of (3.0)%, 9.6%, 14.6%, 10.9% and 14.9%, respectively.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Maintained",
+        "priorGuidanceRange": {
+          "filedDate": "2026-04-28",
+          "low": 1025000000.0,
+          "high": 1055000000.0
+        }
+      },
+      {
+        "metric": "Data Centers segment property revenue",
+        "period": "Full Year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 1200000000.0,
+        "high": 1220000000.0,
+        "midpoint": 1210000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Includes U.S. & Canada segment property revenue of $5,060 million to $5,120 million, Latin America property revenue of $1,790 million to $1,810 million, Africa & APAC property revenue of $1,620 million to $1,640 million, Europe property revenue of $1,025 million to $1,055 million and Data Centers segment property revenue of $1,200 million to $1,220 million, reflecting midpoint growth rates of (3.0)%, 9.6%, 14.6%, 10.9% and 14.9%, respectively.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": "Raised",
+        "priorGuidanceRange": {
+          "filedDate": "2026-04-28",
+          "low": 1175000000.0,
+          "high": 1195000000.0
+        }
+      },
+      {
+        "metric": "Total Tenant Billings Growth",
+        "period": "Full Year 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": null,
+        "low": 2.0,
+        "high": 2.0,
+        "midpoint": 2.0,
+        "unit": "percent",
+        "basis": null,
+        "fromTable": true,
+        "quote": "Total Tenant Billings Growth | ~0.5% | (~3%) | ~12% | ~10% | ~2% |",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      }
+    ],
+    "guidanceStatus": "approved",
+    "corrections": [],
+    "id": "8dad7a20-a9df-4ada-b91a-f0f4b8ccfb49",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "Q2 2026 American Tower Earnings Conference Call",
+    "callDate": "2026-07-28T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 2,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://edge.media-server.com/mmc/p/k22ypxxc",
+    "transcriptDocumentId": "e14ddfd7-ebaa-4bb8-afcc-7511b6af71ec",
+    "earningsReleaseDocumentId": "73503b27-6168-4aa3-940f-554916d02952",
+    "hasAudio": true,
+    "hasSlides": false,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "failed",
+        "reason": "Slide deck could not be captured",
+        "lastAttemptAt": "2026-10-19T08:22:54.58908+00:00",
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

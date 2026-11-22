@@ -1,0 +1,317 @@
+{
+  "status": 200,
+  "result": {
+    "data": [
+      {
+        "id": "9f139e73-e1d7-4505-bb3d-50d522a0ea73",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Q3 2026 American Tower Earnings Conference Call",
+        "callDate": "2026-10-27T12:30:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://edge.media-server.com/mmc/p/ghaz5b7w",
+        "transcriptDocumentId": "a95a4d73-7115-44ea-86fa-f06d29643f05",
+        "earningsReleaseDocumentId": "6502c811-498e-4a06-846e-4062f96eaeaf",
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": "2026-10-28T02:08:57.495361+00:00",
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-10-28T17:55:50.387584+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "ebd45bba-488a-4be5-8d4a-5370ea4cfd3c",
+        "eventType": "Conference",
+        "eventTypeName": "Conference",
+        "title": "Citi\u2019s 2026 Global TMT Conference",
+        "callDate": "2026-09-10T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://kvgo.com/2026-global-tmt-conference/american-tower-corp-sep-2026",
+        "transcriptDocumentId": "d301d36a-1259-414a-a78a-1ef2e7f41eb3",
+        "earningsReleaseDocumentId": null,
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": "2026-10-21T04:18:32.642404+00:00",
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-10-18T14:17:11.651972+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "e5f9decf-a000-4097-b5d0-5eabd2465aa6",
+        "eventType": "Conference",
+        "eventTypeName": "Conference",
+        "title": "Goldman Sachs Communacopia + Technology Conference",
+        "callDate": "2026-09-09T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://event.webcasts.com/starthere.jsp?ei=1774640&tp_key=12b3480ae1&tp_special=8",
+        "transcriptDocumentId": "d9958c09-5de2-4d81-9398-bf109ea57a3f",
+        "earningsReleaseDocumentId": null,
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-10-18T15:54:32.391025+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "8dad7a20-a9df-4ada-b91a-f0f4b8ccfb49",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Q2 2026 American Tower Earnings Conference Call",
+        "callDate": "2026-07-28T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://edge.media-server.com/mmc/p/k22ypxxc",
+        "transcriptDocumentId": "e14ddfd7-ebaa-4bb8-afcc-7511b6af71ec",
+        "earningsReleaseDocumentId": "73503b27-6168-4aa3-940f-554916d02952",
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-10-19T08:22:54.58908+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "98b49bdb-7815-4ef6-bc3e-996a99d8691d",
+        "eventType": "Conference",
+        "eventTypeName": "Conference",
+        "title": "Nareit\u2019s REITweek: 2026 Investor Conference",
+        "callDate": "2026-06-03T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://vimeo.com/event/5873037/",
+        "transcriptDocumentId": "b8ab0de6-5917-4c44-8289-c4df508a4544",
+        "earningsReleaseDocumentId": null,
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-10-19T15:08:56.933625+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "a2a7c74e-30c9-4bb4-b140-959db86f6724",
+        "eventType": "Conference",
+        "eventTypeName": "Conference",
+        "title": "MoffettNathanson 2026 Media, Internet & Communications Conference",
+        "callDate": "2026-05-14T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://event.summitcast.com/view/i9aqJpX6hbDwfH7WiHKGua/guest_book?session_id=RyWMJNBMUX47HLiVdFcNLT",
+        "transcriptDocumentId": "c7bc729f-e9de-46de-b3a5-f042b0346207",
+        "earningsReleaseDocumentId": null,
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-10-20T20:42:57.937496+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "74fa0d6a-e13a-4736-9747-2248d1b58484",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "American Tower Corp /Ma/ Q1 FY2026 Earnings Call",
+        "callDate": "2026-04-28T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://edge.media-server.com/mmc/p/rckv4abo",
+        "transcriptDocumentId": "9d5220e0-a6e3-473d-af4f-2ddbf7da3282",
+        "earningsReleaseDocumentId": "e1690733-973f-456d-b742-e82d85ba4b53",
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-10-31T21:27:49.581538+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "7b1e1b46-86ad-447c-9be4-c7b4e52d407a",
+        "eventType": "Conference",
+        "eventTypeName": "Conference",
+        "title": "34th Annual Deutsche Bank Media, Internet & Telecom Conference",
+        "callDate": "2026-03-09T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": null,
+        "fiscalQuarter": null,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://event.webcasts.com/starthere.jsp?ei=1753829&tp_key=1bfd170f78&tp_special=8",
+        "transcriptDocumentId": "3e600ade-e3de-4667-9e60-3ba6a4664abe",
+        "earningsReleaseDocumentId": null,
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-11-15T12:25:18.073967+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      }
+    ],
+    "meta": {
+      "limit": 8,
+      "offset": 0,
+      "count": 8,
+      "hasMore": true
+    }
+  }
+}

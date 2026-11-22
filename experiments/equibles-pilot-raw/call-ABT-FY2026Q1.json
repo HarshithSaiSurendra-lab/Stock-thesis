@@ -1,0 +1,46 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "ABT",
+    "companyName": "Abbott Laboratories",
+    "guidance": [],
+    "guidanceStatus": "notExtracted",
+    "corrections": [],
+    "id": "e0ebb114-9163-4af8-bd8d-96cd850986bb",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "Abbott Laboratories Q1 FY2026 Earnings Call",
+    "callDate": "2026-04-16T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 1,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://www.youtube.com/watch?v=wwd5EpjAdFM",
+    "transcriptDocumentId": "58b28cc0-d592-4c3f-8f6d-4183ec5257d8",
+    "earningsReleaseDocumentId": "55a5b996-a36b-45a4-99cc-c77900d6b430",
+    "hasAudio": true,
+    "hasSlides": false,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "notPublished",
+        "reason": "No slide deck was published",
+        "lastAttemptAt": "2026-11-01T22:28:31.880953+00:00",
+        "nextAttemptAt": null
+      }
+    }
+  }
+}

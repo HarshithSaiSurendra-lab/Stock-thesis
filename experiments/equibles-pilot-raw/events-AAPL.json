@@ -1,0 +1,317 @@
+{
+  "status": 200,
+  "result": {
+    "data": [
+      {
+        "id": "4bacbc6b-b423-4267-9d20-2d49fb417904",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "FY 26 Fourth Quarter Results",
+        "callDate": "2026-11-02T22:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 4,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://investor.apple.com/event-details/2026/FY-26-Fourth-Quarter-Results/default.aspx",
+        "transcriptDocumentId": null,
+        "earningsReleaseDocumentId": "43c6810b-3065-42da-acd0-0d3dfcaa2fa6",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": false,
+        "materials": {
+          "transcript": {
+            "status": "notAttempted",
+            "reason": "No transcript source available",
+            "lastAttemptAt": "2026-11-03T06:24:23.223306+00:00",
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "failed",
+            "reason": "Audio could not be captured",
+            "lastAttemptAt": "2026-11-03T06:24:23.223306+00:00",
+            "nextAttemptAt": "2026-11-24T06:36:52.8196+00:00"
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Slide capture will retry",
+            "lastAttemptAt": "2026-11-22T07:18:32.498283+00:00",
+            "nextAttemptAt": "2026-11-29T07:18:32.498283+00:00"
+          }
+        }
+      },
+      {
+        "id": "b1632050-152a-4e9e-82f8-252551b6924f",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Apple Inc. Q3 FY2026 Earnings Call",
+        "callDate": "2026-07-30T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://www.apple.com/investor/earnings-call/",
+        "transcriptDocumentId": "2a43f09c-d782-4787-89b8-bc8365d8521f",
+        "earningsReleaseDocumentId": "4ecb9cca-c8bf-46b7-bd86-a9aba68524eb",
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "notPublished",
+            "reason": "No slide deck was published",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "dc372c67-591a-4a7e-a6ce-cf25332d4041",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Apple Inc. Q2 FY2026 Earnings Call",
+        "callDate": "2026-04-30T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://investor.apple.com/event-details/2026/FY-26-Second-Quarter-Results/default.aspx",
+        "transcriptDocumentId": null,
+        "earningsReleaseDocumentId": "d3ac5ef9-93d5-4ebe-8667-8f3759b4e559",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": false,
+        "materials": {
+          "transcript": {
+            "status": "notAttempted",
+            "reason": "No transcript source available",
+            "lastAttemptAt": "2026-11-21T02:43:35.842028+00:00",
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "failed",
+            "reason": "Audio could not be captured",
+            "lastAttemptAt": "2026-11-21T02:43:35.842028+00:00",
+            "nextAttemptAt": "2026-11-28T02:44:43.156375+00:00"
+          },
+          "slides": {
+            "status": "notPublished",
+            "reason": "No slide deck was published",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "7ec353bd-b78e-489e-a41d-5c2e47f8a0a6",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Apple Inc. Q1 FY2026 Earnings Call",
+        "callDate": "2026-01-29T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://investor.apple.com/event-details/2026/FY-26-First-Quarter-Results/default.aspx",
+        "transcriptDocumentId": "a348b8f8-f55a-42f4-900d-2a20755c4c32",
+        "earningsReleaseDocumentId": "5eee8192-5498-4041-8904-15e98025dd02",
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "notPublished",
+            "reason": "No slide deck was published",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "022ba3c9-dab6-4a44-a696-abb66476263f",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Apple Inc. Q4 FY2025 Earnings Call",
+        "callDate": "2025-10-30T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://investor.apple.com/event-details/2025/FY-25-Fourth-Quarter-Results-/default.aspx",
+        "transcriptDocumentId": "48de33a9-4c84-421e-ab17-0721160145f3",
+        "earningsReleaseDocumentId": "2ad1265f-5694-4f08-b0b9-75c460098ccf",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "failed",
+            "reason": "Audio could not be captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Slide capture will retry",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "153dd58f-d301-4b00-951a-74a8c5bdb127",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Apple Inc. Q3 FY2025 Earnings Call",
+        "callDate": "2025-07-31T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://investor.apple.com/event-details/2025/FY-25-Third-Quarter-Results-/default.aspx",
+        "transcriptDocumentId": "2f14e7a7-3300-4584-9ec3-e6d89994de00",
+        "earningsReleaseDocumentId": "5ecd1a61-1e65-4e7c-b29a-6bb1eac5bd7d",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "failed",
+            "reason": "Audio could not be captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Slide capture will retry",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "26e580d9-845e-4700-9a48-40862067c8e6",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Apple Inc. Q2 FY2025 Earnings Call",
+        "callDate": "2025-05-01T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://investor.apple.com/event-details/2025/FY-25-Second-Quarter-Results-/default.aspx",
+        "transcriptDocumentId": "83afc542-d813-4e5f-81b5-83c78632fbd8",
+        "earningsReleaseDocumentId": "9121007e-840f-4037-b8d2-646a89b5c904",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "failed",
+            "reason": "Audio could not be captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Slide capture will retry",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "742b9949-da23-49c8-b33b-4d22fc47e8d2",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Apple Inc. Q1 FY2025 Earnings Call",
+        "callDate": "2025-01-30T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://investor.apple.com/event-details/2025/FY-25-First-Quarter-Results-/default.aspx",
+        "transcriptDocumentId": "354ac263-f7c8-4bdc-a0de-5448289004fc",
+        "earningsReleaseDocumentId": "018435bb-9c1a-4b1e-8e50-35db6180e220",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "failed",
+            "reason": "Audio could not be captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Slide capture scheduled",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      }
+    ],
+    "meta": {
+      "limit": 8,
+      "offset": 0,
+      "count": 8,
+      "hasMore": true
+    }
+  }
+}

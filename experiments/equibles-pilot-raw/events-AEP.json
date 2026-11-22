@@ -1,0 +1,317 @@
+{
+  "status": 200,
+  "result": {
+    "data": [
+      {
+        "id": "8de6ce19-813a-4c6c-bc91-6862d3d9540f",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "American Electric Power Co Inc Q3 FY2026 Earnings Call",
+        "callDate": "2026-10-28T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": null,
+        "transcriptDocumentId": null,
+        "earningsReleaseDocumentId": "a51f7af7-7d0f-42c7-bf3b-d34d50220801",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": false,
+        "materials": {
+          "transcript": {
+            "status": "notAttempted",
+            "reason": "No transcript source available",
+            "lastAttemptAt": "2026-10-31T08:42:13.915219+00:00",
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "failed",
+            "reason": "Audio could not be captured",
+            "lastAttemptAt": "2026-10-31T08:42:13.915219+00:00",
+            "nextAttemptAt": "2026-11-30T08:50:05.721231+00:00"
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "No deck in the 8-K; the IR site could not be checked",
+            "lastAttemptAt": "2026-10-28T11:03:34.439547+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "7d9b9cd5-dcd6-451c-b329-e8c628ad64f3",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "American Electric Power Co Inc Q2 FY2026 Earnings Call",
+        "callDate": "2026-07-30T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "http://www.aep.com/webcasts",
+        "transcriptDocumentId": "5bdef354-42d2-41ab-a497-b76e3e89d9a9",
+        "earningsReleaseDocumentId": "8c03459f-c174-48ea-b81d-41a356b5599a",
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-10-19T07:42:41.391302+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "2031a84d-0ac7-4b41-b987-9a2ed5b17e43",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "American Electric Power Co Inc Q1 FY2026 Earnings Call",
+        "callDate": "2026-05-05T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://www.youtube.com/watch?v=YOnr03JTbOw",
+        "transcriptDocumentId": "2aaddbef-f28a-4263-bccc-0ec06f459263",
+        "earningsReleaseDocumentId": "e2382400-7076-4c2b-a3c7-79a20b7037bb",
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-10-20T21:56:43.392734+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "d52bd4fa-514d-4aae-85e2-90d21cda684f",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "American Electric Power Co Inc Q4 FY2025 Earnings Call",
+        "callDate": "2026-02-12T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://www.youtube.com/watch?v=SqB3lFAnLDU",
+        "transcriptDocumentId": "772c5c30-9e42-4850-86f6-ecc9b5a68eb2",
+        "earningsReleaseDocumentId": "d742124c-4b0e-4f3c-ade3-f62e6e0a7699",
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "Slide deck could not be captured",
+            "lastAttemptAt": "2026-11-19T15:03:36.418058+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "0ec4812d-9750-41a9-9c9b-2167deb6f4e8",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "American Electric Power Co Inc Q3 FY2025 Earnings Call",
+        "callDate": "2025-10-29T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": null,
+        "transcriptDocumentId": "8d011c5f-9971-4b27-8405-e224c4f7756e",
+        "earningsReleaseDocumentId": "4aff1e79-0efe-417f-a014-10420603063c",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "pending",
+            "reason": "Webcast link not found yet",
+            "lastAttemptAt": null,
+            "nextAttemptAt": "2026-11-25T18:47:53.791121+00:00"
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "No deck in the 8-K; the IR site could not be checked",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "17cb6ece-c3f5-492c-a2e7-bed7478563df",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "American Electric Power Co Inc Q2 FY2025 Earnings Call",
+        "callDate": "2025-07-30T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": null,
+        "transcriptDocumentId": "fe4b4efe-566c-4273-a145-75f552ab70d3",
+        "earningsReleaseDocumentId": "7e2f88a5-29cc-414b-95fb-276501fda971",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "pending",
+            "reason": "Webcast link not found yet",
+            "lastAttemptAt": null,
+            "nextAttemptAt": "2026-11-25T19:47:34.255285+00:00"
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "No deck in the 8-K; the IR site could not be checked",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "af4c17b0-6faf-4000-b122-58dde2998ac9",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "American Electric Power Co Inc Q1 FY2025 Earnings Call",
+        "callDate": "2025-05-06T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": null,
+        "transcriptDocumentId": "77e06ecc-02da-460f-8190-dfc5d6c00727",
+        "earningsReleaseDocumentId": "1f0c0db5-9890-4abe-9cd9-608803379322",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "pending",
+            "reason": "Webcast link not found yet",
+            "lastAttemptAt": null,
+            "nextAttemptAt": "2026-11-22T23:26:59.059237+00:00"
+          },
+          "slides": {
+            "status": "failed",
+            "reason": "No deck in the 8-K; the IR site could not be checked",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "ded8f0a2-24c7-4ec1-be8c-70452c88f18e",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "American Electric Power Co Inc Q4 FY2024 Earnings Call",
+        "callDate": "2025-02-13T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": null,
+        "transcriptDocumentId": "168fbefd-53f1-4d67-b49d-b7238e222f31",
+        "earningsReleaseDocumentId": "6bc4f75e-e5f4-4cce-994b-0c0874306fb5",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "pending",
+            "reason": "Webcast link not found yet",
+            "lastAttemptAt": null,
+            "nextAttemptAt": "2026-11-23T04:19:50.774571+00:00"
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Slide capture scheduled",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      }
+    ],
+    "meta": {
+      "limit": 8,
+      "offset": 0,
+      "count": 8,
+      "hasMore": true
+    }
+  }
+}

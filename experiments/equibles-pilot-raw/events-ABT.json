@@ -1,0 +1,317 @@
+{
+  "status": 200,
+  "result": {
+    "data": [
+      {
+        "id": "a3af2db8-2f27-4464-bf10-912b34e200dd",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Abbott Laboratories Q3 FY2026 Earnings Call",
+        "callDate": "2026-10-21T13:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://edge.media-server.com/mmc/p/gxn96ftv/",
+        "transcriptDocumentId": "e164423d-e1e0-4a49-8d2b-3f23049ffeae",
+        "earningsReleaseDocumentId": "c36cb9f4-2575-4e23-b61d-7a31d776d1e7",
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": "2026-10-21T15:34:07.586688+00:00",
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "notPublished",
+            "reason": "No slide deck was published",
+            "lastAttemptAt": "2026-10-21T11:52:36.359198+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "e7213171-3b7f-462d-9f8c-ec7142bd503c",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Abbott Laboratories Q2 FY2026 Earnings Call",
+        "callDate": "2026-07-16T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 2,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://www.youtube.com/watch?v=ZNoldAEUbCA",
+        "transcriptDocumentId": "a8cca4f6-0b85-4edd-b615-b945ad6b44a4",
+        "earningsReleaseDocumentId": "92309c20-2596-49cf-a129-ea7921572866",
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "notPublished",
+            "reason": "No slide deck was published",
+            "lastAttemptAt": "2026-10-24T05:10:13.63337+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "e0ebb114-9163-4af8-bd8d-96cd850986bb",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Abbott Laboratories Q1 FY2026 Earnings Call",
+        "callDate": "2026-04-16T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2026,
+        "fiscalQuarter": 1,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://www.youtube.com/watch?v=wwd5EpjAdFM",
+        "transcriptDocumentId": "58b28cc0-d592-4c3f-8f6d-4183ec5257d8",
+        "earningsReleaseDocumentId": "55a5b996-a36b-45a4-99cc-c77900d6b430",
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "notPublished",
+            "reason": "No slide deck was published",
+            "lastAttemptAt": "2026-11-01T22:28:31.880953+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "c2578610-d77a-4bf0-a09e-544bba1818f7",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Abbott Laboratories Q4 FY2025 Earnings Call",
+        "callDate": "2026-01-22T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2025,
+        "fiscalQuarter": 4,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://www.youtube.com/watch?v=uxpzzUQwo-Y",
+        "transcriptDocumentId": "6e973578-15fd-4674-a96c-c09901753dda",
+        "earningsReleaseDocumentId": "6b9701f7-b41d-471f-b352-452e80eb507d",
+        "hasAudio": true,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "available",
+            "reason": "Recording captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Slide capture scheduled",
+            "lastAttemptAt": "2026-11-21T07:58:31.860697+00:00",
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "ff4a51f1-ad9c-4d24-bd21-2d383b7a0e55",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Abbott Laboratories Q3 FY2025 Earnings Call",
+        "callDate": "2025-10-15T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2025,
+        "fiscalQuarter": 3,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": null,
+        "transcriptDocumentId": "151e586b-a46c-49c9-8138-7f4730207cb6",
+        "earningsReleaseDocumentId": "23f595c3-bd25-4df9-a7bf-d1285303d7fa",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "failed",
+            "reason": "Audio could not be captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Slide capture will retry",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "b6285f73-77bc-4992-8d06-2eeabdfd3bc7",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Abbott Laboratories Q2 FY2025 Earnings Call",
+        "callDate": "2025-07-17T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2025,
+        "fiscalQuarter": 2,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": null,
+        "transcriptDocumentId": "9e29f572-1f11-424c-82be-c65582efd72d",
+        "earningsReleaseDocumentId": "c77b7de7-dde8-4a3e-8e59-9432855f0542",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "failed",
+            "reason": "Audio could not be captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Slide capture will retry",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "a56b3fb8-abfd-459a-9538-040a15d554e8",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Abbott Laboratories Q1 FY2025 Earnings Call",
+        "callDate": "2025-04-16T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2025,
+        "fiscalQuarter": 1,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": null,
+        "transcriptDocumentId": "8784b3db-8737-4c2b-acf2-8d46277bad5f",
+        "earningsReleaseDocumentId": "3bd6c68d-f418-421c-a747-b7d5d49e46eb",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "failed",
+            "reason": "Audio could not be captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Slide capture scheduled",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      },
+      {
+        "id": "d389bbb8-e845-4589-811c-fa247adfc95c",
+        "eventType": "EarningsCall",
+        "eventTypeName": "Earnings Call",
+        "title": "Abbott Laboratories Q4 FY2024 Earnings Call",
+        "callDate": "2025-01-22T00:00:00+00:00",
+        "callDateIsPeriodEnd": false,
+        "fiscalYear": 2024,
+        "fiscalQuarter": 4,
+        "status": "Concluded",
+        "statusName": "Concluded",
+        "webcastUrl": "https://www.abbottinvestor.com/",
+        "transcriptDocumentId": "7dbe7e3c-2977-4015-b0e7-215952c72b84",
+        "earningsReleaseDocumentId": "8d8fca6b-45b1-4afc-b65e-8f25074800f0",
+        "hasAudio": false,
+        "hasSlides": false,
+        "hasTranscript": true,
+        "materials": {
+          "transcript": {
+            "status": "available",
+            "reason": "Transcript on file",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "audio": {
+            "status": "failed",
+            "reason": "Audio could not be captured",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          },
+          "slides": {
+            "status": "pending",
+            "reason": "Slide capture scheduled",
+            "lastAttemptAt": null,
+            "nextAttemptAt": null
+          }
+        }
+      }
+    ],
+    "meta": {
+      "limit": 8,
+      "offset": 0,
+      "count": 8,
+      "hasMore": true
+    }
+  }
+}

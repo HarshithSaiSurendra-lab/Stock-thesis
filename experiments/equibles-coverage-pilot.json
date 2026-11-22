@@ -1,0 +1,625 @@
+{
+  "generated": "2026-11-22",
+  "source": "Equibles REST API v1 (free tier, 100 requests/day shared REST+MCP)",
+  "pilotSetSelection": "Top 10 universe tickers by EDGAR record count (manifest data/edgar_excerpts/manifest.json); 113 tickers tie at 16 records, 20 at 15; tie broken alphabetically by ticker",
+  "pilotTickers": [
+    {
+      "ticker": "AAPL",
+      "edgarRecords": 16
+    },
+    {
+      "ticker": "ABBV",
+      "edgarRecords": 16
+    },
+    {
+      "ticker": "ABT",
+      "edgarRecords": 16
+    },
+    {
+      "ticker": "ADBE",
+      "edgarRecords": 16
+    },
+    {
+      "ticker": "AEP",
+      "edgarRecords": 16
+    },
+    {
+      "ticker": "AMD",
+      "edgarRecords": 16
+    },
+    {
+      "ticker": "AMGN",
+      "edgarRecords": 16
+    },
+    {
+      "ticker": "AMT",
+      "edgarRecords": 16
+    },
+    {
+      "ticker": "AMZN",
+      "edgarRecords": 16
+    },
+    {
+      "ticker": "AXP",
+      "edgarRecords": 16
+    }
+  ],
+  "requestsUsedThisJob": 45,
+  "requestsBreakdown": {
+    "events": 10,
+    "call": 35
+  },
+  "requestsBudget": 50,
+  "note": "One additional Equibles request was made earlier today by the parent agent (NVDA FY2027 Q2 call check, 200, transcript available) and is not counted in this job total. Daily total so far: 46 of 100.",
+  "totals": {
+    "cells": 35,
+    "withTranscript": 31,
+    "withEarningsRelease": 34,
+    "withTranscriptAndRelease": 31,
+    "guidanceStatusCounts": {
+      "notExtracted": 9,
+      "approved": 25,
+      "null": 1
+    }
+  },
+  "perTicker": {
+    "AAPL": {
+      "cells": 4,
+      "transcripts": 2,
+      "withRelease": 4,
+      "transcriptAndRelease": 2
+    },
+    "ABBV": {
+      "cells": 3,
+      "transcripts": 3,
+      "withRelease": 3,
+      "transcriptAndRelease": 3
+    },
+    "ABT": {
+      "cells": 4,
+      "transcripts": 4,
+      "withRelease": 4,
+      "transcriptAndRelease": 4
+    },
+    "ADBE": {
+      "cells": 4,
+      "transcripts": 3,
+      "withRelease": 3,
+      "transcriptAndRelease": 3
+    },
+    "AEP": {
+      "cells": 4,
+      "transcripts": 3,
+      "withRelease": 4,
+      "transcriptAndRelease": 3
+    },
+    "AMD": {
+      "cells": 3,
+      "transcripts": 3,
+      "withRelease": 3,
+      "transcriptAndRelease": 3
+    },
+    "AMGN": {
+      "cells": 4,
+      "transcripts": 4,
+      "withRelease": 4,
+      "transcriptAndRelease": 4
+    },
+    "AMT": {
+      "cells": 3,
+      "transcripts": 3,
+      "withRelease": 3,
+      "transcriptAndRelease": 3
+    },
+    "AMZN": {
+      "cells": 4,
+      "transcripts": 4,
+      "withRelease": 4,
+      "transcriptAndRelease": 4
+    },
+    "AXP": {
+      "cells": 2,
+      "transcripts": 2,
+      "withRelease": 2,
+      "transcriptAndRelease": 2
+    }
+  },
+  "recommendedPilotSubset": [
+    "ABT",
+    "AMGN",
+    "AMZN"
+  ],
+  "recommendedPilotSubsetNote": "Tickers with all 4 checked quarters having a transcript. ABBV/AMD/AMT (3 cells) and AXP (2 cells) were short because the first events page (limit 8) held fewer than 4 earnings calls; their 4th quarters are on the next events page.",
+  "matrix": [
+    {
+      "ticker": "AAPL",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 4,
+      "callDate": "2026-11-02",
+      "status": "Concluded",
+      "hasTranscript": false,
+      "hasAudio": false,
+      "hasSlides": false,
+      "guidanceStatus": "notExtracted",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "notAttempted",
+      "transcriptMaterialReason": "No transcript source available"
+    },
+    {
+      "ticker": "AAPL",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 3,
+      "callDate": "2026-07-30",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": false,
+      "guidanceStatus": "notExtracted",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "AAPL",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 2,
+      "callDate": "2026-04-30",
+      "status": "Concluded",
+      "hasTranscript": false,
+      "hasAudio": false,
+      "hasSlides": false,
+      "guidanceStatus": "notExtracted",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "notAttempted",
+      "transcriptMaterialReason": "No transcript source available"
+    },
+    {
+      "ticker": "AAPL",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 1,
+      "callDate": "2026-01-29",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": false,
+      "guidanceStatus": "notExtracted",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "ABBV",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 3,
+      "callDate": "2026-10-30",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": false,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "ABBV",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 2,
+      "callDate": "2026-07-31",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": false,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "ABBV",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 1,
+      "callDate": "2026-04-29",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": false,
+      "guidanceStatus": "notExtracted",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "ABT",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 3,
+      "callDate": "2026-10-21",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": false,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "ABT",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 2,
+      "callDate": "2026-07-16",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": false,
+      "guidanceStatus": "notExtracted",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "ABT",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 1,
+      "callDate": "2026-04-16",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": false,
+      "guidanceStatus": "notExtracted",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "ABT",
+      "fiscalYear": 2025,
+      "fiscalQuarter": 4,
+      "callDate": "2026-01-22",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": false,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "ADBE",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 4,
+      "callDate": "2026-12-09",
+      "status": "Scheduled",
+      "hasTranscript": false,
+      "hasAudio": false,
+      "hasSlides": false,
+      "guidanceStatus": null,
+      "hasEarningsRelease": false,
+      "transcriptMaterialStatus": "pending",
+      "transcriptMaterialReason": "Call has not happened yet"
+    },
+    {
+      "ticker": "ADBE",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 3,
+      "callDate": "2026-09-10",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": true,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "ADBE",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 2,
+      "callDate": "2026-06-11",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": true,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "ADBE",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 1,
+      "callDate": "2026-03-12",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": false,
+      "guidanceStatus": "notExtracted",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "AEP",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 3,
+      "callDate": "2026-10-28",
+      "status": "Concluded",
+      "hasTranscript": false,
+      "hasAudio": false,
+      "hasSlides": false,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "notAttempted",
+      "transcriptMaterialReason": "No transcript source available"
+    },
+    {
+      "ticker": "AEP",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 2,
+      "callDate": "2026-07-30",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": false,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "AEP",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 1,
+      "callDate": "2026-05-05",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": false,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "AEP",
+      "fiscalYear": 2025,
+      "fiscalQuarter": 4,
+      "callDate": "2026-02-12",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": false,
+      "guidanceStatus": "notExtracted",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "AMD",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 3,
+      "callDate": "2026-11-03",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": true,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "AMD",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 2,
+      "callDate": "2026-08-04",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": true,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "AMD",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 1,
+      "callDate": "2026-05-05",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": true,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "AMGN",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 3,
+      "callDate": "2026-11-03",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": false,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "AMGN",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 2,
+      "callDate": "2026-04-08",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": true,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "AMGN",
+      "fiscalYear": 2025,
+      "fiscalQuarter": 4,
+      "callDate": "2026-02-03",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": false,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "AMGN",
+      "fiscalYear": 2025,
+      "fiscalQuarter": 3,
+      "callDate": "2025-11-04",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": false,
+      "hasSlides": false,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "AMT",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 3,
+      "callDate": "2026-10-27",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": false,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "AMT",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 2,
+      "callDate": "2026-07-28",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": false,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "AMT",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 1,
+      "callDate": "2026-04-28",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": false,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "AMZN",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 3,
+      "callDate": "2026-10-29",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": false,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "AMZN",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 2,
+      "callDate": "2026-07-30",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": false,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "AMZN",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 1,
+      "callDate": "2026-04-29",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": false,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "AMZN",
+      "fiscalYear": 2025,
+      "fiscalQuarter": 4,
+      "callDate": "2026-02-05",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": false,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "AXP",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 3,
+      "callDate": "2026-10-23",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": true,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    },
+    {
+      "ticker": "AXP",
+      "fiscalYear": 2026,
+      "fiscalQuarter": 2,
+      "callDate": "2026-07-24",
+      "status": "Concluded",
+      "hasTranscript": true,
+      "hasAudio": true,
+      "hasSlides": true,
+      "guidanceStatus": "approved",
+      "hasEarningsRelease": true,
+      "transcriptMaterialStatus": "available",
+      "transcriptMaterialReason": "Transcript on file"
+    }
+  ]
+}

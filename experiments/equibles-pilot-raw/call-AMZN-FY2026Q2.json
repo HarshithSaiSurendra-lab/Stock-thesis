@@ -1,0 +1,83 @@
+{
+  "status": 200,
+  "result": {
+    "ticker": "AMZN",
+    "companyName": "Amazon Com Inc",
+    "guidance": [
+      {
+        "metric": "Net sales",
+        "period": "third quarter 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "low": 197000000000.0,
+        "high": 202000000000.0,
+        "midpoint": 199500000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Net sales are expected to be between $197.0 billion and $202.0 billion, or to grow between 9% and 12% compared with third quarter 2025.",
+        "actual": 201944000000.0,
+        "actualVerdict": "within",
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      },
+      {
+        "metric": "Operating income",
+        "period": "third quarter 2026",
+        "fiscalYear": 2026,
+        "fiscalQuarter": 3,
+        "low": 22500000000.0,
+        "high": 26500000000.0,
+        "midpoint": 24500000000.0,
+        "unit": "USD",
+        "basis": null,
+        "fromTable": false,
+        "quote": "Operating income is expected to be between $22.5 billion and $26.5 billion, compared with $17.4 billion in third quarter 2025.",
+        "actual": null,
+        "actualVerdict": null,
+        "actualIsDerived": false,
+        "changeVsPrior": null,
+        "priorGuidanceRange": null
+      }
+    ],
+    "guidanceStatus": "approved",
+    "corrections": [],
+    "id": "ebea8095-da28-4044-8140-5ece826256c9",
+    "eventType": "EarningsCall",
+    "eventTypeName": "Earnings Call",
+    "title": "Q2 2026 Amazon.com, Inc. Earnings Conference Call",
+    "callDate": "2026-07-30T00:00:00+00:00",
+    "callDateIsPeriodEnd": false,
+    "fiscalYear": 2026,
+    "fiscalQuarter": 2,
+    "status": "Concluded",
+    "statusName": "Concluded",
+    "webcastUrl": "https://events.q4inc.com/attendee/915225528",
+    "transcriptDocumentId": "6095c94c-ac9a-4e38-97ed-15eab141f5e6",
+    "earningsReleaseDocumentId": "1aaddc1c-3f5d-4dfd-8ba6-af5cbe285c97",
+    "hasAudio": true,
+    "hasSlides": false,
+    "hasTranscript": true,
+    "materials": {
+      "transcript": {
+        "status": "available",
+        "reason": "Transcript on file",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "audio": {
+        "status": "available",
+        "reason": "Recording captured",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      },
+      "slides": {
+        "status": "notPublished",
+        "reason": "No slide deck was published",
+        "lastAttemptAt": null,
+        "nextAttemptAt": null
+      }
+    }
+  }
+}
