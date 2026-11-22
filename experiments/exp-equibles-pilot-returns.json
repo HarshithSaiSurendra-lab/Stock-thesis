@@ -1,0 +1,454 @@
+{
+  "experiment_id": "exp-equibles-pilot-returns",
+  "design_doc": "experiments/exp-equibles-pilot-returns-design.md",
+  "date": "2026-11-22",
+  "price_source": "Alpaca daily bars, adjustment=all (split+dividend), fetched 2026-11-22; files experiments/equibles-pilot-raw/prices-adjusted-*.csv",
+  "last_trading_day": "2026-11-20",
+  "return_definition": "R = close(T+20)/close(T) - 1, T = call date (even if call was after close); excess = R - R_SPY same window; T+20 = 20th trading day after T",
+  "n_scored": 21,
+  "n_included": 16,
+  "n_excluded": 5,
+  "excluded": [
+    {
+      "ticker": "ABBV",
+      "call_date": "2026-10-30",
+      "fiscal_year": 2026,
+      "fiscal_quarter": 3,
+      "score": 0.45,
+      "reason": "T+20 falls after last available trading day 2026-11-20; no partial window used"
+    },
+    {
+      "ticker": "AMD",
+      "call_date": "2026-11-03",
+      "fiscal_year": 2026,
+      "fiscal_quarter": 3,
+      "score": 0.45,
+      "reason": "T+20 falls after last available trading day 2026-11-20; no partial window used"
+    },
+    {
+      "ticker": "AMGN",
+      "call_date": "2026-11-03",
+      "fiscal_year": 2026,
+      "fiscal_quarter": 3,
+      "score": 0.3,
+      "reason": "T+20 falls after last available trading day 2026-11-20; no partial window used"
+    },
+    {
+      "ticker": "AMT",
+      "call_date": "2026-10-27",
+      "fiscal_year": 2026,
+      "fiscal_quarter": 3,
+      "score": -0.1,
+      "reason": "T+20 falls after last available trading day 2026-11-20; no partial window used"
+    },
+    {
+      "ticker": "AMZN",
+      "call_date": "2026-10-29",
+      "fiscal_year": 2026,
+      "fiscal_quarter": 3,
+      "score": 0.45,
+      "reason": "T+20 falls after last available trading day 2026-11-20; no partial window used"
+    }
+  ],
+  "per_call": [
+    {
+      "ticker": "ABBV",
+      "call_date": "2026-04-29",
+      "fiscal_year": 2026,
+      "fiscal_quarter": 1,
+      "t_plus_20": "2026-05-28",
+      "score": 0.45,
+      "confidence": 0.6,
+      "evasion": 0.4,
+      "analyst_tone": -0.3,
+      "qoq_score_delta": null,
+      "close_t": 201.21,
+      "close_t20": 215.76,
+      "return_20d": 0.07231250931862232,
+      "spy_return_20d": 0.06046695574796246,
+      "excess_return_20d": 0.011845553570659861
+    },
+    {
+      "ticker": "ABBV",
+      "call_date": "2026-07-31",
+      "fiscal_year": 2026,
+      "fiscal_quarter": 2,
+      "t_plus_20": "2026-08-28",
+      "score": 0.3,
+      "confidence": 0.6,
+      "evasion": 0.35,
+      "analyst_tone": 0.3,
+      "qoq_score_delta": -0.15,
+      "close_t": 249.41,
+      "close_t20": 253.92,
+      "return_20d": 0.01808267511326722,
+      "spy_return_20d": 0.029871977240398362,
+      "excess_return_20d": -0.01178930212713114
+    },
+    {
+      "ticker": "ABT",
+      "call_date": "2026-01-22",
+      "fiscal_year": 2025,
+      "fiscal_quarter": 4,
+      "t_plus_20": "2026-02-20",
+      "score": 0.2,
+      "confidence": 0.6,
+      "evasion": 0.45,
+      "analyst_tone": 0.1,
+      "qoq_score_delta": null,
+      "close_t": 106.51,
+      "close_t20": 110.04,
+      "return_20d": 0.03314242794103839,
+      "spy_return_20d": 0.0006582700662658425,
+      "excess_return_20d": 0.032484157874772546
+    },
+    {
+      "ticker": "ABT",
+      "call_date": "2026-04-16",
+      "fiscal_year": 2026,
+      "fiscal_quarter": 1,
+      "t_plus_20": "2026-05-14",
+      "score": -0.35,
+      "confidence": 0.7,
+      "evasion": 0.6,
+      "analyst_tone": -0.4,
+      "qoq_score_delta": -0.55,
+      "close_t": 94.21,
+      "close_t20": 83.78,
+      "return_20d": -0.11071011569897027,
+      "spy_return_20d": 0.06629232796653861,
+      "excess_return_20d": -0.17700244366550888
+    },
+    {
+      "ticker": "ABT",
+      "call_date": "2026-07-16",
+      "fiscal_year": 2026,
+      "fiscal_quarter": 2,
+      "t_plus_20": "2026-08-13",
+      "score": 0.2,
+      "confidence": 0.55,
+      "evasion": 0.5,
+      "analyst_tone": -0.2,
+      "qoq_score_delta": 0.55,
+      "close_t": 98.23,
+      "close_t20": 110.59,
+      "return_20d": 0.12582714038481124,
+      "spy_return_20d": 0.036174985978687735,
+      "excess_return_20d": 0.08965215440612351
+    },
+    {
+      "ticker": "ABT",
+      "call_date": "2026-10-21",
+      "fiscal_year": 2026,
+      "fiscal_quarter": 3,
+      "t_plus_20": "2026-11-18",
+      "score": -0.35,
+      "confidence": 0.7,
+      "evasion": 0.7,
+      "analyst_tone": -0.4,
+      "qoq_score_delta": -0.55,
+      "close_t": 100.51,
+      "close_t20": 104.48,
+      "return_20d": 0.03949855735747687,
+      "spy_return_20d": -0.055478663544994755,
+      "excess_return_20d": 0.09497722090247163
+    },
+    {
+      "ticker": "AMD",
+      "call_date": "2026-05-05",
+      "fiscal_year": 2026,
+      "fiscal_quarter": 1,
+      "t_plus_20": "2026-06-03",
+      "score": 0.45,
+      "confidence": 0.7,
+      "evasion": 0.35,
+      "analyst_tone": -0.2,
+      "qoq_score_delta": null,
+      "close_t": 355.26,
+      "close_t20": 542.52,
+      "return_20d": 0.5271069076169566,
+      "spy_return_20d": 0.04210409376215085,
+      "excess_return_20d": 0.4850028138548057
+    },
+    {
+      "ticker": "AMD",
+      "call_date": "2026-08-04",
+      "fiscal_year": 2026,
+      "fiscal_quarter": 2,
+      "t_plus_20": "2026-09-01",
+      "score": 0.6,
+      "confidence": 0.7,
+      "evasion": 0.35,
+      "analyst_tone": 0.4,
+      "qoq_score_delta": 0.15,
+      "close_t": 518.58,
+      "close_t20": 459.61,
+      "return_20d": -0.1137143738670987,
+      "spy_return_20d": -0.012385953055548349,
+      "excess_return_20d": -0.10132842081155036
+    },
+    {
+      "ticker": "AMGN",
+      "call_date": "2025-11-04",
+      "fiscal_year": 2025,
+      "fiscal_quarter": 3,
+      "t_plus_20": "2025-12-03",
+      "score": 0.2,
+      "confidence": 0.5,
+      "evasion": 0.5,
+      "analyst_tone": -0.1,
+      "qoq_score_delta": null,
+      "close_t": 287.03,
+      "close_t20": 336.55,
+      "return_20d": 0.17252551998049004,
+      "spy_return_20d": 0.012814371257484858,
+      "excess_return_20d": 0.15971114872300518
+    },
+    {
+      "ticker": "AMGN",
+      "call_date": "2026-02-03",
+      "fiscal_year": 2025,
+      "fiscal_quarter": 4,
+      "t_plus_20": "2026-03-04",
+      "score": -0.3,
+      "confidence": 0.6,
+      "evasion": 0.6,
+      "analyst_tone": -0.2,
+      "qoq_score_delta": -0.5,
+      "close_t": 329.9,
+      "close_t20": 372.09,
+      "return_20d": 0.12788723855713857,
+      "spy_return_20d": -0.006372871446320261,
+      "excess_return_20d": 0.13426011000345883
+    },
+    {
+      "ticker": "AMGN",
+      "call_date": "2026-04-08",
+      "fiscal_year": 2026,
+      "fiscal_quarter": 2,
+      "t_plus_20": "2026-05-06",
+      "score": 0.05,
+      "confidence": 0.35,
+      "evasion": 0.6,
+      "analyst_tone": -0.2,
+      "qoq_score_delta": 0.35,
+      "close_t": 343.19,
+      "close_t20": 324.84,
+      "return_20d": -0.05346892391969471,
+      "spy_return_20d": 0.08553374962830795,
+      "excess_return_20d": -0.13900267354800266
+    },
+    {
+      "ticker": "AMT",
+      "call_date": "2026-04-28",
+      "fiscal_year": 2026,
+      "fiscal_quarter": 1,
+      "t_plus_20": "2026-05-27",
+      "score": -0.1,
+      "confidence": 0.55,
+      "evasion": 0.6,
+      "analyst_tone": -0.2,
+      "qoq_score_delta": null,
+      "close_t": 174.82,
+      "close_t20": 181.27,
+      "return_20d": 0.03689509209472619,
+      "spy_return_20d": 0.05448382996751855,
+      "excess_return_20d": -0.01758873787279236
+    },
+    {
+      "ticker": "AMT",
+      "call_date": "2026-07-28",
+      "fiscal_year": 2026,
+      "fiscal_quarter": 2,
+      "t_plus_20": "2026-08-25",
+      "score": 0.2,
+      "confidence": 0.6,
+      "evasion": 0.5,
+      "analyst_tone": -0.2,
+      "qoq_score_delta": 0.3,
+      "close_t": 169.67,
+      "close_t20": 176.66,
+      "return_20d": 0.04119761890729068,
+      "spy_return_20d": 0.03380106355628332,
+      "excess_return_20d": 0.007396555351007361
+    },
+    {
+      "ticker": "AMZN",
+      "call_date": "2026-02-05",
+      "fiscal_year": 2025,
+      "fiscal_quarter": 4,
+      "t_plus_20": "2026-03-06",
+      "score": 0.2,
+      "confidence": 0.6,
+      "evasion": 0.6,
+      "analyst_tone": -0.2,
+      "qoq_score_delta": null,
+      "close_t": 222.69,
+      "close_t20": 213.21,
+      "return_20d": -0.04257038933045931,
+      "spy_return_20d": -0.007734182110241905,
+      "excess_return_20d": -0.03483620722021741
+    },
+    {
+      "ticker": "AMZN",
+      "call_date": "2026-04-29",
+      "fiscal_year": 2026,
+      "fiscal_quarter": 1,
+      "t_plus_20": "2026-05-28",
+      "score": 0.5,
+      "confidence": 0.7,
+      "evasion": 0.35,
+      "analyst_tone": 0.2,
+      "qoq_score_delta": 0.3,
+      "close_t": 263.04,
+      "close_t20": 274.0,
+      "return_20d": 0.04166666666666652,
+      "spy_return_20d": 0.06046695574796246,
+      "excess_return_20d": -0.01880028908129594
+    },
+    {
+      "ticker": "AMZN",
+      "call_date": "2026-07-30",
+      "fiscal_year": 2026,
+      "fiscal_quarter": 2,
+      "t_plus_20": "2026-08-27",
+      "score": 0.45,
+      "confidence": 0.7,
+      "evasion": 0.3,
+      "analyst_tone": 0.4,
+      "qoq_score_delta": -0.05,
+      "close_t": 235.5,
+      "close_t20": 256.26,
+      "return_20d": 0.08815286624203811,
+      "spy_return_20d": 0.03965668716631754,
+      "excess_return_20d": 0.04849617907572057
+    }
+  ],
+  "ic_table": {
+    "score__raw": {
+      "n": 16,
+      "pearson": {
+        "r": 0.21310990457864967,
+        "t": 0.8161322483054242,
+        "p": 0.4280929927030602
+      },
+      "spearman": {
+        "r": 0.14384544916861283,
+        "t": 0.5438766144350774,
+        "p": 0.5950822562932587
+      }
+    },
+    "score__excess": {
+      "n": 16,
+      "pearson": {
+        "r": 0.15990555747943366,
+        "t": 0.6061110548088243,
+        "p": 0.5541419629558315
+      },
+      "spearman": {
+        "r": 0.0029967801910127678,
+        "t": 0.011212975088488899,
+        "p": 0.9912117487545413
+      }
+    },
+    "qoq_score_delta__raw": {
+      "n": 10,
+      "pearson": {
+        "r": 0.09132092707134577,
+        "t": 0.2593783961129338,
+        "p": 0.8018930913367834
+      },
+      "spearman": {
+        "r": 0.17683255566254022,
+        "t": 0.5081662138494989,
+        "p": 0.6250493381834632
+      }
+    },
+    "qoq_score_delta__excess": {
+      "n": 10,
+      "pearson": {
+        "r": -0.10845349741885273,
+        "t": -0.30857292403379666,
+        "p": 0.7655288152352611
+      },
+      "spearman": {
+        "r": -0.14024650966339397,
+        "t": -0.4006366775545608,
+        "p": 0.6991741437226112
+      }
+    },
+    "evasion__raw": {
+      "n": 16,
+      "pearson": {
+        "r": -0.2854678032937392,
+        "t": -1.1144989093160211,
+        "p": 0.2838327848613619
+      },
+      "spearman": {
+        "r": -0.22028358735945955,
+        "t": -0.8449819564368972,
+        "p": 0.41232903505966656
+      }
+    },
+    "evasion__excess": {
+      "n": 16,
+      "pearson": {
+        "r": -0.21831598447347322,
+        "t": -0.8370549437862141,
+        "p": 0.41662203779818163
+      },
+      "spearman": {
+        "r": -0.11617696045670127,
+        "t": -0.4376579698468233,
+        "p": 0.6683106083228774
+      }
+    },
+    "analyst_tone__raw": {
+      "n": 16,
+      "pearson": {
+        "r": -0.13667521564477175,
+        "t": -0.5162362363936834,
+        "p": 0.6137462879144544
+      },
+      "spearman": {
+        "r": -0.02306437074048682,
+        "t": -0.08632193633970907,
+        "p": 0.9324329357099631
+      }
+    },
+    "analyst_tone__excess": {
+      "n": 16,
+      "pearson": {
+        "r": -0.12324775773670038,
+        "t": -0.46469373985752294,
+        "p": 0.6492954122961311
+      },
+      "spearman": {
+        "r": -0.027677244888584182,
+        "t": -0.10359845514112344,
+        "p": 0.9189574454887002
+      }
+    }
+  },
+  "median_split": {
+    "signal": "score",
+    "median": 0.2,
+    "n_above": 6,
+    "n_below": 5,
+    "n_dropped_at_median": 5,
+    "above_mean_raw": 0.10560120851507533,
+    "below_mean_raw": 0.00802036967813533,
+    "spread_raw": 0.09758083883694,
+    "above_mean_excess": 0.06890442241353478,
+    "below_mean_excess": -0.02087130483607469,
+    "spread_excess": 0.08977572724960947
+  },
+  "evidence_bar": "|IC| >= 0.3 with p < 0.10 on the score (Pearson or Spearman, raw or excess)",
+  "verdict": "no evidence",
+  "spend_usd": 0.0,
+  "notes": [
+    "QoQ-delta IC uses only the 10 included calls with a non-null qoq_score_delta.",
+    "16 ICs computed on one small sample; no formal multiple-testing correction \u2014 read p < 0.10 against that multiplicity.",
+    "Scores are single-model single-pass Haiku; knowledge-cutoff contamination possible."
+  ]
+}
