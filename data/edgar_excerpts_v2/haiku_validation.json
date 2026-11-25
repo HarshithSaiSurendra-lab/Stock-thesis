@@ -1,0 +1,100 @@
+{
+  "checks": {
+    "accession_overlap_v1_v2": [],
+    "dataset_errors": [],
+    "dataset_validate_ok": true,
+    "filings_without_score": [],
+    "n_scored": 6,
+    "n_v2_filings": 6,
+    "scores_before_filing_date": [],
+    "union_diff_cells": 0,
+    "union_equals_v1_pre_nov13": true
+  },
+  "results": [
+    {
+      "accession": "0000002969-26-000050",
+      "cached": false,
+      "confidence": 0.75,
+      "cost_usd": 0.004588,
+      "excerpt_chars": 143728,
+      "filing_date": "2026-11-19",
+      "form": "10-K",
+      "input_tokens": 45096,
+      "output_tokens": 157,
+      "rationale": "Core industrial gases earnings are growing (adjusted EPS +12%, adjusted operating income +11%, backlog strengthened, dividend raised for 44th year, capex falling sharply from $5.1B to $3.3B), with FY2027 guidance for earnings growth, though GAAP results remain depressed by large ",
+      "score": 0.45,
+      "ticker": "APD"
+    },
+    {
+      "accession": "0000858877-26-000185",
+      "cached": false,
+      "confidence": 0.7,
+      "cost_usd": 0.003931,
+      "excerpt_chars": 122819,
+      "filing_date": "2026-11-17",
+      "form": "10-Q",
+      "input_tokens": 37584,
+      "output_tokens": 346,
+      "rationale": "Revenue grew 24% with Networking up 43% on AI infrastructure demand and operating margin rose 7.6 points, but product gross margin fell 2.7 points, inventory and purchase commitments rose 24% against hyperscaler concentration risk, and RPO declined 1%.",
+      "score": 0.45,
+      "ticker": "CSCO"
+    },
+    {
+      "accession": "0001327567-26-000033",
+      "cached": false,
+      "confidence": 0.5,
+      "cost_usd": 0.003649,
+      "excerpt_chars": 112311,
+      "filing_date": "2026-11-19",
+      "form": "10-Q",
+      "input_tokens": 33638,
+      "output_tokens": 570,
+      "rationale": "Headline revenue growth of 39% and NGS ARR rising from $9.1B to $9.7B are strong, but much of the growth is acquired, operating margin fell from 12.5% to 2.8%, gross margin dropped about 6 points, and net income relies on a one-time $369M tax benefit while RPO slipped and $1.1B i",
+      "score": 0.1,
+      "ticker": "PANW"
+    },
+    {
+      "accession": "0001535527-26-000038",
+      "cached": false,
+      "confidence": 0.6,
+      "cost_usd": 0.004086,
+      "excerpt_chars": 127133,
+      "filing_date": "2026-11-23",
+      "form": "10-Q",
+      "input_tokens": 38730,
+      "output_tokens": 426,
+      "rationale": "Revenue grew 28%, ARR grew 27% with record net new ARR of $419M in the quarter, retention improved, and operating results near breakeven. These are offset by a large all-stock Zscaler acquisition with fixed-ratio dilution and integration risk, plus lingering July 19 Incident effe",
+      "score": 0.35,
+      "ticker": "CRWD"
+    },
+    {
+      "accession": "0001628280-26-075287",
+      "cached": false,
+      "confidence": 0.5,
+      "cost_usd": 0.001141,
+      "excerpt_chars": 27638,
+      "filing_date": "2026-11-20",
+      "form": "10-Q",
+      "input_tokens": 9957,
+      "output_tokens": 290,
+      "rationale": "Q3 comparable sales accelerated to +2.2% from +0.2% and EPS rose 2.8%, but gross margin fell 60 bps, transactions declined, ROIC dropped to 24.5% from 26.3%, buybacks remain paused, and the IEEPA tariff refunds are a one-time benefit that flatters results.",
+      "score": 0.15,
+      "ticker": "HD"
+    },
+    {
+      "accession": "0001744489-26-000066",
+      "cached": false,
+      "confidence": 0.6,
+      "cost_usd": 0.004051,
+      "excerpt_chars": 123645,
+      "filing_date": "2026-11-17",
+      "form": "10-K",
+      "input_tokens": 38051,
+      "output_tokens": 491,
+      "rationale": "Headline EPS fell 18% on prior-year tax benefits, but segment operating income rose 7-16%, adjusted EPS grew roughly 18% excluding one-time items, and the $9B buyback target supports the stock, partly offset by FCC litigation risk and rising content and programming costs.",
+      "score": 0.4,
+      "ticker": "DIS"
+    }
+  ],
+  "total_cost_usd": 0.021446
+}

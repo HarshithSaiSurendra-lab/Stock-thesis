@@ -1,0 +1,67 @@
+{
+  "amendments": "excluded",
+  "build_params": {
+    "edgartools_version": "5.62.1",
+    "tickers_requested": 133,
+    "trim_chars": {
+      "excerpt_max": 160000,
+      "mda_max": 100000,
+      "risk_max": 60000
+    },
+    "universe": "config.DEFAULT_SEED_SYMBOLS"
+  },
+  "built_at": "2026-11-25T02:00:33.197474+00:00",
+  "coverage": {
+    "both_sections_empty": 0,
+    "filing_date_max": "2026-11-23",
+    "filing_date_min": "2026-11-17",
+    "holdout_window_records": 0,
+    "missing_mda": 0,
+    "missing_risk": 0,
+    "n_records": 6,
+    "n_tickers": 6,
+    "per_form": {
+      "10-K": 2,
+      "10-Q": 4
+    },
+    "per_ticker": {
+      "APD": 1,
+      "CRWD": 1,
+      "CSCO": 1,
+      "DIS": 1,
+      "HD": 1,
+      "PANW": 1
+    },
+    "per_year": {
+      "2026": 6
+    },
+    "tickers": [
+      "APD",
+      "CRWD",
+      "CSCO",
+      "DIS",
+      "HD",
+      "PANW"
+    ],
+    "train_window_records": 0
+  },
+  "dataset_id": "dataset-edgar-point-in-time-v2",
+  "extends": "dataset-edgar-point-in-time-v1 (filing dates 2023-01-05..2026-11-12)",
+  "failures": [],
+  "forms": [
+    "10-K",
+    "10-Q"
+  ],
+  "fresh_window": {
+    "end": "2026-12-31",
+    "note": "partial slice through 2026-11-24; completion run in Jan 2027 extends to 2026-12-31",
+    "start": "2026-11-16"
+  },
+  "n_failures": 0,
+  "registered_at": "2026-11-22",
+  "source": "SEC EDGAR direct via edgartools",
+  "window": {
+    "end": "2026-11-24",
+    "start": "2026-11-13"
+  }
+}

@@ -749,3 +749,37 @@ v3, H3-lazy-veto-v3, H7-C1c — four looks at the same 63-day window,
 n_trials 129; DSR: v2 0.731, v3 0.931, H3 0.857, C1c 1.0. NO paper
 trading of any variant without a further user decision; ALLOW_LIVE
 stays 0. Full test suite 133/133 passed.**
+
+## Done — 2026-11-24 — Fresh-validation Step 0 (partial, through Nov 24)
+
+User authorized the fresh-validation run Nov 24. Step 0 only: dataset
+refresh + Haiku scoring. **No gate was read and no design backtest was
+run** — the window has 7/30 trading days and 6/40 filings so far.
+
+- `build_edgar_dataset_v2.py` — dataset-edgar-point-in-time-v2
+  extension (2026-11-13..2026-11-24): 6 filings, 6 tickers
+  (CSCO, DIS 10-K 11-17; APD 10-K, PANW 11-19; HD 11-20; CRWD 11-23),
+  2x 10-K + 4x 10-Q, 0 failures, 0 missing sections. Same universe,
+  same trims, same point-in-time discipline, amendments excluded;
+  v1 dataset untouched. NVDA's Q3 10-Q had not been filed as of Nov 24
+  (verified) — the January run re-fetches the full window (resumable)
+  and picks up late filings.
+- `score_fresh_v2.py` — 6/6 scored Haiku 5.5, prompt
+  `llm-sentiment-v2`, same JSON contract as Phase 2, Haiku-only.
+  Scores: CSCO +0.45, DIS +0.40, APD +0.45, PANW +0.10, HD +0.15,
+  CRWD +0.35. Spend $0.021446 (203,056 in / 2,280 out tokens); run cap
+  $1.00, November ledger $10.691653/$15 (headroom $4.31).
+- `validate_fresh_v2.py` — VALIDATION PASSED: dataset validate ok,
+  union series == v1 series on all 749 pre-Nov-13 business days
+  (0 diff cells), 0 scores dated before filing date, 0 accessions
+  overlapping v1.
+- Window end **FIXED 2026-12-31** in
+  `experiments/exp-fresh-validation-v1-step0.json` before any gate was
+  read. Minimums NOT met (7/30 trading days, 6/40 filings).
+- Runbook for the January completion run:
+  `experiments/exp-fresh-validation-v1-runbook-jan2027.md` (refresh
+  through Dec 31, score remaining filings — December budget must be
+  confirmed first — check minimums, recompute v4 base, run v2/v3/H3/H7
+  frozen, SG1–SG4 + H7 audit rule, DSR from n_trials 129).
+- Sheet 199 → 200 rows (1 Step 0 summary row). Registry entry
+  appended. ALLOW_LIVE stays 0; no paper trading.
