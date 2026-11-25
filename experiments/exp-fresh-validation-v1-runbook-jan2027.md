@@ -17,26 +17,32 @@ a new experiment instead.
   days AND ≥ 40 in-scope filings with fresh Haiku scores (filing date
   inside the window 2026-11-16..2026-12-31).
 - ALLOW_LIVE stays 0. No paper trading, no live money.
-- December Anthropic budget must be confirmed BEFORE scoring (the
-  November ledger does not carry over). Do NOT assume a December
-  budget.
+- December Anthropic budget CONFIRMED 2026-11-25: **$15** (same as
+  November; the November ledger does not carry over, and the
+  provider's ledger is keyed by calendar month, so December starts
+  at $0 against the $15 cap, enforced in code in `score_fresh_v2.py`).
 - Use the repo venv (`.venv/bin/python`). Do not import sklearn or
   scipy (standing decision). Do not install anything.
 
 ## Step 1 — Complete the dataset refresh (through Dec 31)
 
-The v2 extension covers 2026-11-13..2026-11-24. Extend it to
-2026-12-31 with the SAME extraction (same universe, same trims,
-same point-in-time discipline, amendments excluded):
+The v2 extension covers 2026-11-13..2026-12-31 (window end is FIXED
+at 2026-12-31 in `build_edgar_dataset_v2.py` since 2026-11-25) and
+is refreshed DAILY by `scripts/run_daily.py`
+(`build_edgar_dataset_v2.py --workers 4`, parallel, resumable — it
+skips accessions already stored in data/edgar_excerpts_v2/).
+As of 2026-11-25 the extension holds 7 filings (6 Step 0 filings +
+LOW 10-Q filed 2026-11-25, scored the same day). The January
+completion run is a final refresh + validate, not a fresh build:
 
 ```bash
 cd ~/workspace/stock-thesis
-# Edit build_edgar_dataset_v2.py: V2_WINDOW_END = date(2026, 12, 31)
-# (WINDOW_START stays 2026-11-13; the script is resumable — it skips
-# accessions already stored in data/edgar_excerpts_v2/.)
-.venv/bin/python build_edgar_dataset_v2.py
+.venv/bin/python build_edgar_dataset_v2.py --workers 4
 .venv/bin/python build_edgar_dataset_v2.py --validate
 ```
+
+Same extraction throughout (same universe, same trims, same
+point-in-time discipline, amendments excluded).
 
 ## Step 2 — Score remaining filings (Haiku 5.5 only)
 

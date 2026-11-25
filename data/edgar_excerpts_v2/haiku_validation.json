@@ -4,8 +4,8 @@
     "dataset_errors": [],
     "dataset_validate_ok": true,
     "filings_without_score": [],
-    "n_scored": 6,
-    "n_v2_filings": 6,
+    "n_scored": 7,
+    "n_v2_filings": 7,
     "scores_before_filing_date": [],
     "union_diff_cells": 0,
     "union_equals_v1_pre_nov13": true
@@ -24,6 +24,20 @@
       "rationale": "Core industrial gases earnings are growing (adjusted EPS +12%, adjusted operating income +11%, backlog strengthened, dividend raised for 44th year, capex falling sharply from $5.1B to $3.3B), with FY2027 guidance for earnings growth, though GAAP results remain depressed by large ",
       "score": 0.45,
       "ticker": "APD"
+    },
+    {
+      "accession": "0000060667-26-000130",
+      "cached": false,
+      "confidence": 0.5,
+      "cost_usd": 0.000944,
+      "excerpt_chars": 21538,
+      "filing_date": "2026-11-25",
+      "form": "10-Q",
+      "input_tokens": 7793,
+      "output_tokens": 330,
+      "rationale": "Sales growth (+9.3%, comps +1.8%) and a modest adjusted EPS increase are offset by a 124bp gross margin decline, lower operating margin, a drop in ROIC from 26.1% to 22.9%, and a one-time $251M tariff refund that flatters the quarter.",
+      "score": 0.05,
+      "ticker": "LOW"
     },
     {
       "accession": "0000858877-26-000185",
@@ -96,5 +110,5 @@
       "ticker": "DIS"
     }
   ],
-  "total_cost_usd": 0.021446
+  "total_cost_usd": 0.02239
 }

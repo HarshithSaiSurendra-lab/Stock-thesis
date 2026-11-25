@@ -118,5 +118,25 @@
     "tokens_out": 426,
     "cost_usd": 0.004086,
     "cached": false
+  },
+  "0000060667-26-000130": {
+    "symbol": "LOW",
+    "as_of": "2026-11-25",
+    "role": "screen",
+    "model_id": "claude-haiku-5-5",
+    "score": 0.05,
+    "confidence": 0.5,
+    "rationale": "Sales growth (+9.3%, comps +1.8%) and a modest adjusted EPS increase are offset by a 124bp gross margin decline, lower operating margin, a drop in ROIC from 26.1% to 22.9%, and a one-time $251M tariff refund that flatters the quarter.",
+    "sources": [
+      {
+        "doc": "10-Q",
+        "section": "MD&A + Risk Factors",
+        "date": "2026-11-25"
+      }
+    ],
+    "tokens_in": 7793,
+    "tokens_out": 330,
+    "cost_usd": 0.000944,
+    "cached": false
   }
 }

@@ -783,3 +783,86 @@ run** — the window has 7/30 trading days and 6/40 filings so far.
   frozen, SG1–SG4 + H7 audit rule, DSR from n_trials 129).
 - Sheet 199 → 200 rows (1 Step 0 summary row). Registry entry
   appended. ALLOW_LIVE stays 0; no paper trading.
+
+## Done — 2026-11-25 — Daily run: B1/B4/B9 small fixes (user-approved)
+
+Only B1 (daily run), B4 (filing refresh), B9 (missed-run alert).
+B2 (porting the four passing designs — gated on the January
+fresh-validation gate), B3 (exact-once), B5–B12 untouched.
+
+- `scripts/run_daily.py` — the daily wrapper. Order: (0) safety
+  preflight (`deploy_check.py` + explicit ALLOW_LIVE=0 read from
+  .env; exit 2, nothing else runs); (1) EDGAR v2 refresh
+  (`--workers 4`) + `--validate`; (2) `score_fresh_v2.py` (Haiku
+  only, resumes from the scores file, never re-scores; run cap $1,
+  monthly cap $15) + `validate_fresh_v2.py` as a WARNING-only check
+  (one unscored filing must not kill the daily decision);
+  (3) `main.py --dry-run --mode regular` — `--mode regular` is
+  deliberate: at 16:15 ET the market is closed, so `--mode auto`
+  would route to the disabled after-hours engine and no regular
+  decision would run; dry-run never submits an order;
+  (4) decision-log check: a log for today's UTC date must exist in
+  `.cache/decision_logs/` with mtime after the run started, and its
+  status + skip summary are reported (a "valid quote unavailable"
+  count > 0 is surfaced as a warning). Exit 0 ok / 1 step failed /
+  2 safety. Every step has a timeout (deploy_check 60s, refresh
+  30 min, validate 5 min, scoring 10 min, decision 60 min) so a hung
+  step is killed and fails loudly instead of blocking forever.
+  Every run writes a timestamped log to `.cache/daily_runs/`,
+  appends one outcome line to `./alerts.log`, and appends a JSON
+  record to `.cache/daily_runs/runs.jsonl`. No cron is created by
+  this script — the parent creates the scheduled job after
+  verifying the dry run. Cron command (cwd must be the repo root):
+  `cd /home/hatch/workspace/stock-thesis && /home/hatch/workspace/stock-thesis/.venv/bin/python scripts/run_daily.py`
+  (suggested: weekdays 16:15 ET).
+- `build_edgar_dataset_v2.py` — V2_WINDOW_END is now 2026-12-31 in
+  code (the design's fixed end; runbook Step 1 updated — the
+  January completion run is now just a final refresh + validate).
+  New `--workers N` / `--chunk-size` (default 12, under the ~15
+  ticker edgartools degradation limit) / `--out-dir` (worker mode):
+  fresh subprocess per chunk writes to its own temp dir; the parent
+  merges shards (dedup by accession) and writes the manifest once;
+  any worker failure aborts WITHOUT merging. Verified 2026-11-25:
+  12 chunks, 4 workers, 1m20s, 1 new filing (LOW 10-Q filed
+  2026-11-25), 7 records / 7 tickers total, 0 failures, 0
+  duplicates; `--validate` passes; union check passes (0 diff
+  cells on 749 pre-Nov-13 days).
+- `score_fresh_v2.py` — LOW 10-Q scored the same day it was filed:
+  +0.05, $0.000944, 1 new / 0 failed; 7/7 scored. November ledger
+  $10.692597/$15 (headroom $4.31). December budget confirmed $15.
+- `scripts/test_run_daily.py` — 11 tests, all pass: decision-log
+  check (missing/empty/yesterday-only/stale/corrupt/fresh), step
+  exit-code propagation, step timeout kills a hung step (rc -2),
+  finish writes ledger + alert, ALLOW_LIVE read, v2 merge dedup.
+- Telegram: NOT configured — no NOTIFIER_TOKEN / NOTIFIER_CHAT_ID
+  in .env (verified by name only; no credentials invented). The
+  alert path is the wrapper's non-zero exit + alerts.log + run
+  logs. `guardian.health_report()` still has no timer caller (it
+  needs a live Guardian instance; the daily decision log is the
+  liveness signal instead).
+- First full wrapper run COMPLETED 2026-11-25 23:50:53 UTC
+  (42m20s total, exit 0, DAILY_RUN OK): preflight, refresh,
+  validate, scoring, and fresh validation all passed; the decision
+  step took ~40 min and produced
+  `.cache/decision_logs/2026-11-25_regime_blocked_20261125T235052Z.json`
+  (status regime_blocked, reason "benchmark data unavailable",
+  selected 0, orders 0 — safe, no trading). The slowness was the
+  alpaca-py SDK retrying a flaky paper trading API: the run log
+  shows `[paper] equity fetch failed` and `[paper] clock fetch
+  failed` with `Max retries exceeded ... ProxyError('Unable to
+  connect to proxy', RemoteDisconnected(...))` before the calls
+  finally gave up (direct probes the same evening: authenticated
+  paper-api calls time out even at 30s, unauthenticated calls
+  return 401 instantly, data API answers in ~1s). The hang was in
+  `guardian.can_trade()` → `broker.paper.equity()` before any bar
+  fetch. The decision-step timeout was raised 30 → 60 min
+  afterwards, because a 30-min cap would have killed this
+  slow-but-legitimate run; the real fix (a timeout on the
+  account calls / a more reliable data path) is B5 territory, out
+  of scope here. Follow-up worth noting: the regime check fails
+  closed on one failed SPY benchmark fetch (no retry), so a flaky
+  data day yields regime_blocked instead of a decision — safe, but
+  no signal that day. Run recorded in `.cache/daily_runs/runs.jsonl`
+  and `./alerts.log`. No cron exists yet — the parent creates it
+  after verifying this dry run. Committed + pushed on agentic-p0
+  (see git log).
