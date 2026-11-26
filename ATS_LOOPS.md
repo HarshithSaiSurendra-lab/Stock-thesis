@@ -48,6 +48,14 @@ be checked.
   started; `data_freshness` shows expected vs observed session
   (`expected_latest_session`, `observed_latest_bar`,
   `missing_sessions`, `last_quote_ts`, `quote_age_seconds`); 0 orders.
+- **B5 (Nov 26, 2026):** the benchmark fetch now retries transient
+  failures (3 attempts, 1s/2s backoff — total retry delay 3s, far
+  inside the 60-minute decision timeout) and still fails closed as
+  "benchmark data unavailable" when all attempts fail; the universe
+  screen runs per-symbol work in parallel (4 daemon threads, 60s
+  per-symbol timeout) with identical selection and ordering, and a
+  failing/hung symbol is skipped, never fatal. `StaleBarsError` is
+  never retried — the freshness check above is unchanged.
 - **Stop conditions:** any step rc != 0; safety preflight fails;
   regime_blocked / halted / kill switch present; `StaleBarsError`
   ("benchmark data stale") — the run stops, it does not trade on old

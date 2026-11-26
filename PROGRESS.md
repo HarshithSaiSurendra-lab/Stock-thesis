@@ -1256,3 +1256,148 @@ or a 404 never authorises a second submission.
 - No signal, backtest, holdout, or January-gate change. No live-loop
   rewiring. Fake broker only. ATS_LOOPS.md Loop 5 rewritten to match
   the tested behaviour (this section is the record).
+
+## 2026-11-26 — B5: paper-API flakiness resilience (read-only market-data requests)
+
+Scope is READ-ONLY market-data requests only: `universe.py`,
+`config.py`, new `test_b5_data_resilience.py`. No order_manager.py /
+test_b3 / design_runner / ATS_LOOPS.md changes (Loop 5 correction was
+a separate commit, 3d2137c). No signal, backtest, holdout, cost-model,
+regime-threshold, or January-gate change. No live/paper orders, no
+.env/key changes, no package installs. Left uncommitted for
+verification (per brief).
+
+### The two failures (verified against the code)
+1. Benchmark fetch was single-shot: `filters.market_regime` ->
+   `fetch_symbol_frame` -> `_daily_bars` -> ONE Alpaca SDK call, no
+   retry. On Nov 25 an egress-proxy outage made the SPY fetch fail
+   and the whole run went regime_blocked "benchmark data unavailable".
+2. Universe screen was serial: `select_universe` looped ~133 seed
+   symbols, each doing `_daily_bars` + `_latest_quote` (~266
+   sequential API calls), no per-call timeout on the SDK path (REST
+   path has timeout=30). One hung call could eat the 60-min decision
+   timeout in scripts/run_daily.py.
+
+### Design (universe.py, data-fetch layer only)
+- `fetch_with_retry(fn, max_attempts=3, delays=(1.0, 2.0, 4.0),
+  sleep_fn=None, is_transient=None)` -> (result, attempts) on
+  success; raises the last error after exhausting attempts, and
+  raises immediately (1 attempt, no sleep) for non-transient errors
+  and StaleBarsError. Transient = TimeoutError/ConnectionError, or
+  message tokens timeout/connection/temporarily/5xx/429/rate-limit/
+  proxy/disconnect. Explicit rejections (400/409/duplicate/
+  validation/rejected/invalid) are never retried. sleep_fn is
+  injectable so tests assert the delay sequence without waiting.
+  Deviation from the brief's wording, flagged: the brief said both
+  "return (result, attempts)" and "benchmark fetch returns None" on
+  exhaustion. The implementation raises on exhaustion; the existing
+  `_daily_bars` except converts that to None, so the observable
+  benchmark behaviour is exactly today's (None -> "benchmark data
+  unavailable"). That is the closest correct version of both
+  requirements at once.
+- Retry applied to the SDK `get_stock_bars` call inside `_daily_bars`
+  and to the `urlopen` call inside `_rest_daily_bars` (same helper,
+  same budget). Attempts > 1 are logged at info (symbol, attempts).
+  Cache reads are not retried (no network involved). After exhausted
+  retries the behaviour is exactly today's: frame None -> caller
+  reports "benchmark data unavailable" (fail-closed, no crash, no
+  order).
+- `select_universe` parallelised: per-symbol work extracted to
+  `_screen_symbol` (bars + price + dollar volume + spread, same
+  checks in the same order), run over `_parallel_map` — a small
+  daemon-thread queue pool (workers =
+  `cfg.universe.screen_workers`, default 4). A timeout/exception/
+  stale for one symbol skips that symbol only, never aborts the
+  screen; malformed bars for one symbol are now a skip instead of
+  aborting the screen (serial code propagated such errors).
+  Per-symbol timeout = `cfg.universe.screen_symbol_timeout_seconds`
+  (default 60s): collection stops once every pending item is a hung
+  call, or every worker is stuck on a hung call, so total screen time
+  is bounded by healthy work + one timeout window. Deviation from
+  the brief, flagged: ThreadPoolExecutor was NOT used. Its workers
+  are non-daemon and CPython joins them at interpreter exit, so one
+  hung Alpaca call would hang the whole daily-run process at exit;
+  daemon threads avoid that. Same parallelism, exact per-symbol
+  timeout semantics, no private-API subclassing.
+- Determinism: survivors are collected in candidate order and sorted
+  by (-dollar_volume, candidate index), so ties keep serial order and
+  a screen over the same data returns the same list as the serial
+  code. The DataClock is fed single-threaded in the collector, in
+  candidate order, for exactly the same symbols as the serial code
+  (DataClock.note is a read-then-write and is NOT thread-safe, so it
+  cannot run inside worker threads).
+- Config: `UniverseConfig.screen_workers: int = 4` (env
+  UNIVERSE_SCREEN_WORKERS) and `screen_symbol_timeout_seconds:
+  float = 60.0` (env UNIVERSE_SCREEN_SYMBOL_TIMEOUT_SECONDS), wired
+  in `TradingConfig.from_env`. No existing default changed (lookback,
+  min price/volume, spread cap unchanged).
+
+### Tests (test_b5_data_resilience.py, 16 tests, fake clients only)
+- fetch_with_retry: succeeds after 2 transient failures (3
+  attempts, sleeps [1.0, 2.0]); exhaustion raises after 3 attempts
+  (sleeps [1.0, 2.0], no sleep after the final attempt); 429 in the
+  message is transient; 400/validation never retried (1 attempt);
+  StaleBarsError never retried (1 attempt).
+- Benchmark fetch: fake client fails twice then returns a fresh frame
+  -> succeeds, attempts == 3, frame used; all attempts fail -> None
+  (fail-closed), calls == 3, sleeps [1.0, 2.0]; stale frame -> exactly
+  1 attempt, StaleBarsError propagates.
+- Refined brief (1) — recovery inside the decision budget: failing
+  twice then succeeding costs 1s + 2s = 3s of retry delay, asserted
+  on the recorded sleep calls (fake clock, not wall time); worst-case
+  configured budget (sum of delays before the final attempt) is 3s,
+  and even the sum of ALL configured delays (7s) is three orders of
+  magnitude under the 3600s decision timeout in scripts/run_daily.py.
+- Refined brief (2) — exhausted retries block clearly: after all
+  attempts fail, `market_regime` returns ok=False, reason exactly
+  "benchmark data unavailable" (no crash, no order); the stale-frame
+  case returns "benchmark data stale" with
+  expected_latest_session 2026-11-25 / observed 2026-06-02 — the two
+  reasons are distinguishable in the log.
+- Screen: 12 symbols x 0.08s fetches -> parallel returns the SAME
+  ordered survivor list as the serial per-symbol logic, in < 60% of
+  serial time (exchange-calendar cache warmed before timing: the ~1s
+  cold `_nyse_schedule` build is a one-off per process/date-range,
+  not per symbol); one symbol raises + one stale + one hangs past
+  the 0.5s timeout -> other survivors returned in < 3s, no exception;
+  quote failure keeps the symbol (spread_pct None, today's
+  behaviour); cheap/wide/illiquid symbols still dropped; config env
+  overrides verified (defaults 4 / 60.0).
+- Full suite: **200 passed** (was 184 after the Loop 5 commit;
+  +16 new B5 tests), 32.3s, 444 warnings. No regressions.
+  No requests/urllib use in the test file (only the string "429 too
+  many requests" inside a test error message).
+
+### Deliberately NOT done
+- IEX free-plan lag (live "latest" bar is yesterday's close — the
+  feed, not a bug); switching live config to adjusted bars (needs
+  re-validation); SIP data (a money decision); any signal math, cost
+  model, regime threshold, backtest, or holdout change. The January
+  fresh-validation criteria and the exchange-session freshness check
+  are untouched: StaleBarsError is still raised, never retried, never
+  treated as transient.
+- `data/edgar_excerpts_v2/manifest.json` is modified in the working
+  tree by daily runs; deliberately NOT part of this change.
+
+## 2026-11-26 — B3 follow-up: concurrent OrderManager init race (found by verification)
+
+While verifying B5, the full suite failed once on
+test_2_two_workers_same_intent_concurrently — and it reproduced
+intermittently (~1 in 10 runs): one worker's `OrderManager(db)` raised
+`sqlite3.OperationalError: database is locked` at
+`PRAGMA journal_mode=WAL`, because the other worker was mid-schema-
+creation. The other worker then hit the 10s barrier timeout, so the
+test saw 0 broker orders. This was a pre-existing race in the B3
+`__init__` (busy_timeout was set after the journal-mode pragma, and
+the pragma itself was outside any retry); the Loop 5 migration
+lengthened the locked window slightly, but the race predates it.
+
+Fix (order_manager.py `_init_schema_with_retry`): busy_timeout is set
+first, the current journal mode is read, and `journal_mode=WAL` is
+only issued when the mode is not already WAL — so the contended
+operation happens once, for the first initializer. The whole init
+(schema + migration) retries up to 50x on locked/busy, and a
+"duplicate column" from the account migration is treated as success
+(the other initializer added it first). Stress result: test_2 passes
+60/60 consecutive runs (was ~9/10). Full suite after the fix: **200 passed**,
+32.3s — the same 200 as the B5 build (184 Loop 5 baseline + 16 B5).

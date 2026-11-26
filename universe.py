@@ -3,13 +3,16 @@ from __future__ import annotations
 import json
 import logging
 import os
+import queue
+import threading
+import time
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from types import SimpleNamespace
-from typing import Iterable, Optional
+from typing import Callable, Iterable, Optional
 
 import pandas as pd
 
@@ -28,6 +31,175 @@ try:
     _ALPACA_AVAILABLE = True
 except ImportError:
     _ALPACA_AVAILABLE = False
+
+
+# ---------------------------------------------------------------- B5: fetch resilience
+
+# Bounded retry budget for transient bar-fetch failures (B5). Three
+# attempts with 1s / 2s backoff: enough to ride out the Nov 25-style
+# egress-proxy outage, short enough that a genuinely dead feed fails
+# closed within seconds instead of eating the decision timeout.
+DEFAULT_FETCH_ATTEMPTS = 3
+DEFAULT_FETCH_DELAYS = (1.0, 2.0, 4.0)
+
+_TRANSIENT_TOKENS = (
+    "timeout", "timed out", "connection", "temporarily", "unavailable",
+    "502", "503", "504", "500", "429", "rate limit", "proxy",
+    "remote disconnected", "reset by peer", "broken pipe",
+)
+# An explicit rejection means the broker understood the request and
+# said no. Retrying it cannot help and (for a 409 duplicate) would be
+# wrong — these are never retried.
+_EXPLICIT_REJECTION_TOKENS = (
+    "409", "duplicate", "400", "validation", "rejected", "invalid",
+    "forbidden", "unauthorized", "not found",
+)
+
+
+def _is_explicit_rejection(exc: BaseException) -> bool:
+    text = f"{type(exc).__name__} {exc}".lower()
+    return any(token in text for token in _EXPLICIT_REJECTION_TOKENS)
+
+
+def _is_transient_error(exc: BaseException) -> bool:
+    """True when a failed call is worth retrying with the same arguments.
+
+    Timeouts and connection errors are transient by type. Everything
+    else is judged by its message: 5xx / 429 / proxy / disconnect
+    wording is transient; an explicit rejection (400/409/validation)
+    or a stale-data error is not — StaleBarsError is data, not a
+    failed call, and is never retried (see fetch_with_retry).
+    """
+    if isinstance(exc, StaleBarsError):
+        return False
+    if isinstance(exc, (TimeoutError, ConnectionError)):
+        return True
+    text = f"{type(exc).__name__} {exc}".lower()
+    if _is_explicit_rejection(exc):
+        return False
+    return any(token in text for token in _TRANSIENT_TOKENS)
+
+
+def fetch_with_retry(
+    fn: Callable,
+    max_attempts: int = DEFAULT_FETCH_ATTEMPTS,
+    delays: tuple = DEFAULT_FETCH_DELAYS,
+    sleep_fn: Optional[Callable[[float], None]] = None,
+    is_transient: Optional[Callable[[BaseException], bool]] = None,
+) -> tuple:
+    """Call ``fn()``, retrying transient failures with bounded backoff.
+
+    Returns ``(result, attempts)`` on success. Raises the last error
+    after ``max_attempts`` transient failures, and raises immediately
+    (1 attempt, no sleep) for non-transient errors and StaleBarsError.
+    Callers that already convert exceptions to None — ``_daily_bars``
+    does — therefore keep today's fail-closed behaviour exactly: a
+    benchmark fetch that fails on every attempt still surfaces as
+    "benchmark data unavailable", never as a crash. ``sleep_fn`` is
+    injectable so tests can assert the delay sequence without waiting.
+    """
+    sleep = sleep_fn or time.sleep
+    check = is_transient or _is_transient_error
+    attempts = 0
+    while True:
+        attempts += 1
+        try:
+            return fn(), attempts
+        except StaleBarsError:
+            raise  # a stale frame is data, not a transient failure
+        except Exception as exc:
+            if not check(exc):
+                raise
+            if attempts >= max_attempts:
+                raise
+            delay = delays[min(attempts - 1, len(delays) - 1)]
+            sleep(delay)
+
+
+_FAILED = object()  # sentinel: a _parallel_map item whose fn() raised
+
+
+def _parallel_map(items, fn, workers: int, timeout_seconds: float,
+                  poll_interval: float = 0.02) -> dict:
+    """Run ``fn(item)`` for each item on daemon worker threads.
+
+    Returns ``{item: result}`` for items whose call returned without
+    raising. Items that raised, or whose call was still running
+    ``timeout_seconds`` after it started, are absent — the caller
+    treats them as skipped, never as fatal. Items must be hashable
+    (they key the results dict).
+
+    Why a hand-rolled pool instead of ThreadPoolExecutor: a hung
+    network call cannot be killed, only abandoned. ThreadPoolExecutor
+    workers are non-daemon and CPython joins them at interpreter exit,
+    so one hung Alpaca call would hang the whole daily-run process at
+    exit. These workers are daemon threads, so abandoning a hung call
+    cannot block process exit. The pool is bounded: at most ``workers``
+    threads, and collection stops as soon as every pending item is a
+    hung call, or every worker is stuck on a hung call (queued items
+    can then never start). Total collection time is therefore bounded
+    by the healthy work plus one timeout window — one hung call cannot
+    eat the 60-minute decision timeout in scripts/run_daily.py.
+    """
+    items = list(items)
+    if not items:
+        return {}
+    n_threads = max(1, min(int(workers), len(items)))
+    work = queue.Queue()
+    for item in items:
+        work.put(item)
+    results: dict = {}
+    done: set = set()
+    started: dict = {}
+    lock = threading.Lock()
+
+    def _worker() -> None:
+        while True:
+            try:
+                item = work.get(timeout=0.05)
+            except queue.Empty:
+                return
+            with lock:
+                started[item] = time.monotonic()
+            try:
+                value = fn(item)
+            except Exception:
+                value = _FAILED
+            with lock:
+                if value is not _FAILED:
+                    results[item] = value
+                done.add(item)
+
+    threads = [
+        threading.Thread(target=_worker, daemon=True)
+        for _ in range(n_threads)
+    ]
+    for thread in threads:
+        thread.start()
+    t0 = time.monotonic()
+    # Last-resort guard against a threading pathology: never wait more
+    # than this, even if the stop conditions below somehow never fire.
+    absolute_deadline = t0 + timeout_seconds * 10 + 300.0
+    while True:
+        with lock:
+            pending = [item for item in items if item not in done]
+            now = time.monotonic()
+            expired = [
+                item for item in pending
+                if item in started and now - started[item] > timeout_seconds
+            ]
+        if not pending:
+            break
+        if len(expired) == len(pending):
+            break  # every pending item is a hung call; nothing can complete
+        if len(expired) >= n_threads:
+            break  # every worker is stuck on a hung call; queued items can never start
+        if now >= absolute_deadline:
+            log.warning("parallel map hit absolute deadline; %d items skipped",
+                        len(pending))
+            break
+        time.sleep(poll_interval)
+    return dict(results)
 
 
 def _bars_to_frame(response, symbol: str) -> Optional[pd.DataFrame]:
@@ -132,8 +304,18 @@ def _rest_daily_bars(symbol: str, lookback_days: int, cfg: TradingConfig) -> Opt
         },
     )
     try:
-        with urllib.request.urlopen(req, timeout=30) as response:
-            payload = json.loads(response.read().decode("utf-8"))
+        def _do_fetch():
+            with urllib.request.urlopen(req, timeout=30) as response:
+                return response.read()
+
+        # B5: one dropped connection no longer kills the fetch — retry
+        # transient failures, then fall through to None exactly as
+        # before (the caller reports "data unavailable").
+        payload_bytes, attempts = fetch_with_retry(_do_fetch)
+        if attempts > 1:
+            log.info("REST bar fetch for %s succeeded after %d attempts",
+                     symbol, attempts)
+        payload = json.loads(payload_bytes.decode("utf-8"))
     except Exception as exc:
         log.debug("REST bar fetch failed for %s: %s", symbol, exc)
         return None
@@ -326,7 +508,12 @@ def _daily_bars(data_client, symbol: str, lookback_days: int, cfg: Optional[Trad
                 )
             else:
                 req = SimpleNamespace(symbol_or_symbols=symbol, timeframe="1Day", limit=1000)
-            response = data_client.get_stock_bars(req)
+            response, attempts = fetch_with_retry(
+                lambda: data_client.get_stock_bars(req)
+            )
+            if attempts > 1:
+                log.info("bar fetch for %s succeeded after %d attempts",
+                         symbol, attempts)
             frame = _bars_to_frame(response, symbol)
             if frame is not None:
                 cols = {c.lower(): c for c in frame.columns}
@@ -355,48 +542,104 @@ def _daily_bars(data_client, symbol: str, lookback_days: int, cfg: Optional[Trad
     return frame
 
 
-def select_universe(broker, cfg: TradingConfig) -> list[str]:
-    """
-    Screen a candidate universe by dollar volume, price, and spread.
-    """
-    candidates = _candidate_symbols(broker, cfg)
-    survivors: list[tuple[str, float]] = []
-    data_client = getattr(broker.paper, "data", None) or getattr(broker.live, "data", None)
+def _screen_symbol(data_client, symbol: str, cfg: TradingConfig):
+    """Screen one symbol: bars + price + dollar volume + spread.
 
-    for symbol in candidates:
-        try:
-            bars = _daily_bars(data_client, symbol, cfg.universe.lookback_days, cfg)
-        except StaleBarsError:
-            # A stale window for one symbol skips that symbol; it must
-            # not abort the whole screen.
-            continue
-        if bars is None or bars.empty:
-            continue
-        needed = {"open", "high", "low", "close", "volume"}
-        if not needed.issubset(set(bars.columns)):
-            continue
+    Returns ``(symbol, dollar_volume, quote_timestamp)`` when the
+    symbol reached the quote step, where ``dollar_volume`` is None when
+    it failed the final liquidity/spread filter (the quote timestamp is
+    still returned — the serial code fed the DataClock for every symbol
+    that reached the quote step, survivor or not). Returns None when
+    the symbol was skipped earlier (no bars, stale bars, too few bars,
+    price below the floor). Any unexpected error is also a skip: one
+    bad symbol must never abort the whole screen (B5 per-symbol
+    isolation — the serial code would have propagated such an error
+    and killed the run).
+    """
+    try:
+        bars = _daily_bars(data_client, symbol, cfg.universe.lookback_days, cfg)
+    except StaleBarsError:
+        # A stale window for one symbol skips that symbol; it must
+        # not abort the whole screen.
+        return None
+    if bars is None or bars.empty:
+        return None
+    needed = {"open", "high", "low", "close", "volume"}
+    if not needed.issubset(set(bars.columns)):
+        return None
+    try:
         bars = bars.dropna(subset=["close", "volume"])
         if len(bars) < 20:
-            continue
+            return None
         last = bars.iloc[-1]
         price = float(last["close"])
         if price < cfg.universe.min_price:
-            continue
+            return None
         dollar_volume = float((bars["close"] * bars["volume"]).tail(20).mean())
         quote = _latest_quote(data_client, symbol)
-        clock = getattr(broker, "data_clock", None)
-        if clock is not None and quote:
-            # Feed the Guardian's DataClock with the quote's feed
-            # timestamp (not the receipt time).
-            clock.note(quote.get("timestamp"))
         spread_pct = quote["spread_pct"] if quote else None
+        quote_ts = quote.get("timestamp") if quote else None
         if dollar_volume >= cfg.universe.min_dollar_volume and (
             spread_pct is None or spread_pct <= cfg.universe.max_spread_pct
         ):
-            survivors.append((symbol, dollar_volume))
+            return (symbol, dollar_volume, quote_ts)
+        return (symbol, None, quote_ts)
+    except Exception as exc:
+        log.debug("screen failed for %s: %s", symbol, exc)
+        return None
 
-    survivors.sort(key=lambda item: item[1], reverse=True)
-    return [symbol for symbol, _ in survivors[: cfg.universe.max_candidates]]
+
+def select_universe(broker, cfg: TradingConfig) -> list[str]:
+    """
+    Screen a candidate universe by dollar volume, price, and spread.
+
+    B5: the per-symbol work (bars + quote) runs in parallel on
+    ``cfg.universe.screen_workers`` daemon threads, each symbol bounded
+    by ``cfg.universe.screen_symbol_timeout_seconds`` — a hung or
+    failing symbol is skipped, never aborts the screen. The result is
+    IDENTICAL to the serial screen: survivors are collected in
+    candidate order, the DataClock is fed (single-threaded, in
+    candidate order — DataClock.note is a read-then-write and is not
+    thread-safe) for exactly the same symbols as before, and the final
+    sort is by dollar volume descending with ties broken by candidate
+    order, so a screen over the same data returns the same list as
+    the serial code did.
+    """
+    candidates = _candidate_symbols(broker, cfg)
+    data_client = getattr(broker.paper, "data", None) or getattr(broker.live, "data", None)
+    indexed = list(enumerate(candidates))
+
+    def _work(entry):
+        idx, symbol = entry
+        res = _screen_symbol(data_client, symbol, cfg)
+        if res is None:
+            return None
+        sym, dollar_volume, quote_ts = res
+        return (idx, sym, dollar_volume, quote_ts)
+
+    results = _parallel_map(
+        indexed,
+        _work,
+        workers=cfg.universe.screen_workers,
+        timeout_seconds=cfg.universe.screen_symbol_timeout_seconds,
+    )
+    clock = getattr(broker, "data_clock", None)
+    survivors: list[tuple[int, str, float]] = []
+    for idx, symbol in indexed:
+        res = results.get((idx, symbol))
+        if res is None:
+            continue
+        _, sym, dollar_volume, quote_ts = res
+        if clock is not None and quote_ts:
+            # Feed the Guardian's DataClock with the quote's feed
+            # timestamp (not the receipt time). Single-threaded here
+            # by design: DataClock.note is not thread-safe.
+            clock.note(quote_ts)
+        if dollar_volume is not None:
+            survivors.append((idx, sym, dollar_volume))
+
+    survivors.sort(key=lambda item: (-item[2], item[0]))
+    return [symbol for _, symbol, _ in survivors[: cfg.universe.max_candidates]]
 
 
 def fetch_symbol_frame(broker, symbol: str, cfg: TradingConfig, now: Optional[datetime] = None) -> Optional[pd.DataFrame]:

@@ -75,6 +75,14 @@ class UniverseConfig:
     max_candidates: int = 200
     lookback_days: int = 60
     seed_symbols: Tuple[str, ...] = field(default_factory=lambda: DEFAULT_SEED_SYMBOLS)
+    # B5: universe screen parallelism. screen_workers threads run the
+    # per-symbol bars+quote fetch; screen_symbol_timeout_seconds bounds
+    # any single symbol's fetch (a hung call is skipped, not fatal).
+    # Defaults match the EDGAR v2 build (4 workers). Neither changes
+    # any signal output: selection and ordering are identical to the
+    # serial screen (see select_universe).
+    screen_workers: int = 4
+    screen_symbol_timeout_seconds: float = 60.0
 
 
 @dataclass
@@ -243,6 +251,10 @@ class TradingConfig:
             universe_source=_env_str("UNIVERSE_SOURCE", "seed"),
             max_candidates=_env_int("UNIVERSE_MAX_CANDIDATES", 200),
             lookback_days=_env_int("UNIVERSE_LOOKBACK_DAYS", 60),
+            screen_workers=_env_int("UNIVERSE_SCREEN_WORKERS", 4),
+            screen_symbol_timeout_seconds=_env_float(
+                "UNIVERSE_SCREEN_SYMBOL_TIMEOUT_SECONDS", 60.0
+            ),
             seed_symbols=_csv_tuple(
                 _env_str(
                     "UNIVERSE_SEED_SYMBOLS",

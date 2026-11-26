@@ -224,20 +224,52 @@ class OrderManager:
         self._now = time_fn or time.time
         self._conn = sqlite3.connect(str(self.db_path), timeout=10.0, check_same_thread=False)
         self._conn.row_factory = sqlite3.Row
-        self._conn.execute("PRAGMA journal_mode=WAL")
-        self._conn.execute("PRAGMA busy_timeout=5000")
-        with self._conn:
-            self._conn.executescript(SCHEMA)
-        # Migration for DB files created before the `account` column
-        # and the `alerts` table existed (Nov 26, 2026 correction):
-        # CREATE TABLE IF NOT EXISTS does not add columns to an
-        # existing table, so add it explicitly when missing.
-        cols = {row[1] for row in self._conn.execute("PRAGMA table_info(intents)").fetchall()}
-        if "account" not in cols:
-            with self._conn:
-                self._conn.execute(
-                    "ALTER TABLE intents ADD COLUMN account TEXT NOT NULL DEFAULT 'paper'"
-                )
+        self._init_schema_with_retry()
+
+    def _init_schema_with_retry(self) -> None:
+        """Set WAL mode, create tables, migrate — tolerating a
+        concurrent initializer.
+
+        Two OrderManagers can open the same DB file at the same instant
+        (two workers racing the same intent). The schema transaction
+        holds a write lock, so the second initializer retries on
+        "database is locked", and treats a "duplicate column" from the
+        account migration as success — the other initializer just
+        added it first. The journal-mode change itself is also inside
+        the retry: PRAGMA journal_mode=WAL can fail with SQLITE_BUSY
+        while the other connection holds a write lock, and setting
+        busy_timeout first does not save it. When the mode is already
+        WAL the change is skipped entirely, so the contended operation
+        only happens once, for the first initializer."""
+        for attempt in range(50):
+            try:
+                self._conn.execute("PRAGMA busy_timeout=5000")
+                mode = self._conn.execute("PRAGMA journal_mode").fetchone()[0]
+                if str(mode).lower() != "wal":
+                    self._conn.execute("PRAGMA journal_mode=WAL")
+                with self._conn:
+                    self._conn.executescript(SCHEMA)
+                # Migration for DB files created before the `account`
+                # column and the `alerts` table existed (Nov 26, 2026
+                # correction): CREATE TABLE IF NOT EXISTS does not add
+                # columns to an existing table, so add it explicitly
+                # when missing.
+                cols = {row[1] for row in self._conn.execute("PRAGMA table_info(intents)").fetchall()}
+                if "account" not in cols:
+                    with self._conn:
+                        self._conn.execute(
+                            "ALTER TABLE intents ADD COLUMN account TEXT NOT NULL DEFAULT 'paper'"
+                        )
+                return
+            except sqlite3.OperationalError as exc:
+                msg = str(exc).lower()
+                if "duplicate column" in msg:
+                    return  # the other initializer added it first
+                if "locked" in msg or "busy" in msg:
+                    time.sleep(0.1)
+                    continue
+                raise
+        raise sqlite3.OperationalError("database is locked: schema init did not complete")
 
     # -- low-level ------------------------------------------------------
     def _fetch(self, intent_id: str) -> Optional[dict]:
