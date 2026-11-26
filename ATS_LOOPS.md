@@ -111,6 +111,19 @@ be checked.
 - **Spec:** Equibles pilot, re-run in December for the full n=21
   calls (was n=16, Nov 22). Script the re-run as one command (B12);
   do not hand-score.
+- **B12 built Nov 26, 2026:** `scripts/run_equibles_rerun.py` — one
+  command (fetch fresh adjusted bars, run the returns test, write
+  dated results, append to the Sheet, append to the registry, print
+  the verdict). Frozen scores, unchanged math: the wrapper on the
+  frozen November prices reproduces November exactly (n=16, IC
+  +0.21, p=0.43, same 5 exclusions, whole-dict-equal on ic_table /
+  median_split / per_call). Drop rule is three-way: KEEP if the
+  pre-registered bar clears (|IC| >= 0.3, p < 0.10); DROP if the bar
+  is not cleared and every score IC is within one standard error of
+  zero; REVIEW in between (human decides, default DROP). The real
+  December n=21 read runs ~Dec 3, once the 5 excluded windows
+  complete (~Dec 2) — the wrapper is built and verified now, the
+  live run is a separate scheduled step.
 - **Verification:** Q&A scores vs post-call returns, same IC test as
   November (IC +0.21, p=0.43, NO EVIDENCE on n=16).
 - **Stop conditions:** if December IC is still ~0, DROP the leg.

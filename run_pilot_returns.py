@@ -114,13 +114,22 @@ def ic_stats(xs, ys):
     return res
 
 
-def main():
+def main(raw_dir=None, price_template="prices-adjusted-{sym}.csv",
+         out_json=None, run_date=None, price_source=None, run_label=None):
+    """Compute the returns test. Defaults reproduce the November run
+    exactly (same prices dir, same filenames, same output path, same
+    date/price-source strings). The December wrapper (B12) passes a
+    dated prices dir/template, a new dated output path, and the
+    as-of date. No math is parameterized: the return definition,
+    metrics, and evidence bar are fixed by the registered design.
+    """
     scoring = json.loads(SCORING.read_text())
     calls = scoring["per_call"]
+    raw = Path(raw_dir) if raw_dir is not None else RAW
 
     closes = {}
     for sym in ["ABBV", "ABT", "AMD", "AMGN", "AMT", "AMZN", "SPY"]:
-        df = pd.read_csv(RAW / f"prices-adjusted-{sym}.csv", index_col=0, parse_dates=True)
+        df = pd.read_csv(raw / price_template.format(sym=sym), index_col=0, parse_dates=True)
         idx = pd.DatetimeIndex(df.index).tz_localize(None).normalize()
         closes[sym] = pd.Series(df["close"].values, index=idx)
     cal = closes["SPY"].index
@@ -221,8 +230,9 @@ def main():
     out = {
         "experiment_id": "exp-equibles-pilot-returns",
         "design_doc": "experiments/exp-equibles-pilot-returns-design.md",
-        "date": "2026-11-22",
-        "price_source": "Alpaca daily bars, adjustment=all (split+dividend), fetched 2026-11-22; files experiments/equibles-pilot-raw/prices-adjusted-*.csv",
+        "date": run_date if run_date is not None else "2026-11-22",
+        "price_source": price_source if price_source is not None else
+            "Alpaca daily bars, adjustment=all (split+dividend), fetched 2026-11-22; files experiments/equibles-pilot-raw/prices-adjusted-*.csv",
         "last_trading_day": last_day.strftime("%Y-%m-%d"),
         "return_definition": "R = close(T+20)/close(T) - 1, T = call date (even if call was after close); excess = R - R_SPY same window; T+20 = 20th trading day after T",
         "n_scored": len(calls),
@@ -236,13 +246,16 @@ def main():
         "verdict": verdict,
         "spend_usd": 0.0,
         "notes": [
-            "QoQ-delta IC uses only the 10 included calls with a non-null qoq_score_delta.",
+            f"QoQ-delta IC uses only the {len(delta_rows)} included calls with a non-null qoq_score_delta.",
             "16 ICs computed on one small sample; no formal multiple-testing correction — read p < 0.10 against that multiplicity.",
             "Scores are single-model single-pass Haiku; knowledge-cutoff contamination possible.",
         ],
     }
-    (REPO / "experiments" / "exp-equibles-pilot-returns.json").write_text(
-        json.dumps(out, indent=2))
+    if run_label is not None:
+        out["run_label"] = run_label
+    out_path = Path(out_json) if out_json is not None else (
+        REPO / "experiments" / "exp-equibles-pilot-returns.json")
+    out_path.write_text(json.dumps(out, indent=2))
     print(json.dumps({"verdict": verdict, "n_included": len(per_call),
                       "n_excluded": len(excluded)}, indent=2))
     for k, v in ic_table.items():

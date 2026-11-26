@@ -8,6 +8,7 @@ exactly the number of rows appended.
 """
 import json
 import subprocess
+from pathlib import Path
 
 SHEET_ID = "1bJdCrPm2licM-arLLdIck2zAq15gWfa6ZNjrk14h3G4"
 SHEET_CLI = "/opt/hatch/bin/hatch_gws_cli"
@@ -23,7 +24,7 @@ def _s(v):
     return str(v)
 
 
-def row_count():
+def _cli_row_count():
     proc = subprocess.run(
         [SHEET_CLI, "sheets", "+read", "--spreadsheet", SHEET_ID,
          "--range", "Sheet1!A1:A1000"],
@@ -31,14 +32,50 @@ def row_count():
     return len(json.loads(proc.stdout).get("values", []))
 
 
-def main() -> int:
-    result = json.loads(open(RESULTS).read())
-    before = row_count()
+def _cli_append(rows):
+    proc = subprocess.run(
+        [SHEET_CLI, "sheets", "+append", "--spreadsheet", SHEET_ID,
+         "--json-values", json.dumps(rows)],
+        capture_output=True, text=True, timeout=120)
+    if proc.returncode != 0:
+        print(f"[sheet] append FAILED: {proc.stdout} {proc.stderr}", flush=True)
+        raise RuntimeError("Sheet append failed; rows NOT logged")
+
+
+class _CliSheet:
+    """The real Sheet, behind the row_count()/append() interface the
+    wrapper and tests use. A fake sheet object with the same two
+    methods can be injected instead (tests never touch the Sheet)."""
+
+    def row_count(self):
+        return _cli_row_count()
+
+    def append(self, rows):
+        _cli_append(rows)
+
+
+def main(results_path=None, run_date=None, sheet=None) -> int:
+    """Append per-call + summary rows for a returns-test result.
+
+    Defaults reproduce the November logging exactly (same results
+    file, same date). The December wrapper (B12) passes the dated
+    results file and the as-of date. The summary text is built from
+    the result itself (n included/excluded, verdict, ICs, spread) —
+    the November-specific wording ("pilot 16 calls", "5 calls
+    excluded", the AMD-outlier parenthetical) is gone; that
+    sensitivity remark belongs in the November .md, not in a
+    re-runnable logger.
+    """
+    results = Path(results_path) if results_path is not None else Path(RESULTS)
+    result = json.loads(results.read_text())
+    date = run_date if run_date is not None else TODAY
+    sheet = sheet if sheet is not None else _CliSheet()
+    before = sheet.row_count()
     print(f"[sheet] rows before: {before}", flush=True)
     rows = []
     for r in result["per_call"]:
         rows.append([
-            "exp-equibles-pilot-returns", TODAY,
+            "exp-equibles-pilot-returns", date,
             f"{r['call_date']} -> {r['t_plus_20']}",
             f"{r['ticker']} FY{r['fiscal_year']}Q{r['fiscal_quarter']}",
             "",
@@ -55,8 +92,8 @@ def main() -> int:
     ic = result["ic_table"]["score__raw"]["pearson"]
     ice = result["ic_table"]["score__excess"]["pearson"]
     rows.append([
-        "exp-equibles-pilot-returns", TODAY,
-        "pilot 16 calls, T+20",
+        "exp-equibles-pilot-returns", date,
+        f"pilot {result['n_included']} calls, T+20",
         "SUMMARY",
         "",
         _s(ic["r"]),
@@ -67,17 +104,11 @@ def main() -> int:
         "",
         f"verdict: {result['verdict']}; score Pearson IC raw {ic['r']:+.3f} p={ic['p']:.3f}, "
         f"excess {ice['r']:+.3f} p={ice['p']:.3f}; median-split spread "
-        f"{result['median_split']['spread_raw'] * 100:+.2f}pp raw (one AMD outlier; ex-outlier +1.33pp); "
-        f"5 calls excluded, windows incomplete",
+        f"{result['median_split']['spread_raw'] * 100:+.2f}pp raw; "
+        f"{result['n_excluded']} calls excluded, windows incomplete",
     ])
-    proc = subprocess.run(
-        [SHEET_CLI, "sheets", "+append", "--spreadsheet", SHEET_ID,
-         "--json-values", json.dumps(rows)],
-        capture_output=True, text=True, timeout=120)
-    if proc.returncode != 0:
-        print(f"[sheet] append FAILED: {proc.stdout} {proc.stderr}", flush=True)
-        raise RuntimeError("Sheet append failed; rows NOT logged")
-    after = row_count()
+    sheet.append(rows)
+    after = sheet.row_count()
     print(f"[sheet] rows after: {after}; expected {before + len(rows)}", flush=True)
     if after < before + len(rows):
         raise RuntimeError("Sheet append did not land (row count unchanged); rows NOT logged")

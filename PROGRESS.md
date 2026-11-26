@@ -1401,3 +1401,107 @@ operation happens once, for the first initializer. The whole init
 (the other initializer added it first). Stress result: test_2 passes
 60/60 consecutive runs (was ~9/10). Full suite after the fix: **200 passed**,
 32.3s — the same 200 as the B5 build (184 Loop 5 baseline + 16 B5).
+
+## 2026-11-26 — B12: December Equibles re-run as ONE command
+
+The November returns test was three manual steps (fetch prices, run
+the returns test, log to the Sheet). It is now one command:
+`.venv/bin/python scripts/run_equibles_rerun.py [--as-of YYYY-MM-DD]
+[--no-sheet] [--prices-dir PATH] [--results-dir PATH]`.
+Steps in order: (1) fetch fresh split+dividend-adjusted bars (Alpaca
+paper keys, data reads only), END = --as-of (default today);
+(2) run the returns test via the existing run_pilot_returns logic;
+(3) write NEW dated results
+(experiments/exp-equibles-pilot-returns-<mon><yyyy>.md/.json, e.g.
+dec2026); (4) append to the experiment-log Sheet unless --no-sheet;
+(5) append the run to experiments/registry.jsonl unless --no-registry;
+(6) print a verdict block (n tested/excluded with tickers, headline
+Q&A-score ICs with p, bar cleared or not, drop-rule outcome).
+Scores are never re-scored; $0 LLM spend; no orders.
+
+### Minimal edits to the three November scripts (flagged, as briefed)
+All three were hard-coded for the November run and could not be
+reused without edits; each edit keeps the November behaviour
+identical (verified below):
+- fetch_pilot_prices.py: top-level script wrapped in main(end,
+  out_dir, filename_template, client, start). Defaults reproduce
+  November exactly (END 2026-11-21, prices-adjusted-{sym}.csv).
+  .env loading moved from import time into the default-client path,
+  so importing the module in tests needs no keys. The wrapper passes
+  a dated template prices-adjusted-{as-of}-{sym}.csv, so the November
+  files are never overwritten.
+- run_pilot_returns.py: main() takes raw_dir, price_template,
+  out_json, run_date, price_source, run_label — all defaulting to
+  the November values. No math parameterized. One correctness fix
+  found while parameterizing: the QoQ note hardcoded "10 included
+  calls"; it now uses len(delta_rows) (10 for November, identical;
+  15 for a full December n=21).
+- log_returns_sheet.py: main() takes results_path, run_date, and an
+  injectable sheet (row_count/append; the real CLI behind
+  _CliSheet). The summary text is now built from the result (n
+  included/excluded, verdict, ICs, spread); the November-specific
+  wording is gone — "pilot 16 calls", "5 calls excluded", and the
+  "(one AMD outlier; ex-outlier +1.33pp)" parenthetical, which
+  belongs in the November .md, not in a re-runnable logger.
+  (Also fixed a NameError my edit introduced: missing Path import.)
+
+### Drop rule (new code, in the wrapper)
+Registered bar: |IC| >= 0.3 with p < 0.10 on the Q&A score (Pearson
+or Spearman, raw or excess). The brief's binary (IC ~0 -> DROP, bar
+cleared -> KEEP) leaves the near-miss zone undefined, so the wrapper
+uses three outcomes and states the thresholds: KEEP if the bar is
+cleared; DROP if the bar is not cleared AND every score IC is within
+one standard error of zero under the null (SE ~= 1/sqrt(n-3): 0.28
+at n=16, 0.24 at n=21); REVIEW otherwise — no evidence, but not ~0
+either, human decides (default: DROP, bar not cleared). The
+November numbers (max |IC| 0.21) DROP under this rule.
+
+### Verification (test_b12_equibles_rerun.py, 21 tests, fake clients only)
+- Regression (key test): the wrapper on the frozen November prices
+  (as-of 2026-11-21) reproduces November EXACTLY — n=16, the same 5
+  exclusions, the full ic_table and median_split bit-for-bit,
+  per-call returns bit-for-bit, headline +0.21 (p=0.43) raw /
+  +0.16 (p=0.55) excess, spread +9.76pp raw. November files
+  hash-verified unchanged before/after.
+- Separately: run_pilot_returns.main() with all defaults reproduces
+  the frozen November .json bit-for-bit (whole-dict equality).
+- Drop rule on synthetic ICs only: ~0 -> DROP (incl. exact 0);
+  |0.35| p=0.05, |-0.45| p=0.02, Spearman-only clear, and exactly
+  |0.30| p=0.09 -> KEEP; 0.31 p=0.12 and 0.26 p=0.20 -> REVIEW.
+- --no-sheet writes md/json and never calls the Sheet; sheet mode
+  appends exactly n+1 = 17 rows (16 per-call + summary).
+- Dated filenames never collide: no bare prices-adjusted-{sym}.csv
+  or exp-equibles-pilot-returns.json/.md is ever written by the
+  wrapper; a December as-of yields dec2026 results + 2026-12-* prices.
+- Fetch step with a fake Alpaca client: 7 CSVs, right columns, END
+  passed through as the request end date (START 2025-10-01,
+  adjustment ALL), no network.
+- Registry step (added by Milo during verification, after the
+  subagent's draft): the wrapper appends one RESULTS line per run to
+  experiments/registry.jsonl (same fields as the November results
+  entry; status passed only when the bar clears, failed otherwise),
+  with --no-registry to skip and --registry to point elsewhere; 4
+  tests cover it (appended line, --no-registry writes nothing,
+  bar-cleared -> passed, independent of --no-sheet).
+- Full suite: **221 passed** (was 200; +21 new), 33.0s. Milo also
+  re-ran the wrapper end-to-end independently on the frozen November
+  prices (fake client, temp dirs): ic_table, median_split, per_call,
+  excluded, verdict, n, last trading day ALL EQUAL to the frozen
+  November .json; November files hash-identical before/after.
+
+### Deliberately NOT done
+- The real December n=21 read was NOT run: the 5 excluded windows
+  complete ~Dec 2 (last T+20), so n=21 is not computable yet. The
+  live run is scheduled separately (one command when ready).
+- No re-scoring, no holdout/signal/backtest/threshold change, no
+  January fresh-validation change. The wrapper DOES now write a
+  registry.jsonl entry per run (added during verification — this
+  supersedes the draft's note that no registry entry is written;
+  the runbook's Step 7 is Sheet + registry + PROGRESS.md, and the Nov 26
+  log catch-up showed what happens when the registry step is skipped).
+- The generated December .md records only what the run computed;
+  the November .md's hand-written per-call notes and the post-hoc
+  AMD-outlier sensitivity check are NOT recomputed (not part of the
+  registered design).
+- data/edgar_excerpts_v2/manifest.json is modified in the working
+  tree by daily runs; deliberately NOT part of this change.
