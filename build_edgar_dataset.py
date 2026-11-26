@@ -60,11 +60,21 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent
 # Overridable so parallel shard workers can write to separate dirs
 # (EDGAR_DATA_DIR=/tmp/edgar_w0); merged into the repo dir afterwards.
+# The v1 dataset's window and directory. These are constants: no module
+# mutates them at import time (build_edgar_dataset_v2 used to re-point
+# them — removed 2026-11-25). A builder that needs a different window
+# or directory passes `window=` / `data_dir=` explicitly to the
+# functions below, so a research run reproduces regardless of import
+# order. `DATA_DIR` is still overridable via EDGAR_DATA_DIR for the
+# parallel shard workers.
 DATA_DIR = Path(os.environ.get(
     "EDGAR_DATA_DIR", REPO_ROOT / "data" / "edgar_excerpts"))
 
 WINDOW_START = date(2023, 1, 1)
 WINDOW_END = date(2026, 11, 13)
+
+# A filing-date window as (start, end), inclusive on both ends.
+Window = tuple[date, date]
 FORMS = ("10-K", "10-Q")
 IDENTITY = "Harshith Sai Surendra Harshithsai.surendra@gmail.com"
 
@@ -263,8 +273,13 @@ def build_record(
     }
 
 
-def validate_record(record: dict, errors: list[str]) -> bool:
-    """Check one record against the schema + point-in-time rules."""
+def validate_record(record: dict, errors: list[str], window: Window | None = None) -> bool:
+    """Check one record against the schema + point-in-time rules.
+
+    `window` is the filing-date window the record must fall in; None
+    means the v1 window (WINDOW_START..WINDOW_END).
+    """
+    start, end = window or (WINDOW_START, WINDOW_END)
     ok = True
     for field in REQUIRED_FIELDS:
         if field not in record:
@@ -281,7 +296,7 @@ def validate_record(record: dict, errors: list[str]) -> bool:
     except (TypeError, ValueError):
         errors.append(f"{accession}: bad filing_date {record['filing_date']!r}")
         return False
-    if not (WINDOW_START <= fdate <= WINDOW_END):
+    if not (start <= fdate <= end):
         errors.append(f"{accession}: filing_date {fdate} outside window")
         ok = False
     if record["period_end_date"]:
@@ -314,8 +329,8 @@ def validate_record(record: dict, errors: list[str]) -> bool:
     return ok
 
 
-def shard_path(year: int, quarter: int) -> Path:
-    return DATA_DIR / f"excerpts_{year}_Q{quarter}.jsonl"
+def shard_path(year: int, quarter: int, data_dir: Path | None = None) -> Path:
+    return (data_dir or DATA_DIR) / f"excerpts_{year}_Q{quarter}.jsonl"
 
 
 def _shard_key(filing_date: str) -> tuple[int, int]:
@@ -324,23 +339,25 @@ def _shard_key(filing_date: str) -> tuple[int, int]:
     return year, (month - 1) // 3 + 1
 
 
-def load_existing_accessions() -> set[str]:
+def load_existing_accessions(data_dir: Path | None = None) -> set[str]:
     """Accessions already stored, for resumable builds."""
+    base = data_dir or DATA_DIR
     found: set[str] = set()
-    if not DATA_DIR.exists():
+    if not base.exists():
         return found
-    for path in sorted(DATA_DIR.glob("excerpts_*.jsonl")):
+    for path in sorted(base.glob("excerpts_*.jsonl")):
         for line in path.read_text(encoding="utf-8").splitlines():
             if line.strip():
                 found.add(json.loads(line)["accession"])
     return found
 
 
-def load_all_records() -> list[dict]:
+def load_all_records(data_dir: Path | None = None) -> list[dict]:
+    base = data_dir or DATA_DIR
     records: list[dict] = []
-    if not DATA_DIR.exists():
+    if not base.exists():
         return records
-    for path in sorted(DATA_DIR.glob("excerpts_*.jsonl")):
+    for path in sorted(base.glob("excerpts_*.jsonl")):
         for line in path.read_text(encoding="utf-8").splitlines():
             if line.strip():
                 records.append(json.loads(line))
@@ -383,18 +400,24 @@ def coverage_summary(records: list[dict]) -> dict:
     }
 
 
-def validate_dataset() -> tuple[bool, dict]:
-    """Validate all shards + manifest. Returns (ok, report)."""
+def validate_dataset(
+    window: Window | None = None, data_dir: Path | None = None
+) -> tuple[bool, dict]:
+    """Validate all shards + manifest. Returns (ok, report).
+
+    `window` / `data_dir` select which dataset to validate; None means
+    the v1 window / directory.
+    """
     errors: list[str] = []
-    records = load_all_records()
+    records = load_all_records(data_dir)
     seen: set[str] = set()
     for r in records:
         if r["accession"] in seen:
             errors.append(f"{r['accession']}: duplicate accession")
         seen.add(r["accession"])
-        validate_record(r, errors)
+        validate_record(r, errors, window)
     summary = coverage_summary(records)
-    manifest_path = DATA_DIR / "manifest.json"
+    manifest_path = (data_dir or DATA_DIR) / "manifest.json"
     manifest_ok = True
     if manifest_path.exists():
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -420,11 +443,15 @@ def _parse_period(period: str | None) -> date | None:
         return None
 
 
-def fetch_ticker_records(ticker: str, existing: set[str]) -> tuple[list[dict], list[dict]]:
+def fetch_ticker_records(
+    ticker: str, existing: set[str], window: Window | None = None
+) -> tuple[list[dict], list[dict]]:
     """Fetch + extract all in-window 10-K/10-Q for one ticker.
 
-    Returns (records, failures). Failures are recorded, never raised.
-    Tickers in EXTRA_CIKS are also fetched under their former CIK(s).
+    `window` is the filing-date window to fetch; None means the v1
+    window. Returns (records, failures). Failures are recorded, never
+    raised. Tickers in EXTRA_CIKS are also fetched under their former
+    CIK(s).
     """
     from edgar import Company
     import edgar as edgar_pkg
@@ -445,16 +472,17 @@ def fetch_ticker_records(ticker: str, existing: set[str]) -> tuple[list[dict], l
             failures.append({"ticker": ticker, "stage": f"resolve_cik_{extra_cik}",
                              "error": f"{type(exc).__name__}: {exc}"})
     for cik, company in companies:
-        recs, fails = _fetch_company_records(ticker, cik, company, existing)
+        recs, fails = _fetch_company_records(ticker, cik, company, existing, window)
         records.extend(recs)
         failures.extend(fails)
     return records, failures
 
 
 def _fetch_company_records(
-    ticker: str, cik: int, company, existing: set[str]
+    ticker: str, cik: int, company, existing: set[str], window: Window | None = None
 ) -> tuple[list[dict], list[dict]]:
     """Fetch + extract all in-window 10-K/10-Q for one Company object."""
+    start, end = window or (WINDOW_START, WINDOW_END)
     import edgar as edgar_pkg
 
     records: list[dict] = []
@@ -463,7 +491,7 @@ def _fetch_company_records(
         try:
             filings = company.get_filings(
                 form=form,
-                filing_date=(WINDOW_START.isoformat(), WINDOW_END.isoformat()),
+                filing_date=(start.isoformat(), end.isoformat()),
                 amendments=False,
             )
         except Exception as exc:
@@ -477,7 +505,7 @@ def _fetch_company_records(
                 fdate = filing.filing_date
                 if isinstance(fdate, str):
                     fdate = date.fromisoformat(fdate[:10])
-                if not (WINDOW_START <= fdate <= WINDOW_END):
+                if not (start <= fdate <= end):
                     continue
                 obj = filing.obj()
                 names = SECTIONS[form]
@@ -520,21 +548,24 @@ def _fetch_company_records(
     return records, failures
 
 
-def append_records(records: list[dict]) -> None:
+def append_records(records: list[dict], data_dir: Path | None = None) -> None:
     """Append records to their per-half-year shards."""
+    base = data_dir or DATA_DIR
     by_shard: dict[tuple[int, int], list[dict]] = {}
     for r in records:
         by_shard.setdefault(_shard_key(r["filing_date"]), []).append(r)
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    base.mkdir(parents=True, exist_ok=True)
     for (year, quarter) in sorted(by_shard):
-        path = shard_path(year, quarter)
+        path = shard_path(year, quarter, base)
         with path.open("a", encoding="utf-8") as fh:
             for r in sorted(by_shard[(year, quarter)], key=lambda x: (x["filing_date"], x["ticker"])):
                 fh.write(json.dumps(r, sort_keys=True) + "\n")
 
 
-def write_manifest(failures: list[dict], build_params: dict) -> dict:
-    records = load_all_records()
+def write_manifest(failures: list[dict], build_params: dict,
+                   window: Window | None = None, data_dir: Path | None = None) -> dict:
+    start, end = window or (WINDOW_START, WINDOW_END)
+    records = load_all_records(data_dir)
     summary = coverage_summary(records)
     manifest = {
         "dataset_id": "dataset-edgar-point-in-time-v1",
@@ -542,7 +573,7 @@ def write_manifest(failures: list[dict], build_params: dict) -> dict:
         "built_at": datetime.now(timezone.utc).isoformat(),
         "source": "SEC EDGAR direct via edgartools",
         "build_params": build_params,
-        "window": {"start": WINDOW_START.isoformat(), "end": WINDOW_END.isoformat()},
+        "window": {"start": start.isoformat(), "end": end.isoformat()},
         "forms": list(FORMS),
         "amendments": "excluded",
         "holdout": {"start": "2026-08-18", "end": "2026-11-13", "frozen_in": "experiments/holdout_dates.json"},
@@ -550,8 +581,9 @@ def write_manifest(failures: list[dict], build_params: dict) -> dict:
         "failures": failures,
         "n_failures": len(failures),
     }
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
-    (DATA_DIR / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True))
+    base = data_dir or DATA_DIR
+    base.mkdir(parents=True, exist_ok=True)
+    (base / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True))
     return manifest
 
 

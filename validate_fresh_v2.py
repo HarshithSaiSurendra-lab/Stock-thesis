@@ -31,10 +31,15 @@ import pandas as pd
 REPO = Path(__file__).parent
 
 import build_edgar_dataset as v1  # noqa: E402
-import build_edgar_dataset_v2 as v2  # noqa: E402 — importing patches v1's
-# WINDOW_START / WINDOW_END / DATA_DIR globals to the v2 window + dir.
-assert v1.DATA_DIR == REPO / "data" / "edgar_excerpts_v2", v1.DATA_DIR
-assert v1.WINDOW_START.isoformat() == "2026-11-13"
+import build_edgar_dataset_v2 as v2  # noqa: E402
+# Regression guard for the 2026-11-25 refactor: importing v2 must NOT
+# change any v1 behaviour. v1's window/dir are the v1 dataset's
+# constants; v2 passes its own window/dir explicitly to every v1 call.
+assert v1.WINDOW_START.isoformat() == "2023-01-01", v1.WINDOW_START
+assert v1.WINDOW_END.isoformat() == "2026-11-13", v1.WINDOW_END
+assert v1.DATA_DIR == REPO / "data" / "edgar_excerpts", v1.DATA_DIR
+assert v2.V2_WINDOW_START.isoformat() == "2026-11-13"
+assert v2.V2_DATA_DIR == REPO / "data" / "edgar_excerpts_v2"
 import run_llm_backtest as p2  # noqa: E402
 
 V2_DIR = REPO / "data" / "edgar_excerpts_v2"
@@ -56,7 +61,7 @@ def _current_series(filings: pd.DataFrame, days: pd.DatetimeIndex) -> pd.DataFra
 
 def main() -> int:
     # 1. v2 shards + manifest.
-    ok, report = v1.validate_dataset()
+    ok, report = v1.validate_dataset(window=v2.V2_WINDOW, data_dir=V2_DIR)
     print(f"[1] v2 dataset validate: ok={ok} "
           f"(records={report['coverage']['n_records']}, "
           f"tickers={report['coverage']['n_tickers']}, "

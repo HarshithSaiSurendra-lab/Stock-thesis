@@ -14,23 +14,12 @@ import pytest
 import build_edgar_dataset as bed
 from experiments import list_experiments, register_experiment
 
-# The v1 validation window is a module global. Importing
-# build_edgar_dataset_v2 (as scripts/test_run_daily.py does) overwrites
-# it at import time with the v2 window (2026-11-13..2026-12-31), which
-# makes the 2024 sample records below "outside window" depending on
-# test-collection order. Pin the v1 window per test so this file is
-# order-independent. (Root cause to fix properly: v2 should not mutate
-# v1's globals at import time.)
-_V1_WINDOW_START = date(2023, 1, 1)
-_V1_WINDOW_END = date(2026, 11, 13)
-
-
-@pytest.fixture(autouse=True)
-def _pin_v1_window():
-    old_start, old_end = bed.WINDOW_START, bed.WINDOW_END
-    bed.WINDOW_START, bed.WINDOW_END = _V1_WINDOW_START, _V1_WINDOW_END
-    yield
-    bed.WINDOW_START, bed.WINDOW_END = old_start, old_end
+# Each builder receives its own date window explicitly (2026-11-25
+# refactor): v1's WINDOW_START / WINDOW_END are constants, and v2
+# passes its own window to every v1 call instead of mutating the
+# globals at import time. This file used to pin the v1 window per test
+# with an autouse fixture — that fixture is gone now, and the test
+# below is the regression guard for the refactor.
 
 
 def _sample_record(**overrides):
@@ -106,6 +95,27 @@ def test_validate_record_rejects_future_filing_date():
     errors: list[str] = []
     assert bed.validate_record(rec, errors) is False
     assert any("outside window" in e for e in errors)
+
+
+def test_importing_v2_does_not_change_v1_window():
+    """Regression (2026-11-25 refactor): importing the v2 builder must
+    not change the window v1 validates against. A Dec 2026 record is
+    outside the v1 window (2023-01-01..2026-11-13) but inside the v2
+    window (2026-11-13..2026-12-31) — it must FAIL under v1's default
+    and PASS with the v2 window passed explicitly, regardless of
+    import order.
+    """
+    import build_edgar_dataset_v2 as v2
+
+    assert bed.WINDOW_START == date(2023, 1, 1)
+    assert bed.WINDOW_END == date(2026, 11, 13)
+    rec = _sample_record(filing_date="2026-12-01", period_end_date="2026-09-30")
+    errors: list[str] = []
+    assert bed.validate_record(rec, errors) is False
+    assert any("outside window" in e for e in errors)
+    errors = []
+    assert bed.validate_record(rec, errors, window=v2.V2_WINDOW) is True
+    assert errors == []
 
 
 def test_validate_record_rejects_amendment_form():

@@ -988,8 +988,25 @@ fresh-validation gate), B3 (exact-once), B5–B12 untouched.
   symbol reached the quote checks live; the quote paths are covered by
   the unit tests. Run took ~4 min (regime blocked before the universe
   screen; the Nov 25 42-min run was the paper-API proxy outage).
-- **Still open (separate track):** the EDGAR import-time mutation —
-  importing build_edgar_dataset_v2 overwrites v1's WINDOW_START /
-  WINDOW_END globals. The test fixture pins the v1 window, but each
-  builder should receive its own date window so a research run is
-  reproducible regardless of import order. Not yet refactored.
+- **EDGAR import-time mutation — FIXED Nov 26, 2026.** Each builder
+  now receives its own date window (and data dir) explicitly: v1's
+  `validate_record` / `fetch_ticker_records` / `_fetch_company_records`
+  / `validate_dataset` / `write_manifest` take `window=None` (defaults
+  to the v1 window) and the shard functions take `data_dir=None`
+  (defaults to the v1 dir); v2 passes `V2_WINDOW` (2026-11-13..
+  2026-12-31) and `V2_DATA_DIR` to every v1 call, and the three
+  import-time assignments (`v1.WINDOW_START / WINDOW_END / DATA_DIR`)
+  are deleted. `validate_fresh_v2.py` now asserts the invariant
+  (after importing v2, v1's window/dir are still the v1 values) and
+  validates with the explicit v2 window/dir. The per-test window
+  fixture in test_edgar_dataset.py is removed, replaced by a
+  regression test (a Dec 2026 record fails under v1's default, passes
+  with the v2 window passed explicitly). `_merge_worker_dirs` also
+  takes an explicit `data_dir` — the old test monkeypatched
+  v1.DATA_DIR, and the first post-refactor run briefly wrote its 3
+  fake accessions (acc-1/2/3) into the real v2 shard; they were
+  removed the same night and the shard re-verified at 7 real records
+  (CSCO, DIS, APD, PANW, HD, CRWD, LOW). Full suite 167/167 (both
+  import orders), `build_edgar_dataset_v2.py --validate` clean
+  (errors [], manifest_ok true), `validate_fresh_v2.py` VALIDATION
+  PASSED (v2 7 records / 7 tickers, union == v1 on 749 days, 0 diffs).

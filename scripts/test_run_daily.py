@@ -130,10 +130,9 @@ def _shard_record(accession: str, ticker: str = "AAPL") -> dict:
             "form": "10-Q", "excerpt_text": "x", "mda_text": "x", "risk_text": "x"}
 
 
-def test_merge_worker_dirs_dedups(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_merge_worker_dirs_dedups(tmp_path: Path) -> None:
     main_dir = tmp_path / "main"
     main_dir.mkdir()
-    monkeypatch.setattr(v1, "DATA_DIR", main_dir)
     w0, w1 = tmp_path / "w0", tmp_path / "w1"
     for d in (w0, w1):
         d.mkdir()
@@ -145,8 +144,11 @@ def test_merge_worker_dirs_dedups(tmp_path: Path, monkeypatch: pytest.MonkeyPatc
         json.dumps(_shard_record("acc-2")) + "\n" + json.dumps(_shard_record("acc-3")) + "\n")
     (w1 / "worker_result.json").write_text(json.dumps(
         {"tickers": ["MSFT"], "n_new": 2, "failures": [{"ticker": "MSFT", "stage": "x"}]}))
-    n_new, failures = v2._merge_worker_dirs([w0, w1])
+    # The merge target is passed explicitly — the test never touches the
+    # real v2 dir (the old version monkeypatched v1.DATA_DIR, which the
+    # 2026-11-25 refactor removed).
+    n_new, failures = v2._merge_worker_dirs([w0, w1], data_dir=main_dir)
     assert n_new == 3  # acc-2 counted once
     assert len(failures) == 1
-    stored = v1.load_all_records()
+    stored = v1.load_all_records(data_dir=main_dir)
     assert sorted(r["accession"] for r in stored) == ["acc-1", "acc-2", "acc-3"]

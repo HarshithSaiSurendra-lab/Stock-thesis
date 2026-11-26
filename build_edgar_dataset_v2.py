@@ -11,8 +11,10 @@ chars), same point-in-time discipline, amendments excluded.
 
 Writes to data/edgar_excerpts_v2/ (own shards + own manifest) so the
 v1 dataset and its manifest are never touched. Reuses
-build_edgar_dataset.py's fetch/extract/validate functions by patching
-its module-level WINDOW_START / WINDOW_END / DATA_DIR globals.
+build_edgar_dataset.py's fetch/extract/validate functions, passing the
+v2 window and data dir explicitly — v1's globals are the v1 dataset's
+constants and are never mutated (importing this module changes no v1
+behaviour; the EDGAR suite fails in either import order if it does).
 
 Daily refresh: scripts/run_daily.py calls this with --workers 4, so
 the extension grows incrementally through Dec 31 (resumable — it
@@ -57,11 +59,11 @@ V2_WINDOW_START = date(2026, 11, 13)
 V2_WINDOW_END = date(2026, 12, 31)
 V2_DATA_DIR = REPO_ROOT / "data" / "edgar_excerpts_v2"
 
-# Patch the v1 module's globals so its fetch/extract/validate
-# functions operate on the v2 window and directory.
-v1.WINDOW_START = V2_WINDOW_START
-v1.WINDOW_END = V2_WINDOW_END
-v1.DATA_DIR = V2_DATA_DIR
+# The v2 window, passed explicitly to every v1 call below. v1's
+# WINDOW_START / WINDOW_END / DATA_DIR are the v1 dataset's constants
+# and are never mutated here — importing this module must not change
+# any v1 behaviour.
+V2_WINDOW: tuple[date, date] = (V2_WINDOW_START, V2_WINDOW_END)
 
 # Parallelism: keep each worker process well under the edgartools
 # degradation limit (~15 tickers / ~250 requests per long-lived
@@ -72,7 +74,7 @@ DEFAULT_WORKERS = 4
 
 
 def write_v2_manifest(failures: list[dict]) -> dict:
-    records = v1.load_all_records()
+    records = v1.load_all_records(data_dir=V2_DATA_DIR)
     summary = v1.coverage_summary(records)
     manifest = {
         "dataset_id": "dataset-edgar-point-in-time-v2",
@@ -103,18 +105,21 @@ def write_v2_manifest(failures: list[dict]) -> dict:
     return manifest
 
 
-def _fetch_chunk(tickers: list[str], existing: set[str]) -> tuple[int, list[dict]]:
+def _fetch_chunk(
+    tickers: list[str], existing: set[str], data_dir: Path = V2_DATA_DIR
+) -> tuple[int, list[dict]]:
     """Fetch one chunk of tickers serially; append as we go.
 
     Returns (n_new, failures). `existing` is updated in place so a
     retry inside the same process never re-fetches a stored filing.
+    Writes go to `data_dir` (the main v2 dir, or a worker's own dir).
     """
     all_failures: list[dict] = []
     total_new = 0
     for i, ticker in enumerate(tickers, 1):
-        records, failures = v1.fetch_ticker_records(ticker, existing)
+        records, failures = v1.fetch_ticker_records(ticker, existing, window=V2_WINDOW)
         if records:
-            v1.append_records(records)
+            v1.append_records(records, data_dir=data_dir)
             total_new += len(records)
         all_failures.extend(failures)
         print(f"[{i}/{len(tickers)}] {ticker}: +{len(records)} filings, {len(failures)} failures (total new {total_new})", flush=True)
@@ -125,27 +130,29 @@ def _run_worker(tickers: list[str], out_dir: Path) -> tuple[int, list[dict]]:
     """Worker entry: fetch `tickers` into `out_dir` (own shards).
 
     Existing accessions are read from the MAIN v2 dir first (so a
-    worker never re-fetches stored filings); writes are then
-    redirected to `out_dir` by re-pointing v1.DATA_DIR. Writes a
-    worker_result.json next to the shards for the parent to aggregate.
-    No manifest is written here — the parent writes it once, after
-    merging.
+    worker never re-fetches stored filings); writes go to `out_dir`
+    via the explicit data_dir parameter. Writes a worker_result.json
+    next to the shards for the parent to aggregate. No manifest is
+    written here — the parent writes it once, after merging.
     """
-    existing = v1.load_existing_accessions()
+    existing = v1.load_existing_accessions(data_dir=V2_DATA_DIR)
     print(f"worker: universe chunk {len(tickers)} tickers; already stored: {len(existing)} filings", flush=True)
-    v1.DATA_DIR = out_dir
-    total_new, failures = _fetch_chunk(tickers, existing)
+    total_new, failures = _fetch_chunk(tickers, existing, data_dir=out_dir)
     result = {"tickers": tickers, "n_new": total_new, "failures": failures}
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "worker_result.json").write_text(json.dumps(result, indent=2, sort_keys=True))
     return total_new, failures
 
 
-def _merge_worker_dirs(worker_dirs: list[Path]) -> tuple[int, list[dict]]:
+def _merge_worker_dirs(
+    worker_dirs: list[Path], data_dir: Path = V2_DATA_DIR
+) -> tuple[int, list[dict]]:
     """Merge worker shards into the main v2 dir (dedup by accession).
 
     Chunks partition tickers disjointly, so overlap is not expected;
     dedup is a safety net. Returns (n_new, aggregated failures).
+    `data_dir` is where the merged records are appended (the main v2
+    dir in production; a temp dir in tests).
     """
     seen: set[str] = set()
     records: list[dict] = []
@@ -164,7 +171,7 @@ def _merge_worker_dirs(worker_dirs: list[Path]) -> tuple[int, list[dict]]:
                 seen.add(rec["accession"])
                 records.append(rec)
     if records:
-        v1.append_records(records)
+        v1.append_records(records, data_dir=data_dir)
     return len(records), all_failures
 
 
@@ -217,7 +224,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     if args.validate:
-        ok, report = v1.validate_dataset()
+        ok, report = v1.validate_dataset(window=V2_WINDOW, data_dir=V2_DATA_DIR)
         print(json.dumps(report, indent=2, sort_keys=True))
         return 0 if ok else 1
 
@@ -243,7 +250,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.workers > 1:
         total_new, all_failures = _run_parallel(tickers, args.workers, args.chunk_size)
     else:
-        existing = v1.load_existing_accessions()
+        existing = v1.load_existing_accessions(data_dir=V2_DATA_DIR)
         print(f"universe: {len(tickers)} tickers; already stored: {len(existing)} filings", flush=True)
         total_new, all_failures = _fetch_chunk(tickers, existing)
 
