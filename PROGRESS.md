@@ -1018,3 +1018,22 @@ fresh-validation gate), B3 (exact-once), B5–B12 untouched.
   ref moved). All ATS commits now count on his contribution graph
   retroactively. Ongoing work stays on agentic-p0 (same tree as
   main); repeat the merge when he wants the graph updated.
+- **Live quote-timestamp check — PASS Nov 25, 2026 ~22:19 EST
+  (read-only, paper; one-off script /tmp/verify_quote_ts.py).** The
+  Nov 26 dry run stopped at the regime gate before any quote fetch,
+  so this closes the last open check from the data-freshness rework:
+  a real SPY feed quote (bid 696.33 / ask 738.69 — wide, thin
+  after-hours IEX quoting; ts 2026-11-25T21:00:00.031915Z, i.e. the
+  16:00 ET close) was fetched via broker.paper.latest_quote, noted
+  into the shared DataClock, and read back identically at every hop
+  — clock.last_ts == guardian.last_data_ts == 1795640400.031915, and
+  the _freshness_report data_freshness block carries last_quote_ts
+  identical to the feed ts with quote_age_seconds 22,752s. Judged
+  stale by the Guardian's 120s cap — correct after hours, market
+  closed; that is the wiring working, not a failure. Deliberately
+  did NOT call guardian.can_trade() or health_report(): either would
+  have halted the real guardian (and persisted halted=true to
+  guardian_state.json) or fired a stale-data alert on a quote that
+  is stale only because the market is closed. Guardian state
+  verified unchanged afterwards (halted=false, 0 orders). No repo
+  changes from the check itself.
