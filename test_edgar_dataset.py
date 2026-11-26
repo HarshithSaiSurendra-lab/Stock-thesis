@@ -14,6 +14,24 @@ import pytest
 import build_edgar_dataset as bed
 from experiments import list_experiments, register_experiment
 
+# The v1 validation window is a module global. Importing
+# build_edgar_dataset_v2 (as scripts/test_run_daily.py does) overwrites
+# it at import time with the v2 window (2026-11-13..2026-12-31), which
+# makes the 2024 sample records below "outside window" depending on
+# test-collection order. Pin the v1 window per test so this file is
+# order-independent. (Root cause to fix properly: v2 should not mutate
+# v1's globals at import time.)
+_V1_WINDOW_START = date(2023, 1, 1)
+_V1_WINDOW_END = date(2026, 11, 13)
+
+
+@pytest.fixture(autouse=True)
+def _pin_v1_window():
+    old_start, old_end = bed.WINDOW_START, bed.WINDOW_END
+    bed.WINDOW_START, bed.WINDOW_END = _V1_WINDOW_START, _V1_WINDOW_END
+    yield
+    bed.WINDOW_START, bed.WINDOW_END = old_start, old_end
+
 
 def _sample_record(**overrides):
     rec = bed.build_record(

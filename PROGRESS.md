@@ -866,3 +866,62 @@ fresh-validation gate), B3 (exact-once), B5–B12 untouched.
   and `./alerts.log`. No cron exists yet — the parent creates it
   after verifying this dry run. Committed + pushed on agentic-p0
   (see git log).
+
+## 2026-11-25 — Library rule corrected; regime benchmark diagnosis + stale-window fix
+
+- **Library rule CORRECTED (user, Nov 25): dependency-free was never a
+  requirement.** The Nov 25 "do NOT import sklearn or scipy in any repo
+  code" standing decision was wrong and is withdrawn. Rule now: use
+  maintained libraries when they improve correctness, make experiments
+  easier to reproduce, or help understand how the strategy behaves.
+  Start with the tools already in the project (pandas/numpy/alpaca-py).
+  When adding a library, state what problem it solves and how the
+  improvement will be verified. sklearn/scipy were removed Nov 25 only
+  because nothing imported them; they may be re-added on that bar, as
+  may PyTorch. The ML ranker design stays native numpy Ridge/GBDT
+  (frozen design choice, already built/verified in H5) — what keeps a
+  neural net out for now is the data (1,446 filings), not the
+  dependency list. For statistical work: train on earlier data,
+  evaluate on later data, compare against a simple baseline after
+  trading costs, document assumptions and results. Corrected in
+  `experiments/exp-ml-ranker-v1-design.md` and the January runbook
+  preconditions.
+- **Regime benchmark diagnosis (Nov 25 dry run: regime_blocked,
+  "benchmark data unavailable").** Cause identified as an **API error**,
+  not missing data or a calculation bug: the SPY bar cache (written
+  Nov 16) had expired under the 18h TTL, so a fresh fetch was required,
+  and during the run the egress proxy was dropping connections
+  (ProxyError/RemoteDisconnected on paper-api). The fetch failure was
+  invisible (logged at DEBUG only) and `market_regime` correctly
+  failed closed — no orders, decision log written.
+- **Stale-window bug found while diagnosing (worse than the block).**
+  Alpaca's bars API truncates `limit` from the START of the requested
+  window, so a "successful" fetch with limit=320 returned SPY bars
+  ending 2026-06-02 on BOTH the SDK and REST paths (reproduced live
+  Nov 25: 320 rows, 2025-02-24..2026-06-02). Had the Nov 25 fetch
+  succeeded, the regime check would have evaluated June data as if
+  current. The Nov 16 "verified 275 bars for SPY" check only counted
+  rows, never the date range. Fix: request wide (limit=1000, span holds
+  at most ~440 trading days) and take the tail in code; reject any
+  frame whose latest bar is older than `cfg.run.max_bar_age_days`
+  (7 days, covers holiday weekends) in `_daily_bars` (incl. cached
+  frames) and, as defense in depth, in `market_regime` (distinct reason
+  "benchmark data stale"). Live verification Nov 25 after the fix:
+  `fetch_symbol_frame(SPY)` → 320 rows ending 2026-11-25; REST →
+  443 rows ending 2026-11-25. Regression tests:
+  `test_regime_benchmark.py`, 7/7 passing; full suite 151/151.
+  Also fixed the test that encoded the old behavior
+  (`test_universe_filters_by_liquidity` used 2024 bars) and removed
+  two fabricated cache files it had written (AAA/BBB_60, fake prices).
+- **Pre-existing suite wart found during verification:** importing
+  `build_edgar_dataset_v2` overwrites v1's `WINDOW_START`/`WINDOW_END`
+  globals at import time, so the full suite failed 2 EDGAR tests
+  depending on collection order (scripts/test_run_daily.py imports
+  v2). Fixed with an autouse fixture in `test_edgar_dataset.py` that
+  pins the v1 window per test; the import-time mutation itself is
+  left alone (v2's build relies on it — do not move it without
+  checking the v2 callers).
+- **Follow-up (not fixed):** `guardian.can_trade`'s staleness check is
+  a no-op as wired — main.py passes `last_data_ts=lambda: time.time()`,
+  so the age is always ~0. A real data timestamp source does not
+  exist yet; wiring one is B5 territory.

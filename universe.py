@@ -90,6 +90,11 @@ def _rest_daily_bars(symbol: str, lookback_days: int, cfg: TradingConfig) -> Opt
         return None
     end = datetime.now(timezone.utc)
     start = end - timedelta(days=max(int(lookback_days * 2), lookback_days + 30))
+    # NOTE: do NOT pass a tight `limit`. Alpaca truncates `limit` from the
+    # START of the requested window, so limit=lookback_days once returned
+    # SPY bars ending 2026-06-02 (verified 2026-11-25). The span below
+    # holds at most ~440 trading days, so limit=1000 never truncates and
+    # the caller takes the tail in code.
     params = {
         "symbols": symbol,
         "timeframe": "1Day",
@@ -97,7 +102,7 @@ def _rest_daily_bars(symbol: str, lookback_days: int, cfg: TradingConfig) -> Opt
         "end": end.isoformat().replace("+00:00", "Z"),
         "adjustment": cfg.run.market_data_adjustment,
         "feed": cfg.run.market_data_feed,
-        "limit": str(max(lookback_days, 100)),
+        "limit": "1000",
     }
     url = f"https://data.alpaca.markets/v2/stocks/bars?{urllib.parse.urlencode(params)}"
     req = urllib.request.Request(
@@ -168,50 +173,82 @@ def _write_cached_bars(symbol: str, lookback_days: int, cfg: TradingConfig, fram
         log.debug("bar cache write failed for %s: %s", symbol, exc)
 
 
+def _frame_is_fresh(frame: pd.DataFrame, cfg: Optional[TradingConfig]) -> bool:
+    """True if the frame's latest bar is recent enough to trade on.
+
+    A fetch can "succeed" while returning a months-old window (Alpaca's
+    `limit` truncates from the START of the requested window — verified
+    2026-11-25: SPY bars ending 2026-06-02). A stale window is worse
+    than no data: it would silently drive decisions on old prices.
+    """
+    if frame is None or frame.empty:
+        return False
+    max_age_days = cfg.run.max_bar_age_days if cfg is not None else 7.0
+    last_ts = pd.Timestamp(frame.index.max())
+    if last_ts.tzinfo is not None:
+        last_ts = last_ts.tz_localize(None)
+    age_days = (datetime.now(timezone.utc).replace(tzinfo=None) - last_ts).days
+    return age_days <= max_age_days
+
+
 def _daily_bars(data_client, symbol: str, lookback_days: int, cfg: Optional[TradingConfig] = None) -> Optional[pd.DataFrame]:
     cached = _read_cached_bars(symbol, lookback_days, cfg) if cfg is not None else None
     if cached is not None:
-        return cached
+        if _frame_is_fresh(cached, cfg):
+            return cached
+        # A recently written cache can still hold an old window (the
+        # SPY cache written 2026-11-16 ended 2026-05-27). Never serve it.
+        log.debug("cached bars for %s are stale (last bar %s); refetching",
+                  symbol, cached.index.max())
+    frame = None
     if data_client is None:
         frame = _rest_daily_bars(symbol, lookback_days, cfg) if cfg is not None else None
-        if frame is not None and cfg is not None:
-            _write_cached_bars(symbol, lookback_days, cfg, frame)
-        return frame
-    try:
-        if _ALPACA_AVAILABLE:
-            # IEX free plan: an explicit `end` at/near now is treated as a
-            # recent-SIP query and rejected ("subscription does not permit
-            # querying recent SIP data"), and a request with no start at all
-            # returns only the latest bar. Passing a start date with no end
-            # returns the full window (verified 2026-11-16: 275 bars for SPY).
-            start = datetime.now(timezone.utc) - timedelta(
-                days=max(int(lookback_days * 2), lookback_days + 30)
-            )
-            req = StockBarsRequest(
-                symbol_or_symbols=symbol,
-                timeframe=TimeFrame.Day,
-                start=start,
-                limit=lookback_days,
-            )
-        else:
-            req = SimpleNamespace(symbol_or_symbols=symbol, timeframe="1Day", limit=lookback_days)
-        response = data_client.get_stock_bars(req)
-        frame = _bars_to_frame(response, symbol)
-        if frame is None:
-            return None
-        cols = {c.lower(): c for c in frame.columns}
-        rename = {}
-        for wanted in ("open", "high", "low", "close", "volume"):
-            if wanted not in frame.columns and wanted in cols:
-                rename[cols[wanted]] = wanted
-        if rename:
-            frame = frame.rename(columns=rename)
-        if cfg is not None:
-            _write_cached_bars(symbol, lookback_days, cfg, frame)
-        return frame
-    except Exception as exc:
-        log.debug("bar fetch failed for %s: %s", symbol, exc)
+    else:
+        try:
+            if _ALPACA_AVAILABLE:
+                # IEX free plan: an explicit `end` at/near now is treated as a
+                # recent-SIP query and rejected ("subscription does not permit
+                # querying recent SIP data"), and a request with no start at all
+                # returns only the latest bar. Passing a start date with no end
+                # returns the full window. Do NOT pass a tight `limit` here:
+                # Alpaca truncates `limit` from the START of the window, so
+                # limit=lookback_days once returned SPY bars ending
+                # 2026-06-02 (verified 2026-11-25). Request wide and take
+                # the tail in code instead.
+                start = datetime.now(timezone.utc) - timedelta(
+                    days=max(int(lookback_days * 2), lookback_days + 30)
+                )
+                req = StockBarsRequest(
+                    symbol_or_symbols=symbol,
+                    timeframe=TimeFrame.Day,
+                    start=start,
+                    limit=1000,
+                )
+            else:
+                req = SimpleNamespace(symbol_or_symbols=symbol, timeframe="1Day", limit=1000)
+            response = data_client.get_stock_bars(req)
+            frame = _bars_to_frame(response, symbol)
+            if frame is not None:
+                cols = {c.lower(): c for c in frame.columns}
+                rename = {}
+                for wanted in ("open", "high", "low", "close", "volume"):
+                    if wanted not in frame.columns and wanted in cols:
+                        rename[cols[wanted]] = wanted
+                if rename:
+                    frame = frame.rename(columns=rename)
+        except Exception as exc:
+            log.debug("bar fetch failed for %s: %s", symbol, exc)
+            frame = None
+    if frame is None or frame.empty:
         return None
+    frame = frame.sort_index().tail(lookback_days)
+    if not _frame_is_fresh(frame, cfg):
+        log.debug("bar fetch for %s returned a stale window (last bar %s)",
+                  symbol, frame.index.max())
+        return None
+    if cfg is not None:
+        _write_cached_bars(symbol, lookback_days, cfg, frame)
+    return frame
 
 
 def select_universe(broker, cfg: TradingConfig) -> list[str]:

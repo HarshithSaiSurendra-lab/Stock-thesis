@@ -26,8 +26,17 @@ a new experiment instead.
   as a fifth design (see Steps 5–6). It is built in January from the
   frozen design — no training before then, no fitting on the fresh
   window, never on the frozen holdout.
-- Use the repo venv (`.venv/bin/python`). Do not import sklearn or
-  scipy (standing decision). Do not install anything.
+- Use the repo venv (`.venv/bin/python`). Library rule (corrected
+  2026-11-25, user): dependency-free was never a requirement — use
+  maintained libraries when they improve correctness, make experiments
+  easier to reproduce, or help understand how the strategy behaves.
+  Start with the tools already in the project (pandas/numpy/alpaca-py).
+  When adding a library, state what problem it solves and how the
+  improvement will be verified. sklearn/scipy were removed 2026-11-25
+  only because nothing imported them; they may be re-added on that bar.
+  For statistical work: train on earlier data, evaluate on later data,
+  compare against a simple baseline after trading costs, and document
+  assumptions and results.
 
 ## Step 1 — Complete the dataset refresh (through Dec 31)
 

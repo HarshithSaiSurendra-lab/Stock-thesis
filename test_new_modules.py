@@ -104,7 +104,10 @@ def test_downside_filter_and_volatility_scale():
 
 
 def test_universe_filters_by_liquidity(tmp_path=None):
+    if tmp_path is None:
+        tmp_path = Path(tempfile.mkdtemp())
     cfg = TradingConfig.from_env()
+    cfg.run.bar_cache_dir = str(tmp_path / "bars")  # never touch the real cache
     cfg.universe.seed_symbols = ("AAA", "BBB")
     cfg.universe.universe_source = "seed"
     cfg.universe.max_candidates = 10
@@ -116,7 +119,11 @@ def test_universe_filters_by_liquidity(tmp_path=None):
     class FakeData:
         def get_stock_bars(self, req):
             sym = req.symbol_or_symbols
-            idx = pd.bdate_range("2024-01-01", periods=30)
+            # Bars must end near today: _daily_bars rejects windows older
+            # than cfg.run.max_bar_age_days (7 days) — see
+            # test_regime_benchmark.py. The 2024 dates this test used
+            # before encoded the old accept-anything behavior.
+            idx = pd.bdate_range(end=pd.Timestamp.today().normalize(), periods=30)
             if sym == "AAA":
                 df = pd.DataFrame(
                     {

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime, timezone
 
 import pandas as pd
 
@@ -30,6 +31,20 @@ def market_regime(broker, cfg: TradingConfig) -> RegimeResult:
     frame = fetch_symbol_frame(broker, symbol, cfg)
     if frame is None or frame.empty:
         return RegimeResult(False, symbol, "benchmark data unavailable", {})
+
+    # Freshness guard (defense in depth: _daily_bars also rejects stale
+    # frames). A benchmark window ending months ago must not drive a
+    # trading decision. Fail closed with a distinct reason so the log
+    # distinguishes "no data" (fetch failed) from "stale data" (fetch
+    # returned an old window — verified 2026-11-25: SPY bars ending
+    # 2026-06-02).
+    last_ts = pd.Timestamp(frame.index.max())
+    if last_ts.tzinfo is not None:
+        last_ts = last_ts.tz_localize(None)
+    age_days = (datetime.now(timezone.utc).replace(tzinfo=None) - last_ts).days
+    if age_days > cfg.run.max_bar_age_days:
+        return RegimeResult(False, symbol, "benchmark data stale",
+                            {"last_bar": str(last_ts.date()), "age_days": age_days})
 
     features = build_feature_frame(frame).assign(close=frame["close"])
     latest = features.dropna().iloc[-1] if not features.dropna().empty else None

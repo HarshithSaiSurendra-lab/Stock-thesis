@@ -43,10 +43,22 @@ is the wrong tool here:
   neural nets come after ML fundamentals, and no PyTorch/transformers go
   on the resume or LinkedIn until a project proves them. The proving
   project is rebuilding a piece of Stockify in PyTorch — not ATS.
-- Standing decision (Nov 25): sklearn 1.9.1 + scipy 1.18.1 were REMOVED
-  from the repo venv; do NOT import sklearn or scipy in any repo code.
-  Reuse the native numpy Ridge/GBDT already in `r2_panels.py`. No new
-  dependency, no install.
+- Library rule (CORRECTED Nov 25, user — the Nov 25 "do NOT import
+  sklearn or scipy" line was wrong): dependency-free was never a
+  requirement. Use maintained libraries when they improve correctness,
+  make experiments easier to reproduce, or help understand how the
+  strategy behaves; when adding one, state the problem it solves and
+  how the improvement is verified. sklearn/scipy were removed from the
+  venv Nov 25 only because nothing imported them — they may be re-added
+  on that bar, as may PyTorch. This design stays native numpy Ridge/GBDT
+  from `r2_panels.py` (frozen, already built and verified in H5) — the
+  native implementation is a design choice, not a dependency rule. What
+  keeps a neural net out for now is the data (1,446 filings), not the
+  dependency list. For statistical work here (Deflated Sharpe, IC
+  p-values), established tools (e.g., scipy) may be used where
+  appropriate: train on earlier data, evaluate on later data, compare
+  against a simple baseline after trading costs, and document
+  assumptions and results.
 
 ## Proposed design (frozen when approved)
 
