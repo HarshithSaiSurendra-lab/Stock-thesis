@@ -112,9 +112,9 @@ def run_design_simulation(
     manager = OrderManager(store_path)
     try:
         # Startup reconcile before any new order for any symbol.
+        # Lookup-only: reconcile never submits, so no place fn is passed.
         manager.reconcile_all_unknowns(
             lookup_fn=broker.get_by_client_order_id,
-            place_order_fn=broker.submit,
             grace_seconds=0.0,
             max_polls=3,
             sleep_fn=lambda s: None,

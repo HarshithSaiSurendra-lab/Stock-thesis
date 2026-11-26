@@ -113,23 +113,44 @@ be checked.
 ## Loop 5 — B3 reconcile (proactive / event-based)
 
 - **Spec:** `order_manager.py` + `fake_broker.py`. One logical order
-  produces at most one broker order. Deterministic
-  `client_order_id` (SHA-256 of design/day/symbol/side/qty/type/
-  limit/inputs hash); SQLite intent store, atomic claim, 120s lease;
-  persist + claim BEFORE any broker call; explicit 409/400 is
-  terminal REJECTED; timeout is UNKNOWN, never a new ID.
-- **Verification:** the five acceptance tests in
+  produces at most one broker order AND exactly one submission
+  attempt, ever. Deterministic `client_order_id` (SHA-256 of
+  design/day/symbol/side/qty/type/limit/inputs hash); SQLite intent
+  store (intents + fills + alerts), atomic claim, 120s lease;
+  persist + claim BEFORE any broker call; `attempts` is incremented
+  and persisted BEFORE place_order_fn is called, so a crash mid-call
+  still leaves attempts >= 1 on disk.
+- **Verification:** the acceptance tests in
   `test_b3_exact_once.py` — (1) accept + drop, restart, delayed
-  lookup recovers the original, exactly 1 broker order; (1b) not-found
-  after grace, resubmit same ID, exactly 1 order; (2) two concurrent
-  workers, same intent + broker order; (3) partial fill + restart +
+  lookup recovers the original, exactly 1 broker order; (1b) exactly
+  ONE submission attempt across timeout, repeated 404s, lease
+  expiry, and restart — with both endings covered: (a) a later
+  lookup finds the original order and adopts it, still 1 attempt /
+  1 order, alerts resolved, symbol unblocked; (b) the lookup never
+  finds it, the intent stays UNKNOWN with a persistent alert and the
+  symbol blocked, and a conflicting order for that symbol is refused
+  as BLOCKED without any place call; (2) two concurrent workers,
+  same intent + broker order; (3) partial fill + restart +
   duplicate fill replay, filled/remaining recorded exactly once;
   (4) startup reconcile before any new order; (5) deterministic
-  replay re-derives the same ID.
-- **Stop conditions:** reconcile loop is lookup → grace poll →
-  resubmit SAME ID → if still ambiguous, stay UNKNOWN for the next
-  pass; halt and alert on unresolved exposure; never create a new
-  ID, never auto-cancel blindly, never treat an acceptance as a fill.
+  replay re-derives the same ID. Plus: a 409/duplicate conflict is
+  reconciled FIRST (lookup with grace polls) — adopted if found,
+  UNKNOWN + alert + blocked if inconclusive, never REJECTED on an
+  inconclusive lookup; only a conclusive non-duplicate rejection
+  (400/validation) is terminal REJECTED. An expired claim taken over
+  after the one attempt was made reconciles only — it never
+  resubmits.
+- **Stop conditions:** reconcile() is LOOKUP-ONLY — it has no
+  place_order_fn parameter at all, so there is no resubmit path in
+  the module. A 404 "not found" is inconclusive, not proof the
+  broker never accepted the first attempt. A restart, a lease
+  expiry, or a 404 never authorises a second submission attempt.
+  If the lookup stays inconclusive, the intent stays UNKNOWN, an
+  alert is recorded in the `alerts` table, and submit() refuses any
+  OTHER intent for that (account, symbol) as BLOCKED until the
+  intent resolves. The earlier resubmit-same-ID behaviour was
+  removed Nov 26, 2026: the broker deduping a second attempt to one
+  order did not make the second attempt acceptable.
 - **Graph:** feeds the Phase 4 soak — B3 is the reason the soak can
   start the day the January gate reads, instead of needing a
   build-then-test cycle first. The live loop in `strategy_runner.py`

@@ -1203,3 +1203,56 @@ packaging, not verified quotes; the loop pattern itself is the lesson.
   Suite unchanged at 183 (verified Nov 25–26 for the B3/B2 build).
 - `data/edgar_excerpts_v2/manifest.json` is modified in the working
   tree by daily runs; deliberately NOT included in this commit.
+
+## 2026-11-26 — Loop 5 correction: reconcile is lookup-only (no resubmit)
+
+User caught a real hole in the B3 build before B5 started: reconcile()
+resubmitted the SAME client_order_id after the grace polls. The broker
+deduped that to one order, but the second submission ATTEMPT itself
+violated "one logical order, one attempt". A restart, a lease expiry,
+or a 404 never authorises a second submission.
+
+### What changed (order_manager.py)
+- reconcile() is LOOKUP-ONLY: the place_order_fn parameter was REMOVED
+  (no resubmit path exists anywhere in the module now — the only
+  place_order_fn call left is the single attempt inside submit()).
+  It polls lookup_fn by client_order_id, adopts if found, otherwise
+  leaves the intent UNKNOWN, records a persistent alert, and blocks
+  the symbol. A 404 is inconclusive, not proof of non-acceptance.
+- attempts is incremented and persisted BEFORE place_order_fn is
+  called, so a crash mid-call still leaves attempts >= 1; any later
+  path (restart, lease-expiry takeover) with attempts >= 1 and no
+  broker_order_id goes to lookup-only reconcile, never to place.
+- 409/duplicate conflict: reconcile the existing order FIRST (lookup
+  with grace polls) — adopt if found; UNKNOWN + alert + blocked if
+  inconclusive; NEVER REJECTED on an inconclusive lookup. Only a
+  conclusive non-duplicate rejection (400/validation) is REJECTED.
+- Blocking: new `alerts` table (deduplicated, unresolved until the
+  intent resolves) + `blocked_symbols()` / `is_blocked()`; while an
+  intent is UNKNOWN for an (account, symbol), submit() refuses any
+  OTHER intent for that (account, symbol) — persists it as BLOCKED,
+  never calls place for it. Once the blocker resolves, a later submit
+  of the BLOCKED intent proceeds normally. `account` (default
+  'paper') added to intents + build_intent (NOT part of the
+  client_order_id); migration adds the column to pre-existing DBs.
+- design_runner.py: reconcile_all_unknowns no longer passes a place fn.
+
+### Tests (test_b3_exact_once.py)
+- test_1b REWRITTEN: exactly ONE submission attempt across timeout,
+  repeated 404s, lease expiry, and restart — both endings: (a) later
+  lookup finds the original -> adopted, 1 attempt / 1 order, alerts
+  resolved, symbol unblocked, BLOCKED intent then proceeds; (b) lookup
+  never finds it -> UNKNOWN + alert + blocked, conflicting order
+  refused as BLOCKED with zero place calls.
+- test_explicit_409 rewritten (reconcile-first; two cases, different
+  symbols — the first case's UNKNOWN correctly blocks a second AAPL
+  intent, which the first draft of the test itself caught).
+- NEW test_expired_claim_after_attempt_never_resubmits (lease expiry
+  + restart after the one attempt: still 1 place call).
+- Full suite: **184 passed** (was 183; +1 net test), 30.8s.
+  B3+B2 files: 17 passed.
+
+### Scope
+- No signal, backtest, holdout, or January-gate change. No live-loop
+  rewiring. Fake broker only. ATS_LOOPS.md Loop 5 rewritten to match
+  the tested behaviour (this section is the record).
