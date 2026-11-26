@@ -1010,3 +1010,11 @@ fresh-validation gate), B3 (exact-once), B5–B12 untouched.
   import orders), `build_edgar_dataset_v2.py --validate` clean
   (errors [], manifest_ok true), `validate_fresh_v2.py` VALIDATION
   PASSED (v2 7 records / 7 tickers, union == v1 on 749 days, 0 diffs).
+- **GitHub contributions — FIXED Nov 25, 2026 (user picked merge).**
+  agentic-p0 merged into main as a fast-forward (main was an ancestor,
+  no conflicts): remote main 173535e -> 66853c3f, moved via the GitHub
+  API (plain `git push` has no credentials on this VM; the commit
+  already existed remotely as origin/agentic-p0's head, so only the
+  ref moved). All ATS commits now count on his contribution graph
+  retroactively. Ongoing work stays on agentic-p0 (same tree as
+  main); repeat the merge when he wants the graph updated.
