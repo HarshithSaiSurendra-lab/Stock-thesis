@@ -21,6 +21,11 @@ a new experiment instead.
   November; the November ledger does not carry over, and the
   provider's ledger is keyed by calendar month, so December starts
   at $0 against the $15 cap, enforced in code in `score_fresh_v2.py`).
+- exp-ml-ranker-v1 is REGISTERED (`experiments/exp-ml-ranker-v1-design.md`,
+  user-approved 2026-11-25) and is evaluated in this same January run
+  as a fifth design (see Steps 5–6). It is built in January from the
+  frozen design — no training before then, no fitting on the fresh
+  window, never on the frozen holdout.
 - Use the repo venv (`.venv/bin/python`). Do not import sklearn or
   scipy (standing decision). Do not install anything.
 
@@ -81,7 +86,7 @@ inputs, `exp-technical-v2` panel, long-hold), extended to the fresh
 window. The frozen-holdout v4 numbers (−4.33% @10bps, −8.45% @20bps)
 are reference only and are NOT the gate baseline here.
 
-## Step 5 — Run v2 / v3 / H3 / H7 with parameters FROZEN
+## Step 5 — Run v2 / v3 / H3 / H7 / exp-ml-ranker-v1 with parameters FROZEN
 
 Parameters exactly as registered in the design doc (rounds 1/2
 results files). No retuning. Common execution: weekly rebalance
@@ -90,9 +95,17 @@ initial capital. Costs 0/10/20bps (10bps base, 20bps stress).
 Prices: same bar panel construction as rounds 1/2, extended to the
 fresh window.
 
+exp-ml-ranker-v1: build the ranker from the registered design
+(`experiments/exp-ml-ranker-v1-design.md`) — native numpy Ridge +
+GBDT, H5 hyperparameters, no retuning; features per the design doc;
+train window only, walk-forward 4 folds — then run it on the same
+fresh window with the same execution and costs. The deterministic
+v3 rules are a comparison arm, not a re-fit feature.
+
 ## Step 6 — Compute the gates (per design)
 
-PASS iff ALL of SG1–SG3 (plus SG4 for H3):
+PASS iff ALL of SG1–SG3 (plus SG4 for H3; the ranker is gated on
+SG1–SG3 only):
 
 - **SG1:** fresh-window net return @10bps > fresh-window v4 base @10bps.
 - **SG2:** fresh-window net return @20bps > fresh-window v4 base @20bps.
@@ -113,7 +126,7 @@ PASS iff ALL of SG1–SG3 (plus SG4 for H3):
 
 Write the results to
 `experiments/results/exp-fresh-validation-v1.json` (one file, all
-four designs + v4 base + gate verdicts).
+five designs + v4 base + gate verdicts).
 
 ## Step 7 — Log, commit, push
 
@@ -134,7 +147,7 @@ four designs + v4 base + gate verdicts).
   requires the user's explicit decision, with written risk limits
   and a kill switch, under the plan's Phase 4 (60-day paper soak).
   A pass with DSR < 0.95 or net20 ≤ 0 is flagged "pass, weak".
-- If NO design passes: all four are demoted to "holdout-only
+- If NO design passes: all five are demoted to "holdout-only
   passes" — no paper trading. Research returns to pattern
   recognition on the larger combined sample, with a NEW frozen
   holdout for any future test. The fresh window is then train data,
