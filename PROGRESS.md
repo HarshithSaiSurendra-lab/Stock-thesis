@@ -1037,3 +1037,133 @@ fresh-validation gate), B3 (exact-once), B5–B12 untouched.
   is stale only because the market is closed. Guardian state
   verified unchanged afterwards (halted=false, 0 orders). No repo
   changes from the check itself.
+
+## Done — 2026-11-25 — B3 exact-once order lifecycle + B2 design-selectable dry-run runner (user-approved, fake broker only)
+
+User decision Nov 25, 2026 ~22:44 EST: B3 first, then B2. Acceptance
+criterion (user): one logical order produces at most one broker order;
+a lookup can briefly return "not found" after acceptance — keep the
+intent pending and reconcile using the same client_order_id; a timeout
+alone must never create a new order ID. Milo proposed 5 improvements
+(deterministic ID, resubmit-same-ID after grace, startup reconcile +
+SQLite store, fill dedup by fill_id, B2 decision/execution split);
+user adopted ALL of them (~22:52 EST). December work only, fake
+broker only. January fresh-validation gate/runbook untouched, frozen
+holdout untouched, no design retuned, no real Alpaca call anywhere
+in the new code, no live/paper order.
+
+### B3 — `order_manager.py` (new) + `fake_broker.py` (new, test-only)
+- Deterministic client_order_id: SHA-256, first 32 hex chars, of a
+  canonical string of design_id, trading_day, symbol, side, qty,
+  order_type, limit_price, inputs_hash. Same intent re-derived after
+  restart/crash/race => same ID. Never UUID/clock. v2 vs v3 same
+  symbol/qty/day are DIFFERENT intents (design_id in the hash).
+- SQLite intent store (not JSON): intents(intent_id PK =
+  client_order_id, design_id, trading_day, symbol, side, qty,
+  order_type, limit_price, inputs_hash, status, broker_order_id,
+  filled_qty, claimed_by, claim_expires_at, created_at, updated_at,
+  attempts, last_error) + fills(fill_id PK, intent_id,
+  broker_order_id, qty, price, ts). Statuses: PENDING, CLAIMED,
+  UNKNOWN, SUBMITTED, PARTIALLY_FILLED, FILLED, CANCELLED, REJECTED.
+  Claim atomically (INSERT OR IGNORE / single UPDATE, re-entrant for
+  the same worker); the loser waits and reads the winner's intent and
+  never submits. Claim lease 120s — after expiry another worker may
+  take over the UNKNOWN intent, still with the same ID.
+- submit(intent, place_order_fn, lookup_fn): persist+claim BEFORE any
+  broker call. Success => SUBMITTED + broker_order_id. Explicit
+  rejection (409 duplicate / 400 validation) => terminal REJECTED, no
+  retry (409 first tries the lookup once and adopts the order if it
+  exists). Timeout/ambiguous (TimeoutError, ConnectionError, ...)
+  => UNKNOWN, no new ID. reconcile(intent, lookup_fn,
+  place_order_fn, grace_seconds, max_polls, sleep_fn injectable):
+  lookup by client_order_id, adopt if found; poll again after grace;
+  if still not-found, RESUBMIT with the SAME client_order_id (broker
+  rejects a duplicate 409 if the first was accepted but lookup missed
+  it; if it never arrived, the resubmit creates it once).
+- Startup reconcile: reconcile_all_unknowns() recovers every
+  PENDING / expired-CLAIMED / UNKNOWN intent (optionally per symbol)
+  before any new order for that symbol; the B2 runner calls it at
+  startup. Alpaca grounding (verified Nov 25): Alpaca rejects a
+  duplicate client_order_id (409); lookup by client_order_id; if 404
+  retry is safe; derive the ID from strategy state, never clock/UUID.
+- Partial fills: apply_fill_update(intent, fill) dedups by fill_id
+  (replay => applied=False, quantities unchanged); a cumulative
+  snapshot sets filled = max(existing, cumulative) (never decreases,
+  never adds a cumulative to the existing total); incremental fills
+  add only for unseen fill_ids. filled_qty is monotonic; remaining =
+  qty - filled; PARTIALLY_FILLED until filled==qty => FILLED.
+- FakeBroker: thread-safe, orders by client_order_id and broker id;
+  second submit with the same ID returns the original, never a
+  second order; delayed_visibility_polls (first N lookups return
+  None); drop_next_response (accept + raise TimeoutError, order
+  stored); partial fills + duplicate_fill_delivery replay.
+- Real-Alpaca wiring for later (not used in tests): AlpacaLeg.submit
+  now passes client_order_id to MarketOrderRequest /
+  LimitOrderRequest and to the REST payload. strategy_runner.py live
+  loop NOT rewired — B3 is a new layer; the live loop still uses the
+  old path until a later decision. config.py: PathConfig gains
+  order_store_path (default ./order_intents.db, env ORDER_STORE_PATH);
+  .gitignore gains order_intents.db.
+
+### B3 tests — `test_b3_exact_once.py` (10 tests, all pass)
+1. Fake accepts + drops response; restart (new OrderManager, same DB)
+   + delayed lookup (2 polls) recovers the original; broker has
+   exactly 1 order. 1b. Lookup None for all polls, then resubmit same
+   ID => exactly 1 order, same client_order_id, SUBMITTED.
+2. Two workers (two managers, same DB, same FakeBroker, concurrent
+   threads) submit the same intent => same persisted intent and same
+   broker order; broker order_count()==1.
+3. Partial fill 4/10, restart, broker repeats the same fill_id =>
+   applied=False, filled=4, remaining=6 exactly once; second distinct
+   fill_id for 6 => filled=10, remaining=0, FILLED. 3b. Cumulative
+   snapshot replay (cumulative 4, new fill_id) is a no-op.
+4. Startup reconcile: UNKNOWN intent left in DB, new manager's
+   reconcile_all_unknowns recovers it (SUBMITTED, same broker id)
+   before any new order for that symbol; broker still 1 order, then
+   a new order proceeds (2 orders total).
+5. Deterministic replay: re-derived intent => identical
+   client_order_id; re-submit after SUBMITTED returns the same broker
+   order, order_count()==1. Plus unit tests: ID changes with design;
+   explicit 409 and explicit 400 are terminal REJECTED with exactly
+   one place call; an expired claim can be taken over (re-entrant
+   claim for the same worker was fixed during testing — the first run
+   caught it: 14/16 new tests passed, then the claim fix + a B2 test
+   pairing fix made it 16/16).
+
+### B2 — `design_runner.py` (new, SIMULATION ONLY)
+- Pure decision layer separate from execution: select_symbols(design,
+  inputs) over the same dated input rows {date, symbol, haiku_score,
+  composite_technical, rvol_20, rsi_14, item1a_similarity, price,
+  qty_hint}. No market-data fetching, no Alpaca, no holdout data, no
+  training/fitting. Selection rules are documented SIMULATION
+  APPROXIMATIONS, not the backtest engine: v2 top-5 haiku>0; v3 v2 +
+  composite>0 veto; h3 v3 + Item 1A similarity veto (>=0.85, drop
+  materially changed names); h7 reversion+RSI proxy (rsi<30, most
+  oversold first); exp-ml-ranker-v1 weighted-sum stub
+  (0.6*haiku + 0.3*min(rvol,1) - 0.1*rsi/100, no training).
+- run_design_simulation(design, inputs, broker, store_path,
+  trading_day): startup reconcile, then each selected symbol builds
+  an intent (design_id + trading_day + inputs_hash recorded with
+  every decision) and routes via OrderManager.submit through the
+  FakeBroker. Summary {design_id, trading_day, inputs_hash,
+  decisions, broker_order_count, winner: None}. run_all_designs runs
+  all five on the SAME inputs, each in its own FakeBroker sandbox +
+  own intent store, so designs cannot collide or share positions.
+  Winner is ALWAYS None / "unset until January". CLI:
+  `python design_runner.py --design v2 --trading-day 2026-12-01
+  --inputs <json>` or `--all-designs`.
+- B2 tests — `test_b2_design_runner.py` (6 tests, all pass): all five
+  designs on the same inputs each tagged with its own design_id;
+  v2 picks top-5 positive Haiku, v3 vetoes NVDA (composite<0), h7
+  picks the oversold set; v2 vs v3 same symbol have different
+  client_order_ids; same design twice on same inputs reuses the same
+  broker order (exactly-once via B3); winner is None.
+- CLI example (2026-12-01, 6-row sample, /tmp store): v2 5 orders,
+  v3 5, h3 5, h7 3, ranker 5; all SUBMITTED via the fake broker,
+  winner None.
+
+### Suite + scope
+- Full suite: **183 passed** (was 167; +16 new B3/B2 tests), 29.8s.
+- Deliberately NOT done: no rewiring of strategy_runner.py's live
+  loop to B3; no paper/live order; no January gate read; no holdout
+  use; no experiments/ or runbook changes; no winner selection.

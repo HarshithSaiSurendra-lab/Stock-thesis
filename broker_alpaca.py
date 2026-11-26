@@ -98,6 +98,10 @@ def _rest_order_payload(order: dict, options: Optional[dict] = None) -> dict:
     }
     if order["order_type"] == "limit":
         payload["limit_price"] = str(order["limit_price"])
+    if order.get("client_order_id"):
+        # Idempotency key: Alpaca rejects a duplicate client_order_id
+        # (409), so a retry after a timeout with the same ID is safe.
+        payload["client_order_id"] = str(order["client_order_id"])
     if options["extended_hours"]:
         payload["extended_hours"] = True
     return payload
@@ -334,7 +338,9 @@ class AlpacaLeg:
     def submit(self, order: dict) -> Optional[dict]:
         """
         order = {symbol, side, qty, order_type: 'market'|'limit', limit_price?,
-                 time_in_force?, extended_hours?}
+                 time_in_force?, extended_hours?, client_order_id?}
+        client_order_id is the idempotency key (see order_manager.py):
+        pass it through so a retry after a timeout reuses the same ID.
         Enforces the single-position cap before sending.
         """
         if not self.can_trade():
@@ -365,16 +371,19 @@ class AlpacaLeg:
                 }
 
             side = OrderSide.BUY if order["side"] == "buy" else OrderSide.SELL
+            client_order_id = order.get("client_order_id")
             if order["order_type"] == "limit":
                 req = LimitOrderRequest(
                     symbol=order["symbol"], qty=order["qty"], side=side,
                     time_in_force=_time_in_force_enum(order_options["time_in_force"]),
                     limit_price=order["limit_price"],
+                    **({"client_order_id": str(client_order_id)} if client_order_id else {}),
                 )
             else:
                 req = MarketOrderRequest(
                     symbol=order["symbol"], qty=order["qty"], side=side,
                     time_in_force=_time_in_force_enum(order_options["time_in_force"]),
+                    **({"client_order_id": str(client_order_id)} if client_order_id else {}),
                 )
             result = self.client.submit_order(req)
             return {"id": str(result.id), "symbol": order["symbol"],

@@ -203,6 +203,7 @@ class PathConfig:
     guardian_state_path: str = "./guardian_state.json"
     memory_db_path: str = "./trade_memory.db"
     execution_journal_db_path: str = "./execution_journal.db"
+    order_store_path: str = "./order_intents.db"
     alert_log_path: str = "./alerts.log"
     kill_switch_path: str = "./KILL_SWITCH"
 
@@ -353,6 +354,7 @@ class TradingConfig:
                 guardian_state_path=_env_str("GUARDIAN_STATE_PATH", "./guardian_state.json"),
                 memory_db_path=_env_str("MEMORY_DB_PATH", "./trade_memory.db"),
                 execution_journal_db_path=_env_str("EXECUTION_JOURNAL_DB_PATH", "./execution_journal.db"),
+                order_store_path=_env_str("ORDER_STORE_PATH", "./order_intents.db"),
                 alert_log_path=_env_str("ALERT_LOG_PATH", "./alerts.log"),
                 kill_switch_path=_env_str("KILL_SWITCH_PATH", "./KILL_SWITCH"),
             ),
@@ -365,6 +367,7 @@ class TradingConfig:
             self.paths.guardian_state_path,
             self.paths.memory_db_path,
             self.paths.execution_journal_db_path,
+            self.paths.order_store_path,
             self.paths.alert_log_path,
         ):
             p = Path(path)

@@ -15,6 +15,7 @@ guardian_state.json
 strategy_state.json
 trade_memory.db
 execution_journal.db
+order_intents.db
 
 robustness_*.csv
 research_*.csv
