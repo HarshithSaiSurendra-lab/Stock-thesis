@@ -2,13 +2,14 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from typing import Optional
 
 import pandas as pd
 
 from config import TradingConfig
 from execution_quality import quote_age_seconds, quote_mid
 from indicators import build_feature_frame
-from universe import fetch_symbol_frame
+from universe import StaleBarsError, check_frame_freshness, fetch_symbol_frame
 
 
 @dataclass
@@ -19,39 +20,46 @@ class RegimeResult:
     details: dict
 
 
-def market_regime(broker, cfg: TradingConfig) -> RegimeResult:
+def market_regime(broker, cfg: TradingConfig, now: Optional[datetime] = None) -> RegimeResult:
     """
     Broad-market gate for a long-only strategy.
     If the benchmark trend is unhealthy or cannot be evaluated, new longs stop.
+
+    `now` is injectable so tests can pin the evaluation time (holiday
+    weekends, before/after the close); production passes None (real time).
     """
     symbol = cfg.regime.benchmark_symbol
     if not cfg.regime.enabled:
         return RegimeResult(True, symbol, "disabled", {})
 
-    frame = fetch_symbol_frame(broker, symbol, cfg)
+    try:
+        frame = fetch_symbol_frame(broker, symbol, cfg, now)
+    except StaleBarsError as exc:
+        # The fetch returned a frame, but its latest complete bar is
+        # older than the latest completed session. This is "stale",
+        # not "unavailable" — the distinction is what lets a blocked
+        # run be diagnosed from its decision log.
+        return RegimeResult(False, symbol, "benchmark data stale", exc.details)
     if frame is None or frame.empty:
         return RegimeResult(False, symbol, "benchmark data unavailable", {})
-
-    # Freshness guard (defense in depth: _daily_bars also rejects stale
-    # frames). A benchmark window ending months ago must not drive a
-    # trading decision. Fail closed with a distinct reason so the log
-    # distinguishes "no data" (fetch failed) from "stale data" (fetch
-    # returned an old window — verified 2026-11-25: SPY bars ending
-    # 2026-06-02).
-    last_ts = pd.Timestamp(frame.index.max())
-    if last_ts.tzinfo is not None:
-        last_ts = last_ts.tz_localize(None)
-    age_days = (datetime.now(timezone.utc).replace(tzinfo=None) - last_ts).days
-    if age_days > cfg.run.max_bar_age_days:
-        return RegimeResult(False, symbol, "benchmark data stale",
-                            {"last_bar": str(last_ts.date()), "age_days": age_days})
 
     features = build_feature_frame(frame).assign(close=frame["close"])
     latest = features.dropna().iloc[-1] if not features.dropna().empty else None
     if latest is None:
         return RegimeResult(False, symbol, "benchmark indicators unavailable", {})
 
+    # Expected vs observed session, for the decision log: anyone reading
+    # the log must be able to tell why this run proceeded or stopped.
+    freshness = check_frame_freshness(frame, cfg, now)
+
     checks = {
+        "expected_latest_session": freshness.expected_session.isoformat(),
+        "expected_session_close": freshness.expected_close.isoformat(),
+        "observed_latest_bar": (
+            freshness.observed_latest_bar.isoformat()
+            if freshness.observed_latest_bar
+            else None
+        ),
         "above_sma_50": bool(latest["close"] > latest["sma_50"]),
         "above_sma_200": bool(latest["close"] > latest["sma_200"]),
         "sma_20_above_sma_50": bool(latest["sma_20"] > latest["sma_50"]),
@@ -99,7 +107,7 @@ def volatility_scale(rvol: float, cfg: TradingConfig) -> float:
     return max(cfg.risk.min_vol_scale, min(cfg.risk.max_vol_scale, raw))
 
 
-def downside_ok(row: pd.Series, quote: dict | None, cfg: TradingConfig) -> tuple[bool, str]:
+def downside_ok(row: pd.Series, quote: dict | None, cfg: TradingConfig, now: Optional[datetime] = None) -> tuple[bool, str]:
     rvol = float(row.get("rvol_20", float("nan")))
     if pd.isna(rvol):
         return False, "realized volatility unavailable"
@@ -113,8 +121,12 @@ def downside_ok(row: pd.Series, quote: dict | None, cfg: TradingConfig) -> tuple
             spread_pct = quote.get("spread", 0.0) / mid
         if spread_pct is not None and spread_pct > cfg.risk.max_quote_spread_pct:
             return False, f"spread {spread_pct:.2%} above cap {cfg.risk.max_quote_spread_pct:.2%}"
-        age = quote_age_seconds(quote)
-        if age is not None and age > cfg.risk.max_quote_age_seconds:
+        age = quote_age_seconds(quote, now)
+        if age is None:
+            # A quote with no feed timestamp cannot be verified fresh.
+            # Fail closed rather than trading on an unverifiable quote.
+            return False, "quote timestamp unavailable"
+        if age > cfg.risk.max_quote_age_seconds:
             return False, f"quote age {age:.0f}s above cap {cfg.risk.max_quote_age_seconds}s"
         close = float(row.get("close", float("nan")))
         if not pd.isna(close) and close > 0 and mid > 0:

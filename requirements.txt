@@ -3,6 +3,13 @@ pandas>=1.5,<3
 alpaca-py>=0.43,<1
 pytest>=8,<10
 urllib3>=1.26,<3
+# pandas_market_calendars (installed 2026-11-25, v4.6.1): the NYSE
+# exchange calendar (holidays, early closes) is the source of truth for
+# which trading session's data a daily run should expect. A hand-kept
+# holiday list would silently go stale; the library is the maintained
+# answer. Verified against NYSE's published 2026 calendar
+# (Thanksgiving Nov 26 closed, Nov 27 early close 13:00 ET).
+pandas_market_calendars>=4,<5
 
 anthropic>=1,<3
 

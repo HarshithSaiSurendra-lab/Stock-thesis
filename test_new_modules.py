@@ -75,13 +75,23 @@ def test_downside_filter_and_volatility_scale():
     cfg = TradingConfig.from_env()
     cfg.risk.max_entry_rvol = 0.60
     cfg.risk.target_position_rvol = 0.25
+    # Quotes must carry the feed timestamp now: downside_ok fails closed
+    # on a quote it cannot verify fresh. Pin `now` so the test does not
+    # depend on the wall clock.
+    now = datetime(2026, 11, 25, 21, 15, tzinfo=timezone.utc)
+    fresh_quote = {
+        "bid": 99.9,
+        "ask": 100.0,
+        "spread": 0.1,
+        "timestamp": (now - timedelta(seconds=10)).isoformat(),
+    }
     row = pd.Series({"rvol_20": 0.50})
-    ok, reason = downside_ok(row, {"bid": 99.9, "ask": 100.0, "spread": 0.1}, cfg)
+    ok, reason = downside_ok(row, fresh_quote, cfg, now)
     assert ok, reason
     assert volatility_scale(0.50, cfg) == 0.5
 
     too_hot = pd.Series({"rvol_20": 0.80})
-    ok, _ = downside_ok(too_hot, {"bid": 99.9, "ask": 100.0, "spread": 0.1}, cfg)
+    ok, _ = downside_ok(too_hot, fresh_quote, cfg, now)
     assert not ok
 
     cfg.risk.max_quote_age_seconds = 120
@@ -97,8 +107,8 @@ def test_downside_filter_and_volatility_scale():
     assert not ok
     assert "quote age" in reason
 
-    gapped_quote = {"bid": 109.9, "ask": 110.0, "spread": 0.1}
-    ok, reason = downside_ok(row_with_close, gapped_quote, cfg)
+    gapped_quote = dict(fresh_quote, bid=109.9, ask=110.0, spread=0.1)
+    ok, reason = downside_ok(row_with_close, gapped_quote, cfg, now)
     assert not ok
     assert "entry gap" in reason
 

@@ -14,6 +14,11 @@ from typing import Iterable, Optional
 import pandas as pd
 
 from config import TradingConfig
+from market_calendar import (
+    latest_completed_session,
+    missing_sessions,
+    session_close,
+)
 
 log = logging.getLogger("universe")
 
@@ -59,7 +64,21 @@ def _latest_quote(data_client, symbol: str) -> Optional[dict]:
         ask = float(getattr(quote, "ask_price", None) or quote["ask_price"])
         mid = (bid + ask) / 2
         spread = ask - bid
-        return {"bid": bid, "ask": ask, "spread": spread, "spread_pct": spread / mid if mid else 1.0}
+        # The feed timestamp is the freshness signal: quote_age_seconds
+        # judges the quote by it, and the Guardian's DataClock notes it.
+        # A quote without it cannot be verified fresh (see downside_ok).
+        ts = getattr(quote, "timestamp", None)
+        if ts is None and isinstance(quote, dict):
+            ts = quote.get("timestamp") or quote.get("t")
+        if hasattr(ts, "isoformat"):
+            ts = ts.isoformat()
+        return {
+            "bid": bid,
+            "ask": ask,
+            "spread": spread,
+            "spread_pct": spread / mid if mid else 1.0,
+            "timestamp": ts,
+        }
     except Exception as exc:
         log.debug("latest quote failed for %s: %s", symbol, exc)
         return None
@@ -173,33 +192,114 @@ def _write_cached_bars(symbol: str, lookback_days: int, cfg: TradingConfig, fram
         log.debug("bar cache write failed for %s: %s", symbol, exc)
 
 
-def _frame_is_fresh(frame: pd.DataFrame, cfg: Optional[TradingConfig]) -> bool:
-    """True if the frame's latest bar is recent enough to trade on.
+@dataclass
+class FreshnessResult:
+    """Outcome of judging a bar frame against the exchange calendar."""
 
-    A fetch can "succeed" while returning a months-old window (Alpaca's
-    `limit` truncates from the START of the requested window — verified
-    2026-11-25: SPY bars ending 2026-06-02). A stale window is worse
-    than no data: it would silently drive decisions on old prices.
+    fresh: bool
+    expected_session: date  # latest completed NYSE session
+    expected_close: datetime  # that session's market-close timestamp
+    observed_latest_bar: Optional[date]  # latest COMPLETE bar on/before it
+    missing_sessions: list  # trading days in (observed, expected]
+    reason: str
+
+
+class StaleBarsError(Exception):
+    """A bar fetch returned a frame, but its latest complete bar is older
+    than the latest completed trading session.
+
+    Raised (not None) deliberately: the caller must be able to report
+    "benchmark data stale" instead of "benchmark data unavailable" —
+    the distinction matters when diagnosing a blocked run. Carries the
+    expected / observed dates.
     """
-    if frame is None or frame.empty:
-        return False
-    max_age_days = cfg.run.max_bar_age_days if cfg is not None else 7.0
-    last_ts = pd.Timestamp(frame.index.max())
-    if last_ts.tzinfo is not None:
-        last_ts = last_ts.tz_localize(None)
-    age_days = (datetime.now(timezone.utc).replace(tzinfo=None) - last_ts).days
-    return age_days <= max_age_days
+
+    def __init__(self, symbol: str, result: FreshnessResult):
+        self.symbol = symbol
+        self.result = result
+        super().__init__(f"{symbol}: {result.reason}")
+
+    @property
+    def details(self) -> dict:
+        r = self.result
+        return {
+            "expected_latest_session": r.expected_session.isoformat(),
+            "expected_session_close": r.expected_close.isoformat(),
+            "observed_latest_bar": (
+                r.observed_latest_bar.isoformat() if r.observed_latest_bar else None
+            ),
+            "missing_sessions": [d.isoformat() for d in r.missing_sessions],
+        }
 
 
-def _daily_bars(data_client, symbol: str, lookback_days: int, cfg: Optional[TradingConfig] = None) -> Optional[pd.DataFrame]:
+def _bar_date(ts) -> date:
+    """Session date of a bar timestamp (bars are stamped midnight ET)."""
+    stamp = pd.Timestamp(ts)
+    if stamp.tzinfo is not None:
+        stamp = stamp.tz_convert("America/New_York")
+    return stamp.date()
+
+
+def _latest_complete_bar(frame: pd.DataFrame, expected: date) -> Optional[date]:
+    """Latest bar date that is both complete (all OHLCV present) and on or
+    before the expected session.
+
+    A partial bar for an incomplete session — today's bar fetched at
+    10:00, or a row with a NaN field — does not count as that session's
+    data.
+    """
+    needed = ["open", "high", "low", "close", "volume"]
+    if frame is None or frame.empty or not set(needed).issubset(frame.columns):
+        return None
+    complete = frame.dropna(subset=needed)
+    if complete.empty:
+        return None
+    eligible = [_bar_date(ts) for ts in complete.index if _bar_date(ts) <= expected]
+    return max(eligible) if eligible else None
+
+
+def check_frame_freshness(
+    frame: pd.DataFrame,
+    cfg: Optional[TradingConfig] = None,
+    now: Optional[datetime] = None,
+) -> FreshnessResult:
+    """Judge a bar frame against the latest completed trading session.
+
+    Fresh means the latest complete bar IS the expected session — not
+    merely recent. A frame ending a session early is stale even if it
+    is only a day old (a missing session), and a frame ending months
+    ago is stale even though its bars are internally consistent.
+    """
+    tz = cfg.run.timezone if cfg is not None else "America/New_York"
+    expected = latest_completed_session(now, tz)
+    close = session_close(expected, tz)
+    observed = _latest_complete_bar(frame, expected)
+    if observed is None:
+        return FreshnessResult(
+            False, expected, close, None, [],
+            "no complete bar on or before the expected session",
+        )
+    if observed < expected:
+        return FreshnessResult(
+            False, expected, close, observed,
+            missing_sessions(observed, expected),
+            f"latest complete bar {observed.isoformat()} is before "
+            f"the expected session {expected.isoformat()}",
+        )
+    return FreshnessResult(True, expected, close, observed, [], "ok")
+
+
+def _daily_bars(data_client, symbol: str, lookback_days: int, cfg: Optional[TradingConfig] = None, now: Optional[datetime] = None) -> Optional[pd.DataFrame]:
     cached = _read_cached_bars(symbol, lookback_days, cfg) if cfg is not None else None
     if cached is not None:
-        if _frame_is_fresh(cached, cfg):
+        res = check_frame_freshness(cached, cfg, now)
+        if res.fresh:
             return cached
         # A recently written cache can still hold an old window (the
-        # SPY cache written 2026-11-16 ended 2026-05-27). Never serve it.
-        log.debug("cached bars for %s are stale (last bar %s); refetching",
-                  symbol, cached.index.max())
+        # SPY cache written 2026-11-16 ended 2026-05-27). Never serve
+        # it — refetch instead.
+        log.debug("cached bars for %s are stale (%s); refetching",
+                  symbol, res.reason)
     frame = None
     if data_client is None:
         frame = _rest_daily_bars(symbol, lookback_days, cfg) if cfg is not None else None
@@ -242,10 +342,14 @@ def _daily_bars(data_client, symbol: str, lookback_days: int, cfg: Optional[Trad
     if frame is None or frame.empty:
         return None
     frame = frame.sort_index().tail(lookback_days)
-    if not _frame_is_fresh(frame, cfg):
-        log.debug("bar fetch for %s returned a stale window (last bar %s)",
-                  symbol, frame.index.max())
-        return None
+    res = check_frame_freshness(frame, cfg, now)
+    if not res.fresh:
+        # A stale window is worse than no data: it would silently drive
+        # decisions on old prices. Raise (do not return None) so the
+        # caller reports "benchmark data stale" instead of "benchmark
+        # data unavailable" — the distinction matters when diagnosing a
+        # blocked run.
+        raise StaleBarsError(symbol, res)
     if cfg is not None:
         _write_cached_bars(symbol, lookback_days, cfg, frame)
     return frame
@@ -260,7 +364,12 @@ def select_universe(broker, cfg: TradingConfig) -> list[str]:
     data_client = getattr(broker.paper, "data", None) or getattr(broker.live, "data", None)
 
     for symbol in candidates:
-        bars = _daily_bars(data_client, symbol, cfg.universe.lookback_days, cfg)
+        try:
+            bars = _daily_bars(data_client, symbol, cfg.universe.lookback_days, cfg)
+        except StaleBarsError:
+            # A stale window for one symbol skips that symbol; it must
+            # not abort the whole screen.
+            continue
         if bars is None or bars.empty:
             continue
         needed = {"open", "high", "low", "close", "volume"}
@@ -275,6 +384,11 @@ def select_universe(broker, cfg: TradingConfig) -> list[str]:
             continue
         dollar_volume = float((bars["close"] * bars["volume"]).tail(20).mean())
         quote = _latest_quote(data_client, symbol)
+        clock = getattr(broker, "data_clock", None)
+        if clock is not None and quote:
+            # Feed the Guardian's DataClock with the quote's feed
+            # timestamp (not the receipt time).
+            clock.note(quote.get("timestamp"))
         spread_pct = quote["spread_pct"] if quote else None
         if dollar_volume >= cfg.universe.min_dollar_volume and (
             spread_pct is None or spread_pct <= cfg.universe.max_spread_pct
@@ -285,9 +399,17 @@ def select_universe(broker, cfg: TradingConfig) -> list[str]:
     return [symbol for symbol, _ in survivors[: cfg.universe.max_candidates]]
 
 
-def fetch_symbol_frame(broker, symbol: str, cfg: TradingConfig) -> Optional[pd.DataFrame]:
+def fetch_symbol_frame(broker, symbol: str, cfg: TradingConfig, now: Optional[datetime] = None) -> Optional[pd.DataFrame]:
+    """Daily bars for one symbol, ending on the latest completed session.
+
+    Returns None when the fetch fails outright (API error — the caller
+    reports "data unavailable"). Raises StaleBarsError when the fetch
+    returns a frame whose latest complete bar is older than the latest
+    completed session — the caller must report "data stale" instead, so
+    a blocked run can be diagnosed from its log.
+    """
     data_client = getattr(broker.paper, "data", None) or getattr(broker.live, "data", None)
-    bars = _daily_bars(data_client, symbol, cfg.run.data_lookback_days, cfg)
+    bars = _daily_bars(data_client, symbol, cfg.run.data_lookback_days, cfg, now)
     if bars is None or bars.empty:
         return None
     return bars

@@ -187,12 +187,11 @@ class RunConfig:
     bar_cache_enabled: bool = True
     bar_cache_dir: str = "./.cache/bars"
     bar_cache_max_age_hours: float = 18.0
-    # No bar older than this (calendar days) is ever used for a decision.
-    # The Alpaca bars API truncates `limit` from the START of the
-    # requested window, so a "successful" fetch once returned SPY bars
-    # ending 2026-06-02 (verified 2026-11-25). 7 days covers holiday
-    # weekends while catching any months-stale window.
-    max_bar_age_days: float = 7.0
+    # Bar freshness is judged against the exchange calendar, not an age
+    # cutoff: the latest complete bar must BE the latest completed
+    # trading session (see market_calendar.py / check_frame_freshness).
+    # The old 7-day max_bar_age_days heuristic was removed 2026-11-25 —
+    # it could not tell a holiday weekend from a missing feed.
     decision_log_enabled: bool = True
     decision_log_dir: str = "./.cache/decision_logs"
 
@@ -345,7 +344,6 @@ class TradingConfig:
                 bar_cache_enabled=_env_int("BAR_CACHE_ENABLED", 1) == 1,
                 bar_cache_dir=_env_str("BAR_CACHE_DIR", "./.cache/bars"),
                 bar_cache_max_age_hours=_env_float("BAR_CACHE_MAX_AGE_HOURS", 18.0),
-                max_bar_age_days=_env_float("MAX_BAR_AGE_DAYS", 7.0),
                 decision_log_enabled=_env_int("DECISION_LOG_ENABLED", 1) == 1,
                 decision_log_dir=_env_str("DECISION_LOG_DIR", "./.cache/decision_logs"),
             ),

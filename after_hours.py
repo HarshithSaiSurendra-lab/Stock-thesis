@@ -34,7 +34,7 @@ from strategy_runner import (
     _decision_snapshot,
 )
 from trade_signal import composite_score, composite_signal, trend_quality_score
-from universe import fetch_symbol_frame
+from universe import StaleBarsError, fetch_symbol_frame
 
 log = logging.getLogger("after_hours")
 
@@ -69,7 +69,10 @@ def _after_hours_quote_ok(
         return False, f"spread {spread_pct:.2%} above cap {cfg.after_hours.max_spread_pct:.2%}", quote
     age = _quote_age_seconds(quote, now)
     quote["age_seconds"] = age
-    if age is not None and age > cfg.after_hours.max_quote_age_seconds:
+    if age is None:
+        # A quote with no feed timestamp cannot be verified fresh.
+        return False, "quote timestamp unavailable", quote
+    if age > cfg.after_hours.max_quote_age_seconds:
         return False, (
             f"quote age {age:.0f}s above cap "
             f"{cfg.after_hours.max_quote_age_seconds}s"
@@ -170,7 +173,12 @@ def run_after_hours(
         return summary
 
     benchmark_row = None
-    benchmark_frame = fetch_symbol_frame(broker, cfg.regime.benchmark_symbol, cfg)
+    try:
+        benchmark_frame = fetch_symbol_frame(broker, cfg.regime.benchmark_symbol, cfg)
+    except StaleBarsError:
+        # The regime gate already validated this frame; if it is stale
+        # now, proceed without a benchmark row rather than crashing.
+        benchmark_frame = None
     if benchmark_frame is not None and not benchmark_frame.empty:
         benchmark_features = build_feature_frame(benchmark_frame)
         benchmark_features = benchmark_features.assign(close=benchmark_frame["close"])
@@ -191,7 +199,18 @@ def run_after_hours(
         if symbol in state.submitted_today:
             skipped.append({"symbol": symbol, "stage": "dedupe", "reason": "already submitted today"})
             continue
-        frame = fetch_symbol_frame(broker, symbol, cfg)
+        try:
+            frame = fetch_symbol_frame(broker, symbol, cfg)
+        except StaleBarsError as exc:
+            skipped.append({
+                "symbol": symbol,
+                "stage": "data",
+                "reason": "market data stale",
+                "expected_latest_session": exc.details["expected_latest_session"],
+                "observed_latest_bar": exc.details["observed_latest_bar"],
+                "missing_sessions": exc.details["missing_sessions"],
+            })
+            continue
         if frame is None or frame.empty:
             skipped.append({"symbol": symbol, "stage": "data", "reason": "market data unavailable"})
             continue

@@ -4,6 +4,8 @@ import json
 import logging
 import math
 from dataclasses import dataclass, field
+import time
+
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
@@ -20,7 +22,7 @@ from notifier import Notifier, format_daily
 from reconcile import reconcile
 from sector_map import sector_benchmark_for, sector_benchmarks_for
 from trade_signal import composite_signal, composite_score, trend_quality_score
-from universe import fetch_symbol_frame, select_universe
+from universe import StaleBarsError, fetch_symbol_frame, select_universe
 
 log = logging.getLogger("strategy")
 
@@ -423,6 +425,44 @@ def _write_strategy_outputs(summary: dict, cfg: TradingConfig) -> None:
         log.debug("execution journal write failed: %s", exc)
 
 
+def _freshness_report(cfg: TradingConfig, regime=None, guardian=None, now: Optional[datetime] = None) -> dict:
+    """Expected vs observed timestamps for the decision log.
+
+    Lets anyone reading the log tell why a run proceeded or stopped:
+    which session the exchange had completed by the decision time, which
+    bar the benchmark frame actually ended on, which sessions are
+    missing, and how old the newest quote the feed supplied is.
+    The expected session is a property of the calendar + decision time,
+    so it is shown even when the data fetch failed entirely.
+    """
+    from market_calendar import latest_completed_session, session_close
+
+    moment = now or datetime.now(timezone.utc)
+    expected = latest_completed_session(moment, cfg.run.timezone)
+    report = {
+        "decision_time": cfg.run.decision_time,
+        "timezone": cfg.run.timezone,
+        "evaluated_at": moment.isoformat(),
+        "expected_latest_session": expected.isoformat(),
+        "expected_session_close": session_close(expected, cfg.run.timezone).isoformat(),
+        "observed_latest_bar": None,
+        "missing_sessions": None,
+    }
+    if regime is not None:
+        details = getattr(regime, "details", {}) or {}
+        report["observed_latest_bar"] = details.get("observed_latest_bar")
+        report["missing_sessions"] = details.get("missing_sessions")
+    if guardian is not None:
+        last = guardian.last_data_ts()
+        report["last_quote_ts"] = (
+            datetime.fromtimestamp(last, tz=timezone.utc).isoformat()
+            if last is not None
+            else None
+        )
+        report["quote_age_seconds"] = round(time.time() - last, 1) if last is not None else None
+    return report
+
+
 def run_daily(
     broker,
     guardian,
@@ -442,6 +482,7 @@ def run_daily(
             "date": today,
             "status": "halted",
             "reason": guardian.state.halt_reason,
+            "data_freshness": _freshness_report(cfg, guardian=guardian),
             "orders": [],
         }
         _write_strategy_outputs(summary, cfg)
@@ -455,6 +496,7 @@ def run_daily(
             "date": today,
             "status": "market_closed",
             "reason": "regular market is closed; real submissions are blocked",
+            "data_freshness": _freshness_report(cfg, guardian=guardian),
             "orders": [],
         }
         _write_strategy_outputs(summary, cfg)
@@ -469,6 +511,7 @@ def run_daily(
             "status": "regime_blocked",
             "reason": regime.reason,
             "regime": regime.__dict__,
+            "data_freshness": _freshness_report(cfg, regime=regime, guardian=guardian),
             "orders": [],
         }
         _write_strategy_outputs(summary, cfg)
@@ -477,7 +520,12 @@ def run_daily(
         return summary
 
     benchmark_row = None
-    benchmark_frame = fetch_symbol_frame(broker, cfg.regime.benchmark_symbol, cfg)
+    try:
+        benchmark_frame = fetch_symbol_frame(broker, cfg.regime.benchmark_symbol, cfg)
+    except StaleBarsError:
+        # The regime gate already validated this frame; if it is stale
+        # now, proceed without a benchmark row rather than crashing.
+        benchmark_frame = None
     if benchmark_frame is not None and not benchmark_frame.empty:
         benchmark_features = build_feature_frame(benchmark_frame)
         benchmark_features = benchmark_features.assign(close=benchmark_frame["close"])
@@ -499,7 +547,18 @@ def run_daily(
         if symbol in state.submitted_today:
             skipped.append({"symbol": symbol, "stage": "dedupe", "reason": "already submitted today"})
             continue
-        frame = fetch_symbol_frame(broker, symbol, cfg)
+        try:
+            frame = fetch_symbol_frame(broker, symbol, cfg)
+        except StaleBarsError as exc:
+            skipped.append({
+                "symbol": symbol,
+                "stage": "data",
+                "reason": "market data stale",
+                "expected_latest_session": exc.details["expected_latest_session"],
+                "observed_latest_bar": exc.details["observed_latest_bar"],
+                "missing_sessions": exc.details["missing_sessions"],
+            })
+            continue
         if frame is None or frame.empty:
             skipped.append({"symbol": symbol, "stage": "data", "reason": "market data unavailable"})
             continue
@@ -621,6 +680,7 @@ def run_daily(
             "status": "breadth_blocked",
             "reason": breadth["reason"],
             "regime": regime.__dict__,
+            "data_freshness": _freshness_report(cfg, regime=regime, guardian=guardian),
             "breadth": breadth,
             "candidates": [_decision_report_item(item) for item in candidates],
             "decision_report": [_decision_report_item(item) for item in candidates],
@@ -844,6 +904,7 @@ def run_daily(
             "date": today,
             "status": "dry_run",
             "regime": regime.__dict__,
+            "data_freshness": _freshness_report(cfg, regime=regime, guardian=guardian),
             "breadth": breadth,
             "budget": {
                 "strategy_capital": cfg.sizing.strategy_capital,
@@ -882,6 +943,7 @@ def run_daily(
         "date": today,
         "status": "ok" if reconcile_result["ok"] else "needs_attention",
         "regime": regime.__dict__,
+        "data_freshness": _freshness_report(cfg, regime=regime, guardian=guardian),
         "breadth": breadth,
         "budget": {
             "strategy_capital": cfg.sizing.strategy_capital,

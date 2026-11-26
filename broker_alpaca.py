@@ -288,6 +288,7 @@ class AlpacaLeg:
     def latest_quote(self, symbol: str) -> Optional[dict]:
         if not self.cfg.enabled:
             return None
+        quote = None
         if not self.data:
             try:
                 feed = os.environ.get("MARKET_DATA_FEED", "iex")
@@ -298,21 +299,29 @@ class AlpacaLeg:
                 bid = float(q.get("bp", 0.0))
                 ask = float(q.get("ap", 0.0))
                 timestamp = q.get("t")
-                return {"bid": bid, "ask": ask, "spread": ask - bid, "timestamp": timestamp}
+                quote = {"bid": bid, "ask": ask, "spread": ask - bid, "timestamp": timestamp}
             except Exception as e:
                 log.error(f"[{self.cfg.mode}] REST quote failed for {symbol}: {e}")
                 return None
-        try:
-            req = StockLatestQuoteRequest(symbol_or_symbols=symbol)
-            q = self.data.get_stock_latest_quote(req)[symbol]
-            timestamp = getattr(q, "timestamp", None)
-            timestamp = timestamp.isoformat() if hasattr(timestamp, "isoformat") else timestamp
-            return {"bid": float(q.bid_price), "ask": float(q.ask_price),
-                    "spread": float(q.ask_price) - float(q.bid_price),
-                    "timestamp": timestamp}
-        except Exception as e:
-            log.error(f"[{self.cfg.mode}] quote failed for {symbol}: {e}")
-            return None
+        else:
+            try:
+                req = StockLatestQuoteRequest(symbol_or_symbols=symbol)
+                q = self.data.get_stock_latest_quote(req)[symbol]
+                timestamp = getattr(q, "timestamp", None)
+                timestamp = timestamp.isoformat() if hasattr(timestamp, "isoformat") else timestamp
+                quote = {"bid": float(q.bid_price), "ask": float(q.ask_price),
+                        "spread": float(q.ask_price) - float(q.bid_price),
+                        "timestamp": timestamp}
+            except Exception as e:
+                log.error(f"[{self.cfg.mode}] quote failed for {symbol}: {e}")
+                return None
+        # Feed the Guardian's DataClock with the quote's FEED timestamp
+        # (not the receipt time): a quote received just now with an old
+        # feed timestamp is stale data.
+        clock = getattr(self, "data_clock", None)
+        if clock is not None and quote is not None:
+            clock.note(quote.get("timestamp"))
+        return quote
 
     # ---- order placement ---------------------------------------------------
     def can_trade(self) -> bool:

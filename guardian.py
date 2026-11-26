@@ -161,12 +161,12 @@ class Guardian:
         self,
         cfg: GuardianConfig,
         get_account: Callable[[], dict],
-        last_data_ts: Callable[[], float],
+        last_data_ts: Callable[[], Optional[float]],
         alerter: Optional[Alerter] = None,
     ):
         self.cfg = cfg
         self.get_account = get_account          # () -> {"equity": float, ...}
-        self.last_data_ts = last_data_ts        # () -> epoch sec of newest data
+        self.last_data_ts = last_data_ts        # () -> epoch sec of newest FEED data, or None if none seen yet
         self.alerter = alerter or Alerter(cfg.alert_log_path)
         self.state = GuardianState.load(cfg.state_path)
         self.log = logging.getLogger("guardian")
@@ -196,10 +196,17 @@ class Guardian:
             return False
 
         # 3. Stale data — a frozen feed means every signal is a lie.
-        age = time.time() - self.last_data_ts()
-        if age > self.cfg.max_data_staleness_sec:
-            return self._halt(HaltReason.STALE_DATA,
-                              f"data is {age:.0f}s old")
+        # last_data_ts is the newest timestamp the FEED supplied (see
+        # data_clock.py). None means no feed data has been observed yet
+        # this session — nothing to judge, so do not halt on it; the
+        # per-decision checks (regime freshness, quote age) judge the
+        # data once it arrives.
+        last = self.last_data_ts()
+        if last is not None:
+            age = time.time() - last
+            if age > self.cfg.max_data_staleness_sec:
+                return self._halt(HaltReason.STALE_DATA,
+                                  f"data is {age:.0f}s old")
 
         # 4. Daily loss limit.
         acct = self._safe_account()
@@ -291,22 +298,23 @@ class Guardian:
     # ---- health / heartbeat ------------------------------------------------
     def health_report(self) -> dict:
         """Call on a timer (e.g. every minute) to prove liveness + freshness."""
-        age = time.time() - self.last_data_ts()
+        last = self.last_data_ts()
+        age = None if last is None else time.time() - last
         acct = self._safe_account()
         report = {
             "ts": datetime.now(timezone.utc).isoformat(),
             "halted": self.state.halted,
             "halt_reason": self.state.halt_reason,
             "kill_switch": Path(self.cfg.kill_switch_path).exists(),
-            "data_age_sec": round(age, 1),
-            "data_fresh": age <= self.cfg.max_data_staleness_sec,
+            "data_age_sec": round(age, 1) if age is not None else None,
+            "data_fresh": None if age is None else age <= self.cfg.max_data_staleness_sec,
             "orders_today": self.state.orders_today,
             "consecutive_errors": self.state.consecutive_errors,
             "equity": acct.get("equity") if acct else None,
             "day_start_equity": self.state.day_start_equity,
         }
         # Proactively alert if data is going stale even if not yet trading
-        if not report["data_fresh"]:
+        if age is not None and not report["data_fresh"]:
             self.alerter.send("warn", f"DATA STALE: {age:.0f}s since last update")
         return report
 

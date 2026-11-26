@@ -3,11 +3,11 @@ from __future__ import annotations
 import argparse
 import json
 import logging
-import time
 
 from broker_alpaca import AccountConfig as BrokerAccountConfig
 from broker_alpaca import BrokerConfig, DualBroker
 from config import TradingConfig
+from data_clock import DataClock
 from guardian import Guardian, GuardianConfig, TelegramAlerter
 from memory import TradeMemory
 from session_router import run_routed
@@ -25,6 +25,18 @@ def build_components(cfg: TradingConfig):
     )
     memory = TradeMemory(cfg.paths.memory_db_path)
 
+    # One clock for the whole run, fed ONLY by quote timestamps from the
+    # data feed (broker.latest_quote + the universe screen note them).
+    # The Guardian's staleness check judges this clock — the feed, not
+    # the wall clock. Daily bars are judged separately, against the
+    # exchange calendar (market_calendar.py). Until the first quote is
+    # observed the clock is empty and the Guardian skips its staleness
+    # check; the per-decision checks judge the data once it arrives.
+    clock = DataClock()
+    broker.data_clock = clock
+    broker.paper.data_clock = clock
+    broker.live.data_clock = clock
+
     def guarded_account() -> dict:
         account_equity = broker.paper.equity() or broker.live.equity() or cfg.sizing.strategy_capital
         return {"equity": _strategy_equity(cfg, account_equity)}
@@ -37,7 +49,7 @@ def build_components(cfg: TradingConfig):
             max_position_pct=cfg.sizing.max_position_pct,
         ),
         get_account=guarded_account,
-        last_data_ts=lambda: time.time(),
+        last_data_ts=clock.last_ts,
         alerter=TelegramAlerter(
             cfg.paths.alert_log_path,
             cfg.notifier.token or "invalid",

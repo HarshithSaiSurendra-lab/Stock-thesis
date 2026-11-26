@@ -925,3 +925,71 @@ fresh-validation gate), B3 (exact-once), B5–B12 untouched.
   a no-op as wired — main.py passes `last_data_ts=lambda: time.time()`,
   so the age is always ~0. A real data timestamp source does not
   exist yet; wiring one is B5 territory.
+
+## 2026-11-25 — Data freshness rework (user instruction; prioritized over the next model experiment)
+
+- **Expected session is now the exchange calendar, not an age cutoff.**
+  The 7-day `max_bar_age_days` heuristic is removed (config + code).
+  `market_calendar.py` (new, pandas_market_calendars NYSE — installed
+  4.6.1, added to requirements.txt with the problem it solves) gives
+  the latest completed session at the decision time: at 16:15 ET on a
+  normal day it is today, before the close it is the previous trading
+  day, on an early-close day it is today after 13:00, and on a holiday
+  or weekend it is the previous trading day. Verified against NYSE's
+  published 2026 calendar (Thanksgiving Nov 26 closed, Nov 27 early
+  close 13:00 ET, Christmas Dec 25 closed).
+- **Freshness = the latest COMPLETE bar IS the expected session.**
+  `check_frame_freshness` (universe.py) uses the latest bar that is
+  both complete (all OHLCV present) and on/before the expected
+  session, so a partial bar for an incomplete session does not count,
+  and a frame missing a session is stale even if only a day old.
+  It reports expected session + close, observed latest bar, and the
+  missing sessions.
+- **A stale frame rejected inside `_daily_bars` still reaches the final
+  log as "benchmark data stale".** `_daily_bars` now raises
+  `StaleBarsError` (carrying expected/observed) instead of returning
+  None for a stale window; `market_regime` catches it and returns
+  "benchmark data stale" with the details, while a fetch that returns
+  nothing is still "benchmark data unavailable". `select_universe`,
+  `run_daily` (per-symbol loop + benchmark re-fetch), and
+  `after_hours` catch it per symbol so one stale symbol cannot abort
+  a run.
+- **Guardian quote check uses the feed timestamp.** New `DataClock`
+  (data_clock.py), fed ONLY by quote timestamps from the feed
+  (broker.latest_quote on both legs + the universe screen note them).
+  main.py wires `clock.last_ts` into the Guardian, replacing the
+  `lambda: time.time()` no-op. Until the first quote is observed the
+  clock is empty and the Guardian skips its staleness check (nothing
+  to judge); the per-decision checks judge the data once it arrives.
+  `downside_ok` (and the after-hours quote check) now fail closed on
+  a quote with no feed timestamp ("quote timestamp unavailable") and
+  take an injectable `now` for testing. `_latest_quote` surfaces the
+  feed timestamp it previously dropped.
+- **Decision log shows expected vs observed.** Every summary now
+  carries a `data_freshness` block: decision_time (16:15), timezone,
+  evaluated_at, expected_latest_session + expected_session_close,
+  observed_latest_bar, missing_sessions, last_quote_ts and
+  quote_age_seconds. The regime details carry the same expected /
+  observed fields, so a blocked run is diagnosable from its log.
+- **Verification (paper-only dry run + regression tests).** New
+  `test_data_freshness.py` (22 tests; replaces test_regime_benchmark.py):
+  Thanksgiving-week calendar, holiday-weekend freshness, missing
+  session, partial bar (counts as missing; ignored before the close),
+  old quote received just now (30-min-old feed ts -> "quote age 1800s
+  above cap"), fresh quote, missing-timestamp quote, DataClock,
+  Guardian halt on a stale feed timestamp and skip when no data seen,
+  and the decision-log fields. Full suite 166/166.
+  Live dry run (scripts/run_daily.py, Nov 26 02:42 UTC, paper-only):
+  DAILY_RUN OK, log 2026-11-26_regime_blocked_*.json — status
+  regime_blocked on a MARKET verdict (SPY below SMA-50/200, rvol
+  31.7% above the 25% cap), with expected_latest_session ==
+  observed_latest_bar == 2026-11-25 in both the regime details and
+  the data_freshness block. The run stopped at the regime gate, so no
+  symbol reached the quote checks live; the quote paths are covered by
+  the unit tests. Run took ~4 min (regime blocked before the universe
+  screen; the Nov 25 42-min run was the paper-API proxy outage).
+- **Still open (separate track):** the EDGAR import-time mutation —
+  importing build_edgar_dataset_v2 overwrites v1's WINDOW_START /
+  WINDOW_END globals. The test fixture pins the v1 window, but each
+  builder should receive its own date window so a research run is
+  reproducible regardless of import order. Not yet refactored.
