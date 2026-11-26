@@ -1167,3 +1167,39 @@ in the new code, no live/paper order.
 - Deliberately NOT done: no rewiring of strategy_runner.py's live
   loop to B3; no paper/live order; no January gate read; no holdout
   use; no experiments/ or runbook changes; no winner selection.
+
+## 2026-11-26 — Revised plan: loop discipline (Cherny/Cat Wu) written down
+
+User shared the @asharasjad reel (Nov 15) on the agents → self-improving
+loops → graphs pattern; the real source is the Cherny + Wu one-year
+Claude Code conversation (https://www.youtube.com/watch?v=Hth_tLaC2j8)
+plus Anthropic's loop guidance. Saved as entry 5 in the ML plan's
+agent-building videos file. The reel's headline numbers are viral
+packaging, not verified quotes; the loop pattern itself is the lesson.
+
+### What was written
+- NEW `ATS_LOOPS.md`: six loops, each with spec, verification, and stop
+  conditions — (1) daily run, time-based 16:15 ET; (2) B2 simulation,
+  goal-based, winner None until January; (3) fresh validation,
+  goal-based, Jan gate; (4) earnings-call December re-run, drop if
+  IC ~0; (5) B3 reconcile, proactive/event-based; (6) Astra
+  collaboration, turn-based. Plus a "mistakes already turned into
+  memory" table (stale-window bug, 7-day heuristic, DataClock no-op,
+  EDGAR globals mutation, library-rule correction, Sheet stringify,
+  Sonnet token estimate, Workday autofill).
+- `CLAUDE.md`: exact-once now recorded as implemented (B3, fake broker
+  only, live loop NOT rewired); `order_manager.py` / `fake_broker.py` /
+  `design_runner.py` added to module boundaries; `ATS_LOOPS.md` added
+  to source-of-truth docs; new load-bearing rules 13 (loops need a
+  written spec + verification + stop conditions) and 14 (every repeated
+  mistake becomes memory); Execution priorities rewritten as B3-done,
+  with B5 (paper-API flakiness) as the next operational work.
+- `PROJECT_STATUS.md`: status date 2026-11-26; exact-once row
+  Partial → Implemented (fake broker); test count 42 → 183; weak
+  point 3 updated (B3 done, live loop not rewired, fake broker only).
+
+### Scope
+- Docs only. No code, no tests, no trading logic, no gate change.
+  Suite unchanged at 183 (verified Nov 25–26 for the B3/B2 build).
+- `data/edgar_excerpts_v2/manifest.json` is modified in the working
+  tree by daily runs; deliberately NOT included in this commit.

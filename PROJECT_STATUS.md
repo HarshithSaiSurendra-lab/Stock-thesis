@@ -1,6 +1,6 @@
 # Project Status and Roadmap
 
-**Status date:** 2026-08-24
+**Status date:** 2026-11-26
 
 ## Executive assessment
 
@@ -27,14 +27,15 @@ clean paper fill do not establish a durable edge.
 | After-hours path | Implemented and locked | Limit-only with independent enable flags; still experimental. |
 | Guardian and deployment locks | Implemented | Reduces unsafe operation; does not guarantee fills. |
 | Journaling and reporting | Implemented prototype | Decision and execution evidence can be recorded locally. |
-| Exact-once order lifecycle | Partial | Journal exists, but crash-safe intent reservation and fill recovery remain. |
+| Exact-once order lifecycle | Implemented (fake broker) | B3: deterministic intent, SQLite store, query-before-retry, fill dedup, 16 new tests. Live loop not yet rewired; exercised only against the fake broker. |
 | Research evidence | Incomplete | No accepted point-in-time, untouched-holdout result. |
 | Live readiness | Not approved | Live remains disabled by default. |
 | Options or multi-asset trading | Not started | Explicitly deferred. |
 
 ## Verified baseline
 
-- Python 3.12 test suite: 42 tests passing as of this status update.
+- Python 3.12 test suite: 183 tests passing as of this status update
+  (was 42 in August; +16 from the B3/B2 build, Nov 26, 2026).
 - Integrity tests cover signal lag, survivorship behavior for unavailable data,
   and monotonic transaction-cost effects.
 - Operational tests cover filters, session routing, bar caching, after-hours
@@ -117,7 +118,9 @@ capital increase requires new written approval; it is never automatic.
 
 1. Historical universe quality is insufficient for a strong survivorship claim.
 2. Research outputs can be repeatedly inspected without a durable experiment log.
-3. Execution journaling is more complete than crash recovery.
+3. Execution journaling is complete, and the B3 exact-once lifecycle
+   is implemented — but the live loop is not yet rewired to B3, and
+   B3 has only been exercised against the fake broker.
 4. Some limits are configuration hypotheses rather than empirically calibrated rules.
 5. The after-hours path increases operational surface before the core strategy has
    established edge; it should remain disabled outside deliberate paper experiments.

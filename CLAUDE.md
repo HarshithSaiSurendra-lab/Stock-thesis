@@ -18,7 +18,11 @@ Current state:
 - Paper execution path exists.
 - Live and after-hours paths are locked by default.
 - Strategy profitability is not established.
-- Exact-once crash recovery is not complete.
+- Exact-once order lifecycle is implemented in `order_manager.py`
+  (B3, Dec 2026, fake broker only, 16 new tests) — deterministic
+  client_order_id, SQLite intent store, query-before-retry, startup
+  reconcile, fill dedup. The live loop in `strategy_runner.py` is
+  deliberately NOT rewired to it yet.
 
 Never describe the project as profitable, production-ready, or fully autonomous.
 
@@ -27,6 +31,9 @@ Never describe the project as profitable, production-ready, or fully autonomous.
 - `README.md`: orientation, setup, commands, and module map.
 - `PROJECT_STATUS.md`: verified status, weaknesses, gates, and roadmap.
 - `HANDOFF_SPEC.md`: technical contracts and load-bearing invariants.
+- `ATS_LOOPS.md`: loop specs — spec, verification, and stop conditions
+  for the daily run, B2 simulation, fresh validation, earnings re-run,
+  B3 reconcile, and the Astra collaboration loop.
 - `.env.example`: non-secret configuration surface.
 
 If these documents disagree, update them in the same change. Do not preserve a
@@ -59,6 +66,12 @@ stale percentage-complete estimate.
 - `broker_alpaca.py`: broker transport and account floor.
 - `deploy_check.py`: startup safety validation.
 - `execution_journal.py`: durable evidence about decisions and submissions.
+- `order_manager.py`: B3 exact-once lifecycle (deterministic intent,
+  claim, submit/reconcile, fill dedup) over a SQLite intent store.
+- `fake_broker.py`: test-only broker modelling accept+drop, delayed
+  lookup, duplicate client_order_id, and partial fills. No real network.
+- `design_runner.py`: B2 design-selectable simulation runner (fake
+  broker only, winner always None until January).
 - `memory.py`: setup history, outcomes, and tax lots.
 - `reconcile.py`: expected-versus-actual position comparison.
 - `notifier.py`: numeric reports and alerts.
@@ -78,6 +91,13 @@ stale percentage-complete estimate.
 10. An order acceptance is not a fill, and a fill is not protected until confirmed.
 11. Existing position management must continue when new entries are halted.
 12. AI can propose changes; deterministic tests and human approval control deployment.
+13. Loops need a written spec, verification rules, and stop conditions
+    before they run (see `ATS_LOOPS.md`). A loop without a stop
+    condition is a runaway process, not a loop.
+14. Every repeated mistake becomes memory: write the lesson into
+    `CLAUDE.md`, a skill, `PROGRESS.md`, or the experiment log — the
+    place the next run will actually read — instead of fixing it once
+    and forgetting it.
 
 ## Development workflow
 
@@ -121,18 +141,29 @@ The acceptance gates are defined in `PROJECT_STATUS.md`.
 
 ## Execution priorities
 
-The next operational milestone is a crash-safe order lifecycle:
+The crash-safe order lifecycle (B3) is implemented — see
+`order_manager.py` and `ATS_LOOPS.md` Loop 5:
 
-1. Persist intent before submit.
-2. Use a deterministic idempotency key.
-3. Query before retry after an ambiguous response.
-4. Track partial and terminal broker states.
-5. Protect confirmed filled quantity.
-6. Reconcile positions and open orders on boot.
-7. Halt and alert on unresolved exposure.
+1. Persist intent before submit. — Done (SQLite, before any broker call).
+2. Use a deterministic idempotency key. — Done (SHA-256 of the intent).
+3. Query before retry after an ambiguous response. — Done (lookup,
+   grace poll, resubmit SAME ID).
+4. Track partial and terminal broker states. — Done (fills deduped by
+   fill_id, monotonic cumulative).
+5. Protect confirmed filled quantity. — Done (filled only moves forward).
+6. Reconcile positions and open orders on boot. — Done for intents
+   (`reconcile_all_unknowns`); position reconcile in `reconcile.py`
+   is unchanged.
+7. Halt and alert on unresolved exposure. — Guardian halt exists;
+   UNKNOWN intents stay UNKNOWN for the next reconcile pass, never a
+   new ID.
 
-Do not call the current execution journal exact-once execution. It is evidence
-infrastructure, not yet the full lifecycle above.
+The live loop is deliberately NOT rewired to B3 yet, and B3 has only
+been exercised against the fake broker. Do not call the system
+exact-once in production until the live loop is rewired and soaked.
+The next operational work is B5 (paper-API flakiness: account-call
+timeouts, regime failing closed on one failed SPY fetch) and the
+Phase 4 soak readiness, not more strategy complexity.
 
 ## Deliberately deferred
 
