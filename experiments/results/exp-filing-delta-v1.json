@@ -1,0 +1,274 @@
+{
+ "experiment_id": "exp-filing-delta-v1",
+ "registered_design": "experiments/exp-filing-delta-v1-design.md",
+ "run_at_utc": "2026-11-27T01:09:34.837618+00:00",
+ "spend_usd": 0.0,
+ "window": {
+  "train_start": "2024-01-02",
+  "train_end": "2026-08-17",
+  "n_train_days": 658
+ },
+ "frozen": {
+  "tilt": 0.25,
+  "new_jaccard_threshold": 0.5,
+  "ic_horizon": 20,
+  "cohort_horizon": 5,
+  "min_hold_days": 10,
+  "max_positions": 60,
+  "costs_bps": [
+   0,
+   10,
+   20
+  ]
+ },
+ "coverage": {
+  "input_dates": "2024-01-02..2026-08-17",
+  "n_in_scope_filings": 1166,
+  "n_known_delta": 1035,
+  "n_unknown": 131,
+  "unknown_by_reason": {
+   "current_risk_missing": 112,
+   "no_prior_same_form": 7,
+   "prior_risk_missing": 6,
+   "no_eligible_sentences": 6
+  },
+  "distinct_issuers_known_delta": 133,
+  "distinct_event_dates_known_delta": 309,
+  "n_ic_events": 84721,
+  "n_ic_issuers": 133,
+  "n_ic_days": 637,
+  "n_ic_excluded_boundary": 50,
+  "n_ic_excluded_no_sector": 0,
+  "train_days_with_known_delta": 658,
+  "train_days_with_known_delta_in_selection": 658,
+  "n_sentences_median": 9.0,
+  "n_sentences_mean": 99.92850241545894,
+  "frac_known_delta_lt_10_sentences": 0.5043478260869565,
+  "selection_differs_days": 658
+ },
+ "ic": {
+  "haiku": {
+   "n_days": 637,
+   "mean_ic": 0.034978799203547274,
+   "ic_tstat_naive": 6.846397973308215,
+   "nw_se": 0.01726362155978204,
+   "nw_tstat": 2.0261565096535223,
+   "mean_symbols_per_day": 133.0
+  },
+  "score_adj": {
+   "n_days": 637,
+   "mean_ic": 0.022350811166995624,
+   "ic_tstat_naive": 4.29927411604135,
+   "nw_se": 0.01782103319129445,
+   "nw_tstat": 1.254181557661537,
+   "mean_symbols_per_day": 133.0
+  },
+  "delta": {
+   "n_days": 637,
+   "mean_ic": 0.0406556881695674,
+   "ic_tstat_naive": 8.806756604403907,
+   "nw_se": 0.01626994081368631,
+   "nw_tstat": 2.498822130647688,
+   "mean_symbols_per_day": 115.60596546310832
+  },
+  "change_score_adj_minus_haiku": -0.01262798803655165,
+  "diff_daily_nw_se": 0.005182226849191491,
+  "diff_daily_nw_tstat": -2.4367879685779883,
+  "issuer_cluster_bootstrap": {
+   "n_draws": 500,
+   "mean_diff": -0.012402240321597171,
+   "ci_95": [
+    -0.023453004933315275,
+    -0.000623055745657856
+   ],
+   "frac_positive": 0.018
+  }
+ },
+ "portfolio": {
+  "baseline": {
+   "cost_0bps": {
+    "total_return": 0.5573275816456884,
+    "sharpe": 0.9319580352240308,
+    "wf_median_sharpe": 0.8011310100810765,
+    "wf_positive_folds": 4,
+    "avg_daily_turnover": 0.01844,
+    "trades": 798,
+    "max_drawdown": -0.23548539939997237
+   },
+   "cost_10bps": {
+    "total_return": 0.5385846892756541,
+    "sharpe": 0.9094656241339992,
+    "wf_median_sharpe": 0.7786304193300997,
+    "wf_positive_folds": 4,
+    "avg_daily_turnover": 0.01844,
+    "trades": 798,
+    "max_drawdown": -0.23650453006609096
+   },
+   "cost_20bps": {
+    "total_return": 0.5200644912536401,
+    "sharpe": 0.8869540824753142,
+    "wf_median_sharpe": 0.7561488768722127,
+    "wf_positive_folds": 4,
+    "avg_daily_turnover": 0.01844,
+    "trades": 798,
+    "max_drawdown": -0.23752258368293566
+   }
+  },
+  "experiment": {
+   "cost_0bps": {
+    "total_return": 0.5058593137664882,
+    "sharpe": 0.9961151056393599,
+    "wf_median_sharpe": 0.9302798910938095,
+    "wf_positive_folds": 3,
+    "avg_daily_turnover": 0.030060000000000003,
+    "trades": 664,
+    "max_drawdown": -0.17930106980704186
+   },
+   "cost_10bps": {
+    "total_return": 0.47640477265334025,
+    "sharpe": 0.952469506581709,
+    "wf_median_sharpe": 0.9009490448175683,
+    "wf_positive_folds": 3,
+    "avg_daily_turnover": 0.030060000000000003,
+    "trades": 664,
+    "max_drawdown": -0.18046242959608527
+   },
+   "cost_20bps": {
+    "total_return": 0.4475228256840973,
+    "sharpe": 0.9087714428215415,
+    "wf_median_sharpe": 0.8716060361478799,
+    "wf_positive_folds": 3,
+    "avg_daily_turnover": 0.030060000000000003,
+    "trades": 664,
+    "max_drawdown": -0.18162223596995608
+   }
+  },
+  "net_return_diff_pp": {
+   "cost_0bps": -5.1468267879200225,
+   "cost_10bps": -6.217991662231381,
+   "cost_20bps": -7.254166556954278
+  },
+  "time_block_bootstrap_10bps": {
+   "n_draws": 500,
+   "block_len": 20,
+   "mean_diff": -0.06771848517975551,
+   "ci_95": [
+    -0.5490746053124673,
+    0.3983248446703357
+   ],
+   "frac_positive": 0.39
+  }
+ },
+ "sensitivity_leave_one_out": {
+  "removed_issuer": "CMG",
+  "attribution_pp": -10.422854385286065,
+  "baseline_net10": 0.569548957618119,
+  "experiment_net10": 0.7006013697849285,
+  "net10_diff_pp": 13.105241216680952,
+  "ic_haiku": {
+   "n_days": 637,
+   "mean_ic": 0.035710671671413514
+  },
+  "ic_score_adj": {
+   "n_days": 637,
+   "mean_ic": 0.023790321216986578
+  },
+  "ic_change": -0.011920350454426937
+ },
+ "sensitivity_delay_entry_1d": {
+  "cost_0bps": {
+   "total_return": 0.4854075128691502,
+   "sharpe": 0.9681774843647546,
+   "avg_daily_turnover": 0.0306,
+   "trades": 717,
+   "max_drawdown": -0.17699869852425754
+  },
+  "cost_10bps": {
+   "total_return": 0.45583080471162885,
+   "sharpe": 0.923538310574712,
+   "avg_daily_turnover": 0.0306,
+   "trades": 717,
+   "max_drawdown": -0.17815892247695198
+  },
+  "cost_20bps": {
+   "total_return": 0.42683908461650577,
+   "sharpe": 0.8788490358392498,
+   "avg_daily_turnover": 0.0306,
+   "trades": 717,
+   "max_drawdown": -0.1793176005382946
+  }
+ },
+ "passages_top5_delta": [
+  {
+   "ticker": "CB",
+   "filing_date": "2023-11-01",
+   "form": "10-Q",
+   "accession": "0000896159-23-000016",
+   "prior_accession": "0000896159-23-000013",
+   "delta": 1.0,
+   "n_sentences": 20,
+   "n_new": 20,
+   "strongest_passage": "subsidiaries operate in a manner so that none of these companies should be subject to U.S.",
+   "strongest_jaccard": 0.0,
+   "closest_prior_match": "",
+   "closest_match_jaccard": 0.0
+  },
+  {
+   "ticker": "SPGI",
+   "filing_date": "2024-04-25",
+   "form": "10-Q",
+   "accession": "0000064040-24-000125",
+   "prior_accession": "0000064040-23-000193",
+   "delta": 1.0,
+   "n_sentences": 1,
+   "n_new": 1,
+   "strongest_passage": "Risk Factors For a discussion of our risk factors please see Item 1A, Risk Factors in our most recent Form 10-K.",
+   "strongest_jaccard": 0.22580645161290322,
+   "closest_prior_match": "Risk Factors In addition to the other information set forth in this Quarterly Report on Form 10-Q, you should carefully consider the risk factors we have previously disclosed in Item 1A, Risk Factors, in our most recent Form 10-K, and the additional risk factor below.",
+   "closest_match_jaccard": 0.22580645161290322
+  },
+  {
+   "ticker": "CB",
+   "filing_date": "2024-04-26",
+   "form": "10-Q",
+   "accession": "0000896159-24-000006",
+   "prior_accession": "0000896159-23-000016",
+   "delta": 1.0,
+   "n_sentences": 1,
+   "n_new": 1,
+   "strongest_passage": "Risk Factors There have been no material changes to the risk factors described under \"Risk Factors\" under Item 1A of Part I of our 2023 Form 10-K.",
+   "strongest_jaccard": 0.4782608695652174,
+   "closest_prior_match": "Risk Factors The following supplements the risk factors that could have a material impact on our results of operations or financial condition as described under \"Risk Factors\" under Item 1A of Part I of our 2022 Form 10-K.",
+   "closest_match_jaccard": 0.4782608695652174
+  },
+  {
+   "ticker": "NOW",
+   "filing_date": "2024-05-06",
+   "form": "10-Q",
+   "accession": "0001373715-24-000169",
+   "prior_accession": "0001373715-23-000419",
+   "delta": 1.0,
+   "n_sentences": 2,
+   "n_new": 2,
+   "strongest_passage": "There have been no material changes to the Company\u2019s risk factors since our Annual Report on Form 10-K.",
+   "strongest_jaccard": 0.16666666666666666,
+   "closest_prior_match": "RISK FACTORS Investing in our securities involves risks.",
+   "closest_match_jaccard": 0.16666666666666666
+  },
+  {
+   "ticker": "NOW",
+   "filing_date": "2024-07-25",
+   "form": "10-Q",
+   "accession": "0001373715-24-000272",
+   "prior_accession": "0001373715-24-000169",
+   "delta": 1.0,
+   "n_sentences": 41,
+   "n_new": 41,
+   "strongest_passage": "Techniques used to sabotage or to obtain unauthorized access to systems are constantly evolving and may go undetected until a successful attack occurs.",
+   "strongest_jaccard": 0.01639344262295082,
+   "closest_prior_match": "RISK FACTORS The Company\u2019s business, financial condition, results of operations and stock price can be affected by a number of factors, whether currently known or unknown, including those described in Part I, Item 1A of our Annual Report on Form 10-K for the year ended December 31, 2023, under the section \u201cRisk Factors.\u201d When any one or more of these risks materialize from time to time, the Company\u2019s business, financial condition, results of operations and stock price can be materially and adversely affected.",
+   "closest_match_jaccard": 0.01639344262295082
+  }
+ ],
+ "runtime_seconds": 511.8
+}

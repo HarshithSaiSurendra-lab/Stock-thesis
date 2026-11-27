@@ -1844,3 +1844,161 @@ throughout (all live runs through the fake broker in temp dirs).
   not just an operator note. (2) The exit branch sells the full
   entry qty without cancelling a working buy limit for the symbol —
   if that buy fills after the exit, the position re-opens.
+
+### 2026-11-26 — exp-filing-delta-v1 (Lazy Prices): DROP
+
+Historical research extension, part 1 (separate research branch
+`research-historical`; train period only, 2024-01-02..2026-08-17;
+$0 new spend, no LLM calls). Design registered BEFORE any return
+was computed (`experiments/exp-filing-delta-v1-design.md`).
+Feature: sentence-level fraction of a filing's Risk Factors
+sentences with no close match (max token-set Jaccard < 0.50) in
+the most recent SAME-form prior filing; strongest changed passage
++ closest prior match saved per filing; missing/incomparable
+section -> unknown. Comparison (frozen): v2 Haiku ranking vs the
+same ranking tilted by the feature (score_adj = haiku - 0.25 x
+(2 x delta_pct_rank - 1)), identical issuers/dates/entry times,
+H=5 cohorts, min hold 10d, max positions 60, costs 0/10/20bps.
+Horizon 20d, sector-relative (peer-mean — no sector ETFs in the
+cached bars). Reconciles with H3 (document-level Jaccard
+similarity, veto) and C6 (textual-delta rank, train +48.97%):
+sentence-granular, directional, a ranking tilt, not a veto.
+
+- Coverage: 1,166 in-scope filings; known delta 1,035 (133
+  issuers, 309 event dates); unknown 131 (current risk missing
+  112, no prior same-form 7, prior risk missing 6, no eligible
+  sentences 6). IC events 84,721 pairs, 133 issuers, 637 days;
+  50 excluded by the boundary rule; 0 no-sector exclusions. Risk
+  sentences: median 9, mean 99.9 — 50% of known-delta filings
+  have <10 sentences (thin 10-Q sections are the norm).
+- PRIMARY (IC change): Haiku +0.0350 (NW t 2.03) vs score_adj
+  +0.0224 (NW t 1.25) -> change -0.0126 (paired NW t -2.44;
+  issuer-cluster bootstrap 95% CI [-0.0235, -0.0006], 2%
+  positive). The tilt HURT the ranking, robustly. Delta-alone IC
+  +0.0407 (NW t 2.50) — the OPPOSITE of the frozen Lazy Prices
+  hypothesis (consistent with this window being mean-reverting:
+  risk expansions follow bad news that then mean-reverts).
+- Portfolio @10bps: baseline +53.86% vs experiment +47.64%
+  (-6.22pp; block bootstrap 95% CI [-54.9pp, +39.8pp], 39%
+  positive). Drawdown improved (-18.05% vs -23.65%), Sharpe
+  0.952 vs 0.909 — but the primary failed, so this does not
+  save it. Turnover 0.0301 vs 0.0184 (+63%); trades 664 vs 798.
+- Sensitivities: remove largest contributor CMG (attribution
+  -10.42pp) -> portfolio diff flips to +13.11pp, but the IC
+  change stays -0.0119 (the IC harm is broad-based, the
+  portfolio harm is one name). Delay entry +1 session -> net10
+  falls further to 45.58%.
+- Mechanism (passage pairs): the top-delta filings are dominated
+  by 10-Q STUB artifacts, not genuine rewrites — a 1-sentence
+  "There have been no material changes..." stub scores delta 1.00
+  against a differently-worded prior stub, and a full 41-sentence
+  risk section scores 1.00 because the prior 10-Q was a 2-sentence
+  stub. The feature as frozen measures "did the text change vs
+  the prior filing", and for 10-Qs the prior is often a stub.
+- Post-hoc diagnostics (labeled, NOT part of the frozen test):
+  delta IC on 10-K filings only (YoY, the actual Lazy Prices
+  design, n=269) is -0.0219 (NW t -1.59) — the literature's
+  direction, but weak and not significant. Restricting to >=10
+  sentences on both sides stays positive (+0.0351, t 1.78). The
+  10-K-only hint is worth a SEPARATELY registered experiment
+  (own frozen hypothesis + minimum-sentence rule), not a reason
+  to flip this one's sign after seeing the data.
+- JUDGMENT: DROP the feature in its registered form (per the
+  frozen decision rule: IC change of the wrong sign, robustly;
+  portfolio difference <= 0 after costs with no robustness in
+  the sensitivities). Nothing here changes the live ranking, the
+  daily runner, or any registered design.
+- Verification: Milo re-ran the runner independently to a
+  separate out-dir (458s, $0); the re-run JSON matches the
+  reported results EXACTLY except run_at_utc/runtime_seconds
+  (IC change -0.012628, delta IC +0.040656, net10 53.86%/47.64%,
+  LOO +13.11pp, delay 45.58%). Baseline anchor checked: the
+  baseline panel reproduces the published v2 train numbers
+  (net10 +57.77%, Sharpe 0.931, 120 trades, turnover 0.0166,
+  WF 0.604, 4/4 folds) under the single-backtest estimator; the
+  3.9pp gap to the cohort-blend table is cohort-averaging, not
+  an error. Tests 8/8; full suite 325 passed (with B15/B14/SMA).
+
+### 2026-11-26 — exp-sma50-timing-v1 (50-session SMA): NEITHER
+
+Historical research, train only (2024-01-02..2026-08-17, 658
+sessions; $0). Design registered BEFORE any result
+(`experiments/exp-sma50-timing-v1-design.md`). Step 0 finding
+(verified by Milo against trade_signal.py): ENTRY timing is
+REDUNDANT by construction — composite_signal/composite_score
+require close > sma_50 for any buy label, and the entry executes
+at the next session's open, when the latest completed close IS
+that close. The entry gate can never bind: 370 baseline entries
+checked, 0 bindings, 0 waits, 0 missed trades (entry counts
+0/0/0/0 by construction). Exit timing is genuinely distinct —
+the baseline has no stock-level SMA-cross exit (live default:
+trailing stop only; backtest: weekly top-5 re-ranking only).
+So the experiment is baseline vs EXIT-timing-only, with the
+re-entry rule frozen (block clears only on a fresh selection
+WITH a positive v2 signal — "strict", the primary; an
+"engine-faithful" comparison mode is also reported because the
+baseline's own selections include all-zero days) and the whipsaw
+definition frozen (close back above its SMA50 within 5 sessions).
+
+- Data (load-bearing): the registered raw cache is UNADJUSTED
+  (NVDA -89.9%, CMG -98% split cliffs). The experiment uses a
+  fresh split-adjusted Alpaca REST fetch (feed IEX, adjustment
+  split), cached separately in .cache/backtest_data_split/; the
+  registered cache was never touched. Exclusion rule (>40%
+  remaining level shift): exactly 2 excluded — DD (2025-11-03,
+  -57.5%, Qnity spinoff) and HON (2026-06-29, -50.8%, Solstice
+  spinoff). Universe 131 symbols. Missing opens 0; insufficient
+  SMA50 history 0.
+- Results @10bps (strict, primary): baseline -7.82% vs variant
+  -6.11% (net timing effect +1.71pp; +1.81pp @20bps). Max DD
+  -22.26% vs -16.87%. BUT the direct exit-price effect is
+  NEGATIVE: 35 losses avoided ($159.25) vs 36 gains forfeited
+  (-$164.37), net -$5.12 on a $1,000 book (85 matched exits; 7
+  unmatched). The headline gain comes from trading less and
+  holding less (turnover 0.2241 vs 0.2333; avg exposure 0.6723
+  vs 0.9955), not better exit prices. Whipsaws 49/92 (53.3%).
+  Min-hold overrides 64/92. Bootstrap 5th/95th [-$99.72,
+  +$81.82] — includes zero.
+- Sensitivities (both fail): ex-largest-contributor (AMZN
+  +$20.17) -> price effect -$25.29; entries delayed one session
+  -> net timing effect +1.71pp flips to -5.16pp.
+- Benchmark leg fails: variant -6.11% vs exposure-matched
+  benchmark +31.15% (DD -16.87% vs -7.34% at the same 0.6723
+  exposure). The drawdown improvement is fully explained by
+  lower exposure.
+- Walkthroughs: AMZN Jan-Feb 2026 helped (+$20.17 — entered
+  2026-01-30 @ $239.95; cross known 2026-02-04 close $232.97 <
+  SMA50 $233.57; exited 2026-02-05 open @ $225.00; baseline
+  exited 2026-02-06 @ $202.62; Milo verified all four prices
+  against the split-adjusted cache). AAPL Apr-May 2024 hurt
+  (-$25.75 — textbook whipsaw: exited 2024-05-01 @ $169.82,
+  AAPL closed back above its SMA50 the next day and ran to
+  $183.36 by May 3; baseline exited 2024-05-28 @ $191.53).
+- JUDGMENT: NEITHER entry nor exit timing deserves a future
+  prospective test (per the frozen §7 rule: exit timing's net
+  effect is positive but thin/misleading, fails both
+  sensitivities, and does not beat the exposure-matched
+  benchmark). 20-EMA, prior-20-session high/low channel, and
+  VWAP are queued as distinct hypotheses (document only).
+- Engine finding (separate question, NOT this experiment):
+  signal_to_weights selects the top-5 by value even when all
+  values are 0 (backtest.py: the positive-only filter applies
+  only when a positive exists) — on 247/658 train sessions no
+  symbol has a positive v2 signal, and 20 of the 370 baseline
+  entries have NO buy signal. Suppressing zero-signal picks is
+  a separate engine question.
+- Verification: Milo read the design doc in full (decision rule
+  §7 unchanged; the §2 two-mode clarification defines the
+  primary as the doc-literal rule and adds a comparison — the
+  NEITHER judgment follows §7 on the strict variant), verified
+  the close > sma_50 requirement in trade_signal.py, verified
+  the all-zero picks path in backtest.py signal_to_weights,
+  verified the AMZN walkthrough prices against the cache, and
+  verified the JSON numbers against the write-up (breakdown,
+  bootstrap, sensitivities, benchmark, records incl. the AAPL
+  -25.75 record). Baseline reconciliation checked: registered
+  close-to-close v2 engine -14.01% @10bps / -25.62% @20bps, DD
+  -49.79%/-55.21%, turnover 0.2201, 364 trades (from
+  exp-technical-v2.json train); the +6.19pp gap to the open-fill
+  baseline (-7.82%) is the overnight-fill effect, as the design
+  anticipated. Tests 10/10; full suite 325 passed.
