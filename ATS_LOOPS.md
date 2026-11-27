@@ -172,6 +172,54 @@ be checked.
   Alpaca. Full traces, numbers, and the protection tradeoff are in
   PROGRESS.md (B17 section, Nov 27, 2026). Overall soak readiness
   stays OPEN for the user's call after the B17 report.
+  **Closed Nov 27, 2026 (B18):** (1) the same-day re-entry
+  intent-id collision — `StrategyState.entry_attempts` (persisted
+  in the state file), bumped whenever an entry record leaves
+  `open_entries` because the trade ended (exit-loop close,
+  cancelled-intent mirror removal, stop-fill mirror removal —
+  reductions do not bump, re-created entries after a
+  CANCELLED/REJECTED exit do not bump, dry-run never bumps); the
+  entry loop includes `entry_attempt` in the inputs only when > 0,
+  so first-attempt ids are unchanged and a re-entry after a close
+  gets a FRESH intent id (e2e: order_count 3, status ok, no drift
+  halt, expected 2). (2) live-leg stop sizing — the startup size
+  sync generalized per leg (per-leg stop fields, per-leg unknown
+  flag, exit blocked while EITHER is set); live stop attached at
+  the LIVE filled qty and resized cancel-old-then-attach-new as
+  live fills arrive (trace sellable [1.0, 0.0, 2.0] vs held [2.0,
+  2.0, 2.0]). (3) live-leg oversell check — `_check_exit_oversell`
+  per leg against that leg's account-tagged stop fills and that
+  leg's held qty; e2e exactly 1 detection, account "live", total
+  committed 4.0 vs held 2.0, paper silent, live fill -> live held
+  -2.0. (4) the `pending_exit_filled` snapshot blemish — filled_qty
+  updated from the intent before the snapshot, exit-pending now
+  0.0. (5) decisions close at FILL, not at submission —
+  `_close_pending_exit_decision` in the FILLED branch, exit
+  `filled_avg_price` by order id + the stop attribution persisted
+  in the pending record; unfetchable price -> realized_pl NULL
+  (not 0) + CRITICAL alert; immediate close kept only where the
+  price is final (exit_qty 0, no manager, no exit submitted);
+  cancelled/rejected exits keep the decision open (no double-close).
+  The submit run's summary now shows trades_closed 0 for that
+  trade; the fill run shows 1. Remaining (not in B18): the
+  oversell race can only be detected, not prevented (OCO
+  deferred); the ENTIRE mirror layer is paper-only — a live
+  CANCELLED intent reaches the mirror but never matches (the
+  mirror compares the paper intent_id only), the stop-fill mirror
+  reads broker.paper only, and the post-mirror stop sync cancels
+  paper stops only, so a live stop can be orphaned and live
+  expected positions never mirrored (fail-closed drift halt if it
+  ever happened; live is disabled, so simulation-only today);
+  the decision is closed by the FIRST leg's exit to fill (paper
+  first in dict order), so the other leg's fill is not separately
+  attributed; the guardian's 5/min rate counts disabled-live-leg
+  no-op submits (rapid manual re-runs can trip it — production
+  runs are a day apart); a decision stays open until its exit
+  fills (the B18.5 tail); B17.6/B17.5/B18.2/B18.3 are stub/fake-leg
+  verified only, never against live Alpaca. Full traces and
+  numbers are in PROGRESS.md (B18 section, Nov 27, 2026). Overall
+  soak readiness stays OPEN for the user's call after the B18
+  report.
 - **Stop conditions:** any step rc != 0; safety preflight fails;
   regime_blocked / halted / kill switch present; `StaleBarsError`
   ("benchmark data stale") — the run stops, it does not trade on old
@@ -314,7 +362,22 @@ be checked.
   startup reconcile is account-filtered. Adding "account" changes
   EVERY intent id vs pre-B17 (verified by hash); that is safe only
   because no production intent store exists yet — do not deploy
-  mid-soak with open intents.
+  mid-soak with open intents. **Nov 27, 2026 (B18.1):** the entry
+  intent id now carries a per-symbol attempt component
+  (`entry_attempts` in the state file, bumped when a trade ends);
+  a same-day re-entry after a close gets a fresh id instead of
+  re-deriving the old FILLED entry intent. **Nov 27, 2026 (B18
+  live-mirror gap, NOT fixed):** the mirror layer is paper-only —
+  `_mirror_cancelled_intents_into_state` matches the paper
+  `intent_id` only (a live CANCELLED intent reaches it via the
+  unfiltered `cancelled_intents()` query but never matches), the
+  stop-fill mirror reads `broker.paper` only, and the post-mirror
+  stop sync cancels paper stops only. A live stop can therefore be
+  orphaned and live expected positions never mirrored; the
+  end-of-run reconcile would halt on live drift (fail-closed).
+  Live is disabled in production, so this is simulation-only
+  today — a future build's item, not a soak blocker in the
+  paper-only path.
 - **Stop conditions:** reconcile() is LOOKUP-ONLY — it has no
   place_order_fn parameter at all, so there is no resubmit path in
   the module. A 404 "not found" is inconclusive, not proof the

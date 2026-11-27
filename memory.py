@@ -136,6 +136,17 @@ class TradeMemory:
         )
         self.conn.commit()
 
+    def decision_closed(self, decision_id: int) -> bool:
+        """Is this decision already closed (B18.5)? close_decision
+        is an unconditional UPDATE — a second close overwrites the
+        first. The FILLED-branch close guards with this read so a
+        stale pre-B18.5 pending record (whose decision was closed
+        at submit time) is never closed twice."""
+        row = self.conn.execute(
+            "SELECT closed FROM decisions WHERE id=?", (decision_id,)
+        ).fetchone()
+        return bool(row and row["closed"])
+
     # ---- retrieval BEFORE acting ------------------------------------------
     def similar_setups(self, snap: SignalSnapshot, k: int = 20) -> dict:
         """

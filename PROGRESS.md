@@ -3002,3 +3002,290 @@ reported, not decided):**
   exposure) are inherent to the cancel-first design, not bugs to
   fix inside B17 — they are the cost side of the protection
   tradeoff the user asked to see.
+
+### 2026-11-27 — B18: remaining-exposure fixes (simulation only)
+
+User decision Nov 27, 2026 14:40 EST ("Not yet — let's fix the remaining
+exposure first", on the B17 report's soak-readiness question). B18 fixes
+the fixable remainder from the B17 report. Fake broker only; daily job
+stays in preview (dry-run); no strategy / threshold / cost / config
+change; no real or paper orders; no January-gate, holdout, or
+registered-design change. Out of scope by the user's own decision or by
+construction: OCO/bracket orders (deferred); the alert-only intervals
+(inherent to the cancel-first design); verification against live Alpaca
+(unverifiable in simulation); the old-stop coid-archive nuance (the
+cancel was confirmed before the re-attach).
+
+Files: `strategy_runner.py` (+539/-125), `memory.py` (+11:
+`decision_closed()`), `test_b17_remaining_exposure.py` (+41/-7: the
+B17 trace-(b) rewrite + one live-exit comment), NEW
+`test_b18_remaining_exposure.py` (771 lines, 15 tests: 6 e2e through
+`main.py` with the fake broker, 9 unit). Full suite **397 passed, 17
+skipped, 0 failed** (Milo's run, 183.42s; the B18 file alone 15 passed).
+The 17 skips are all one parametrized B13 test skipped by the
+pre-existing `_guard_timing` guard — today was an early-close day
+(13:00 ET), so every run after ~12:57 ET skips them; Milo's B17 run
+(pre-close) had 0 skipped. Arithmetic: 399 (B17) - 17 skipped + 15
+new = 397. No test was weakened.
+
+#### B18.1 — Entry intent-id collision (the headline item)
+
+The entry intent id had no attempt/sequence component: a same-day
+re-entry after a close re-derived the SAME intent id as the old FILLED
+entry intent, the manager returned the old FILLED intent, and the loop
+saw a phantom position (expected 2, actual 0) that halted on drift.
+Blocked in production by `submitted_today`, but the intent-store
+contract was still wrong. Fix, mirroring the B17 exit fix
+(`exit_attempts` in the exit inputs): `StrategyState.entry_attempts`,
+a per-symbol sequence persisted in the state file (old state files
+load fine via the default), bumped whenever an entry record leaves
+`open_entries` because the trade ended — the exit-loop close, the
+cancelled-intent mirror removal (filled 0 only; a reduction does not
+bump), the stop-fill mirror removal (partial reduction does not bump).
+NOT bumped when an entry is re-created after a CANCELLED/REJECTED exit
+(same trade continuing; the exit_attempts bump already gives the
+re-derived exit its fresh id). Never bumped in dry-run (the exit-loop
+pop sits after the dry-run `continue`; the mirrors run under
+`if not dry_run`). The entry loop reads the count and includes
+`entry_attempt` in the inputs only when > 0, via one shared helper
+`_entry_intent_inputs` (it replaced the two identical inline literals
+for the paper and live intents — the live entry is the same trade on
+the second account, so it carries the SAME attempt). First-attempt ids
+are unchanged (unit test: the first-attempt inputs equal the pre-B18
+literal exactly, and its id equals the pre-B18 id); attempt 1 differs;
+re-deriving at the same attempt reuses the same id (exact-once across
+restarts); deriving twice with no attempt component yields the same id
+(the pre-fix collision shape, proven by derivation, bug not
+reintroduced).
+
+E2e trace (through `main.py`, fake broker): Run 1 buys NVDA qty 2 and
+it fills (entry price 167.26668907752102); Run 2 exits on signal loss,
+exit submits qty 2, `entry_attempts == {"NVDA": 1}` persisted, decision
+still open (B18.5); fill the exit @ 160.00 (total sold 2.0, held 0.0);
+Run 3 (submitted_today reset, fixture back to an uptrend) re-buys — a
+FRESH intent id ≠ old buy coid, order_count 3 (buy + exit + new buy),
+status ok, no drift halt, expected position 2; the decision closed in
+Run 3's startup sync with exit_price 160.00, realized_pl -14.53.
+
+#### B18.2 — Live-leg stop sizing
+
+`_sync_trailing_stop_sizes_at_startup` was paper-only. It is now
+generalized with a `leg_name` parameter ("paper" / "live"): per-leg
+stop fields on the entry record (paper `trail_stop_id/coid/qty` +
+`intent_id`; live `live_trail_stop_id/coid/qty` + `live_intent_id` —
+the entry loop now stores both), per-leg unknown flag
+(`stop_state_unknown` / `live_stop_state_unknown`, each popped only by
+its own leg's sync), `"account"` on every synced dict, same
+cancel-old-then-attach-new order, per-step sellable-vs-held trace, and
+unprotected window. `run_daily` runs the live sync when the live leg is
+enabled. The exit loop blocks while EITHER unknown flag is set (a live
+stop in an unknown state can still execute). `_protection_record` now
+reads the per-leg stop fields (a live pending exit reads the live stop,
+not the paper one).
+
+E2e trace (live enabled): live buy partially fills 1/2 — the live stop
+attaches at qty 1.0 (held 1.0, sellable ≤ held); the 2nd live share
+fills — the live resize old 1.0 → new 2.0, trace sellable [1.0, 0.0,
+2.0] vs held [2.0, 2.0, 2.0], window `uncertain: False`, a NEW broker
+id under the same deterministic coid; the paper stop resized 1 → 2 as
+well; order counts unchanged (no re-buy in the resize runs).
+
+#### B18.3 — Live-leg oversell check
+
+`_check_exit_oversell` re-checked only the paper stop after the exit
+submitted. It now runs per leg: `_cancel_trailing_stop_on_leg` tags
+every fill with `"account"` (paper/live), `_stop_leg_attribution`
+splits the combined fills by that tag (an untagged fill counts as
+paper — the pre-B18 shape), the exit loop captures `live_held_at_exit`
+(fail-closed on fetch failure, mirroring paper), passes only the paper
+fills to the paper check, and runs the live check only when the live
+exit actually submitted. The split is load-bearing: a live coid looked
+up on the paper leg returns None and would false-halt as inconclusive.
+The detection record gains `"account"`.
+
+E2e trace (live enabled, hook electing the LIVE stop between the live
+stop-cancel confirmation and the live exit submit — mirroring the B17.4
+paper test): exactly 1 detection, account "live" — held 2.0, exit 2.0,
+stop 2.0, total_committed 4.0, note contains "DETECTION", "already
+happened", "(live leg)"; status `needs_attention`, CRITICAL alert; the
+paper check silent. Filling the live exit takes live total sold to 4.0
+and live held to -2.0 (the short is visible — real, not a false alarm);
+the paper leg is unaffected (sold 0.0, held 2.0).
+
+#### B18.4 — pending_exit_filled snapshot blemish
+
+One-line fix: in `_sync_pending_exits`' FILLED branch,
+`pending["filled_qty"]` is now updated from the intent BEFORE the
+protection snapshot is built. E2e: exit submits qty 2, fills @ 160.00,
+next run's snapshot — action `pending_exit_filled`, exit_pending 0.0
+(not the stale 1.0), held 0.0, unprotected 0.0, reason "sold"; the
+record is removed; the decision closed at the real fill price (B18.5).
+
+#### B18.5 — Close decisions at fill, not at submission
+
+The trace-(b) P&L quirk (pre-existing, not a B17 change): the exit loop
+closed the decision + tax lot immediately when the exit SUBMITTED, using
+the quote price as the exit price — so an unfilled exit's recorded P&L
+was fiction, and a later CANCELLED/REJECTED exit closed the decision a
+second time, overwriting the first close. Now the exit loop does NOT
+close when the exit submits (exit_qty > 0 with a manager). The close
+happens in `_sync_pending_exits`' FILLED branch via new
+`_close_pending_exit_decision(broker, pending, intent, memory,
+guardian)`: the exit's `filled_avg_price` fetched BY ORDER ID from the
+leg for the pending record's account, combined with the stop attribution
+persisted in the pending record at submit time (`stop_sold_qty`,
+`stop_fill_price`, `stop_pl` — now on all four pending-record creation
+sites, per leg, via `_stop_leg_attribution`). If the exit's fill price
+cannot be fetched (lookup None / no `filled_avg_price` / raises), the
+entry price is unknown, or the stop leg sold shares whose P&L is
+unknown, the close records realized_pl NULL (unknown, explicitly NOT
+0 — the B17.3 standard) and fires a CRITICAL alert; proceeds are
+likewise NULL when either leg's price is unknown and that leg sold
+shares. New `memory.decision_closed()` guards against double-close of
+stale pre-B18.5 pending records (close_decision is an unconditional
+UPDATE). Immediate close is kept where the price is already final:
+exit_qty 0 (the stop sold everything — stop price final), no manager
+(no intent store tracks the fill, so there is no pending record and no
+later close), or no exit actually submitted (a sell-side entry — old
+behaviour preserved). Dry-run unchanged (closes nothing). The submit
+run's attribution records the stop leg as final and the exit leg as
+`exit_pending: True` (exit_price / realized_pl None); the fill run
+appends the final attribution (`final_close: True`). `run_daily`
+passes `memory` + the run's `stop_attribution` into
+`_sync_pending_exits`; the fill run's `daily_summary` reports the close
+(verified: trades_closed 0 → 1).
+
+Test ripple — flagged as required, and only one test changed:
+`test_trace_stop_partially_fills_during_cancel` (B17 trace (b)). Its old
+assertion (decision closed == 1 right after the exit submits, P&L from
+the quote price) encoded the old behaviour B18.5 deliberately replaces
+— the builder judged that behaviour the bug (fictional P&L +
+double-close hazard), so the update asserts the NEW correct behaviour
+with exact numbers, and asserts more, not less: decision open after
+submit, pending attribution (`exit_price` / `realized_pl` None,
+`exit_pending` True), submit-run `trades_closed` 0, then fill at a
+distinctive price (quote+5, ≠ 160.00 and ≠ quote), then close at the
+REAL fill price with `trades_closed` 1 and a `final_close` attribution.
+Also updated: one stale comment in the B17.5 live-exit test (the live
+stop now exists after the resize run). No other test's assertions
+changed. B16 3a/3b, B17 trace (a), unfilled-exit, and B13 exit tests
+are unaffected (trace (a) is exit_qty 0, immediate close kept; the
+others assert entry/protection state, not decision closure).
+
+E2e traces: close-at-fill — exit submits unfilled (closed 0,
+trades_closed 0) → fill @ quote+5 → next run closed 1, exit_price ==
+fill price, realized_pl == (fill−entry)×2, trades_closed 1.
+Cancelled-exit — exit#1 CANCELLED before filling → decision stays
+open, entry re-created, re-derived exit#2 (fresh id,
+`entry_attempts` 2) → fill exit#2 @ quote+5 → Run 4 closed 1 with
+exit#2's price, realized_pl == (fill2−entry)×2, trades_closed 1,
+exit#1 still CANCELLED. Unit: real price 165.00 + stop 160.00 →
+realized_pl −9.50, proceeds 325.00, no alert; unfetchable in all three
+shapes (None / no price / raises) → NULL + CRITICAL, proceeds NULL;
+already-closed → returns None, preserved exit_price 160.00 /
+realized_pl −14.50.
+
+Protection tradeoff (B18.5): none on protection timing — the
+stop-cancel → exit-submit → fill sequence and the unprotected window
+are unchanged; only the bookkeeping moves. The cost is visibility lag:
+the decision's realized_pl is unknown until the fill run, the submit
+run's summary shows trades_closed 0 for that trade (the fill run shows
+1), and a decision stays open until its exit fills (or is re-derived
+and fills). The gain: no fictional P&L from the quote price, and no
+double-close overwriting the first close.
+
+#### Milo's verification (Nov 27, 2026 ~15:2x EST)
+
+Read ALL diffs in full (`strategy_runner.py` 1,082 diff lines,
+`memory.py`, the B17 test changes, the new test file's key assertions);
+ran the full suite HIMSELF: 397 passed, 17 skipped, 0 failed in
+183.42s — matches the builder's numbers exactly; ran the B18 file
+alone: 15 passed. The 17 skips are the pre-existing early-close
+`_guard_timing` guard (test_b13_soak_readiness.py:248), not B18.
+
+Checked every criterion: B18.1 (first-attempt inputs equal the pre-B18
+literal exactly — the unit test is non-vacuous; the three bump sites
+are exactly the `open_entries.pop` sites, the exit-loop pop sits after
+the dry-run `continue`, reductions and re-created entries do not bump;
+e2e fresh id, order_count 3, status ok, no drift halt, expected 2).
+B18.2 (per-leg fields + per-leg unknown flags, live sync gated on the
+live leg being enabled, exit blocked on EITHER flag, per-leg stop
+reads in `_protection_record`; e2e live stop 1 → resize 1 → 2, trace
+sellable never exceeds held). B18.3 (account-tagged fills, the split
+is load-bearing — a cross-leg lookup returns None; live held captured
+fail-closed; live check runs only when the live exit actually
+submitted; e2e exactly 1 detection, account "live", 4.0 vs 2.0, paper
+silent, live held -2.0 after the fill). B18.4 (filled_qty updated
+before the snapshot; e2e exit_pending 0.0). B18.5 (deferred close via
+`_close_pending_exit_decision`; NULL + CRITICAL on unfetchable price;
+`decision_closed` guard; immediate-close paths preserved; stop
+attribution on all four pending-record sites; the trace-(b) rewrite
+asserts more, not less, and the other affected tests are untouched).
+
+Findings (Milo's own, all verified in code):
+1. **Live-leg mirror gap — REAL, and broader than the builder stated.**
+   The ENTIRE mirror layer is paper-only: `_mirror_cancelled_intents_into_state`
+   matches the paper `intent_id` only (a live CANCELLED intent reaches
+   it — `cancelled_intents()` is an unfiltered query — but never
+   matches), `_mirror_stop_fills_at_startup` reads `broker.paper`
+   positions + stop only, and `_sync_trailing_stops_after_mirror`
+   cancels paper stops only. So a live CANCELLED entry is never
+   mirrored, a live stop fill is never mirrored, and a live stop can be
+   orphaned while live expected positions stay — the end-of-run
+   reconcile would halt on live drift (fail-closed). Live is disabled
+   in production, so this is simulation-only today. It is the headline
+   item for the next build (B19), not a B18 blocker.
+2. **Guardian 5/min rate counts disabled-live-leg no-op submits — REAL.**
+   `guardian.submit` counts every successful `place_order_fn` call
+   toward `orders_today` and `recent_order_times`, and the exit loop
+   routes the disabled live leg's no-op submit through
+   `guardian.submit`. Three submit runs compressed into <60s record 6
+   invocations (paper + the disabled-live-leg no-op each) and trip the
+   5/min guard mid-run — the cancelled-exit test works around it with
+   a `_reset_order_rate` helper. In production runs are a day apart,
+   so it is moot there; rapid manual re-runs can trip it. Pre-existing
+   B17.5 design wart, not a B18 regression. B19 candidate: skip the
+   guardian wrapper for a disabled leg entirely.
+3. **First-leg-wins close (builder's finding #2) — REAL, minor.** The
+   decision is closed by the first leg's exit to fill (paper first in
+   dict order); the other leg's fill finds it already closed via the
+   `decision_closed` guard and is not separately attributed. The
+   decision's P&L stays paper-centric, as before B18.5.
+   Simulation-only while live is disabled.
+4. Nit, not a bug: the `paper_result is None` disjunct in the B18.5
+   immediate-close guard is unreachable defensive code — the earlier
+   `if paper_result is None: ... continue` fires first. Harmless.
+
+No new alert-only intervals. B18.2's live resize carries the same
+cancel-first unprotected window as paper (recorded per-step; 0.0s
+in-simulation for the resize, first-attach window bounded by the last
+run, `uncertain=True`). B18.3's live oversell is detection-only like
+B17.4.
+
+#### REMAINING EXPOSURE / OPEN ITEMS (for the user's soak decision — reported, not decided)
+
+- Oversell is DETECTION, not prevention; only OCO/bracket eliminates
+  the race. OCO/bracket stays DEFERRED per the user's Nov 27, 2026
+  decision — do not re-offer it as pending.
+- **Live-leg mirror gap (NEW, found in B18 verification):** the entire
+  mirror layer is paper-only (above). Needs a future build (B19
+  candidate). Live is disabled, so simulation-only today.
+- **First-leg-wins close:** the decision's P&L is closed by the first
+  leg's exit to fill; the other leg's fill is not separately
+  attributed. Simulation-only while live is disabled.
+- **Guardian rate counts disabled-live-leg no-ops:** rapid manual
+  re-runs can trip the 5/min guard; production runs are a day apart.
+  B19 candidate.
+- **B18.5 open-decision tail:** a decision stays open until its exit
+  fills; if an exit never fills and is never re-derived, it stays open
+  indefinitely (the durable pending record means the close happens
+  whenever it eventually fills).
+- B18.2/B18.3/B17.6/B17.5 are stub/fake-leg verified only, never
+  against live Alpaca (paper-only, live leg disabled). Same caveat as
+  B13/B17.
+- The five alert-only intervals from B17 (oversell, trace (c) ~1.90s,
+  attach ~1.58s, resize round-trip, unfilled-exit exposure) are
+  unchanged and inherent to the cancel-first design.
+- Old-stop coid-archive nuance (carried): after a resize, the old
+  stop's record is replaced under the deterministic coid — the cancel
+  was confirmed before the re-attach.

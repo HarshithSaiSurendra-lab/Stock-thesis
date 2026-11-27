@@ -49,6 +49,25 @@ class StrategyState:
     # when the exit intent reaches a terminal state (FILLED /
     # CANCELLED / REJECTED) or a human resolution.
     pending_exits: dict = field(default_factory=dict)
+    # B18.1: per-symbol entry-attempt sequence — the number of times a
+    # trade in this symbol has ENDED (the entry record left
+    # open_entries: exit-loop close, the cancelled-intent mirror, or
+    # the stop-fill mirror). The entry loop includes "entry_attempt"
+    # in the entry intent inputs ONLY when this count is > 0 (the
+    # first attempt omits it, so existing first-attempt intent ids
+    # are unchanged). Without it, a same-day re-entry after a close
+    # re-derives the SAME intent id as the old FILLED entry intent
+    # and the manager returns the old FILLED intent — a phantom
+    # position (expected 2, actual 0) that halts on drift. With it,
+    # re-deriving the same decision at the same attempt still reuses
+    # the same id (exact-once across restarts), and a new attempt
+    # differs. NOT bumped when an entry is re-created after a
+    # CANCELLED/REJECTED exit — that is the same trade continuing,
+    # and the exit_attempts bump already gives the re-derived exit
+    # its fresh id. Persisted in the state file like pending_exits
+    # (load() is cls(**payload), so old state files without the key
+    # load fine via the default).
+    entry_attempts: dict = field(default_factory=dict)
 
     @classmethod
     def load(cls, path: str) -> "StrategyState":
@@ -182,6 +201,39 @@ def _live_intent(order: dict, inputs: dict, trading_day: str, account: str = "pa
         inputs_hash=compute_inputs_hash(inputs),
         account=account,
     )
+
+
+def _entry_intent_inputs(item: dict, price_for_sizing: float,
+                         capped_notional: float,
+                         intended_notional: float,
+                         attempt: int = 0) -> dict:
+    """The entry intent inputs for one selected symbol (B18.1).
+
+    One helper for BOTH the paper and the live intent — the two
+    inline literals they replaced were identical, and the live
+    entry is the same logical order on the second account. The
+    inputs are rounded to the same precision the decision log
+    records (scores 6dp, last_price/notionals 2dp) so the intent
+    is reproducible from the log alone.
+
+    "entry_attempt" is included ONLY when attempt > 0. The first
+    attempt omits it, so a first-attempt id equals the pre-B18 id
+    exactly; a later attempt differs (the same decision re-derived
+    at the same attempt still reuses the same id).
+    """
+    inputs = {
+        "symbol": item["symbol"],
+        "direction": item["direction"],
+        "decision_score": round(float(item["decision_score"]), 6),
+        "score": round(float(item["score"]), 6),
+        "trend_quality": round(float(item["trend_quality"]), 6),
+        "last_price": round(float(price_for_sizing), 2),
+        "target_notional": round(float(capped_notional), 2),
+        "intended_notional": round(float(intended_notional), 2),
+    }
+    if attempt > 0:
+        inputs["entry_attempt"] = int(attempt)
+    return inputs
 
 
 def _live_leg_enabled(broker) -> bool:
@@ -355,6 +407,14 @@ def _mirror_cancelled_intents_into_state(state: StrategyState, intents: list[dic
             expected.pop(symbol, None)
             if account == "paper" and symbol not in state.expected_positions.get("live", {}):
                 state.open_entries.pop(symbol, None)
+                # B18.1: the trade ended (the entry record left
+                # open_entries) — the next buy for this symbol is a
+                # NEW attempt and must get a fresh intent id. Only
+                # bumped when the record actually leaves; when the
+                # live leg still expects the symbol the record stays
+                # (the trade continues on the live leg).
+                state.entry_attempts[symbol] = int(
+                    state.entry_attempts.get(symbol, 0)) + 1
             adjustments.append({
                 "symbol": symbol, "intent_id": intent.get("intent_id"),
                 "filled_qty": 0.0, "action": "removed",
@@ -583,7 +643,7 @@ def _cancel_entry_orders_for_exit(broker, symbol: str, entry_side: str, *,
 
 
 def _cancel_trailing_stop_on_leg(leg, symbol, *, trail_stop_id=None, trail_stop_coid=None,
-                                 lookup_fn=None):
+                                 lookup_fn=None, account: str = "paper"):
     """Cancel the open trailing-stop sell(s) for `symbol` on one leg.
 
     Returns (ok, reason, fills). ok True also when there is no
@@ -596,10 +656,14 @@ def _cancel_trailing_stop_on_leg(leg, symbol, *, trail_stop_id=None, trail_stop_
     False — the exit must NOT proceed, so the stop stays in place
     protecting the shares (fail-closed).
     fills is a list of {client_order_id, id, status, filled_qty,
-    filled_avg_price} for every stop confirmed (cancelled or already
-    terminal) — the exit uses it for the stop-fill P&L attribution
-    (B17.3) and the oversell check (B17.4). The fill price is
-    refreshed BY ORDER ID when the cancel result lacks it.
+    filled_avg_price, account} for every stop confirmed (cancelled
+    or already terminal) — the exit uses it for the stop-fill P&L
+    attribution (B17.3) and the oversell check (B17.4). The
+    "account" tag (B18.3) splits the fills by leg, so the paper
+    oversell check never looks a live stop up on the paper leg
+    (and vice versa) — a cross-leg lookup returns None and would
+    false-halt as inconclusive. The fill price is refreshed BY
+    ORDER ID when the cancel result lacks it.
     """
     if lookup_fn is None:
         lookup_fn = getattr(leg, "get_by_client_order_id", None)
@@ -626,6 +690,7 @@ def _cancel_trailing_stop_on_leg(leg, symbol, *, trail_stop_id=None, trail_stop_
                 "status": str(recorded_state["status"]).lower(),
                 "filled_qty": float(recorded_state["filled_qty"] or 0.0),
                 "filled_avg_price": recorded_state["filled_avg_price"],
+                "account": account,
             })
     try:
         open_orders = leg.open_orders()
@@ -681,6 +746,7 @@ def _cancel_trailing_stop_on_leg(leg, symbol, *, trail_stop_id=None, trail_stop_
                 "status": status,
                 "filled_qty": float(result.get("filled_qty") or 0.0),
                 "filled_avg_price": _opt_float_or_none(result.get("filled_avg_price")),
+                "account": account,
             }
             # Refresh the fill price BY ORDER ID when the cancel
             # result lacks it (B17.3): the stop's filled_avg_price is
@@ -721,22 +787,61 @@ def _cancel_trailing_stops_for_exit(broker, symbol, *, trail_stop_id=None, trail
     live leg (a no-op while the live leg is disabled). Both legs must
     confirm; a failure on either vetoes the exit (fail-closed).
     Returns (ok, reason, fills): fills is the confirmed stop fills
-    from both legs (B17.3/B17.4)."""
+    from both legs (B17.3/B17.4), each tagged with its "account"
+    (B18.3) so the oversell check can split them by leg."""
     fills: list[dict] = []
     if broker.paper is not None:
         ok, reason, leg_fills = _cancel_trailing_stop_on_leg(
-            broker.paper, symbol, trail_stop_id=trail_stop_id, trail_stop_coid=trail_stop_coid)
+            broker.paper, symbol, account="paper",
+            trail_stop_id=trail_stop_id, trail_stop_coid=trail_stop_coid)
         if not ok:
             return False, f"paper: {reason}", fills
         fills.extend(leg_fills)
     if broker.live is not None:
         ok, reason, leg_fills = _cancel_trailing_stop_on_leg(
-            broker.live, symbol, trail_stop_id=live_trail_stop_id,
+            broker.live, symbol, account="live",
+            trail_stop_id=live_trail_stop_id,
             trail_stop_coid=live_trail_stop_coid)
         if not ok:
             return False, f"live: {reason}", fills
         fills.extend(leg_fills)
     return True, "", fills
+
+
+def _stop_leg_attribution(stop_fills: list, account: str, entry_price) -> tuple:
+    """(stop_sold_qty, stop_fill_price, stop_pl) for ONE leg's stop
+    fills (B18.3/B18.5).
+
+    Splits the combined fills by their "account" tag (a fill with
+    no tag counts as paper — the pre-B18 shape). stop_fill_price
+    is the qty-weighted average of the leg's priced fills; stop_pl
+    is (price - entry) x sold when the price is known. When the leg
+    sold shares but no fill price could be fetched, stop_pl is None
+    (unknown, not 0); when it sold nothing, stop_pl is 0.0. The
+    caller persists these three numbers in the pending-exit record
+    for the leg, so the FILLED-branch close can combine the stop
+    leg's real P&L with the exit's real fill price.
+    """
+    leg_fills = [f for f in (stop_fills or [])
+                 if str(f.get("account") or "paper") == account]
+    sold = sum(float(f.get("filled_qty") or 0.0) for f in leg_fills)
+    priced = [f for f in leg_fills
+              if f.get("filled_avg_price") is not None
+              and float(f.get("filled_qty") or 0.0) > 0]
+    price = None
+    if priced:
+        total = sum(float(f.get("filled_qty") or 0.0) for f in priced)
+        if total > 0:
+            price = sum(
+                float(f.get("filled_avg_price")) * float(f.get("filled_qty") or 0.0)
+                for f in priced) / total
+    if sold > 0 and price is not None and entry_price is not None:
+        pl = (price - float(entry_price)) * sold
+    elif sold > 0:
+        pl = None
+    else:
+        pl = 0.0
+    return sold, price, pl
 
 
 def _sync_trailing_stops_after_mirror(broker, guardian, state, adjustments,
@@ -1052,6 +1157,11 @@ def _mirror_stop_fills_at_startup(broker, guardian, state, cfg=None, memory=None
             state.open_entries.pop(symbol, None)
             state.expected_positions.get("paper", {}).pop(symbol, None)
             state.expected_positions.get("live", {}).pop(symbol, None)
+            # B18.1: the trade ended (the entry record left
+            # open_entries) — the next buy for this symbol is a NEW
+            # attempt and must get a fresh intent id.
+            state.entry_attempts[symbol] = int(
+                state.entry_attempts.get(symbol, 0)) + 1
             action = "stop_fill_mirrored_removed"
             # B17.3 (overnight path): the trade is closed — close the
             # decision and tax lot with the stop's fill price and P&L,
@@ -1103,8 +1213,22 @@ def _mirror_stop_fills_at_startup(broker, guardian, state, cfg=None, memory=None
     return synced
 
 
-def _sync_trailing_stop_sizes_at_startup(broker, guardian, state, cfg=None) -> list[dict]:
+def _sync_trailing_stop_sizes_at_startup(broker, guardian, state, cfg=None,
+                                         leg_name: str = "paper") -> list[dict]:
     """Size every trailing stop to the FILLED qty (Detail 3).
+
+    B18.2: `leg_name` selects the leg ("paper" or "live") — the sync
+    runs once per leg, each against that leg's positions() and that
+    leg's stop fields on the entry record (paper: trail_stop_id /
+    trail_stop_coid / trail_stop_qty / intent_id; live:
+    live_trail_stop_id / live_trail_stop_coid / live_trail_stop_qty
+    / live_intent_id). The live stop is sized to the LIVE filled
+    qty at attach (the entry loop does this when live_filled_qty >
+    0) and resized here as live fills arrive, with the same
+    cancel-old-then-attach-new order, per-step sellable-vs-held
+    trace, and unprotected window as the paper leg. The per-leg
+    unknown flag (stop_state_unknown / live_stop_state_unknown)
+    marks the entry; the exit loop blocks while EITHER is set.
 
     The protective quantity is the shares actually held — not the
     entry qty. At attach time (the entry loop) the stop is sized to
@@ -1136,10 +1260,23 @@ def _sync_trailing_stop_sizes_at_startup(broker, guardian, state, cfg=None) -> l
     held. With cancel-old-then-attach-new, (a) never exceeds (b).
     """
     synced: list[dict] = []
-    if broker is None or broker.paper is None or guardian is None:
+    leg = getattr(broker, leg_name, None) if broker is not None else None
+    if leg is None or guardian is None:
         return synced
-    lookup_fn = getattr(broker.paper, "get_by_client_order_id", None)
-    attach = getattr(broker.paper, "attach_trailing_stop", None)
+    # Per-leg record fields: the paper leg's stop is trail_stop_id /
+    # trail_stop_coid / trail_stop_qty, derived from intent_id; the
+    # live leg's is live_trail_stop_id / live_trail_stop_coid /
+    # live_trail_stop_qty, derived from live_intent_id. The unknown
+    # flag is per leg too — the paper sync must not pop a flag the
+    # live sync set, and vice versa.
+    id_field = "trail_stop_id" if leg_name == "paper" else "live_trail_stop_id"
+    coid_field = "trail_stop_coid" if leg_name == "paper" else "live_trail_stop_coid"
+    qty_field = "trail_stop_qty" if leg_name == "paper" else "live_trail_stop_qty"
+    intent_field = "intent_id" if leg_name == "paper" else "live_intent_id"
+    unknown_field = "stop_state_unknown" if leg_name == "paper" else "live_stop_state_unknown"
+    leg_note = "" if leg_name == "paper" else f" ({leg_name} leg)"
+    lookup_fn = getattr(leg, "get_by_client_order_id", None)
+    attach = getattr(leg, "attach_trailing_stop", None)
     # The protective quantity is the shares actually HELD (the
     # broker-confirmed position), NOT the entry record's qty: a
     # partially-filled buy's record still carries the entry qty (the
@@ -1150,7 +1287,7 @@ def _sync_trailing_stop_sizes_at_startup(broker, guardian, state, cfg=None) -> l
     # trigger with the cap off). If positions() cannot be fetched,
     # resize nothing: do not attach a stop sized to a guessed qty.
     try:
-        positions = broker.paper.positions() or {}
+        positions = leg.positions() or {}
     except Exception as exc:  # noqa: BLE001 - fail-closed; the reconcile halts
         log.warning("stop-size sync: positions fetch failed: %s", exc)
         return synced
@@ -1160,20 +1297,21 @@ def _sync_trailing_stop_sizes_at_startup(broker, guardian, state, cfg=None) -> l
         if trail_pct is None and cfg is not None:
             trail_pct = getattr(getattr(cfg, "exits", None), "trail_percent", None)
         stop_state = _stop_fill_state(
-            broker.paper, symbol=symbol,
-            trail_stop_id=record.get("trail_stop_id"),
-            trail_stop_coid=record.get("trail_stop_coid"),
+            leg, symbol=symbol,
+            trail_stop_id=record.get(id_field),
+            trail_stop_coid=record.get(coid_field),
             lookup_fn=lookup_fn,
         )
         if stop_state["ambiguous"]:
-            record["stop_state_unknown"] = True
+            record[unknown_field] = True
             synced.append({
-                "symbol": symbol, "action": "stop_size_unknown",
+                "symbol": symbol, "account": leg_name,
+                "action": "stop_size_unknown",
                 "reason": "stop's final state unconfirmed by order-id lookup; resize deferred, exit blocked",
                 "held_qty": held,
             })
             continue
-        record.pop("stop_state_unknown", None)
+        record.pop(unknown_field, None)
         # The stop's remaining (working) qty: its nominal qty minus
         # what it already sold. The nominal qty comes from the state
         # (open orders when working) or the entry's recorded attach
@@ -1186,33 +1324,35 @@ def _sync_trailing_stop_sizes_at_startup(broker, guardian, state, cfg=None) -> l
         else:
             stop_qty = stop_state["qty"]
             if stop_qty is None:
-                stop_qty = float(record.get("trail_stop_qty") or 0.0)
+                stop_qty = float(record.get(qty_field) or 0.0)
             covered = max(0.0, float(stop_qty or 0.0) - float(stop_state["filled_qty"] or 0.0))
         if abs(covered - held) <= 1e-6:
             # The stop already covers exactly the shares held.
-            record["trail_stop_qty"] = stop_qty if stop_state["found"] else record.get("trail_stop_qty")
+            record[qty_field] = stop_qty if stop_state["found"] else record.get(qty_field)
             continue
         now = datetime.now(timezone.utc).isoformat()
         if held <= 1e-6:
             # Nothing held: an orphaned stop could short-sell. Cancel it.
             if stop_state["found"]:
                 ok, reason, _fills = _cancel_trailing_stop_on_leg(
-                    broker.paper, symbol,
-                    trail_stop_id=record.get("trail_stop_id"),
-                    trail_stop_coid=record.get("trail_stop_coid"),
+                    leg, symbol, account=leg_name,
+                    trail_stop_id=record.get(id_field),
+                    trail_stop_coid=record.get(coid_field),
                     lookup_fn=lookup_fn)
                 if ok:
-                    record["trail_stop_id"] = None
-                    record["trail_stop_coid"] = None
-                    record["trail_stop_qty"] = None
-                    synced.append({"symbol": symbol, "action": "stop_cancelled",
+                    record[id_field] = None
+                    record[coid_field] = None
+                    record[qty_field] = None
+                    synced.append({"symbol": symbol, "account": leg_name,
+                                   "action": "stop_cancelled",
                                    "reason": "nothing held; orphaned stop cancelled",
                                    "held_qty": 0.0, "stop_qty": stop_qty})
                 else:
                     guardian.alerter.send(
                         "critical",
-                        f"orphaned trailing stop for {symbol} could not be cancelled: {reason}")
-                    synced.append({"symbol": symbol, "action": "stop_cancel_failed",
+                        f"orphaned trailing stop for {symbol}{leg_note} could not be cancelled: {reason}")
+                    synced.append({"symbol": symbol, "account": leg_name,
+                                   "action": "stop_cancel_failed",
                                    "reason": reason, "held_qty": 0.0, "stop_qty": stop_qty})
             continue
         # A resize (or a first attach) is needed. Trace each step.
@@ -1232,9 +1372,9 @@ def _sync_trailing_stop_sizes_at_startup(broker, guardian, state, cfg=None) -> l
             # before attaching the new one — never by its absence
             # from the open-orders list.
             ok, reason, _fills = _cancel_trailing_stop_on_leg(
-                broker.paper, symbol,
-                trail_stop_id=record.get("trail_stop_id"),
-                trail_stop_coid=record.get("trail_stop_coid"),
+                leg, symbol, account=leg_name,
+                trail_stop_id=record.get(id_field),
+                trail_stop_coid=record.get(coid_field),
                 lookup_fn=lookup_fn)
             cancel_confirmed_at = datetime.now(timezone.utc).isoformat()
             if not ok:
@@ -1243,7 +1383,8 @@ def _sync_trailing_stop_sizes_at_startup(broker, guardian, state, cfg=None) -> l
                 # no new stop is attached, so two live stops can
                 # never protect the same shares twice.
                 synced.append({
-                    "symbol": symbol, "action": "stop_resize_deferred",
+                    "symbol": symbol, "account": leg_name,
+                    "action": "stop_resize_deferred",
                     "reason": f"old stop cancel unconfirmed: {reason}",
                     "held_qty": held, "old_stop_qty": old_qty,
                     "resize_trace": trace,
@@ -1271,7 +1412,7 @@ def _sync_trailing_stop_sizes_at_startup(broker, guardian, state, cfg=None) -> l
             cancel_confirmed_at = None
         # Attach the new stop sized to the FILLED qty (held).
         stop_coid = None
-        intent_id = record.get("intent_id")
+        intent_id = record.get(intent_field)
         if intent_id:
             stop_coid = f"{intent_id}-trail"
         new_stop = None
@@ -1287,16 +1428,17 @@ def _sync_trailing_stop_sizes_at_startup(broker, guardian, state, cfg=None) -> l
         if not new_stop:
             guardian.alerter.send(
                 "critical",
-                f"trailing stop for {symbol} could not be attached for the filled qty "
+                f"trailing stop for {symbol}{leg_note} could not be attached for the filled qty "
                 f"{held}: {attach_reason}; the shares are unprotected")
-            synced.append({"symbol": symbol, "action": "stop_attach_failed",
+            synced.append({"symbol": symbol, "account": leg_name,
+                           "action": "stop_attach_failed",
                            "reason": attach_reason, "held_qty": held,
                            "resize_trace": trace})
             continue
-        record["trail_stop_id"] = new_stop.get("id") if isinstance(new_stop, dict) else None
-        record["trail_stop_coid"] = (new_stop.get("client_order_id") if isinstance(new_stop, dict)
-                                     else stop_coid)
-        record["trail_stop_qty"] = held
+        record[id_field] = new_stop.get("id") if isinstance(new_stop, dict) else None
+        record[coid_field] = (new_stop.get("client_order_id") if isinstance(new_stop, dict)
+                              else stop_coid)
+        record[qty_field] = held
         # Step 3 (or 2): the new stop is working, sized to held.
         trace.append({"step": len(trace) + 1, "action": "new_stop_attached",
                       "sellable_qty": held, "held_qty": held,
@@ -1316,7 +1458,7 @@ def _sync_trailing_stop_sizes_at_startup(broker, guardian, state, cfg=None) -> l
                       "note": "no working stop: the shares were unprotected since the fill arrived "
                               "(bounded by the last run; the exact fill time is unknowable from the store)"}
         synced.append({
-            "symbol": symbol,
+            "symbol": symbol, "account": leg_name,
             "action": "stop_attached" if old_qty <= 0 else "stop_resized",
             "old_stop_qty": old_qty, "new_stop_qty": held, "held_qty": held,
             "resize_trace": trace, "unprotected_window": window,
@@ -1346,16 +1488,25 @@ def _protection_record(broker, manager, state, symbol: str, pending: dict) -> di
     protected = 0.0
     record = (getattr(state, "open_entries", None) or {}).get(symbol)
     if record is not None and leg is not None:
+        # B18.2: the stop fields are per leg — a live pending exit
+        # reads the LIVE stop, not the paper one (which may be a
+        # different order entirely). In practice the stop is
+        # cancelled before the exit submits, so protected is 0
+        # here; reading the right leg keeps the number honest if a
+        # stop ever survives into a pending record.
+        id_field = "trail_stop_id" if account == "paper" else "live_trail_stop_id"
+        coid_field = "trail_stop_coid" if account == "paper" else "live_trail_stop_coid"
+        qty_field = "trail_stop_qty" if account == "paper" else "live_trail_stop_qty"
         stop_state = _stop_fill_state(
             leg, symbol=symbol,
-            trail_stop_id=record.get("trail_stop_id"),
-            trail_stop_coid=record.get("trail_stop_coid"),
+            trail_stop_id=record.get(id_field),
+            trail_stop_coid=record.get(coid_field),
             lookup_fn=getattr(leg, "get_by_client_order_id", None))
         if stop_state["found"] and str(stop_state["status"] or "").lower() in {
                 "submitted", "new", "partially_filled", "partially filled"}:
             stop_qty = stop_state["qty"]
             if stop_qty is None:
-                stop_qty = float(record.get("trail_stop_qty") or 0.0)
+                stop_qty = float(record.get(qty_field) or 0.0)
             protected = max(0.0, float(stop_qty or 0.0) - float(stop_state["filled_qty"] or 0.0))
     unprotected = max(0.0, held - protected)
     return {
@@ -1372,24 +1523,137 @@ def _protection_record(broker, manager, state, symbol: str, pending: dict) -> di
     }
 
 
-def _sync_pending_exits(broker, manager, state, guardian) -> list[dict]:
+def _close_pending_exit_decision(broker, pending: dict, intent: dict,
+                                 memory, guardian) -> dict | None:
+    """Close the decision + tax lot for a FILLED pending exit (B18.5).
+
+    The exit loop no longer closes the decision at SUBMIT time (the
+    quote price is not the exit price — an unfilled exit's recorded
+    P&L was fiction, and a later CANCELLED/REJECTED exit closed the
+    decision a second time, overwriting the first close). The close
+    happens HERE, when the exit intent reaches FILLED, with the
+    exit's REAL fill price fetched BY ORDER ID from the leg for the
+    pending record's account, combined with the stop attribution
+    persisted in the pending record at submit time (stop_sold_qty /
+    stop_fill_price / stop_pl).
+
+    realized_pl = stop_pl + (exit fill price - entry price) x exit
+    filled qty. If the exit's fill price cannot be fetched (lookup
+    None / raises / not a dict, or filled_avg_price None), or the
+    entry price is unknown, or the stop leg sold shares whose P&L
+    is unknown, the close records realized_pl NULL (unknown,
+    explicitly NOT 0 — the B17.3 standard) and fires a CRITICAL
+    alert. Proceeds are likewise NULL when either leg's price is
+    unknown and that leg sold shares.
+
+    Returns the final attribution dict to append to the run's
+    stop_attribution (with "final_close": True), or None when
+    nothing should be appended: no decision_id, no memory, or the
+    decision is ALREADY closed (the guard against stale pre-B18.5
+    pending records, whose decision was closed at submit time —
+    close_decision is an unconditional UPDATE, so a second close
+    would overwrite the first).
+    """
+    decision_id = pending.get("decision_id")
+    if decision_id is None or memory is None:
+        return None
+    if memory.decision_closed(decision_id):
+        return None
+    symbol = str(pending.get("symbol") or "")
+    account = str(pending.get("account") or "paper")
+    exit_filled_qty = float(intent.get("filled_qty") or 0.0)
+    exit_price = None
+    leg = getattr(broker, account, None) if broker is not None else None
+    lookup_fn = getattr(leg, "get_by_client_order_id", None) if leg is not None else None
+    if lookup_fn is not None:
+        try:
+            found = lookup_fn(pending.get("exit_intent_id"))
+        except Exception:
+            found = None
+        if isinstance(found, dict):
+            exit_price = _opt_float_or_none(found.get("filled_avg_price"))
+    stop_sold_qty = float(pending.get("stop_sold_qty") or 0.0)
+    stop_fill_price = _opt_float_or_none(pending.get("stop_fill_price"))
+    stop_pl = pending.get("stop_pl")
+    if stop_pl is not None:
+        stop_pl = float(stop_pl)
+    entry_price = _opt_float_or_none(pending.get("entry_price"))
+    unknown_reasons = []
+    if exit_price is None:
+        unknown_reasons.append("the exit's fill price could not be fetched by order id")
+    if entry_price is None:
+        unknown_reasons.append("the entry price is unknown")
+    if stop_sold_qty > 0 and stop_pl is None:
+        unknown_reasons.append("the stop leg's realized P&L is unknown")
+    if unknown_reasons:
+        realized_pl = None
+    else:
+        realized_pl = (stop_pl or 0.0) + (exit_price - entry_price) * exit_filled_qty
+    try:
+        opened_at = datetime.fromisoformat(str(pending.get("opened_at")))
+        holding_days = (datetime.now(timezone.utc) - opened_at).total_seconds() / 86400.0
+    except Exception:  # noqa: BLE001 - opened_at unparseable
+        holding_days = 0.0
+    proceeds = None
+    if exit_price is not None and entry_price is not None:
+        if stop_sold_qty > 0 and stop_fill_price is None:
+            proceeds = None
+        else:
+            proceeds = (stop_fill_price or 0.0) * stop_sold_qty + exit_price * exit_filled_qty
+    memory.close_decision(decision_id, exit_price, realized_pl, holding_days)
+    if pending.get("lot_id"):
+        memory.close_tax_lot(pending["lot_id"], proceeds)
+    if realized_pl is None:
+        guardian.alerter.send(
+            "critical",
+            f"exit for {symbol} ({account}) filled {exit_filled_qty} shares but "
+            f"{'; '.join(unknown_reasons)}; realized_pl is recorded as UNKNOWN (not 0)")
+    return {
+        "symbol": symbol, "account": account,
+        "stop_sold_qty": stop_sold_qty,
+        "stop_filled_avg_price": stop_fill_price,
+        "stop_realized_pl": None if stop_pl is None else round(stop_pl, 2),
+        "exit_qty": exit_filled_qty,
+        "exit_price": exit_price,
+        "realized_pl": None if realized_pl is None else round(realized_pl, 2),
+        "final_close": True,
+    }
+
+
+def _sync_pending_exits(broker, manager, state, guardian, memory=None,
+                        stop_attribution=None) -> list[dict]:
     """Reconcile the durable pending-exit records (B17.2 / Detail 2).
 
     For each pending exit, look its exit intent up in the store:
     - FILLED: the exposure ends ("sold"); the record is removed.
+      B18.5: the decision + tax lot are closed HERE, at the fill,
+      with the exit's real filled_avg_price (fetched by order id)
+      plus the stop attribution persisted at submit time — not at
+      submit time with the quote price. B18.4: the pending
+      record's filled_qty is updated from the intent BEFORE the
+      protection snapshot is built, so the snapshot shows
+      exit-pending 0.0 after a full fill (not the stale 1.0).
     - CANCELLED / REJECTED: the exit order is gone but the shares
       may still be held — alert, re-create the entry (so the exit
       can be re-derived next run), and remove the record. The
       re-created entry carries exit_attempts+1, so the re-derived
       exit gets a fresh intent id (the rejected intent's id is
-      terminal and can never be re-submitted).
+      terminal and can never be re-submitted). The decision stays
+      OPEN — it closes only when the re-derived exit fills (B18.5:
+      no double-close). The entry_attempts bump is the exit's, NOT
+      the entry's (B18.1: the same trade continues, so the entry
+      attempt does not bump here).
     - UNKNOWN: keep the record — the next run retries the LOOKUP
       only; the exit itself is never re-submitted (exact-once).
     - SUBMITTED / PARTIALLY_FILLED: keep the record, update the
       filled qty from the intent, and report the protection numbers
       (held / exit-pending / protected / unprotected). A partial
       fill reduces the unprotected count by EXACTLY the sold qty.
-    Returns the protection records for the run summary.
+    `memory` (the TradeMemory) and `stop_attribution` (the run's
+    attribution list, appended to on a FILLED close) are passed by
+    run_daily; without them the FILLED branch removes the record
+    without closing the decision (the close is skipped, never
+    guessed). Returns the protection records for the run summary.
     """
     protection: list[dict] = []
     if manager is None:
@@ -1409,6 +1673,20 @@ def _sync_pending_exits(broker, manager, state, guardian) -> list[dict]:
             continue
         status = str(intent.get("status") or "")
         if status == "FILLED":
+            # B18.4: update the filled qty from the intent BEFORE
+            # building the protection snapshot — the snapshot's
+            # exit_pending is qty - filled_qty, so without this it
+            # still shows the pre-fill pending qty (1.0) after a
+            # full fill.
+            pending["filled_qty"] = float(intent.get("filled_qty") or 0.0)
+            # B18.5: close the decision + tax lot at the REAL fill
+            # price (exit filled_avg_price by order id + the stop
+            # attribution persisted at submit time). The final
+            # attribution is appended to the run's list.
+            final_close = _close_pending_exit_decision(
+                broker, pending, intent, memory, guardian)
+            if final_close is not None and stop_attribution is not None:
+                stop_attribution.append(final_close)
             pending["exposure_ended_at"] = datetime.now(timezone.utc).isoformat()
             pending["exposure_end_reason"] = "sold"
             state.pending_exits.pop(key, None)
@@ -1442,6 +1720,8 @@ def _sync_pending_exits(broker, manager, state, guardian) -> list[dict]:
                     "opened_at": pending.get("opened_at"),
                     "intent_id": None, "trail_stop_id": None,
                     "trail_stop_coid": None, "trail_stop_qty": None,
+                    "live_intent_id": None, "live_trail_stop_id": None,
+                    "live_trail_stop_coid": None, "live_trail_stop_qty": None,
                     "trail_percent": pending.get("trail_percent"),
                     "exit_attempts": int(pending.get("exit_attempts") or 0) + 1,
                 }
@@ -1472,12 +1752,19 @@ def _sync_pending_exits(broker, manager, state, guardian) -> list[dict]:
 
 
 def _check_exit_oversell(broker, symbol: str, stop_fills: list, exit_qty: float,
-                         held_at_exit, guardian, manager=None) -> dict | None:
+                         held_at_exit, guardian, manager=None,
+                         account: str = "paper") -> dict | None:
     """B17.4: after the exit submits, re-check the stop BY ORDER ID.
 
-    Returns the detection record {symbol, stop_filled_qty, exit_qty,
-    held_at_exit, total_committed, note} when an oversell was detected
-    (and halts + alerts), else None.
+    Returns the detection record {symbol, account, stop_filled_qty,
+    exit_qty, held_at_exit, total_committed, note} when an oversell
+    was detected (and halts + alerts), else None.
+
+    B18.3: `account` selects the leg — the check runs once per leg
+    that submitted an exit, each against THAT leg's stop fills
+    (the caller splits the fills by their "account" tag) and that
+    leg's held qty at exit time. A cross-leg lookup would return
+    None and false-halt as inconclusive, so the split is load-bearing.
 
     DETECTION, NOT PREVENTION — the oversell has already happened by
     the time this runs: the stop elected between the cancel
@@ -1498,10 +1785,12 @@ def _check_exit_oversell(broker, symbol: str, stop_fills: list, exit_qty: float,
     """
     if held_at_exit is None or float(exit_qty or 0.0) <= 0:
         return None
-    lookup_fn = getattr(broker.paper, "get_by_client_order_id", None)
+    leg = getattr(broker, account, None)
+    lookup_fn = getattr(leg, "get_by_client_order_id", None) if leg is not None else None
     if lookup_fn is None:
         return None
     held = float(held_at_exit)
+    leg_note = "" if account == "paper" else f" ({account} leg)"
     for fill in stop_fills or []:
         coid = fill.get("client_order_id")
         if not coid:
@@ -1510,26 +1799,26 @@ def _check_exit_oversell(broker, symbol: str, stop_fills: list, exit_qty: float,
         try:
             now_state = lookup_fn(coid)
         except Exception as exc:
-            reason = (f"OVERSELL CHECK for {symbol}: the trailing stop {coid} "
+            reason = (f"OVERSELL CHECK for {symbol}{leg_note}: the trailing stop {coid} "
                       f"could not be looked up after the exit submitted ({exc}); "
                       "its state is unknown — it may have sold shares in the window. "
                       "DETECTION, not prevention: halting the guardian.")
             guardian.manual_halt(reason)
             guardian.alerter.send("critical", reason)
             return {
-                "symbol": symbol, "stop_filled_qty": None,
+                "symbol": symbol, "account": account, "stop_filled_qty": None,
                 "exit_qty": float(exit_qty), "held_at_exit": held,
                 "total_committed": None, "note": reason,
             }
         if not isinstance(now_state, dict):
-            reason = (f"OVERSELL CHECK for {symbol}: the trailing stop {coid} "
+            reason = (f"OVERSELL CHECK for {symbol}{leg_note}: the trailing stop {coid} "
                       "could not be found after the exit submitted (inconclusive lookup); "
                       "its state is unknown — it may have sold shares in the window. "
                       "DETECTION, not prevention: halting the guardian.")
             guardian.manual_halt(reason)
             guardian.alerter.send("critical", reason)
             return {
-                "symbol": symbol, "stop_filled_qty": None,
+                "symbol": symbol, "account": account, "stop_filled_qty": None,
                 "exit_qty": float(exit_qty), "held_at_exit": held,
                 "total_committed": None, "note": reason,
             }
@@ -1540,7 +1829,7 @@ def _check_exit_oversell(broker, symbol: str, stop_fills: list, exit_qty: float,
         total_committed = delta + float(exit_qty)
         if total_committed > held + 1e-6:
             reason = (
-                f"OVERSELL DETECTED for {symbol}: the trailing stop sold {delta} shares "
+                f"OVERSELL DETECTED for {symbol}{leg_note}: the trailing stop sold {delta} shares "
                 f"between the cancel confirmation and the exit submit, and the exit "
                 f"orders {exit_qty} more, against {held} held (total committed "
                 f"{total_committed} > {held}). DETECTION, not prevention — the "
@@ -1549,7 +1838,7 @@ def _check_exit_oversell(broker, symbol: str, stop_fills: list, exit_qty: float,
             guardian.manual_halt(reason)
             guardian.alerter.send("critical", reason)
             return {
-                "symbol": symbol, "stop_filled_qty": delta,
+                "symbol": symbol, "account": account, "stop_filled_qty": delta,
                 "exit_qty": float(exit_qty), "held_at_exit": held,
                 "total_committed": total_committed, "note": reason,
             }
@@ -2159,10 +2448,24 @@ def run_daily(
                 stop_sync.extend(_sizes)
                 for entry in _sizes:
                     log.info("startup trailing-stop sync: %s", entry)
+                # B18.2: the same size sync for the LIVE leg, when it
+                # is enabled — the live stop is resized as live fills
+                # arrive, with the same per-step trace.
+                if _live_leg_enabled(broker):
+                    _live_sizes = _sync_trailing_stop_sizes_at_startup(
+                        broker, guardian, state, cfg, leg_name="live")
+                    stop_sync.extend(_live_sizes)
+                    for entry in _live_sizes:
+                        log.info("startup trailing-stop sync: %s", entry)
                 # B17.2 / Detail 2: reconcile the durable pending-exit
                 # records (accepted-but-unfilled exits, and UNKNOWN
-                # exits awaiting a lookup-only retry).
-                protection = _sync_pending_exits(broker, manager, state, guardian)
+                # exits awaiting a lookup-only retry). B18.5: the
+                # memory + the run's stop_attribution are passed so
+                # a FILLED pending exit closes its decision at the
+                # real fill price here (not at submit time).
+                protection = _sync_pending_exits(
+                    broker, manager, state, guardian,
+                    memory=memory, stop_attribution=stop_attribution)
                 for entry in protection:
                     log.info("startup pending-exit sync: %s", entry)
     # B16 correction: intents still DONE_FOR_DAY after the startup
@@ -2527,23 +2830,17 @@ def run_daily(
             log.info("skipping %s: blocked by unresolved intent", symbol)
             continue
         if manager is not None:
-            intent = _live_intent(
-                order,
-                {
-                    "symbol": symbol,
-                    "direction": direction,
-                    "decision_score": round(float(item["decision_score"]), 6),
-                    "score": round(float(item["score"]), 6),
-                    "trend_quality": round(float(item["trend_quality"]), 6),
-                    # 2dp, matching the orders_preview last_price: the
-                    # intent's inputs_hash must be reproducible from
-                    # the decision log (see _live_intent docstring).
-                    "last_price": round(float(price_for_sizing), 2),
-                    "target_notional": round(float(capped_notional), 2),
-                    "intended_notional": round(float(intended_notional), 2),
-                },
-                today,
-            )
+            # B18.1: the entry attempt for this symbol — how many
+            # trades in it have already ended. The first attempt
+            # omits "entry_attempt" from the inputs (ids unchanged);
+            # a later attempt includes it, so a same-day re-entry
+            # after a close gets a FRESH intent id instead of
+            # re-deriving the old FILLED entry intent.
+            entry_attempt = int(state.entry_attempts.get(symbol, 0))
+            entry_inputs = _entry_intent_inputs(
+                item, price_for_sizing, capped_notional,
+                intended_notional, entry_attempt)
+            intent = _live_intent(order, entry_inputs, today)
             paper_result = guardian.submit(
                 order,
                 lambda o, _intent=intent: _submit_paper_via_manager(o, _intent, manager, broker),
@@ -2560,21 +2857,11 @@ def run_daily(
                 # with the live leg's lookup), the same exact-once
                 # protection the paper leg has. The live intent is a
                 # separate broker order from the paper one (the
-                # account is part of the idempotency key).
+                # account is part of the idempotency key). The live
+                # entry carries the SAME entry_attempt as the paper
+                # one — it is the same trade on the second account.
                 live_intent = _live_intent(
-                    order,
-                    {
-                        "symbol": symbol,
-                        "direction": direction,
-                        "decision_score": round(float(item["decision_score"]), 6),
-                        "score": round(float(item["score"]), 6),
-                        "trend_quality": round(float(item["trend_quality"]), 6),
-                        "last_price": round(float(price_for_sizing), 2),
-                        "target_notional": round(float(capped_notional), 2),
-                        "intended_notional": round(float(intended_notional), 2),
-                    },
-                    today,
-                    account="live",
+                    order, entry_inputs, today, account="live",
                 )
                 live_result = guardian.submit(
                     order,
@@ -2617,7 +2904,11 @@ def run_daily(
             # can mirror a cancelled/expired order back into the
             # state (and the exit can confirm the working order is
             # gone). None when no manager was used for the entry.
+            # B18.2: the LIVE intent id alongside it, so the live
+            # startup size sync can derive the live stop's
+            # deterministic coid ("<live intent id>-trail").
             "intent_id": intent["intent_id"] if intent is not None else None,
+            "live_intent_id": live_intent["intent_id"] if live_intent is not None else None,
         }
         state.expected_positions["paper"][symbol] = {"qty": qty, "decision_id": decision_id}
         if live_result is not None and not broker.live.floor_tripped():
@@ -2644,6 +2935,7 @@ def run_daily(
         trail_stop_qty = None
         live_trail_stop_id = None
         live_trail_stop_coid = None
+        live_trail_stop_qty = None
         if side == "buy" and paper_result is not None and not dry_run:
             filled_qty = 0.0
             if manager is not None and intent is not None:
@@ -2671,6 +2963,11 @@ def run_daily(
                 if isinstance(live_stop, dict):
                     live_trail_stop_id = live_stop.get("id")
                     live_trail_stop_coid = live_stop.get("client_order_id") or live_stop_coid
+                    # B18.2: the live stop's protective quantity,
+                    # mirroring trail_stop_qty — the live startup
+                    # size sync reads it when deciding whether the
+                    # live stop needs resizing as fills arrive.
+                    live_trail_stop_qty = live_filled_qty
         if side == "buy":
             state.open_entries[symbol]["trail_percent"] = trail_percent
             state.open_entries[symbol]["trail_stop_id"] = trail_stop_id
@@ -2678,6 +2975,7 @@ def run_daily(
             state.open_entries[symbol]["trail_stop_qty"] = trail_stop_qty
             state.open_entries[symbol]["live_trail_stop_id"] = live_trail_stop_id
             state.open_entries[symbol]["live_trail_stop_coid"] = live_trail_stop_coid
+            state.open_entries[symbol]["live_trail_stop_qty"] = live_trail_stop_qty
 
         orders_preview.append(
             {
@@ -2707,8 +3005,10 @@ def run_daily(
         # Detail 1: the stop's final state is unconfirmed (the startup
         # mirror marked it) — the exit stays BLOCKED across restart.
         # No exit is submitted for the symbol until the stop's final
-        # state is confirmed by order id.
-        if record.get("stop_state_unknown"):
+        # state is confirmed by order id. B18.2: either leg's flag
+        # blocks — a live stop in an unknown state is as dangerous
+        # as a paper one (it can still execute).
+        if record.get("stop_state_unknown") or record.get("live_stop_state_unknown"):
             skipped.append({
                 "symbol": symbol,
                 "stage": "exit_stop_unknown",
@@ -2734,6 +3034,8 @@ def run_daily(
         stop_fills: list[dict] = []
         stop_cancelled_at = None
         held_at_exit = None
+        live_held_at_exit = None
+        paper_result = None
         if not dry_run:
             ok, exit_qty, cancel_reason = _cancel_entry_orders_for_exit(
                 broker, symbol, record.get("side", "buy"),
@@ -2797,6 +3099,24 @@ def run_daily(
             _held = abs(float((_paper_positions or {}).get(symbol, {}).get("qty", 0.0) or 0.0))
             exit_qty = min(float(exit_qty), _held)
             held_at_exit = _held
+            # B18.3: capture the LIVE leg's held qty at exit time too
+            # (only when the live leg is enabled; fail-closed on a
+            # fetch failure, mirroring the paper path) — the live
+            # oversell check compares the live stop's new fills +
+            # the live exit qty against it.
+            if _live_leg_enabled(broker):
+                try:
+                    _live_positions = broker.live.positions() if broker.live is not None else {}
+                except Exception as exc:  # noqa: BLE001 - fail-closed
+                    skipped.append({
+                        "symbol": symbol,
+                        "stage": "exit_positions",
+                        "reason": f"live positions fetch failed: {exc}",
+                    })
+                    log.info("skipping exit for %s: live positions fetch failed: %s", symbol, exc)
+                    continue
+                live_held_at_exit = abs(float(
+                    (_live_positions or {}).get(symbol, {}).get("qty", 0.0) or 0.0))
         exit_order = _build_order(symbol, exit_side, exit_qty, quote, "mild_up", cfg)
         if dry_run:
             orders_preview.append(
@@ -2821,6 +3141,15 @@ def run_daily(
                 stop_fill_price = sum(
                     float(f.get("filled_avg_price")) * float(f.get("filled_qty") or 0.0)
                     for f in _priced) / _total
+        # B18.5: the stop attribution PER LEG — the pending-exit
+        # record for each leg persists its own leg's numbers, so
+        # the FILLED-branch close combines the right stop leg with
+        # the right exit leg. (The combined numbers above are for
+        # the immediate-close path only, where the price is final.)
+        paper_stop_sold, paper_stop_price, paper_stop_pl = _stop_leg_attribution(
+            stop_fills, "paper", record.get("entry_price"))
+        live_stop_sold, live_stop_price, live_stop_pl = _stop_leg_attribution(
+            stop_fills, "live", record.get("entry_price"))
         if exit_qty <= 0:
             # Nothing held: the entry never filled (its buy was
             # cancelled/expired before the exit), or the trailing stop
@@ -2900,6 +3229,12 @@ def run_daily(
                         "exposure_started_at": stop_cancelled_at or datetime.now(timezone.utc).isoformat(),
                         "exposure_uncertain": stop_cancelled_at is None,
                         "exit_unknown": True,
+                        # B18.5: the paper stop leg's attribution at
+                        # submit time — the FILLED-branch close
+                        # combines it with the exit's real fill price.
+                        "stop_sold_qty": paper_stop_sold,
+                        "stop_fill_price": paper_stop_price,
+                        "stop_pl": paper_stop_pl,
                     }
                 skipped.append({
                     "symbol": symbol,
@@ -2910,8 +3245,13 @@ def run_daily(
                 continue
             # B17.4: oversell detection after the exit submits (see
             # _check_exit_oversell: detection, NOT prevention).
+            # B18.3: only the PAPER stop fills go to the paper check
+            # — a live stop's coid looked up on the paper leg returns
+            # None and would false-halt as inconclusive.
             _oversell = _check_exit_oversell(
-                broker, symbol, stop_fills, exit_qty, held_at_exit, guardian, manager)
+                broker, symbol,
+                [f for f in stop_fills if str(f.get("account") or "paper") == "paper"],
+                exit_qty, held_at_exit, guardian, manager)
             if _oversell:
                 oversell_detections.append(_oversell)
                 # The detection is also an audit-trail alert on the
@@ -2957,9 +3297,32 @@ def run_daily(
                                 "exposure_started_at": stop_cancelled_at or datetime.now(timezone.utc).isoformat(),
                                 "exposure_uncertain": stop_cancelled_at is None,
                                 "exit_unknown": True,
+                                # B18.5: the live stop leg's
+                                # attribution at submit time.
+                                "stop_sold_qty": live_stop_sold,
+                                "stop_fill_price": live_stop_price,
+                                "stop_pl": live_stop_pl,
                             }
                 else:
                     guardian.submit(exit_order, broker.live.submit)
+            # B18.3: live-leg oversell detection after the live exit
+            # submits — the same detection-not-prevention check as
+            # the paper leg, against the LIVE stop (by order id) and
+            # the LIVE held qty at exit time. Runs only when the
+            # live exit actually submitted through the manager; an
+            # inconclusive post-submit live lookup halts the same
+            # way (fail-closed).
+            if (live_result is not None and manager is not None
+                    and _live_leg_enabled(broker)):
+                _live_oversell = _check_exit_oversell(
+                    broker, symbol,
+                    [f for f in stop_fills if str(f.get("account") or "paper") == "live"],
+                    exit_qty, live_held_at_exit, guardian, manager, account="live")
+                if _live_oversell:
+                    oversell_detections.append(_live_oversell)
+                    if manager is not None and live_exit_intent_id is not None:
+                        manager.record_alert(
+                            live_exit_intent_id, "live", symbol, _live_oversell["note"])
             # Durable exposure record (Detail 2): the exit was
             # ACCEPTED but has not filled yet. The next run reads the
             # same record (held / exit-pending / protected, and the
@@ -2978,6 +3341,11 @@ def run_daily(
                     "exit_attempts": exit_attempts,
                     "exposure_started_at": stop_cancelled_at or datetime.now(timezone.utc).isoformat(),
                     "exposure_uncertain": stop_cancelled_at is None,
+                    # B18.5: the paper stop leg's attribution at
+                    # submit time.
+                    "stop_sold_qty": paper_stop_sold,
+                    "stop_fill_price": paper_stop_price,
+                    "stop_pl": paper_stop_pl,
                 }
             if manager is not None and live_exit_intent_id is not None and live_result is not None:
                 state.pending_exits[f"live:{symbol}"] = {
@@ -2992,6 +3360,11 @@ def run_daily(
                     "exit_attempts": exit_attempts,
                     "exposure_started_at": stop_cancelled_at or datetime.now(timezone.utc).isoformat(),
                     "exposure_uncertain": stop_cancelled_at is None,
+                    # B18.5: the live stop leg's attribution at
+                    # submit time.
+                    "stop_sold_qty": live_stop_sold,
+                    "stop_fill_price": live_stop_price,
+                    "stop_pl": live_stop_pl,
                 }
         exit_price = _close_price_from_quote(quote, exit_side)
         holding_days = (
@@ -3010,38 +3383,79 @@ def run_daily(
             stop_pl = None
         else:
             stop_pl = 0.0
-        exit_pl = (exit_price - entry_price) * exit_qty
-        if stop_pl is None:
-            realized_pl = None
-            exit_price_for_close = None if exit_qty <= 0 else exit_price
-            _pl_alert = (
-                f"exit for {symbol}: the trailing stop sold {stop_sold_qty} shares but "
-                "its fill price could not be fetched; realized_pl is recorded as "
-                "UNKNOWN (not 0)")
-            guardian.alerter.send("critical", _pl_alert)
-        else:
-            realized_pl = stop_pl + exit_pl
-            exit_price_for_close = stop_fill_price if exit_qty <= 0 else exit_price
-        if stop_sold_qty > 0:
-            stop_attribution.append({
-                "symbol": symbol,
-                "stop_sold_qty": round(stop_sold_qty, 4),
-                "stop_filled_avg_price": stop_fill_price,
-                "stop_realized_pl": None if stop_pl is None else round(stop_pl, 2),
-                "exit_qty": round(float(exit_qty), 4),
-                "exit_price": exit_price,
-                "realized_pl": None if realized_pl is None else round(realized_pl, 2),
-            })
-        memory.close_decision(record["decision_id"], exit_price_for_close, realized_pl, holding_days)
-        if record.get("lot_id"):
-            if stop_sold_qty > 0 and stop_fill_price is not None:
-                proceeds = stop_fill_price * stop_sold_qty + exit_price * exit_qty
-            elif stop_sold_qty > 0:
-                proceeds = None
+        # B18.5: close the decision + tax lot NOW only when the
+        # price is already final — exit_qty 0 (the stop sold
+        # everything; the stop price is final), no manager (no
+        # intent store tracks the fill, so there is no pending
+        # record and no later close), or no exit actually submitted
+        # (a sell-side entry, which the long-only loop never opens
+        # — the old behaviour is preserved). When the exit submitted
+        # with a manager, do NOT close: the pending record tracks
+        # the fill, and _sync_pending_exits closes the decision at
+        # the exit's REAL fill price when the intent reaches FILLED.
+        # The submit run's attribution records the stop leg as final
+        # and the exit leg as PENDING (exit_price / realized_pl
+        # None) — the fill run appends the final attribution.
+        # Closing at submit time with the quote price made an
+        # unfilled exit's recorded P&L fiction, and a later
+        # CANCELLED/REJECTED exit closed the decision a second time,
+        # overwriting the first. (If the stop price is unfetchable
+        # here, no alert fires yet — the FILLED-branch close fires
+        # it if the combined P&L ends up unknown.)
+        if exit_qty <= 0 or manager is None or paper_result is None:
+            exit_pl = (exit_price - entry_price) * exit_qty
+            if stop_pl is None:
+                realized_pl = None
+                exit_price_for_close = None if exit_qty <= 0 else exit_price
+                _pl_alert = (
+                    f"exit for {symbol}: the trailing stop sold {stop_sold_qty} shares but "
+                    "its fill price could not be fetched; realized_pl is recorded as "
+                    "UNKNOWN (not 0)")
+                guardian.alerter.send("critical", _pl_alert)
             else:
-                proceeds = exit_price * exit_qty
-            memory.close_tax_lot(record["lot_id"], proceeds)
+                realized_pl = stop_pl + exit_pl
+                exit_price_for_close = stop_fill_price if exit_qty <= 0 else exit_price
+            if stop_sold_qty > 0:
+                stop_attribution.append({
+                    "symbol": symbol,
+                    "stop_sold_qty": round(stop_sold_qty, 4),
+                    "stop_filled_avg_price": stop_fill_price,
+                    "stop_realized_pl": None if stop_pl is None else round(stop_pl, 2),
+                    "exit_qty": round(float(exit_qty), 4),
+                    "exit_price": exit_price,
+                    "realized_pl": None if realized_pl is None else round(realized_pl, 2),
+                })
+            memory.close_decision(record["decision_id"], exit_price_for_close, realized_pl, holding_days)
+            if record.get("lot_id"):
+                if stop_sold_qty > 0 and stop_fill_price is not None:
+                    proceeds = stop_fill_price * stop_sold_qty + exit_price * exit_qty
+                elif stop_sold_qty > 0:
+                    proceeds = None
+                else:
+                    proceeds = exit_price * exit_qty
+                memory.close_tax_lot(record["lot_id"], proceeds)
+        else:
+            # The exit is in flight: the decision stays OPEN until
+            # the pending record's intent fills. The stop leg is
+            # final (its fills are confirmed); the exit leg is
+            # pending — its price and the combined P&L are unknown
+            # until the fill.
+            if stop_sold_qty > 0:
+                stop_attribution.append({
+                    "symbol": symbol,
+                    "stop_sold_qty": round(stop_sold_qty, 4),
+                    "stop_filled_avg_price": stop_fill_price,
+                    "stop_realized_pl": None if stop_pl is None else round(stop_pl, 2),
+                    "exit_qty": round(float(exit_qty), 4),
+                    "exit_price": None,
+                    "realized_pl": None,
+                    "exit_pending": True,
+                })
         state.open_entries.pop(symbol, None)
+        # B18.1: the trade ended (the entry record left
+        # open_entries) — the next buy for this symbol is a NEW
+        # attempt and must get a fresh intent id.
+        state.entry_attempts[symbol] = int(state.entry_attempts.get(symbol, 0)) + 1
         state.expected_positions["paper"].pop(symbol, None)
         # B17.5: if the live exit was attempted but did not submit
         # (UNKNOWN — live_exit_intent_id exists, live_result is None),

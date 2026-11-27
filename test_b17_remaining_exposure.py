@@ -603,18 +603,50 @@ def test_trace_stop_partially_fills_during_cancel(tmp_path):
     assert pending["qty"] == 1.0 and pending["filled_qty"] == 0.0
     assert pending["exposure_uncertain"] is False
     assert pending["exposure_started_at"] is not None
-    # Filling the exit sell takes the total sold to exactly 2 (never
-    # more than the 2 held at exit time).
+    # B18.5: the pending record persists the stop leg's attribution
+    # at submit time, for the fill-run close.
+    assert pending["stop_sold_qty"] == 1.0
+    assert pending["stop_fill_price"] == 160.00
+    assert pending["stop_pl"] == (160.00 - entry_price) * 1.0
+    # B18.5: the decision is NOT closed at submit time — the quote
+    # price is not the exit price, so an unfilled exit's recorded
+    # P&L would be fiction. Assert it is still OPEN after the submit
+    # run, the submit run's attribution marks the exit PENDING, and
+    # the submit run's summary closed nothing.
+    decision = _decision(home, 1)
+    assert decision["closed"] == 0
+    assert attribution["exit_price"] is None
+    assert attribution["realized_pl"] is None
+    assert attribution["exit_pending"] is True
+    assert log2["summary"]["trades_closed"] == 0
+    # Fill the exit at a price DISTINCT from both the stop's 160.00
+    # and the quote price, so the close must use the REAL fill price.
     store = FileBackedFakeBroker(fixture)
-    store.fill(sell["intent_id"], "fill-exit-1", 1, 160.00)
+    quote_last = json.loads((fixture / "quotes.json").read_text())["NVDA"]["last"]
+    exit_fill_price = round(quote_last + 5.0, 2)
+    assert exit_fill_price != 160.00
+    store.fill(sell["intent_id"], "fill-exit-1", 1, exit_fill_price)
     assert _total_sold(fixture, "NVDA") == 2.0
     assert _held(fixture, "NVDA") == 0.0
+    # Run 3: the startup sync sees the exit FILLED and closes the
+    # decision at the REAL fill price + the stop attribution.
+    rc, out = _run_main(home, fixture, ["--mode", "regular", "--broker", "fake"],
+                        exit_on_signal_loss=1)
+    assert rc == 0, out
+    log3 = _latest_decision_log(home)
+    assert log3["status"] == "ok", out
     decision = _decision(home, 1)
     assert decision["closed"] == 1
+    assert decision["exit_price"] == exit_fill_price
     # Combined P&L: the stop's 1 share at 160.00 + the exit's 1 share
-    # at the decision's exit price, both from the entry price.
+    # at its REAL fill price (not the quote price), both from the entry price.
     assert decision["realized_pl"] == (
-        (160.00 - entry_price) * 1 + (decision["exit_price"] - entry_price) * 1)
+        (160.00 - entry_price) * 1 + (exit_fill_price - entry_price) * 1)
+    assert log3["summary"]["trades_closed"] == 1
+    final = _stop_attribution(log3, "NVDA")
+    assert final is not None and final.get("final_close") is True
+    assert final["exit_price"] == exit_fill_price
+    assert final["realized_pl"] == round(decision["realized_pl"], 2)
 
 
 def test_trace_cancel_unknown_across_restart(tmp_path):
@@ -973,8 +1005,10 @@ def test_b175_live_exit_fail_no_duplicate(tmp_path):
     rc, out = _run_main(home, fixture, ["--mode", "regular", "--broker", "fake"],
                         exit_on_signal_loss=1)
     assert rc == 0, out
-    # The resize run attached the paper stop; the live leg has no
-    # stop (paper-only sizing) — the live exit cancels nothing.
+    # The resize run attached the paper stop AND the live stop
+    # (B18.2: live-leg stop sizing) — the live exit cancels the live
+    # stop before the live submit fails, so the live stop is gone but
+    # no live exit was stored.
     live_store = _live_store(fixture)
     live_store.fail_next_submit()
     log2 = _run_exit(home, fixture, live_enabled=True)
