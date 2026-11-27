@@ -1505,3 +1505,85 @@ November numbers (max |IC| 0.21) DROP under this rule.
   registered design).
 - data/edgar_excerpts_v2/manifest.json is modified in the working
   tree by daily runs; deliberately NOT part of this change.
+
+## 2026-11-26 — B14: January fresh-validation gate reader (built now, runs in January)
+
+`scripts/read_fresh_validation_gate.py` reads the gate for
+exp-fresh-validation-v1 from a January-run window directory
+(`window.json` + `v4_base.json` + `designs/{v2,v3,h3,h7,ml-ranker-v1}.json`
++ `h3_similarity.json` — the contract Steps 1–5 of the January runbook
+must produce). Stdlib only, no network, $0 LLM, no orders.
+Exit codes: 0 gate read complete; 2 minimums unmet (shortfall report,
+STOP, no gate read, no verdict); 3 invalid window/data/invocation.
+
+- Minimums checked FIRST (≥30 trading days AND ≥40 in-scope filings
+  with fresh Haiku scores; per-design <10 trades is INCONCLUSIVE).
+  Extension number is read from the manifest and reported; the reader
+  never extends the window itself and refuses a 4th extension.
+- v4 base: loaded from the window and VERIFIED fresh (window match +
+  experiment_id exp-technical-v2). The runbook assigns the v4
+  recomputation to Step 4 (backtest run) and gate computation to Step 6
+  (this reader) — re-running the panel backtest here would duplicate
+  backtest.py, so the reader verifies freshness and refuses a stale or
+  frozen-holdout base instead. The SG4 IC, by contrast, IS recomputed
+  by the reader (small, self-contained, design doc says "recompute").
+- Gates SG1–SG3 per design (+SG4 for H3, recomputed from the similarity
+  observations with the exact round-2 rank-IC math), "pass, weak" flag
+  (DSR < 0.95 or net20 ≤ 0), candidate = best passing net10.
+  Candidacy is NOT authorization.
+- H7 audit (judgment call, documented in the code): the design doc
+  calls the audit rule "not a gate", the build brief required Sharpe > 5
+  to be "NOT reported as a pass". Resolution: a fourth verdict, AUDIT —
+  SG1–SG3 are still evaluated and reported truthfully, but the design
+  is neither PASS nor FAIL (FAIL would mean "dropped per the kill
+  rule", which the doc does not say) and is excluded from candidacy
+  until an audit clears it. If H7 fails any of SG1–SG3, the verdict is
+  FAIL and the audit flag is still recorded.
+- SG4 uncomputable (<2 usable days): the design doc is silent; the
+  reader exits 3 (invalid window) rather than passing or failing H3 on
+  no evidence.
+- DSR is read from the design files as computed by the backtest runner
+  (no daily returns in the window files); n_trials basis 129 + 3 per
+  PASS verdict. Output is dated by window end; the runbook's canonical
+  `experiments/results/exp-fresh-validation-v1.json` is for the January
+  run to adopt (copy of the final dated file) — the reader does not
+  write to it.
+- Safety: the reader never writes into the window dir (out-dir inside
+  it is refused), records every path it opens (`opened_paths`), and
+  never opens the frozen holdout, the EDGAR dataset, or the scores
+  files.
+
+### Verification (test_b14_gate_reader.py, 27 tests, synthetic fixtures only)
+- Pass case: all five PASS, candidate v3 (best net10 +5%), ml-ranker
+  "pass, weak" (DSR 0.90); SG2-only and SG3-only failures covered.
+- SG1 fail: v2 net10 −3% vs v4 −2% → FAIL, excluded; <10 trades →
+  INCONCLUSIVE even with the best returns; all-fail → candidate null.
+- Shortfall: 20 days / 25 filings → exit 2, shortfall json+md,
+  "extend by 10 trading days (extension 1 of 3)"; extension-3 variant
+  → "Already at extension 3 of 3 — STOP"; boundary 30 days + 40
+  filings → met; 10 unscored filings don't count (35/40 → shortfall).
+- H7 audit: Sharpe 9.22 with SG1–SG3 passing → AUDIT, not PASS,
+  candidate v3; Sharpe 9.22 + SG fail → FAIL with audit flag still
+  recorded; Sharpe exactly 5.0 → PASS, no audit.
+- SG4: perfectly anti-ranked similarity → mean IC −1.0, significant →
+  H3 FAIL despite passing SG1–SG3; IC cross-checked against pandas
+  rank-corr on the same panels (mean/t match to 1e-6); std==0 daily
+  ICs → t handled as ±∞ without crashing; <2 usable days → exit 3.
+- Staleness/path safety: frozen-holdout window refused; v4 base with
+  holdout end refused; mismatched design file refused; every opened
+  path asserted inside the tmp window dir and none equal to any
+  forbidden real path; window-dir hashes unchanged after the run.
+- Full suite: **248 passed** (was 221; +27 new), 33.6s. Milo verified
+  independently: 27/27 B14 tests pass; CLI on a synthetic audit-case
+  window → exit 0 (v2/v3/h3 PASS, h7 AUDIT, ml-ranker PASS weak,
+  candidate v3); shortfall window → exit 2 with shortfall report and
+  no gate report; no-args → exit 3. Design-doc wording for SG1–SG4,
+  the audit rule, the DSR basis, and the minimums/extension rule all
+  re-checked against the doc — the reader matches.
+
+### Deliberately NOT done
+- The reader was NOT run against the real window: the window is not
+  complete until Dec 31 and the gate reads in early January. It reads
+  synthetic fixtures only until then.
+- No backtest run, no filing scored, no holdout touched, no January
+  criteria changed.

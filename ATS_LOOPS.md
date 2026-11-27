@@ -96,7 +96,13 @@ be checked.
   filings (Haiku only, December budget $15); Step 3 check minimums
   BEFORE reading any gate; Step 4 recompute v4 base; Steps 5–6 run
   frozen designs + compute gates; Step 7 log to Sheet, registry,
-  PROGRESS.md, commit + push.
+  PROGRESS.md, commit + push. **Gate reader built Nov 26, 2026 (B14):**
+  `scripts/read_fresh_validation_gate.py` — one command, stdlib-only,
+  synthetic fixtures only, 27 tests; minimums-first (exit 2 shortfall,
+  no gate read), fresh-v4 verification, SG1–SG3 + SG4, H7 AUDIT as a
+  fourth verdict (not PASS, not FAIL, excluded from candidacy until an
+  audit clears it). NOT run against the real window — gate reads in
+  early January.
 - **Stop conditions:** minimums unmet → extend by 10 trading days
   (max 3 extensions, latest end ≈ Jan 29, 2027); still unmet after
   the third → report the shortfall and STOP, do not run the gate.
