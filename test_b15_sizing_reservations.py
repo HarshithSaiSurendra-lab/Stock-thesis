@@ -430,9 +430,13 @@ def test_e2e_cancel_releases_unfilled_only(tmp_path):
 def test_e2e_open_sell_reserves_nothing(tmp_path):
     """Test 4: the only way an open SELL arises in this system is an
     exit. Buy NVDA, exit it on a falling fixture (sell submitted,
-    open, unfilled), cancel the stale buy, then size AMD: the open
-    sell must hold no buy budget — existing_notional is 0 and AMD gets
-    the full cap (13 shares, same as the no-open-order control)."""
+    open, unfilled), then size AMD: the open sell must hold no buy
+    budget — existing_notional is 0 and AMD gets the full cap
+    (13 shares, same as the no-open-order control). B16: the exit
+    cancels the working buy FIRST and sells only the filled qty, so
+    fill 1 of the 2 shares before the exit (an unfilled buy would
+    exit with no sell at all); the runner already cancelled the buy,
+    so there is no stale buy to cancel by hand."""
     _guard_timing()
     home = tmp_path / "home"
     fixture = tmp_path / "fixture"
@@ -444,6 +448,9 @@ def test_e2e_open_sell_reserves_nothing(tmp_path):
     assert rc == 0, out
     log1 = _latest_decision_log(home)
     assert log1["status"] == "ok" and len(log1["orders"]) == 1, out
+    entry_order = log1["orders"][0]["order"]
+    FileBackedFakeBroker(fixture).fill(
+        _open_order_coid(fixture, "NVDA"), "fill-1", 1, entry_order["limit_price"])
 
     # NVDA falls: signal lost, exit_on_signal_loss exits the entry.
     _write_fixture(fixture, nvda_cycle=NVDA_FALLING)
@@ -457,12 +464,14 @@ def test_e2e_open_sell_reserves_nothing(tmp_path):
     assert len(state["orders"]) == 2, state
     orders = sorted(state["orders"].values(), key=lambda o: o["id"])
     assert orders[0]["side"] == "buy" and orders[1]["side"] == "sell"
-    assert orders[1]["qty"] == orders[0]["qty"] == 2.0
+    # B16: the buy was cancelled by the exit and the sell is only the
+    # filled share.
+    assert orders[0]["status"] == "cancelled" and orders[0]["filled_qty"] == 1.0
+    assert orders[1]["qty"] == 1.0
     with open(home / "strategy_state.json") as fh:
         assert json.load(fh)["open_entries"] == {}, "entry closed after the exit"
 
-    # Cancel the stale working buy; only the open sell remains.
-    FileBackedFakeBroker(fixture).cancel(orders[0]["client_order_id"])
+    # Only the open sell remains (the buy is already cancelled).
     _write_fixture(fixture, nvda_cycle=NVDA_FALLING, amd_cycle=AMD_UPTREND)
     rc, out = _run_main(home, fixture, ["--dry-run", "--mode", "regular",
                                         "--broker", "fake"])

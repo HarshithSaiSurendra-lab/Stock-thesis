@@ -99,7 +99,23 @@ be checked.
   of an unfilled DAY limit order expiring at close; (2) the exit
   branch sells the full entry qty without cancelling a working buy
   limit for the symbol — if that buy fills after the exit, the
-  position re-opens.
+  position re-opens. **Closed Nov 26, 2026 (B16):** both are fixed —
+  (1) the startup reconcile now mirrors cancelled/expired orders back
+  into the strategy state (`reconcile_open_intents` syncs confirmed-
+  accepted intents at startup; the mirror reduces the expected
+  position to the filled qty, or removes it when nothing filled;
+  matched by intent_id only; dry-run never mutates state); (2) the
+  exit cancels the working buy FIRST and sizes the sell to the filled
+  qty, failing closed (exit skipped, entry left open) if the cancel
+  cannot be confirmed — a late fill on a cancelled buy is a no-op in
+  the fake broker. B16 also fixed a latent bug the investigation
+  found: the SDK's `str(OrderStatus.EXPIRED)` is
+  `"OrderStatus.EXPIRED"`, so the old `.lower()` mapping fell through
+  to SUBMITTED — expired/done_for_day now map to CANCELLED. Known
+  limitations (not in B16): the exit does not cancel the attached
+  trailing stop (pre-existing); a never-filled buy's tax lot would
+  close at 0 proceeds only if the live leg is ever enabled (lot_id
+  is None in the paper-only path).
 - **Stop conditions:** any step rc != 0; safety preflight fails;
   regime_blocked / halted / kill switch present; `StaleBarsError`
   ("benchmark data stale") — the run stops, it does not trade on old
@@ -216,7 +232,16 @@ be checked.
   inconclusive lookup; only a conclusive non-duplicate rejection
   (400/validation) is terminal REJECTED. An expired claim taken over
   after the one attempt was made reconciles only — it never
-  resubmits.
+  resubmits. **Nov 26, 2026 (B16):** reconcile() never re-checks
+  SUBMITTED intents, so the startup also runs
+  `reconcile_open_intents` — every SUBMITTED / PARTIALLY_FILLED
+  intent with a broker_order_id is looked up and its current broker
+  status adopted (expired/done_for_day map to CANCELLED, fixing the
+  latent `str(OrderStatus.EXPIRED)` fall-through to SUBMITTED);
+  lookup-only, an inconclusive lookup leaves the intent untouched.
+  The live loop then mirrors CANCELLED intents into the strategy
+  state (Loop 1) and cancels the working entry order before an
+  exit, sizing the sell to the filled qty.
 - **Stop conditions:** reconcile() is LOOKUP-ONLY — it has no
   place_order_fn parameter at all, so there is no resubmit path in
   the module. A 404 "not found" is inconclusive, not proof the

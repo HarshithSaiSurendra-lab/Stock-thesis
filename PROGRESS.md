@@ -2002,3 +2002,121 @@ definition frozen (close back above its SMA50 within 5 sessions).
   exp-technical-v2.json train); the +6.19pp gap to the open-fill
   baseline (-7.82%) is the overnight-fill effect, as the design
   anticipated. Tests 10/10; full suite 325 passed.
+
+### 2026-11-26 — B16: cancel/expiry state feedback + exit cancels working buy
+
+User-approved Nov 26, 2026 (options widget, "Yes, build B16 next").
+Closes both B15 observations. Built by a subagent, verified by Milo
+independently, committed to agentic-p0. The daily job stayed in
+preview throughout; every live run went through the fake broker in
+temp dirs. No strategy/threshold/cost/config change; no guardian,
+regime gate, or January criteria change; no real or paper orders.
+
+- (a) Startup state feedback: after the Loop 5 startup reconcile,
+  `manager.reconcile_open_intents(lookup_fn)` syncs every
+  SUBMITTED/PARTIALLY_FILLED intent that has a broker_order_id
+  against the broker (lookup-only, never submits; an inconclusive
+  lookup leaves the intent untouched — a confirmed-accepted order
+  is not ambiguous in the Loop 5 sense). `_mirror_cancelled_intents_into_state`
+  then mirrors CANCELLED intents into the strategy state — matched
+  by the intent_id recorded at submit time ONLY (entries with no
+  recorded intent_id, i.e. pre-B16, are skipped; the end-of-run
+  reconcile remains the backstop for them). The expected position
+  is reduced to the filled qty (removed when nothing filled) and
+  the open entry updated/removed consistently. Gated on
+  `not dry_run` — dry-run never mutates strategy state.
+  Adjustments are logged and reported in a new `state_sync` key
+  in both summaries. Entries now record their `intent_id`.
+- (b) Exit cancels first: before an exit, `_cancel_entry_orders_for_exit`
+  cancels the working entry order(s) on the paper leg AND the live
+  leg (no-op while disabled) and sizes the sell to the FILLED qty.
+  Confirmation is a fresh open-orders re-fetch (no entry-side order
+  with remaining qty may still be open) plus an intent-store
+  tripwire: if the entry's intent is still non-terminal, the
+  per-order lookup must agree it is terminal — a WORKING status or
+  a raising lookup vetoes. Any failure -> the exit is recorded as
+  `skipped` with `stage: "exit_cancel"` and the entry stays open
+  for the next run (fail-closed). A zero-fill exit closes the entry
+  with NO sell. The dry-run preview keeps the entry qty.
+- (c) `AlpacaLeg.cancel_order(order_id= / client_order_id=)` (SDK +
+  REST fallback; 404 on the DELETE -> None = already gone, success;
+  non-404 errors propagate; the SDK's cancel returns None, so the
+  final state comes from a follow-up GET; if the GET fails the
+  cancel is still confirmed by the successful DELETE and
+  filled_qty is None, so the caller uses its pre-cancel snapshot.
+  Disabled legs return None). `FakeLeg.cancel_order` + 
+  `FileBackedFakeBroker.expire` passthrough. `FakeBroker.expire`
+  (DAY order reaching the close unfilled; filled shares stay
+  filled) and `apply_partial_fill` now refuses fills on
+  cancelled/canceled/expired/rejected orders — a late fill is a
+  zero-qty no-op instead of silently re-opening the position.
+  `FakeLeg.open_orders()` now also excludes expired/done_for_day,
+  matching Alpaca's OPEN query.
+- REAL BUG FOUND AND FIXED: `str(OrderStatus.EXPIRED)` is
+  `"OrderStatus.EXPIRED"`, so the SDK path's old `.lower()` mapping
+  fell through to SUBMITTED — an expired order adopted as SUBMITTED
+  would never have cleared. `_normalize_broker_status` /
+  `_status_str` map the enum, the value, and the repr to the same
+  string; expired/done_for_day -> CANCELLED (an expired DAY order
+  is terminally not-filled, not a rejection).
+- E2E (test_b16_cancel_expiry.py, 27 tests, all passing): (1)
+  expiry overnight — Run 1 buys NVDA qty 2 (limit, unfilled);
+  broker expires it; Run 2 -> status `ok` (no drift halt),
+  `state_sync` = `[{removed, filled 0}]`, old intent CANCELLED, a
+  NEW NVDA buy submitted (fake-0002, new intent), state matches
+  the new order's qty. (2) partial fill + cancel — 1 of 2 filled,
+  remainder cancelled -> Run 2 `ok`, `state_sync` =
+  `[{reduced_to_filled, 1.0}]`, expected/open-entry qty 1.0,
+  `existing_notional` = 1 x last close, `open_buy_reservations`
+  = 0.0, no new order. (3) exit with working buy — entry 1/2
+  filled, signal lost -> buy cancelled FIRST, exit sells only 1
+  share via the manager (exit intent sell qty 1, SUBMITTED,
+  fake-0002), entry closed; a late fill on the cancelled buy is a
+  no-op; Run 3 -> `ok`, no re-opened position, order count stays
+  2. (3b) exit with unfilled buy — no sell submitted at all, entry
+  closed, only 1 intent ever created. (4) regression — no open
+  orders -> behaviour identical. Unit tests cover the status
+  mapping, inconclusive lookups, mirror cases, cancel helper
+  outcomes, tripwire veto/pass/None, and AlpacaLeg cancel
+  (SDK/REST/404/by-client-order-id/disabled).
+- Two existing tests were updated for the new exit behaviour
+  (both now fill 1 of 2 shares before the exit and assert the
+  exit sells 1, not 2, with the buy cancelled): B13
+  `test_exit_goes_through_manager_after_entry` and B15
+  `test_e2e_open_sell_reserves_nothing` (AMD still gets the full
+  cap, 13 shares).
+- Milo's verification: read all diffs in full; ran
+  test_b16_cancel_expiry.py himself (27/27); ran the full suite
+  himself (**357 passed**, 0 failed — the one failure the agent
+  saw in its own run, test_form4_exit.py::test_multi_owner_accession_excluded
+  (KeyError), did NOT reproduce on Milo's full run: it passes
+  alone, passes in its file (23 tests), and the full suite is
+  green — a one-off ordering flake in the agent's run, in a file
+  B16 never touched; the Form 4 agent is still working in the
+  same tree). Verified the `str(OrderStatus.EXPIRED)` claim
+  against the live SDK in the venv (str is "OrderStatus.EXPIRED",
+  value is "expired"; both normalizers map all three forms to
+  "expired"). Verified `intent_id == client_order_id`
+  (build_intent sets intent_id = derive_client_order_id), so the
+  startup and tripwire lookups keyed by intent_id are correct.
+  Verified the updated B13/B15 tests pin the new behaviour. The
+  suite-count arithmetic reconciles: 325 (pre-B16, incl. 18
+  filing/SMA tests that live on research-historical, not in this
+  tree) - 18 + 27 B16 + 23 Form 4 = 357. A stray byte-identical
+  copy of sma_timing.py in the agentic-p0 tree (left over from
+  the research-branch checkout) was removed — the file is safe
+  on research-historical.
+- Known limitations (not in B16): the exit does not cancel the
+  attached trailing stop (pre-existing — needs a decision, since
+  cancelling it touches the stop-protection path); crash-mid-exit
+  is safe by intent determinism (the next run re-derives the same
+  exit intent and submit() returns the existing SUBMITTED intent
+  — no second sell); a raising per-order lookup in the exit
+  tripwire vetoes the exit (fail-closed, retries next run); a
+  never-filled buy's tax lot would close at 0 proceeds only if
+  the live leg is ever enabled (lot_id is None in the paper-only
+  path, so the close is skipped today); mirror matches by
+  intent_id only — no symbol+day+qty fallback for pre-B16
+  entries (deliberate: a same-day re-entry with the same qty
+  could be wrongly cleared; the live state has no pre-B16 open
+  entries since the daily job has only ever run in preview).

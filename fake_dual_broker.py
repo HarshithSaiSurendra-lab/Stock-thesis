@@ -207,6 +207,14 @@ class FileBackedFakeBroker:
         finally:
             self._save()
 
+    def expire(self, client_order_id: str) -> dict:
+        """Expire an open order and persist it (B16): a DAY order that
+        reached the close unfilled. Filled shares stay filled."""
+        try:
+            return self._broker.expire(client_order_id)
+        finally:
+            self._save()
+
     def order_count(self) -> int:
         return self._broker.order_count()
 
@@ -276,8 +284,13 @@ class FakeLeg:
             return []
         out = []
         for order in self._store.list_orders():
+            # B16: expired / done_for_day orders are excluded, like
+            # Alpaca's QueryOrderStatus.OPEN — an expired order's
+            # remaining qty must not be counted as an open position
+            # once the state sync clears the expected position to 0.
             if str(order.get("status", "")).lower() in {
-                    "cancelled", "canceled", "rejected", "filled"}:
+                    "cancelled", "canceled", "rejected", "filled",
+                    "expired", "done_for_day"}:
                 continue
             out.append({
                 "id": str(order.get("id")),
@@ -344,6 +357,40 @@ class FakeLeg:
         if self.mode != "paper":
             return None
         return self._store.get_by_client_order_id(client_order_id)
+
+    def cancel_order(self, order_id=None, client_order_id=None) -> Optional[dict]:
+        """Cancel one open order (B16), in the open-orders shape.
+
+        Returns the cancelled order, or None when the leg has no such
+        order (disabled leg, or already gone — success: nothing
+        remains to fill). The caller confirms via an open-orders
+        re-fetch, so a None here is never the sole confirmation.
+        """
+        if self.mode != "paper":
+            return None
+        target = None
+        if client_order_id is not None:
+            target = self._store.get_by_client_order_id(client_order_id)
+        elif order_id is not None:
+            for candidate in self._store.list_orders():
+                if str(candidate.get("id")) == str(order_id):
+                    target = candidate
+                    break
+        if target is None:
+            return None
+        cancelled = self._store.cancel(target["client_order_id"])
+        return {
+            "id": str(cancelled.get("id")),
+            "symbol": str(cancelled.get("symbol")),
+            "side": str(cancelled.get("side", "")).lower(),
+            "qty": float(cancelled.get("qty") or 0.0),
+            "filled_qty": float(cancelled.get("filled_qty") or 0.0),
+            "status": str(cancelled.get("status", "")).lower(),
+            "limit_price": (float(cancelled["limit_price"])
+                            if cancelled.get("limit_price") is not None else None),
+            "filled_avg_price": (float(cancelled["filled_avg_price"])
+                                 if cancelled.get("filled_avg_price") is not None else None),
+        }
 
     def attach_trailing_stop(self, symbol: str, qty: float, trail_pct: float) -> Optional[dict]:
         self._store.trail_calls.append(

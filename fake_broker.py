@@ -90,6 +90,20 @@ class FakeBroker:
             order = self._orders[client_order_id]
             if fill_id in self._fills:
                 return dict(self._fills[fill_id])
+            # B16: a terminally-cancelled/expired order cannot fill —
+            # the real broker never delivers a fill for it. A late
+            # fill attempt is a no-op (zero-qty fill, nothing
+            # recorded) instead of silently re-opening the position.
+            if str(order.get("status", "")).lower() in {
+                    "cancelled", "canceled", "expired", "rejected"}:
+                return {
+                    "fill_id": fill_id,
+                    "client_order_id": client_order_id,
+                    "broker_order_id": order["id"],
+                    "qty": 0.0,
+                    "cumulative_filled_qty": float(order["filled_qty"]),
+                    "price": float(price),
+                }
             prev_filled = float(order["filled_qty"])
             prev_avg = order.get("filled_avg_price")
             new_qty = float(qty)
@@ -128,6 +142,19 @@ class FakeBroker:
             if str(order.get("status", "")).lower() not in {
                     "filled", "cancelled", "canceled", "rejected"}:
                 order["status"] = "cancelled"
+            return dict(order)
+
+    def expire(self, client_order_id: str) -> dict:
+        """Mark an order expired (B16): a DAY order that reached the
+        close unfilled. Filled shares stay filled; the remainder will
+        never fill. Like a cancel, but with the broker's expiry status
+        so the expiry path (not just the cancel path) is exercised.
+        Expiring a filled or already-terminal order is a no-op."""
+        with self._lock:
+            order = self._orders[client_order_id]
+            if str(order.get("status", "")).lower() not in {
+                    "filled", "cancelled", "canceled", "expired", "rejected"}:
+                order["status"] = "expired"
             return dict(order)
 
     def duplicate_fill_delivery(self, fill: dict) -> dict:

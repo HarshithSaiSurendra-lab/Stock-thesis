@@ -129,6 +129,19 @@ def _opt_float(value) -> Optional[float]:
         return None
 
 
+def _status_str(value) -> str:
+    """Broker status as a lowercase string, from an SDK enum or a plain string.
+
+    ``str(OrderStatus.EXPIRED)`` is ``"OrderStatus.EXPIRED"``; the
+    REST path returns ``"expired"``. Both normalize to ``"expired"``.
+    """
+    raw = getattr(value, "value", value)
+    text = str(raw or "").lower()
+    if "." in text:
+        text = text.rsplit(".", 1)[-1]
+    return text
+
+
 class AlpacaLeg:
     """One account (paper or live) wrapped with the capital floor."""
 
@@ -502,6 +515,99 @@ class AlpacaLeg:
             "symbol": order.symbol,
             "status": str(order.status),
             "filled_qty": float(getattr(order, "filled_qty", 0.0) or 0.0),
+        }
+
+    def cancel_order(self, order_id=None, client_order_id=None) -> Optional[dict]:
+        """Cancel one open order (B16: an exit cancels the working entry
+        order first). Returns the broker's final view of the order
+        {"id", "symbol", "status", "filled_qty"}, or None when the
+        broker has no such order (404 on the DELETE — already
+        cancelled/expired/gone, which is success: nothing remains to
+        fill). Non-404 errors propagate; the caller fail-closes (no
+        exit) rather than selling shares that may not exist.
+
+        The SDK's cancel call returns None (no order back), so the
+        final state comes from a follow-up GET; if that GET fails the
+        cancel itself is still confirmed by the successful DELETE,
+        and the returned filled_qty is None (the caller then uses its
+        pre-cancel snapshot). Disabled legs return None (nothing to
+        cancel — the leg never submits).
+        """
+        if not self.cfg.enabled:
+            return None
+        if order_id is None and client_order_id is None:
+            return None
+        if order_id is not None:
+            if self.client:
+                try:
+                    self.client.cancel_order_by_id(order_id)
+                except Exception as exc:  # noqa: BLE001 - 404 vs everything else
+                    if "404" in str(exc):
+                        return None
+                    raise
+            else:
+                try:
+                    self._rest_json("DELETE", f"{self._base_url}/v2/orders/{order_id}")
+                except RuntimeError as exc:
+                    if "404" in str(exc):
+                        return None
+                    raise
+            try:
+                fetched = self._fetch_order_by_id(order_id)
+            except Exception:  # noqa: BLE001 - cancel confirmed; GET is best-effort
+                fetched = None
+            if fetched is not None:
+                return fetched
+            return {"id": str(order_id), "symbol": None, "status": "cancelled",
+                    "filled_qty": None}
+        # Cancel by client_order_id (REST only — this SDK version has no
+        # cancel-by-client-order-id call).
+        try:
+            self._rest_json(
+                "DELETE",
+                f"{self._base_url}/v2/orders:client_order_id/{client_order_id}",
+            )
+        except RuntimeError as exc:
+            if "404" in str(exc):
+                return None
+            raise
+        fetched = self.get_by_client_order_id(client_order_id)
+        if fetched is not None:
+            return fetched
+        return {"id": None, "symbol": None, "status": "cancelled",
+                "filled_qty": None, "client_order_id": str(client_order_id)}
+
+    def _fetch_order_by_id(self, order_id) -> Optional[dict]:
+        """GET one order by broker id (after a cancel), normalized like
+        get_by_client_order_id. None on 404 (gone)."""
+        if self.client:
+            try:
+                order = self.client.get_order_by_id(order_id)
+            except Exception as exc:  # noqa: BLE001 - 404 vs everything else
+                if "404" in str(exc):
+                    return None
+                raise
+            if order is None:
+                return None
+            return {
+                "id": str(order.id),
+                "symbol": order.symbol,
+                "status": _status_str(order.status),
+                "filled_qty": float(getattr(order, "filled_qty", 0.0) or 0.0),
+            }
+        try:
+            result = self._rest_json("GET", f"{self._base_url}/v2/orders/{order_id}")
+        except RuntimeError as exc:
+            if "404" in str(exc):
+                return None
+            raise
+        if not isinstance(result, dict) or not result.get("id"):
+            return None
+        return {
+            "id": str(result.get("id")),
+            "symbol": result.get("symbol"),
+            "status": str(result.get("status", "")),
+            "filled_qty": float(result.get("filled_qty") or 0.0),
         }
 
     def attach_trailing_stop(self, symbol: str, qty: float, trail_pct: float) -> Optional[dict]:

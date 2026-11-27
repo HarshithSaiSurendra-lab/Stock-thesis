@@ -208,6 +208,19 @@ class DuplicateClientOrderIdError(RuntimeError):
     """Raised when a broker rejects a submit as a 409 duplicate client_order_id."""
 
 
+def _normalize_broker_status(raw) -> str:
+    """Lowercase broker status string, tolerating the SDK enum repr.
+
+    ``str(OrderStatus.EXPIRED)`` is ``"OrderStatus.EXPIRED"`` while the
+    REST path returns ``"expired"``; both must map the same way.
+    """
+    value = getattr(raw, "value", raw)
+    text = str(value or "submitted").lower()
+    if "." in text:
+        text = text.rsplit(".", 1)[-1]
+    return text
+
+
 class OrderManager:
     """Exact-once order lifecycle over a SQLite intent store."""
 
@@ -402,13 +415,19 @@ class OrderManager:
 
     def _adopt_broker_order(self, intent: dict, broker_order: dict) -> dict:
         broker_id = str(broker_order.get("id") or broker_order.get("broker_order_id") or "")
-        status = str(broker_order.get("status") or "submitted").lower()
+        # B16: an expired DAY order is terminally not-filled, not a
+        # rejection; "done_for_day" is the same terminal state.
+        # _normalize_broker_status also maps the SDK's
+        # str(OrderStatus.EXPIRED) == "OrderStatus.EXPIRED" repr.
+        status = _normalize_broker_status(broker_order.get("status"))
         if status in {"filled", "fully_filled"}:
             new_status = "FILLED"
         elif status in {"partially_filled", "partially filled"}:
             new_status = "PARTIALLY_FILLED"
-        elif status in {"cancelled", "canceled", "rejected"}:
-            new_status = "CANCELLED" if "cancel" in status else "REJECTED"
+        elif status in {"cancelled", "canceled", "expired", "done_for_day"}:
+            new_status = "CANCELLED"
+        elif status == "rejected":
+            new_status = "REJECTED"
         else:
             new_status = "SUBMITTED"
         filled = broker_order.get("filled_qty")
@@ -663,6 +682,58 @@ class OrderManager:
                 )
             )
         return recovered
+
+    def reconcile_open_intents(self, lookup_fn=None, symbol: str | None = None) -> list[dict]:
+        """Sync intents the broker may have cancelled/expired since submit (B16).
+
+        Looks up every SUBMITTED / PARTIALLY_FILLED intent that has a
+        broker_order_id and adopts the broker's current status — so a
+        DAY order that expired at close (or was cancelled) is found,
+        not just one whose first response was dropped. Lookup-only;
+        never submits. An inconclusive lookup (None, or raising) leaves
+        the intent untouched (no alert, no block: the order was
+        confirmed accepted, so there is nothing ambiguous to resolve —
+        the next run retries). Returns the adopted intents.
+        """
+        query = (
+            "SELECT * FROM intents WHERE status IN ('SUBMITTED', 'PARTIALLY_FILLED')"
+            " AND broker_order_id IS NOT NULL"
+        )
+        params: list = []
+        if symbol is not None:
+            query += " AND symbol=?"
+            params.append(symbol)
+        rows = self._conn.execute(query, params).fetchall()
+        adopted = []
+        for row in rows:
+            intent = dict(row)
+            if lookup_fn is None:
+                continue
+            try:
+                found = lookup_fn(intent["intent_id"])
+            except Exception:
+                continue
+            if not found:
+                continue
+            adopted.append(self._adopt_broker_order(intent, found))
+        return adopted
+
+    def cancelled_intents(self, symbol: str | None = None) -> list[dict]:
+        """Every CANCELLED intent, optionally for one symbol.
+
+        The strategy mirrors these into its own state (B16): the
+        intent store is the source of truth for order status.
+        """
+        query = "SELECT * FROM intents WHERE status='CANCELLED'"
+        params: list = []
+        if symbol is not None:
+            query += " AND symbol=?"
+            params.append(symbol)
+        return [dict(r) for r in self._conn.execute(query, params).fetchall()]
+
+    def get_intent(self, intent_id: str) -> dict | None:
+        """Return one intent by id, or None when it is not stored."""
+        return self._fetch(intent_id)
 
     # -- fills ------------------------------------------------------------
     def apply_fill_update(self, intent_id: str, fill: dict) -> tuple[bool, float, float]:

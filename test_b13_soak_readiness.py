@@ -376,6 +376,16 @@ def test_exit_goes_through_manager_after_entry(tmp_path):
     assert intents[0]["broker_order_id"] == "fake-0001"
 
     # NVDA now falls: signal lost, exit_on_signal_loss exits the open entry.
+    # B16: the exit cancels the working buy FIRST and sells only the
+    # filled qty, so fill 1 of the 2 shares before the exit (an
+    # unfilled buy would exit with no sell at all).
+    from fake_dual_broker import FileBackedFakeBroker
+    entry_order = log_a["orders"][0]["order"]
+    # The intent id IS the client_order_id (the preview order itself
+    # carries no client_order_id — the manager attaches it at submit).
+    entry_coid = _read_intents(home)[0]["intent_id"]
+    FileBackedFakeBroker(fixture).fill(
+        entry_coid, "fill-1", 1, entry_order["limit_price"])
     _write_fixture(fixture, nvda_cycle=(-0.016, -0.016, 0.016), drop=False, polls=0)
     rc, out = _run_main(home, fixture, ["--mode", "regular", "--broker", "fake"],
                         exit_on_signal_loss=1)
@@ -386,12 +396,16 @@ def test_exit_goes_through_manager_after_entry(tmp_path):
     intents = _read_intents(home)
     assert len(intents) == 2, intents
     entry, exit_intent = intents
-    assert exit_intent["side"] == "sell" and exit_intent["qty"] == entry["qty"]
+    # The exit sells only the filled share (B16), not the entry qty.
+    assert exit_intent["side"] == "sell" and exit_intent["qty"] == 1.0
     assert exit_intent["status"] == "SUBMITTED" and exit_intent["broker_order_id"] == "fake-0002"
     assert exit_intent["attempts"] == 1
     state = _broker_state(fixture)
     assert _order_count(state) == 2 and state["submit_calls"] == 2, state
     assert state["live_submit_calls"] == 2, state
+    # The buy was cancelled by the exit (not left working).
+    buy = [o for o in state["orders"].values() if o["side"] == "buy"][0]
+    assert buy["status"] == "cancelled" and buy["filled_qty"] == 1.0
     with open(home / "strategy_state.json") as fh:
         strategy_state = json.load(fh)
     assert strategy_state["open_entries"] == {}, "entry closed after the exit"

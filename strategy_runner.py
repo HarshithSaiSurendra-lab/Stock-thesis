@@ -219,6 +219,181 @@ def _submit_paper_via_manager(order: dict, intent: dict, manager: OrderManager, 
     return None
 
 
+def _mirror_cancelled_intents_into_state(state: StrategyState, intents: list[dict]) -> list[dict]:
+    """Mirror terminally-cancelled intents into the strategy state (B16).
+
+    A DAY order the broker cancelled or expired since submit leaves a
+    stale expected position in the state: the entry was recorded at
+    submit time, and nothing popped it. The next run's end-of-run
+    reconcile would then see expected qty vs actual (filled + open 0)
+    and trip the drift halt — fail-closed, but firing on the ROUTINE
+    expiry case. For each CANCELLED intent, find the matching open
+    entry (by the intent_id recorded at submit time) and reduce the
+    expected position to the intent's filled qty (removing it when
+    nothing filled); a partially filled entry keeps the filled qty as
+    its position. The intent store remains the source of truth for
+    order status; the state mirrors it.
+
+    Entries with no recorded intent_id (recorded before B16) are
+    skipped — the end-of-run reconcile remains the backstop for them
+    and halts on drift rather than silently guessing. Returns one
+    adjustment dict per entry changed, for the run summary.
+    """
+    adjustments = []
+    for intent in intents or []:
+        if str(intent.get("status")) != "CANCELLED":
+            continue
+        symbol = str(intent.get("symbol"))
+        account = str(intent.get("account") or "paper")
+        filled = float(intent.get("filled_qty") or 0.0)
+        record = state.open_entries.get(symbol)
+        if record is None:
+            continue
+        if not record.get("intent_id"):
+            continue
+        if record.get("intent_id") != intent.get("intent_id"):
+            continue
+        expected = state.expected_positions.get(account, {})
+        if filled > 0:
+            if symbol in expected:
+                expected[symbol]["qty"] = filled
+            if account == "paper":
+                record["qty"] = filled
+            adjustments.append({
+                "symbol": symbol, "intent_id": intent.get("intent_id"),
+                "filled_qty": filled, "action": "reduced_to_filled",
+            })
+        else:
+            expected.pop(symbol, None)
+            if account == "paper" and symbol not in state.expected_positions.get("live", {}):
+                state.open_entries.pop(symbol, None)
+            adjustments.append({
+                "symbol": symbol, "intent_id": intent.get("intent_id"),
+                "filled_qty": 0.0, "action": "removed",
+            })
+    return adjustments
+
+
+def _cancel_working_orders_on_leg(leg, symbol: str, entry_side: str, *,
+                                  manager=None, intent_id=None, lookup_fn=None):
+    """Cancel the working entry order(s) for `symbol` on one leg, and
+    report how many shares the entry actually holds.
+
+    Returns (ok, filled_qty, reason). ok False means the exit must NOT
+    proceed (fail-closed): a cancel failed, or the working order cannot
+    be confirmed gone. filled_qty is the shares the entry holds: the
+    filled quantity of the cancelled working orders, or the leg's
+    position when no working order remains. The end-of-run reconcile
+    is the backstop for any residual mismatch.
+
+    The confirmation is a fresh open-orders re-fetch after the cancel:
+    no entry-side order for the symbol with remaining qty > 0 may still
+    be open. When the entry's intent is still non-terminal in the store
+    (paper leg), the broker's per-order lookup must also agree the
+    order is terminal — a lookup that returns a WORKING status vetoes,
+    and a lookup that raises vetoes too (fail-closed; the exit retries
+    next run). A lookup that returns None relies on the re-fetch (it
+    can only veto, never falsely confirm).
+    """
+    try:
+        open_orders = leg.open_orders()
+    except Exception as exc:  # noqa: BLE001 - fail-closed on any fetch failure
+        return False, 0.0, f"open-orders fetch failed: {exc}"
+    working = [
+        o for o in (open_orders or [])
+        if str(o.get("symbol")) == symbol
+        and str(o.get("side", "")).lower() == str(entry_side).lower()
+        and float(o.get("qty") or 0.0) - float(o.get("filled_qty") or 0.0) > 0
+    ]
+    filled = 0.0
+    for order in working:
+        filled += float(order.get("filled_qty") or 0.0)
+        cancel = getattr(leg, "cancel_order", None)
+        if cancel is None:
+            return False, 0.0, (
+                f"leg has no cancel_order; cannot cancel {order.get('id')}"
+            )
+        try:
+            result = cancel(order_id=order.get("id"),
+                            client_order_id=order.get("client_order_id"))
+        except Exception as exc:  # noqa: BLE001 - fail-closed on any cancel failure
+            return False, 0.0, f"cancel failed for {order.get('id')}: {exc}"
+        if isinstance(result, dict) and result.get("filled_qty") is not None:
+            # The cancel result is fresher than the pre-cancel snapshot.
+            filled += float(result.get("filled_qty") or 0.0) - float(order.get("filled_qty") or 0.0)
+    if working:
+        try:
+            remaining = leg.open_orders()
+        except Exception as exc:  # noqa: BLE001 - fail-closed on any fetch failure
+            return False, 0.0, f"open-orders re-fetch failed: {exc}"
+        still_open = [
+            o for o in (remaining or [])
+            if str(o.get("symbol")) == symbol
+            and str(o.get("side", "")).lower() == str(entry_side).lower()
+            and float(o.get("qty") or 0.0) - float(o.get("filled_qty") or 0.0) > 0
+        ]
+        if still_open:
+            return False, 0.0, (
+                "cancel did not take effect: "
+                f"{[o.get('id') for o in still_open]} still open"
+            )
+    else:
+        # No working entry order: the entry fully filled (or never
+        # existed on this leg). The position is the filled quantity.
+        try:
+            positions = leg.positions()
+        except Exception as exc:  # noqa: BLE001 - fail-closed on any fetch failure
+            return False, 0.0, f"positions fetch failed: {exc}"
+        filled = abs(float((positions or {}).get(symbol, {}).get("qty", 0.0) or 0.0))
+    # Intent-store tripwire (paper leg only): if the entry's intent is
+    # still non-terminal, the broker's per-order lookup must agree the
+    # order is gone — a WORKING status vetoes the exit.
+    if manager is not None and intent_id:
+        intent = manager.get_intent(intent_id)
+        if (intent is not None
+                and intent.get("status") in {"SUBMITTED", "PARTIALLY_FILLED"}
+                and intent.get("broker_order_id")):
+            if lookup_fn is None:
+                return False, 0.0, "no lookup to confirm the entry order is gone"
+            try:
+                found = lookup_fn(intent_id)
+            except Exception as exc:  # noqa: BLE001 - fail-closed; exit retries next run
+                return False, 0.0, f"lookup failed for {intent_id}: {exc}"
+            if found is not None:
+                status = str(found.get("status") or "").lower()
+                if status not in {"cancelled", "canceled", "expired", "done_for_day",
+                                  "filled", "rejected"}:
+                    return False, 0.0, f"entry order {intent_id} still {status} after cancel"
+    return True, filled, ""
+
+
+def _cancel_entry_orders_for_exit(broker, symbol: str, entry_side: str, *,
+                                  manager=None, intent_id=None):
+    """Cancel the working entry order(s) for `symbol` before an exit,
+    on the paper leg and the live leg, and report how many shares the
+    entry holds. Returns (ok, filled_qty, reason); ok False means the
+    exit must NOT proceed. The paper leg determines the exit size; the
+    live leg is cancelled the same way (a no-op while disabled) so the
+    behaviour is identical if it is ever enabled."""
+    filled = 0.0
+    for leg_name in ("paper", "live"):
+        leg = getattr(broker, leg_name, None)
+        if leg is None:
+            continue
+        ok, leg_filled, reason = _cancel_working_orders_on_leg(
+            leg, symbol, entry_side,
+            manager=manager if leg_name == "paper" else None,
+            intent_id=intent_id if leg_name == "paper" else None,
+            lookup_fn=getattr(leg, "get_by_client_order_id", None)
+            if leg_name == "paper" else None,
+        )
+        if not ok:
+            return False, 0.0, f"{leg_name}: {reason}"
+        if leg_name == "paper":
+            filled = leg_filled
+    return True, filled, ""
+
+
 def _trail_percent_for_row(row: pd.Series, cfg: TradingConfig) -> float:
     if not cfg.exits.dynamic_trail_enabled:
         return cfg.exits.trail_percent
@@ -717,6 +892,10 @@ def run_daily(
     manager = order_manager
     if not dry_run and manager is None:
         manager = OrderManager(cfg.paths.order_store_path)
+    # B16: startup state feedback — cancelled/expired orders since
+    # submit are mirrored into the strategy state, so a routine DAY
+    # expiry does not trip the end-of-run drift halt.
+    state_sync: list[dict] = []
     if manager is not None:
         # Startup reconcile (Loop 5): recover any PENDING / expired-
         # CLAIMED / UNKNOWN intent BEFORE any new submission.
@@ -734,6 +913,17 @@ def run_daily(
                 max_polls=3,
                 sleep_fn=lambda s: None,
             )
+            # A confirmed-accepted order may have been cancelled or
+            # expired by the broker since submit; reconcile() never
+            # re-checks SUBMITTED intents, so sync them explicitly.
+            manager.reconcile_open_intents(lookup_fn=lookup_fn)
+            # Dry-run is a preview and must not mutate strategy state.
+            if not dry_run:
+                state_sync = _mirror_cancelled_intents_into_state(
+                    state, manager.cancelled_intents()
+                )
+                for adj in state_sync:
+                    log.info("startup state sync: %s", adj)
 
     benchmark_row = None
     try:
@@ -1087,6 +1277,7 @@ def run_daily(
                 lambda o, _intent=intent: _submit_paper_via_manager(o, _intent, manager, broker),
             )
         else:
+            intent = None
             paper_result = guardian.submit(order, broker.paper.submit)
         if not broker.live.floor_tripped():
             live_result = guardian.submit(order, broker.live.submit)
@@ -1119,6 +1310,11 @@ def run_daily(
             "lot_id": lot_id,
             "entry_price": live_fill if live_fill else paper_fill,
             "opened_at": datetime.now(timezone.utc).isoformat(),
+            # B16: the intent behind this entry, so the startup sync
+            # can mirror a cancelled/expired order back into the
+            # state (and the exit can confirm the working order is
+            # gone). None when no manager was used for the entry.
+            "intent_id": intent["intent_id"] if intent is not None else None,
         }
         state.expected_positions["paper"][symbol] = {"qty": qty, "decision_id": decision_id}
         if live_result is not None and not broker.live.floor_tripped():
@@ -1157,10 +1353,34 @@ def run_daily(
             continue
         quote = _quote_with_spread_pct(broker.paper.latest_quote(symbol) or broker.live.latest_quote(symbol))
         exit_side = "sell" if record.get("side") == "buy" else "buy"
-        qty = record.get("qty", 0)
-        if qty <= 0:
+        entry_qty = record.get("qty", 0)
+        if entry_qty <= 0:
             continue
-        exit_order = _build_order(symbol, exit_side, qty, quote, "mild_up", cfg)
+        # B16: cancel the working entry order FIRST and size the exit
+        # to what the entry actually holds. A buy that only partially
+        # filled must not be sold at the full entry qty, and a working
+        # buy that fills after the exit would re-open the position.
+        # If the cancel fails or cannot be confirmed, do NOT submit
+        # the exit — record it as skipped and leave the entry open
+        # for the next run (fail-closed). The dry-run preview keeps
+        # the entry qty: the filled qty is only known when the exit
+        # runs, after the cancel.
+        exit_qty = entry_qty
+        if not dry_run:
+            ok, exit_qty, cancel_reason = _cancel_entry_orders_for_exit(
+                broker, symbol, record.get("side", "buy"),
+                manager=manager,
+                intent_id=record.get("intent_id"),
+            )
+            if not ok:
+                skipped.append({
+                    "symbol": symbol,
+                    "stage": "exit_cancel",
+                    "reason": cancel_reason,
+                })
+                log.info("skipping exit for %s: %s", symbol, cancel_reason)
+                continue
+        exit_order = _build_order(symbol, exit_side, exit_qty, quote, "mild_up", cfg)
         if dry_run:
             orders_preview.append(
                 {
@@ -1171,7 +1391,15 @@ def run_daily(
                 }
             )
             continue
-        if record["side"] == "buy":
+        if exit_qty <= 0:
+            # Nothing held: the entry never filled (its buy was
+            # cancelled/expired before the exit). No sell to submit —
+            # just close the entry record below.
+            log.info(
+                "exit for %s: nothing held (entry qty %s, filled 0); "
+                "closing entry without a sell", symbol, entry_qty,
+            )
+        elif record["side"] == "buy":
             if manager is not None and manager.is_blocked(symbol, account="paper"):
                 # Do not exit into an unresolved intent for this symbol;
                 # leave the entry open and retry next run.
@@ -1183,7 +1411,7 @@ def run_daily(
                     {
                         "symbol": symbol,
                         "side": exit_side,
-                        "qty": float(qty),
+                        "qty": float(exit_qty),
                         "exit_reason": "signal_loss",
                     },
                     today,
@@ -1200,10 +1428,10 @@ def run_daily(
         holding_days = (
             datetime.now(timezone.utc) - datetime.fromisoformat(record["opened_at"])
         ).total_seconds() / 86400.0
-        realized_pl = (exit_price - float(record["entry_price"])) * qty
+        realized_pl = (exit_price - float(record["entry_price"])) * exit_qty
         memory.close_decision(record["decision_id"], exit_price, realized_pl, holding_days)
         if record.get("lot_id"):
-            memory.close_tax_lot(record["lot_id"], exit_price * qty)
+            memory.close_tax_lot(record["lot_id"], exit_price * exit_qty)
         state.open_entries.pop(symbol, None)
         state.expected_positions["paper"].pop(symbol, None)
         state.expected_positions["live"].pop(symbol, None)
@@ -1236,6 +1464,7 @@ def run_daily(
             "selected": [item["symbol"] for item in selected],
             "orders": orders_preview,
             "skipped": skipped,
+            "state_sync": state_sync,
         }
         _write_strategy_outputs(summary, cfg)
         return summary
@@ -1272,6 +1501,7 @@ def run_daily(
         "selected": [item["symbol"] for item in selected],
         "orders": orders_preview,
         "skipped": skipped,
+        "state_sync": state_sync,
         "summary": summary,
         "broker": status,
         "reconcile": reconcile_result,
