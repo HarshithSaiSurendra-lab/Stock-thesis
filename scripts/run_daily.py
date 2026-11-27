@@ -58,11 +58,19 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 VENV_PY = REPO / ".venv" / "bin" / "python"
 RUN_LOG_DIR = REPO / ".cache" / "daily_runs"
+HEARTBEAT_PATH = REPO / ".cache" / "heartbeat.json"
+DECISION_LOG_DIR = REPO / ".cache" / "decision_logs"
 ALERTS_LOG = REPO / "alerts.log"
 
 EXIT_OK = 0
 EXIT_STEP_FAILED = 1
 EXIT_SAFETY = 2
+
+# Log retention for the daily-run bookkeeping (B13): run logs and
+# decision logs older than this are pruned on finish, so a 60-day
+# soak does not grow the log dirs without bound. runs.jsonl (one line
+# per run) and heartbeat.json (one record, overwritten) are kept.
+LOG_RETENTION_DAYS = 90
 
 # Statuses a decision log may legitimately carry. Anything else is
 # still a written log (the check passes) but is reported verbatim.
@@ -74,6 +82,46 @@ def _utc_now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
+def _write_heartbeat(path: Path, record: dict) -> None:
+    """Write the run heartbeat (one JSON record, overwritten each run).
+
+    The heartbeat is the ONLY thing the missed-run monitor reads (see
+    scripts/check_heartbeat.py): a start marker proves the job began,
+    a finish marker proves it ended and how. A failure to write it
+    must never fail the run itself.
+    """
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(record))
+    except Exception:
+        pass
+
+
+def _prune_old_files(directory: Path, pattern: str, keep_days: int,
+                     now: datetime | None = None) -> int:
+    """Delete files matching `pattern` in `directory` whose mtime is
+    older than `keep_days`. Returns the number pruned. Never raises:
+    pruning must not fail a run. Only the named directory/pattern is
+    touched — runs.jsonl and heartbeat.json are kept (see
+    LOG_RETENTION_DAYS)."""
+    moment = now or datetime.now(timezone.utc)
+    cutoff = moment.timestamp() - keep_days * 86400
+    pruned = 0
+    try:
+        if not directory.exists():
+            return 0
+        for path in directory.glob(pattern):
+            try:
+                if path.is_file() and path.stat().st_mtime < cutoff:
+                    path.unlink()
+                    pruned += 1
+            except Exception:
+                continue
+    except Exception:
+        return pruned
+    return pruned
+
+
 class Runner:
     def __init__(self) -> None:
         RUN_LOG_DIR.mkdir(parents=True, exist_ok=True)
@@ -83,6 +131,18 @@ class Runner:
         self.started_at = datetime.now(timezone.utc)
         self.today_utc = self.started_at.date().isoformat()
         self.steps: list[dict] = []
+        self.run_id = stamp
+        # Heartbeat start marker: the monitor can now tell "never
+        # started" (no marker for today) from "started but died"
+        # (marker without a finish). Written before any step runs.
+        _write_heartbeat(HEARTBEAT_PATH, {
+            "run_id": self.run_id,
+            "started_at": self.started_at.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "finished_at": None,
+            "status": "started",
+            "run_status": None,
+            "detail": "",
+        })
 
     def log(self, line: str) -> None:
         msg = f"[{_utc_now()}] {line}"
@@ -143,6 +203,21 @@ class Runner:
         self.alert(line)
         self.log(f"DAILY_RUN {status.upper()} {detail} (log: {self.log_path})")
         self._log_fh.close()
+        # Heartbeat finish marker, for EVERY outcome (ok / failed /
+        # safety): the monitor judges the run by this record alone.
+        _write_heartbeat(HEARTBEAT_PATH, {
+            "run_id": self.run_id,
+            "started_at": self.started_at.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "finished_at": _utc_now(),
+            "status": "completed" if status == "ok" else "failed",
+            "run_status": status,
+            "detail": detail,
+        })
+        # Log rotation (B13): prune run logs + decision logs older
+        # than LOG_RETENTION_DAYS. Best-effort — a pruning failure
+        # must never change the run's outcome.
+        _prune_old_files(RUN_LOG_DIR, "daily_run_*.log", LOG_RETENTION_DAYS)
+        _prune_old_files(DECISION_LOG_DIR, "*.json", LOG_RETENTION_DAYS)
         return EXIT_OK if status == "ok" else (EXIT_SAFETY if status == "safety" else EXIT_STEP_FAILED)
 
 

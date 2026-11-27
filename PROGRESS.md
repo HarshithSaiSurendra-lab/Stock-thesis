@@ -1587,3 +1587,151 @@ STOP, no gate read, no verdict); 3 invalid window/data/invocation.
   synthetic fixtures only until then.
 - No backtest run, no filing scored, no holdout touched, no January
   criteria changed.
+
+## 2026-11-26 — B13: soak readiness part 1 (B3 wired in, e2e test, heartbeat, runbook)
+
+`strategy_runner.py` now routes the paper leg through the B3
+`OrderManager`, inside the guardian's gate and breaker. The live leg
+is untouched and disabled (`ALLOW_LIVE=0`). The daily cron still runs
+`main.py --dry-run` only — submit mode is off by default; starting
+the 60-day paper soak remains a separate decision after the January
+gate review.
+
+- Manager created only on a run that can actually submit (after the
+  halted / market-closed / regime-blocked early returns, so a blocked
+  run never touches the intent store). Startup reconcile (lookup-only,
+  3 polls, no sleep) runs before any new submission. A blocked symbol
+  is pre-checked: the conflicting order is refused outright, recorded
+  in the decision log's `skipped` list (stage `order_manager`), with
+  no decision and no open entry. Exits are wired the same way; a
+  blocked exit leaves the entry open.
+- Live intent namespace `live-trend` (the live loop is the trend
+  engine, not a registered LLM design — the label claims nothing
+  about which design is running). Intents are built from the SAME
+  order dict the dry-run preview builds (symbol/side/qty/type/limit)
+  with an inputs hash over the decision inputs rounded to the
+  precision the decision log records, so the intent is reproducible
+  from the log alone; the quote's feed timestamp is deliberately
+  excluded (the same decision re-derived seconds later is the same
+  intent). A re-derived identical decision re-reconciles and adopts
+  (the B3 fast path); a genuinely different decision on the same
+  symbol while the first intent is UNKNOWN is refused as BLOCKED.
+- `_submit_paper_via_manager`: paper-leg None return (disabled /
+  floor / position cap) is raised as an explicit rejection so the
+  manager marks it REJECTED (terminal, no block), not UNKNOWN;
+  UNKNOWN raises TimeoutError — today's timeout path (guardian
+  counts it as a broker error, returns None, intent stays UNKNOWN
+  with a persistent alert and the symbol blocked).
+- `main.py --broker {alpaca,fake}` (default `alpaca`); `--broker
+  fake` needs `ATS_FAKE_BROKER_DIR` and errors clearly without it.
+  Test-only backend: fixture-driven `FakeDualBroker`, no network, no
+  keys. `AlpacaLeg.get_by_client_order_id` (SDK + REST fallback; 404
+  → None, inconclusive, not proof of non-acceptance).
+
+### E2e fault-injection test (test_b13_soak_readiness.py, 18 tests)
+Through `main.py` as a subprocess, dated fixtures, Alpaca keys
+scrubbed, cwd = temp dir, `ALLOW_LIVE=0`:
+- Run 0 dry-run: exactly 1 preview order (NVDA, mild_up → buy
+  limit, qty 3); no intent store, no broker state touched.
+- Run 1 (broker accepts + drops the response, 6 delayed-visibility
+  polls): submitted order EQUALS the preview order dict exactly;
+  intent independently recomputed from the decision log (matches);
+  intent UNKNOWN, attempts **1**, alert present, symbol blocked,
+  fake order_count **1**, submit_calls **1**, live leg called once,
+  0 live orders.
+- Run 2 (fresh process, polls still inconclusive): startup reconcile
+  keeps UNKNOWN, alert persists, conflicting order refused as
+  BLOCKED, attempts still **1**, submit_calls still **1**, live leg
+  never reached.
+- Run 3 (polls exhausted): lookup returns the original → adopted as
+  `fake-0001`, alert resolved, block cleared, still exactly **1
+  attempt / 1 order**, trailing stop attached (adopted order flows
+  through the normal post-submit path). Attempt counts **1/1/1**
+  across the three live runs.
+- Plus: exit test (entry then exit on a falling fixture with
+  `exit_on_signal_loss=1` → second intent, `fake-0002`, open entry
+  closed), `_live_intent` determinism/sensitivity,
+  `_submit_paper_via_manager` outcomes (success / drop→UNKNOWN /
+  None-return→REJECTED / blocked→None), 4
+  `AlpacaLeg.get_by_client_order_id` tests (SDK, SDK 404, REST, REST
+  404).
+
+### Reconcile gap found and fixed (real production bug, not a test artifact)
+The fake leg's `positions()` treated unfilled orders as holdings, so
+Run 2 hit the sizing guard before the BLOCKED pre-check. Root cause
+is production: the real Alpaca `positions()` reflects fills only,
+while the strategy records `expected_positions` on submit — so the
+first live run with an unfilled limit order would trip the
+end-of-run reconcile drift halt. Fix: `AlpacaLeg.open_orders()`
+(SDK `get_orders(OPEN)` + REST fallback; `[]` on failure,
+fail-closed) and `FakeLeg.open_orders()`; `reconcile()` now counts an
+open order's unfilled quantity toward the actual holding
+(`reconcile.py` `_actual_for_leg`, netted per symbol). An open order
+the strategy does NOT expect is still drift. 7 unit tests pin this
+(unfilled covers expected → ok; partial fill → ok; expected missing
+with no open order → drift; unexpected open order → drift;
+unexpected position → drift; buy+sell net zero → ok; leg without
+`open_orders()` behaves as before). Follow-up NOT taken (before the
+soak): sizing's `existing_strategy_notional` still uses filled
+positions only, so unfilled open orders don't count toward deployed
+capital.
+
+### Heartbeat + monitor (scripts/run_daily.py, scripts/check_heartbeat.py)
+- `run_daily.py` writes `.cache/heartbeat.json`: `started` marker in
+  `Runner.__init__` (before any step), `completed`/`failed` marker in
+  `finish()` for EVERY outcome (ok/failed/safety, incl.
+  market-closed and early-failure paths). The write never fails the
+  run. Log rotation: run logs + decision logs older than 90 days are
+  pruned on finish; `runs.jsonl` and `heartbeat.json` are never
+  pruned.
+- `check_heartbeat.py` reads ONLY the heartbeat file + wall clock
+  (injectable now/path/date for tests) and reports OK / MISSING /
+  STALLED (>60 min without finish) / FAILED, exit 0 / 2; critical
+  alerts appended to `alerts.log`. `--test-alert` emits a marked
+  TEST critical alert through the same path (exit 2). The monitor is
+  a SEPARATE cron (ats-heartbeat-monitor, weekdays ~17:30 ET,
+  created Nov 26, 2026); nothing watches the monitor itself — the
+  backstop is the daily run's own missed-run alert and the user
+  noticing no daily report.
+- Verified end to end Nov 26, 2026: first monitor run used
+  `--test-alert` (the heartbeat writer landed after that day's 16:15
+  run, so no heartbeat file existed yet — a real check would have
+  falsely reported MISSING) and the TEST alert was delivered in the
+  ATS chat. From Nov 27 the monitor runs the real check.
+
+### Operator runbook (OPERATOR_RUNBOOK.md, 232 lines)
+Kill switch (`touch KILL_SWITCH`, verified via `health_report()` /
+`guardian_state.json`, resume needs an explicit human decision —
+`reset_halt()` refuses while the file exists), stale vs unavailable
+(with the `data_freshness` block fields), broker outage, alert
+triage with severities, heartbeat MISSING/STALLED/FAILED response
+with exact commands, unprotected positions (the two guards), log /
+state locations, and the soak exit gate (60 trading days: no
+duplicate submissions, no unresolved mismatches, no missed critical
+alerts, no unexplained drift). Every procedure cites file +
+function (two cited line numbers corrected during verification:
+health_report 300→299, reset_halt 327→325).
+
+### Verification
+- Full suite: **286 passed** (was 221 + 27 B14 + 38 new: 18 B13 e2e
+  + 13 heartbeat + 7 run_daily heartbeat/rotation). Milo verified
+  independently: 286/286 full suite; 49/49 B13 + heartbeat + run_daily
+  tests; monitor CLI by hand (OK exit 0, MISSING exit 2 with CRITICAL
+  line in the alert log, --test-alert exit 2 with the marked TEST
+  alert). Diffs read in full: strategy_runner, broker_alpaca,
+  reconcile, main, run_daily, check_heartbeat, runbook. The
+  RuntimeError→REJECTED path was checked against
+  `_is_explicit_rejection` (matches the token "rejected") and is
+  covered by a test asserting REJECTED.
+- One noted behaviour: on a regime-blocked / halted / market-closed
+  day the manager is never created, so an UNKNOWN intent from a
+  prior day is not reconciled that day — it waits for the next
+  submittable run. No new order is placed on a blocked day, so
+  nothing is harmed; the alert already fired when the intent went
+  UNKNOWN and persists.
+
+### Deliberately NOT done
+- No strategy, threshold, cost, or config change. No real orders
+  anywhere; all tests offline/deterministic (fake clients only).
+- The soak itself is NOT started — that is a separate decision after
+  the January gate review. The daily cron still runs `--dry-run` only.

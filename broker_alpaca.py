@@ -227,6 +227,52 @@ class AlpacaLeg:
             log.error(f"[{self.cfg.mode}] positions fetch failed: {e}")
             return {}
 
+    def open_orders(self) -> list[dict]:
+        """Open (not yet filled / not yet cancelled) orders for this leg.
+
+        B13: reconcile() counts an open order's UNFILLED quantity toward
+        the symbol's actual holding, because the strategy records the
+        expected position the moment an order is submitted — a limit
+        order that has not filled yet is not a position (positions()
+        only reflects fills), so without this the first live run with
+        an unfilled order would trip the reconcile drift halt. An
+        open order the strategy does NOT expect is still drift (it
+        shows up in the same comparison). Returns [] on any fetch
+        failure (fail-closed: reconcile then sees the unfilled order
+        as missing and halts, rather than masking drift).
+        Each entry: {"id", "symbol", "side", "qty", "filled_qty",
+        "status"}.
+        """
+        if not self.cfg.enabled:
+            return []
+        try:
+            if self.client:
+                from alpaca.trading.requests import GetOrdersRequest
+                from alpaca.trading.enums import QueryOrderStatus
+
+                raw = self.client.get_orders(
+                    GetOrdersRequest(status=QueryOrderStatus.OPEN))
+                return [{
+                    "id": str(o.id),
+                    "symbol": str(o.symbol),
+                    "side": str(o.side.value if hasattr(o.side, "value") else o.side).lower(),
+                    "qty": float(o.qty),
+                    "filled_qty": float(o.filled_qty or 0.0),
+                    "status": str(o.status.value if hasattr(o.status, "value") else o.status).lower(),
+                } for o in raw]
+            raw = self._rest_json("GET", f"{self._base_url}/v2/orders?status=open")
+            return [{
+                "id": str(o.get("id")),
+                "symbol": str(o.get("symbol")),
+                "side": str(o.get("side", "")).lower(),
+                "qty": float(o.get("qty") or 0.0),
+                "filled_qty": float(o.get("filled_qty") or 0.0),
+                "status": str(o.get("status", "")).lower(),
+            } for o in raw]
+        except Exception as e:  # noqa: BLE001 - any fetch failure is fail-closed
+            log.error(f"[{self.cfg.mode}] open orders fetch failed: {e}")
+            return []
+
     def is_market_open(self) -> Optional[bool]:
         if not self.cfg.enabled:
             return None
@@ -391,6 +437,48 @@ class AlpacaLeg:
         except Exception as e:
             log.error(f"[{self.cfg.mode}] order failed: {e}")
             raise  # let the guardian count this as a broker error
+
+    def get_by_client_order_id(self, client_order_id: str) -> Optional[dict]:
+        """Lookup one broker order by its client_order_id (B3 reconcile).
+
+        Returns {"id", "symbol", "status", "filled_qty"} when the broker
+        has the order, or None when it does not (404). A 404 is
+        INCONCLUSIVE for reconcile — it is not proof the broker never
+        accepted the first attempt — so None is the correct return,
+        not an exception. Non-404 errors propagate; OrderManager
+        treats a raising lookup as inconclusive too.
+        """
+        if not self.client:
+            try:
+                result = self._rest_json(
+                    "GET", f"{self._base_url}/v2/orders:client_order_id/{client_order_id}"
+                )
+            except RuntimeError as exc:
+                if "404" in str(exc):
+                    return None
+                raise
+            if not isinstance(result, dict) or not result.get("id"):
+                return None
+            return {
+                "id": str(result.get("id")),
+                "symbol": result.get("symbol"),
+                "status": str(result.get("status", "")),
+                "filled_qty": float(result.get("filled_qty") or 0.0),
+            }
+        try:
+            order = self.client.get_order_by_client_order_id(client_order_id)
+        except Exception as exc:  # noqa: BLE001 - 404 vs everything else
+            if "404" in str(exc):
+                return None
+            raise
+        if order is None:
+            return None
+        return {
+            "id": str(order.id),
+            "symbol": order.symbol,
+            "status": str(order.status),
+            "filled_qty": float(getattr(order, "filled_qty", 0.0) or 0.0),
+        }
 
     def attach_trailing_stop(self, symbol: str, qty: float, trail_pct: float) -> Optional[dict]:
         """Place a trailing stop SELL to protect an open long position."""

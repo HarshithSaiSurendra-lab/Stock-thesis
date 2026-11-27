@@ -19,6 +19,7 @@ from filters import downside_ok, market_regime, volatility_scale
 from indicators import build_feature_frame
 from memory import SignalSnapshot, TradeMemory
 from notifier import Notifier, format_daily
+from order_manager import OrderManager, build_intent, compute_inputs_hash
 from reconcile import reconcile
 from sector_map import sector_benchmark_for, sector_benchmarks_for
 from trade_signal import composite_signal, composite_score, trend_quality_score
@@ -123,6 +124,99 @@ def _build_order(symbol: str, side: str, qty: float, quote: Optional[dict], dire
     else:
         order["order_type"] = "market"
     return order
+
+
+# B13: the live loop's B3 intent namespace. The live strategy is the
+# trend engine in this file (composite_signal / trend_quality_score);
+# it is NOT one of the registered LLM designs (v2, v3, h3-lazy-veto,
+# h7-c1c, exp-ml-ranker-v1), so no registered design_id applies.
+# "live-trend" labels the intent namespace only — it makes no claim
+# about which design is running and must not be read as a gate result.
+LIVE_DESIGN_ID = "live-trend"
+
+
+def _live_intent(order: dict, inputs: dict, trading_day: str) -> dict:
+    """Build the B3 intent for a live-loop order, from the SAME order
+    dict the dry-run preview builds (symbol/side/qty/type/limit).
+
+    inputs_hash covers the decision inputs (for entries: direction,
+    scores, price, notionals; for exits: the exit reason + qty) so a
+    re-derived identical decision maps to the same intent — a restart
+    re-deriving the same decision reuses the same client_order_id and
+    can never place a second order for it — while a genuinely
+    different decision gets a different intent. The callers round the
+    inputs to the same precision the decision log records (scores 6dp,
+    last_price/notionals 2dp), so the intent is reproducible from the
+    log alone (the B13 e2e test does exactly that). It deliberately
+    excludes the quote's feed timestamp: the same decision re-derived
+    seconds later must still be the same intent.
+    """
+    return build_intent(
+        design_id=LIVE_DESIGN_ID,
+        trading_day=trading_day,
+        symbol=order["symbol"],
+        side=order["side"],
+        qty=order["qty"],
+        order_type=order.get("order_type", "market"),
+        limit_price=order.get("limit_price"),
+        inputs_hash=compute_inputs_hash(inputs),
+        account="paper",
+    )
+
+
+def _submit_paper_via_manager(order: dict, intent: dict, manager: OrderManager, broker) -> Optional[dict]:
+    """place_order_fn for guardian.submit: route the paper leg through
+    the B3 OrderManager, inside the guardian's gate and breaker.
+
+    Returns the broker-shaped result dict on success ({"id", "symbol",
+    "status", "submitted"} — the shape AlpacaLeg.submit returns, which
+    _entry_price_from_result reads), None when no broker order exists
+    (REJECTED / BLOCKED), and raises TimeoutError when the outcome is
+    UNKNOWN — exactly today's timeout path: guardian.submit counts it
+    as a broker error and returns None, while the intent stays UNKNOWN
+    with a persistent alert and the symbol blocked.
+    """
+    def _place(submitted: dict) -> dict:
+        result = broker.paper.submit(submitted)
+        if result is None:
+            # The paper leg refused the order without placing it
+            # (disabled, floor, or position cap): conclusive, no order
+            # exists. Raise an explicit rejection so OrderManager marks
+            # it REJECTED (terminal, no block) instead of UNKNOWN.
+            raise RuntimeError(
+                "paper leg rejected the order without placing it "
+                "(disabled, floor, or position cap)"
+            )
+        return result
+
+    lookup_fn = getattr(broker.paper, "get_by_client_order_id", None)
+    outcome = manager.submit(
+        intent,
+        place_order_fn=_place,
+        lookup_fn=lookup_fn,
+        grace_seconds=0.0,
+        max_polls=3,
+        sleep_fn=lambda s: None,
+    )
+    status = outcome["status"]
+    if status in ("SUBMITTED", "PARTIALLY_FILLED", "FILLED") and outcome.get("broker_order_id"):
+        return {
+            "id": outcome["broker_order_id"],
+            "symbol": order["symbol"],
+            "status": status.lower(),
+            "submitted": order,
+        }
+    if status == "UNKNOWN":
+        raise TimeoutError(
+            f"paper order outcome unknown for {order['symbol']}: intent "
+            f"{intent['intent_id']} UNKNOWN after lookup; alert recorded, "
+            "symbol blocked"
+        )
+    # REJECTED / BLOCKED: no broker order exists. Return None — the same
+    # as today's None-return path (guardian records no error, the loop
+    # treats it as no fill). The BLOCKED case is normally pre-checked
+    # by the caller (is_blocked) and never reaches here.
+    return None
 
 
 def _trail_percent_for_row(row: pd.Series, cfg: TradingConfig) -> float:
@@ -469,6 +563,7 @@ def run_daily(
     memory: TradeMemory,
     cfg: TradingConfig,
     dry_run: bool = False,
+    order_manager: Optional[OrderManager] = None,
 ) -> dict:
     cfg.ensure_paths()
     today = datetime.now(timezone.utc).date().isoformat()
@@ -518,6 +613,35 @@ def run_daily(
         state.last_run_ts = datetime.now(timezone.utc).isoformat()
         state.save(cfg.paths.strategy_state_path)
         return summary
+
+    # B13: exact-once order lifecycle for the live loop. The manager is
+    # created only on a run that can actually submit (not dry-run, not
+    # regime-blocked): dry-run never touches the intent store, so the
+    # default daily invocation behaves exactly as before. When an
+    # OrderManager is injected (tests), the caller owns its lifecycle;
+    # the manager created here is left for refcount/GC + process exit
+    # to close — a lingering WAL file is recovered by the next opener,
+    # the same crash path B3 already tolerates.
+    manager = order_manager
+    if not dry_run and manager is None:
+        manager = OrderManager(cfg.paths.order_store_path)
+    if manager is not None:
+        # Startup reconcile (Loop 5): recover any PENDING / expired-
+        # CLAIMED / UNKNOWN intent BEFORE any new submission.
+        # Lookup-only — reconcile never submits.
+        lookup_fn = getattr(broker.paper, "get_by_client_order_id", None)
+        if lookup_fn is None:
+            log.warning(
+                "paper leg has no get_by_client_order_id; startup reconcile "
+                "skipped (lookups cannot adopt unknown intents)"
+            )
+        else:
+            manager.reconcile_all_unknowns(
+                lookup_fn=lookup_fn,
+                grace_seconds=0.0,
+                max_polls=3,
+                sleep_fn=lambda s: None,
+            )
 
     benchmark_row = None
     try:
@@ -799,7 +923,46 @@ def run_daily(
 
         paper_result = None
         live_result = None
-        paper_result = guardian.submit(order, broker.paper.submit)
+        if manager is not None and manager.is_blocked(symbol, account="paper"):
+            # An earlier intent for this symbol is UNKNOWN (its lookup
+            # stayed inconclusive): refuse the conflicting order
+            # outright — no submission, no decision, no open entry.
+            # The strategy re-derives the same order next run; once
+            # the blocking intent resolves, that run proceeds normally.
+            # (OrderManager.submit would also refuse it as BLOCKED;
+            # pre-checking here keeps the refusal out of the guardian
+            # accounting and the decision record entirely.)
+            skipped.append({
+                "symbol": symbol,
+                "stage": "order_manager",
+                "reason": f"blocked by unresolved intent for {symbol} (paper); no submission made",
+            })
+            log.info("skipping %s: blocked by unresolved intent", symbol)
+            continue
+        if manager is not None:
+            intent = _live_intent(
+                order,
+                {
+                    "symbol": symbol,
+                    "direction": direction,
+                    "decision_score": round(float(item["decision_score"]), 6),
+                    "score": round(float(item["score"]), 6),
+                    "trend_quality": round(float(item["trend_quality"]), 6),
+                    # 2dp, matching the orders_preview last_price: the
+                    # intent's inputs_hash must be reproducible from
+                    # the decision log (see _live_intent docstring).
+                    "last_price": round(float(price_for_sizing), 2),
+                    "target_notional": round(float(capped_notional), 2),
+                    "intended_notional": round(float(intended_notional), 2),
+                },
+                today,
+            )
+            paper_result = guardian.submit(
+                order,
+                lambda o, _intent=intent: _submit_paper_via_manager(o, _intent, manager, broker),
+            )
+        else:
+            paper_result = guardian.submit(order, broker.paper.submit)
         if not broker.live.floor_tripped():
             live_result = guardian.submit(order, broker.live.submit)
 
@@ -884,7 +1047,28 @@ def run_daily(
             )
             continue
         if record["side"] == "buy":
-            guardian.submit(exit_order, broker.paper.submit)
+            if manager is not None and manager.is_blocked(symbol, account="paper"):
+                # Do not exit into an unresolved intent for this symbol;
+                # leave the entry open and retry next run.
+                log.info("skipping exit for %s: blocked by unresolved intent", symbol)
+                continue
+            if manager is not None:
+                exit_intent = _live_intent(
+                    exit_order,
+                    {
+                        "symbol": symbol,
+                        "side": exit_side,
+                        "qty": float(qty),
+                        "exit_reason": "signal_loss",
+                    },
+                    today,
+                )
+                guardian.submit(
+                    exit_order,
+                    lambda o, _intent=exit_intent: _submit_paper_via_manager(o, _intent, manager, broker),
+                )
+            else:
+                guardian.submit(exit_order, broker.paper.submit)
             if not broker.live.floor_tripped():
                 guardian.submit(exit_order, broker.live.submit)
         exit_price = _close_price_from_quote(quote, exit_side)

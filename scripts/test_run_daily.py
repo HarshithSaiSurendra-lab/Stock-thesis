@@ -83,6 +83,8 @@ def test_check_corrupt_log_fails(tmp_path: Path) -> None:
 
 def test_run_step_propagates_failure(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(run_daily, "RUN_LOG_DIR", tmp_path / "runs")
+    monkeypatch.setattr(run_daily, "HEARTBEAT_PATH", tmp_path / "heartbeat.json")
+    monkeypatch.setattr(run_daily, "DECISION_LOG_DIR", tmp_path / "decision_logs")
     monkeypatch.setattr(run_daily, "ALERTS_LOG", tmp_path / "alerts.log")
     r = run_daily.Runner()
     rc, _ = r.run_step("failing", ["false"])
@@ -94,6 +96,8 @@ def test_run_step_propagates_failure(tmp_path: Path, monkeypatch: pytest.MonkeyP
 
 def test_run_step_timeout_kills_hung_step(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(run_daily, "RUN_LOG_DIR", tmp_path / "runs")
+    monkeypatch.setattr(run_daily, "HEARTBEAT_PATH", tmp_path / "heartbeat.json")
+    monkeypatch.setattr(run_daily, "DECISION_LOG_DIR", tmp_path / "decision_logs")
     monkeypatch.setattr(run_daily, "ALERTS_LOG", tmp_path / "alerts.log")
     r = run_daily.Runner()
     rc, _ = r.run_step("hung", ["sleep", "30"], timeout=1)
@@ -104,12 +108,95 @@ def test_run_step_timeout_kills_hung_step(tmp_path: Path, monkeypatch: pytest.Mo
 
 def test_finish_writes_ledger_and_alert(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(run_daily, "RUN_LOG_DIR", tmp_path / "runs")
+    monkeypatch.setattr(run_daily, "HEARTBEAT_PATH", tmp_path / "heartbeat.json")
+    monkeypatch.setattr(run_daily, "DECISION_LOG_DIR", tmp_path / "decision_logs")
     monkeypatch.setattr(run_daily, "ALERTS_LOG", tmp_path / "alerts.log")
     r = run_daily.Runner()
     assert r.finish("ok", "test") == run_daily.EXIT_OK
     ledger = (tmp_path / "runs" / "runs.jsonl").read_text()
     assert json.loads(ledger)["status"] == "ok"
     assert "status=ok" in (tmp_path / "alerts.log").read_text()
+
+
+# ---------------------------------------------------------------- heartbeat (B13)
+
+def _runner(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> run_daily.Runner:
+    monkeypatch.setattr(run_daily, "RUN_LOG_DIR", tmp_path / "runs")
+    monkeypatch.setattr(run_daily, "HEARTBEAT_PATH", tmp_path / "heartbeat.json")
+    monkeypatch.setattr(run_daily, "DECISION_LOG_DIR", tmp_path / "decision_logs")
+    monkeypatch.setattr(run_daily, "ALERTS_LOG", tmp_path / "alerts.log")
+    return run_daily.Runner()
+
+
+def test_heartbeat_start_marker_written(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    r = _runner(tmp_path, monkeypatch)
+    hb = json.loads((tmp_path / "heartbeat.json").read_text())
+    assert hb["status"] == "started" and hb["finished_at"] is None
+    assert hb["run_id"] == r.run_id and hb["started_at"]
+    r._log_fh.close()
+
+
+def test_heartbeat_finish_marker_ok(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    r = _runner(tmp_path, monkeypatch)
+    assert r.finish("ok", "test") == run_daily.EXIT_OK
+    hb = json.loads((tmp_path / "heartbeat.json").read_text())
+    assert hb["status"] == "completed" and hb["run_status"] == "ok"
+    assert hb["finished_at"] and hb["run_id"] == r.run_id
+
+
+def test_heartbeat_finish_marker_failed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    r = _runner(tmp_path, monkeypatch)
+    assert r.finish("failed", "step 4 broke") == run_daily.EXIT_STEP_FAILED
+    hb = json.loads((tmp_path / "heartbeat.json").read_text())
+    assert hb["status"] == "failed" and hb["run_status"] == "failed"
+    assert hb["detail"] == "step 4 broke"
+
+
+def test_heartbeat_finish_marker_safety(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    r = _runner(tmp_path, monkeypatch)
+    assert r.finish("safety", "ALLOW_LIVE=1") == run_daily.EXIT_SAFETY
+    hb = json.loads((tmp_path / "heartbeat.json").read_text())
+    assert hb["status"] == "failed" and hb["run_status"] == "safety"
+
+
+# ---------------------------------------------------------------- log rotation (B13)
+
+def _touch(path: Path, days_old: float) -> None:
+    path.write_text("{}")
+    moment = (datetime.now(timezone.utc) - timedelta(days=days_old)).timestamp()
+    os.utime(path, (moment, moment))
+
+
+def test_prune_old_files_keeps_recent(tmp_path: Path) -> None:
+    _touch(tmp_path / "daily_run_old.log", 91)
+    _touch(tmp_path / "daily_run_edge.log", 89)
+    _touch(tmp_path / "daily_run_new.log", 1)
+    (tmp_path / "runs.jsonl").write_text("{}\n")
+    pruned = run_daily._prune_old_files(tmp_path, "daily_run_*.log", 90)
+    assert pruned == 1
+    assert not (tmp_path / "daily_run_old.log").exists()
+    assert (tmp_path / "daily_run_edge.log").exists()
+    assert (tmp_path / "daily_run_new.log").exists()
+    assert (tmp_path / "runs.jsonl").exists(), "runs.jsonl is never pruned"
+
+
+def test_prune_old_files_missing_dir_is_zero(tmp_path: Path) -> None:
+    assert run_daily._prune_old_files(tmp_path / "nope", "*.log", 90) == 0
+
+
+def test_finish_prunes_old_logs(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    r = _runner(tmp_path, monkeypatch)
+    runs = tmp_path / "runs"
+    logs = tmp_path / "decision_logs"
+    logs.mkdir(parents=True, exist_ok=True)
+    _touch(runs / "daily_run_20260101T000000Z.log", 100)
+    _touch(logs / "2026-08-01_regime_blocked_x.json", 100)
+    _touch(logs / "2026-11-26_regime_blocked_x.json", 0)
+    assert r.finish("ok", "test") == run_daily.EXIT_OK
+    assert not (runs / "daily_run_20260101T000000Z.log").exists()
+    assert not (logs / "2026-08-01_regime_blocked_x.json").exists()
+    assert (logs / "2026-11-26_regime_blocked_x.json").exists()
+    assert (runs / "runs.jsonl").exists()
 
 
 # ---------------------------------------------------------------- _read_allow_live

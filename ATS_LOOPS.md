@@ -56,6 +56,37 @@ be checked.
   per-symbol timeout) with identical selection and ordering, and a
   failing/hung symbol is skipped, never fatal. `StaleBarsError` is
   never retried — the freshness check above is unchanged.
+- **B13 (Nov 26, 2026) — B3 wired into the live loop (paper leg only,
+  submit mode off by default):** `run_daily` in `strategy_runner.py`
+  now creates an `OrderManager` (after the halted / market-closed /
+  regime-blocked early returns, so a blocked run never touches the
+  intent store) and runs startup reconcile (lookup-only) before any
+  new submission; entries and exits go through the manager inside
+  the guardian's gate and breaker; the live leg is untouched and
+  disabled (`ALLOW_LIVE=0`). The daily cron still runs `--dry-run`
+  only — the default invocation is provably unchanged (e2e Run 0:
+  preview order only, no intent store, no broker state). The live
+  intent namespace is `live-trend` (the trend engine is not a
+  registered LLM design). Heartbeat: `run_daily.py` writes
+  `.cache/heartbeat.json` (started marker in `Runner.__init__`,
+  completed/failed marker in `finish()` for every outcome); the
+  separate monitor cron runs `scripts/check_heartbeat.py` after the
+  daily run and reports OK / MISSING / STALLED / FAILED to this chat.
+  Runbook: `OPERATOR_RUNBOOK.md` (kill switch, stale vs unavailable,
+  alert triage, heartbeat response, soak exit gate). Log rotation:
+  run logs + decision logs older than 90 days are pruned on finish;
+  `runs.jsonl` and `heartbeat.json` are never pruned. Reconcile fix
+  found by the build (B13): `reconcile()` now counts an open order's
+  unfilled quantity toward the actual holding
+  (`broker_alpaca.py` `open_orders()` + `reconcile.py`
+  `_actual_for_leg`) — without it, the first live run with an
+  unfilled limit order would trip the drift halt, because the
+  strategy records the expected position at submit time while
+  `positions()` only reflects fills. An open order the strategy does
+  NOT expect is still drift. Known follow-up before the soak (not in
+  B13): sizing's `existing_strategy_notional` still uses filled
+  positions only, so unfilled open orders don't count toward deployed
+  capital.
 - **Stop conditions:** any step rc != 0; safety preflight fails;
   regime_blocked / halted / kill switch present; `StaleBarsError`
   ("benchmark data stale") — the run stops, it does not trade on old
@@ -181,7 +212,8 @@ be checked.
 - **Graph:** feeds the Phase 4 soak — B3 is the reason the soak can
   start the day the January gate reads, instead of needing a
   build-then-test cycle first. The live loop in `strategy_runner.py`
-  is deliberately NOT rewired to B3 yet.
+  is now wired to B3 (B13, Nov 26, 2026 — paper leg, submit mode off
+  by default; the daily cron still runs `--dry-run` only).
 
 ## Loop 6 — Astra collaboration (turn-based)
 

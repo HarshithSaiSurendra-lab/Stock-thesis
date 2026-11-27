@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import os
 
 from broker_alpaca import AccountConfig as BrokerAccountConfig
 from broker_alpaca import BrokerConfig, DualBroker
@@ -14,15 +15,28 @@ from session_router import run_routed
 from strategy_runner import _strategy_equity
 
 
-def build_components(cfg: TradingConfig):
-    broker = DualBroker(
-        BrokerConfig(
-            paper=BrokerAccountConfig("paper", cfg.paper.starting_capital, cfg.paper.floor_pct, cfg.paper.enabled),
-            live=BrokerAccountConfig("live", cfg.live.starting_capital, cfg.live.floor_pct, cfg.live.enabled),
-            max_position_pct=cfg.sizing.max_position_pct,
-            state_path=cfg.paths.broker_state_path,
+def build_components(cfg: TradingConfig, broker_name: str = "alpaca"):
+    if broker_name == "fake":
+        # Test-only backend (B13): fixture-driven FakeDualBroker. No
+        # network, no .env keys, no Alpaca client. Requires
+        # ATS_FAKE_BROKER_DIR (the fixture dir with bars.json etc.).
+        fixture_dir = os.environ.get("ATS_FAKE_BROKER_DIR")
+        if not fixture_dir:
+            raise SystemExit(
+                "--broker fake requires ATS_FAKE_BROKER_DIR (fixture dir)"
+            )
+        from fake_dual_broker import FakeDualBroker
+
+        broker = FakeDualBroker(fixture_dir)
+    else:
+        broker = DualBroker(
+            BrokerConfig(
+                paper=BrokerAccountConfig("paper", cfg.paper.starting_capital, cfg.paper.floor_pct, cfg.paper.enabled),
+                live=BrokerAccountConfig("live", cfg.live.starting_capital, cfg.live.floor_pct, cfg.live.enabled),
+                max_position_pct=cfg.sizing.max_position_pct,
+                state_path=cfg.paths.broker_state_path,
+            )
         )
-    )
     memory = TradeMemory(cfg.paths.memory_db_path)
 
     # One clock for the whole run, fed ONLY by quote timestamps from the
@@ -70,11 +84,18 @@ def main() -> int:
         default="auto",
         help="route by session or force a specific engine",
     )
+    parser.add_argument(
+        "--broker",
+        choices=("alpaca", "fake"),
+        default="alpaca",
+        help="broker backend: alpaca (default) or fake (fixture-driven, "
+             "test only; needs ATS_FAKE_BROKER_DIR)",
+    )
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO)
     cfg = TradingConfig.from_env()
-    broker, guardian, memory = build_components(cfg)
+    broker, guardian, memory = build_components(cfg, broker_name=args.broker)
     result = run_routed(broker, guardian, memory, cfg, dry_run=args.dry_run, mode=args.mode)
     print(json.dumps(result, indent=2, default=str))
     return 0
