@@ -42,12 +42,28 @@ Design (user-adopted, Dec 2026; corrected Nov 26, 2026 — see point 4):
    acceptable.
 5. Partial fills are deduplicated by fill_id; filled_qty is a
    monotonic cumulative, never double-counted.
-6. Blocking: while an intent is UNKNOWN for an (account, symbol),
-   submit() refuses any OTHER intent for that (account, symbol) —
-   it persists the new intent as BLOCKED and never calls
-   place_order_fn for it. Once the blocking intent resolves
-   (SUBMITTED/FILLED/REJECTED/CANCELLED), a later submit of the
-   BLOCKED intent proceeds normally.
+6. Blocking: while an intent is UNKNOWN or DONE_FOR_DAY for an
+   (account, symbol), submit() refuses any OTHER intent for that
+   (account, symbol) — it persists the new intent as BLOCKED and
+   never calls place_order_fn for it. Once the blocking intent
+   resolves (SUBMITTED/FILLED/REJECTED/CANCELLED), a later submit
+   of the BLOCKED intent proceeds normally. DONE_FOR_DAY blocks
+   because the order is still working (it can fill tomorrow) and
+   still counts against buying power — a replacement submitted
+   before the original is reconciled could double-commit the
+   symbol. The startup reconcile (reconcile_open_intents) looks
+   the original up every run; only a confirmed expired/canceled
+   releases the unfilled remainder.
+
+7. DONE_FOR_DAY is its own non-terminal state (B16 correction, Nov
+   27, 2026 — the Alpaca docs say done_for_day "will not receive
+   further updates until the next trading day", while canceled /
+   expired / filled all say "no further updates will occur"). B16
+   wrongly mapped it to CANCELLED. A DONE_FOR_DAY intent keeps its
+   expected position and its budget reservation; the state mirror
+   never clears it. A lookup that stays inconclusive leaves it
+   DONE_FOR_DAY (no UNKNOWN escalation: the order was confirmed
+   accepted, so there is nothing ambiguous to resolve).
 
 This module never talks to a real broker. It takes place_order_fn /
 lookup_fn callables, so tests use FakeBroker and the real Alpaca leg
@@ -70,7 +86,16 @@ CLAIM_LEASE_SECONDS = 120.0
 
 TERMINAL_STATUSES = {"FILLED", "CANCELLED", "REJECTED"}
 # Statuses that mean a broker order may exist (or may have existed).
-RECOVERABLE_STATUSES = {"PENDING", "CLAIMED", "UNKNOWN", "SUBMITTED", "PARTIALLY_FILLED"}
+# DONE_FOR_DAY is deliberately NOT terminal (see point 7 in the module
+# docstring): the order is still working and may fill tomorrow.
+RECOVERABLE_STATUSES = {"PENDING", "CLAIMED", "UNKNOWN", "SUBMITTED", "PARTIALLY_FILLED", "DONE_FOR_DAY"}
+# Non-terminal statuses that block a NEW order for the same
+# (account, symbol): UNKNOWN (outcome ambiguous) and DONE_FOR_DAY
+# (order still working, still reserved). SUBMITTED / PARTIALLY_FILLED
+# do not block: the order is confirmed accepted and its expected
+# position is tracked, so a re-derived identical decision reuses the
+# same intent instead of submitting a replacement.
+BLOCKING_STATUSES = ("UNKNOWN", "DONE_FOR_DAY")
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS intents (
@@ -373,26 +398,27 @@ class OrderManager:
             )
 
     def blocked_symbols(self, account: str = "paper") -> list[str]:
-        """Symbols with an UNKNOWN intent for this account: conflicting
-        orders for them are refused until the intent resolves."""
+        """Symbols with an UNKNOWN or DONE_FOR_DAY intent for this
+        account: conflicting orders for them are refused until the
+        intent resolves."""
         rows = self._conn.execute(
-            "SELECT DISTINCT symbol FROM intents WHERE account=? AND status='UNKNOWN'",
-            (account,),
+            "SELECT DISTINCT symbol FROM intents WHERE account=? AND status IN (?, ?)",
+            (account, *BLOCKING_STATUSES),
         ).fetchall()
         return sorted(r[0] for r in rows)
 
     def is_blocked(self, symbol: str, account: str = "paper") -> bool:
         row = self._conn.execute(
-            "SELECT 1 FROM intents WHERE account=? AND symbol=? AND status='UNKNOWN' LIMIT 1",
-            (account, symbol),
+            "SELECT 1 FROM intents WHERE account=? AND symbol=? AND status IN (?, ?) LIMIT 1",
+            (account, symbol, *BLOCKING_STATUSES),
         ).fetchone()
         return row is not None
 
     def _blocking_intent(self, symbol: str, account: str, exclude_intent_id: str) -> Optional[dict]:
         row = self._conn.execute(
-            "SELECT * FROM intents WHERE account=? AND symbol=? AND status='UNKNOWN'"
+            "SELECT * FROM intents WHERE account=? AND symbol=? AND status IN (?, ?)"
             " AND intent_id!=? LIMIT 1",
-            (account, symbol, exclude_intent_id),
+            (account, symbol, *BLOCKING_STATUSES, exclude_intent_id),
         ).fetchone()
         return dict(row) if row else None
 
@@ -415,8 +441,13 @@ class OrderManager:
 
     def _adopt_broker_order(self, intent: dict, broker_order: dict) -> dict:
         broker_id = str(broker_order.get("id") or broker_order.get("broker_order_id") or "")
-        # B16: an expired DAY order is terminally not-filled, not a
-        # rejection; "done_for_day" is the same terminal state.
+        # B16 correction (Nov 27, 2026): done_for_day is NOT terminal.
+        # The Alpaca docs say it "will not receive further updates
+        # until the next trading day" — the order is still working,
+        # still reserved, and can still fill or be cancelled. Only
+        # expired / canceled are terminally not-filled. B16 mapped
+        # done_for_day to CANCELLED; that cleared the expected
+        # position and released the reservation a day early.
         # _normalize_broker_status also maps the SDK's
         # str(OrderStatus.EXPIRED) == "OrderStatus.EXPIRED" repr.
         status = _normalize_broker_status(broker_order.get("status"))
@@ -424,7 +455,9 @@ class OrderManager:
             new_status = "FILLED"
         elif status in {"partially_filled", "partially filled"}:
             new_status = "PARTIALLY_FILLED"
-        elif status in {"cancelled", "canceled", "expired", "done_for_day"}:
+        elif status == "done_for_day":
+            new_status = "DONE_FOR_DAY"
+        elif status in {"cancelled", "canceled", "expired"}:
             new_status = "CANCELLED"
         elif status == "rejected":
             new_status = "REJECTED"
@@ -443,9 +476,33 @@ class OrderManager:
             except (TypeError, ValueError):
                 pass
         self._update(intent["intent_id"], **fields)
-        if new_status in TERMINAL_STATUSES or new_status in {"SUBMITTED", "PARTIALLY_FILLED"}:
+        if (new_status in TERMINAL_STATUSES
+                or new_status in {"SUBMITTED", "PARTIALLY_FILLED", "DONE_FOR_DAY"}):
+            # Adopting a confirmed broker state resolves the
+            # ambiguity that raised the alert (the order exists and
+            # its status is known — including DONE_FOR_DAY, which is
+            # a known working state, not an unknown one).
             self._resolve_alerts(intent["intent_id"])
         return self._fetch(intent["intent_id"])
+
+    def adopt_lookup(self, intent_id: str, broker_order: dict) -> Optional[dict]:
+        """Adopt one broker lookup result into the intent store (B16
+        correction). The strategy's cancel helpers use this after a
+        cancel is confirmed: the broker's confirmed terminal status
+        (cancelled/expired/filled) is written promptly, instead of
+        waiting for the next startup reconcile — so a later block
+        check in the same run sees the truth."""
+        intent = self._fetch(intent_id)
+        if intent is None:
+            return None
+        return self._adopt_broker_order(intent, broker_order)
+
+    def record_alert(self, intent_id: str, account: str, symbol: str, reason: str) -> None:
+        """Persist an alert for an intent (public wrapper for
+        _record_alert). Used for non-lookup alerts — e.g. shares left
+        unprotected when an exit fails after its trailing stop was
+        cancelled. Deduplicated: one open alert per intent+reason."""
+        self._record_alert(intent_id, account or "paper", symbol, reason)
 
     # -- submit / reconcile ---------------------------------------------
     def submit(
@@ -487,6 +544,17 @@ class OrderManager:
                 current, lookup_fn, grace_seconds=grace_seconds,
                 max_polls=max_polls, sleep_fn=sleep,
             )
+        if current["status"] == "DONE_FOR_DAY":
+            # The order is still working (it can fill tomorrow): look
+            # it up before any new decision for the symbol. A lookup
+            # that finds it filled/expired/canceled adopts that
+            # status; a lookup that finds it still done_for_day (or
+            # stays inconclusive) leaves it DONE_FOR_DAY — never a
+            # second submission attempt for this intent.
+            return self.reconcile(
+                current, lookup_fn, grace_seconds=grace_seconds,
+                max_polls=max_polls, sleep_fn=sleep,
+            )
         if current["status"] == "BLOCKED":
             # A previously refused intent: proceed only if the block
             # is gone; otherwise return it untouched, still BLOCKED.
@@ -519,6 +587,11 @@ class OrderManager:
                 if current["status"] in {"SUBMITTED", "PARTIALLY_FILLED", "FILLED"} and current.get("broker_order_id"):
                     return current
                 if current["status"] == "UNKNOWN":
+                    return self.reconcile(
+                        current, lookup_fn, grace_seconds=grace_seconds,
+                        max_polls=max_polls, sleep_fn=sleep,
+                    )
+                if current["status"] == "DONE_FOR_DAY":
                     return self.reconcile(
                         current, lookup_fn, grace_seconds=grace_seconds,
                         max_polls=max_polls, sleep_fn=sleep,
@@ -621,6 +694,12 @@ class OrderManager:
             return current
         if current["status"] in {"SUBMITTED", "PARTIALLY_FILLED", "FILLED"} and current.get("broker_order_id"):
             return current
+        # A DONE_FOR_DAY intent reconciles the same way (look it up;
+        # adopt what the broker says) — except an inconclusive lookup
+        # leaves it DONE_FOR_DAY instead of escalating to UNKNOWN:
+        # the order was confirmed accepted, so there is nothing
+        # ambiguous to resolve, and no alert or block is warranted.
+        was_done_for_day = current["status"] == "DONE_FOR_DAY"
 
         found = None
         if lookup_fn is not None:
@@ -635,6 +714,9 @@ class OrderManager:
                     sleep(grace_seconds)
         if found:
             return self._adopt_broker_order(current, found)
+
+        if was_done_for_day:
+            return self._fetch(intent_id)
 
         # Lookup stayed inconclusive: stay UNKNOWN, alert, block the
         # symbol. No second submission — ever.
@@ -684,19 +766,25 @@ class OrderManager:
         return recovered
 
     def reconcile_open_intents(self, lookup_fn=None, symbol: str | None = None) -> list[dict]:
-        """Sync intents the broker may have cancelled/expired since submit (B16).
+        """Sync intents the broker may have cancelled/expired/filled
+        since submit (B16; extended by the B16 correction to include
+        DONE_FOR_DAY).
 
-        Looks up every SUBMITTED / PARTIALLY_FILLED intent that has a
-        broker_order_id and adopts the broker's current status — so a
-        DAY order that expired at close (or was cancelled) is found,
-        not just one whose first response was dropped. Lookup-only;
-        never submits. An inconclusive lookup (None, or raising) leaves
+        Looks up every SUBMITTED / PARTIALLY_FILLED / DONE_FOR_DAY
+        intent that has a broker_order_id and adopts the broker's
+        current status — so a DAY order that expired at close (or was
+        cancelled) is found, not just one whose first response was
+        dropped; and a DONE_FOR_DAY order that filled overnight is
+        adopted as FILLED, that expired/canceled overnight is
+        adopted as CANCELLED (releasing its remainder), and one
+        still done_for_day stays DONE_FOR_DAY. Lookup-only; never
+        submits. An inconclusive lookup (None, or raising) leaves
         the intent untouched (no alert, no block: the order was
         confirmed accepted, so there is nothing ambiguous to resolve —
         the next run retries). Returns the adopted intents.
         """
         query = (
-            "SELECT * FROM intents WHERE status IN ('SUBMITTED', 'PARTIALLY_FILLED')"
+            "SELECT * FROM intents WHERE status IN ('SUBMITTED', 'PARTIALLY_FILLED', 'DONE_FOR_DAY')"
             " AND broker_order_id IS NOT NULL"
         )
         params: list = []
@@ -725,6 +813,24 @@ class OrderManager:
         intent store is the source of truth for order status.
         """
         query = "SELECT * FROM intents WHERE status='CANCELLED'"
+        params: list = []
+        if symbol is not None:
+            query += " AND symbol=?"
+            params.append(symbol)
+        return [dict(r) for r in self._conn.execute(query, params).fetchall()]
+
+    def done_for_day_intents(self, symbol: str | None = None) -> list[dict]:
+        """Every DONE_FOR_DAY intent, optionally for one symbol (B16
+        correction).
+
+        The strategy uses these for the two places the broker's OPEN
+        query cannot see them: the sizing reservation (the unfilled
+        remainder still counts against buying power) and the
+        end-of-run reconcile (the remainder is still a working
+        holding). Only a confirmed expired/canceled releases the
+        remainder — never this listing itself.
+        """
+        query = "SELECT * FROM intents WHERE status='DONE_FOR_DAY'"
         params: list = []
         if symbol is not None:
             query += " AND symbol=?"

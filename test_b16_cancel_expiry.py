@@ -20,11 +20,17 @@ a subprocess with dated fixtures, like B13/B15):
 (4) Regression: no open orders -> behaviour identical to before
     (startup sync empty, same orders as the B13/B15 e2e baseline).
 
-Unit tests pin the pieces: the expired/done_for_day -> CANCELLED
-mapping (incl. the SDK's str(OrderStatus.EXPIRED) repr),
-reconcile_open_intents, the state mirror, the cancel-first helper,
-AlpacaLeg.cancel_order (SDK + REST + 404), FakeLeg.cancel_order,
-FakeBroker.expire, and the fill-after-cancel no-op.
+Unit tests pin the pieces: the expired -> CANCELLED mapping (incl.
+the SDK's str(OrderStatus.EXPIRED) repr), reconcile_open_intents,
+the state mirror, the cancel-first helper, AlpacaLeg.cancel_order
+(SDK + REST + 404), FakeLeg.cancel_order, FakeBroker.expire, and
+the fill-after-cancel no-op.
+
+B16 reopen: done_for_day is NO LONGER mapped to CANCELLED (it is
+not terminal — the order can still fill the next trading day). The
+done_for_day state machine, reservation, replacement rule, and the
+three fake-broker tests live in test_b16_done_for_day.py; the two
+adoption tests below were updated to the new mapping.
 """
 
 import json
@@ -105,7 +111,7 @@ def _run_buy(home: Path, fixture: Path, *, exit_on_signal_loss: int = 0):
 # ---------------------------------------------------------------- unit tests:
 # OrderManager — expired / done_for_day mapping + reconcile_open_intents
 
-def test_adopt_expired_and_done_for_day_are_cancelled(tmp_path):
+def test_adopt_expired_is_cancelled(tmp_path):
     from order_manager import OrderManager, build_intent
 
     manager = OrderManager(str(tmp_path / "intents.db"))
@@ -150,10 +156,14 @@ def test_adopt_sdk_enum_repr_expired(tmp_path):
 
 
 def test_adopt_done_for_day_and_rejected(tmp_path):
+    """B16 reopen: done_for_day maps to its OWN state DONE_FOR_DAY,
+    not CANCELLED — the order is still working and can still fill
+    the next trading day. (The full done_for_day state machine is
+    pinned in test_b16_done_for_day.py.)"""
     from order_manager import OrderManager, build_intent
 
     manager = OrderManager(str(tmp_path / "intents.db"))
-    for status, expected in (("done_for_day", "CANCELLED"),
+    for status, expected in (("done_for_day", "DONE_FOR_DAY"),
                              ("rejected", "REJECTED"),
                              ("canceled", "CANCELLED"),
                              ("new", "SUBMITTED")):
@@ -170,6 +180,9 @@ def test_adopt_done_for_day_and_rejected(tmp_path):
             lookup_fn=lambda coid, s=status: {"id": "x", "status": s,
                                               "filled_qty": 0.0})
         assert adopted[0]["status"] == expected, status
+        if status == "done_for_day":
+            assert manager.is_blocked("NVDA", account="paper")
+            assert len(manager.done_for_day_intents("NVDA")) == 1
 
 
 def test_reconcile_open_intents_inconclusive_leaves_intent(tmp_path):
@@ -320,14 +333,17 @@ class _StubLeg:
         if self._cancel_impl is not None:
             return self._cancel_impl(order_id, client_order_id)
         for order in self._orders:
-            if str(order.get("id")) == str(order_id):
+            if (order_id is not None and str(order.get("id")) == str(order_id)) or (
+                    client_order_id is not None
+                    and str(order.get("client_order_id")) == str(client_order_id)):
                 order["status"] = "cancelled"
                 return dict(order)
         return None
 
 
 def _working_buy(order_id="fake-0001", qty=2.0, filled=1.0):
-    return {"id": order_id, "symbol": "NVDA", "side": "buy", "qty": qty,
+    return {"id": order_id, "client_order_id": "coid-nvda",
+            "symbol": "NVDA", "side": "buy", "qty": qty,
             "filled_qty": filled, "status": "submitted"}
 
 
@@ -337,7 +353,7 @@ def test_cancel_helper_cancels_working_buy_and_reports_filled():
     leg = _StubLeg([_working_buy()])
     ok, filled, reason = _cancel_working_orders_on_leg(leg, "NVDA", "buy")
     assert ok and filled == 1.0 and reason == ""
-    assert leg.cancel_calls == [("fake-0001", None)]
+    assert leg.cancel_calls == [("fake-0001", "coid-nvda")]
     assert leg.open_orders() == []
 
 
@@ -407,6 +423,14 @@ def test_cancel_helper_intent_tripwire_vetoes_working_status(tmp_path):
         lookup_fn=lambda coid: {"id": "fake-0001", "status": "new",
                                 "filled_qty": 1.0})
     assert not ok and "still new" in reason
+    # B16 reopen: a lookup that returns done_for_day ALSO vetoes — the
+    # order is still working and can still fill tomorrow; B16 wrongly
+    # treated it as confirmation the order was gone.
+    ok, _, reason = _cancel_working_orders_on_leg(
+        leg, "NVDA", "buy", manager=manager, intent_id=intent["intent_id"],
+        lookup_fn=lambda coid: {"id": "fake-0001", "status": "done_for_day",
+                                "filled_qty": 1.0})
+    assert not ok and "still done_for_day" in reason
     # The broker lookup says the entry is cancelled -> the exit may go.
     ok, filled, reason = _cancel_working_orders_on_leg(
         leg, "NVDA", "buy", manager=manager, intent_id=intent["intent_id"],

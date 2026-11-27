@@ -111,11 +111,31 @@ be checked.
   the fake broker. B16 also fixed a latent bug the investigation
   found: the SDK's `str(OrderStatus.EXPIRED)` is
   `"OrderStatus.EXPIRED"`, so the old `.lower()` mapping fell through
-  to SUBMITTED — expired/done_for_day now map to CANCELLED. Known
-  limitations (not in B16): the exit does not cancel the attached
-  trailing stop (pre-existing); a never-filled buy's tax lot would
-  close at 0 proceeds only if the live leg is ever enabled (lot_id
-  is None in the paper-only path).
+  to SUBMITTED — expired now maps to CANCELLED. **Corrected Nov 27,
+  2026 (B16 reopen):** done_for_day is NOT terminal and does NOT map
+  to CANCELLED — it is its own non-terminal state DONE_FOR_DAY (the
+  Alpaca docs: it "will not receive further updates until the next
+  trading day"; it can still fill or be cancelled, and its unfilled
+  qty still counts against buying power). A DONE_FOR_DAY intent keeps
+  its expected position and its budget reservation (sized from the
+  intent store, since the broker's OPEN query excludes it); no
+  replacement may be submitted for its symbol until the startup
+  lookup adopts it as FILLED or CANCELLED. **Also closed Nov 27,
+  2026:** the exit cancels the attached trailing stop FIRST (both
+  legs, confirmed by a fresh open-orders re-fetch, fail-closed), then
+  re-derives the sell size from the leg's current position; if the
+  exit then fails to submit after the stop was cancelled, a CRITICAL
+  `exit_unprotected` alert fires and the entry stays open. Known
+  limitations (not in B16): an UNKNOWN exit intent blocks its symbol
+  indefinitely with no admin/resolution path (test 3c — needs a human
+  procedure before the soak); a stop firing with no signal-loss exit
+  leaves a stale entry (the stop is not in the intent store, so
+  nothing mirrors its fill — the end-of-run reconcile halts on
+  drift); the residual race where the stop elects between the cancel
+  confirmation and the exit submit (only an OCO/bracket eliminates
+  it); a never-filled buy's tax lot would close at 0 proceeds only if
+  the live leg is ever enabled (lot_id is None in the paper-only
+  path).
 - **Stop conditions:** any step rc != 0; safety preflight fails;
   regime_blocked / halted / kill switch present; `StaleBarsError`
   ("benchmark data stale") — the run stops, it does not trade on old
@@ -234,11 +254,15 @@ be checked.
   after the one attempt was made reconciles only — it never
   resubmits. **Nov 26, 2026 (B16):** reconcile() never re-checks
   SUBMITTED intents, so the startup also runs
-  `reconcile_open_intents` — every SUBMITTED / PARTIALLY_FILLED
-  intent with a broker_order_id is looked up and its current broker
-  status adopted (expired/done_for_day map to CANCELLED, fixing the
-  latent `str(OrderStatus.EXPIRED)` fall-through to SUBMITTED);
-  lookup-only, an inconclusive lookup leaves the intent untouched.
+  `reconcile_open_intents` — every SUBMITTED / PARTIALLY_FILLED /
+  DONE_FOR_DAY intent with a broker_order_id is looked up and its
+  current broker status adopted (expired maps to CANCELLED, fixing
+  the latent `str(OrderStatus.EXPIRED)` fall-through to SUBMITTED;
+  done_for_day maps to its own non-terminal DONE_FOR_DAY state, not
+  CANCELLED — it is still working, still reserved, and blocks a
+  replacement for its symbol until the lookup adopts it as FILLED or
+  CANCELLED, per the Nov 27, 2026 reopen); lookup-only, an
+  inconclusive lookup leaves the intent untouched.
   The live loop then mirrors CANCELLED intents into the strategy
   state (Loop 1) and cancels the working entry order before an
   exit, sizing the sell to the filled qty.

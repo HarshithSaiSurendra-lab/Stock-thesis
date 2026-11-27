@@ -149,6 +149,15 @@ class FileBackedFakeBroker:
             k: int(v) for k, v in state.get("visibility_counts", {}).items()
         }
         broker._fills = {}
+        # B16 correction: trailing stops live in their own store
+        # (they are real broker orders, but not strategy submissions).
+        broker._stops = {k: dict(v) for k, v in state.get("stops", {}).items()}
+        broker._trail_seq = int(state.get("trail_seq", 0))
+        broker._fill_during_cancel = {
+            k: (float(v[0]), float(v[1]))
+            for k, v in state.get("fill_during_cancel", {}).items()
+        }
+        broker.fail_next_submit = bool(state.get("fail_next_submit", False))
         # The persisted drop flag wins: a drop consumed by an earlier
         # process must not re-arm on restart.
         broker.drop_next_response = bool(state.get("drop_next_response", False))
@@ -166,6 +175,12 @@ class FileBackedFakeBroker:
             "submit_calls": self.submit_calls,
             "live_submit_calls": self.live_submit_calls,
             "trail_calls": list(self.trail_calls),
+            "stops": {k: dict(v) for k, v in broker._stops.items()},
+            "trail_seq": broker._trail_seq,
+            "fill_during_cancel": {
+                k: [v[0], v[1]] for k, v in broker._fill_during_cancel.items()
+            },
+            "fail_next_submit": bool(broker.fail_next_submit),
         }
         self.state_path.write_text(json.dumps(state, indent=2))
 
@@ -215,6 +230,49 @@ class FileBackedFakeBroker:
         finally:
             self._save()
 
+    def done_for_day(self, client_order_id: str) -> dict:
+        """Mark an order done_for_day and persist it (B16 correction):
+        a DAY order that reached the close partially filled. Filled
+        shares stay filled; the remainder is still working and can
+        fill the next trading day."""
+        try:
+            return self._broker.done_for_day(client_order_id)
+        finally:
+            self._save()
+
+    def set_fill_during_cancel(self, client_order_id: str, qty: float, price: float) -> None:
+        """Arm a fill that lands between the cancel request and the
+        broker's confirmation (test 2), and persist the arm so the
+        next process's cancel applies it."""
+        self._broker.set_fill_during_cancel(client_order_id, qty, price)
+        self._save()
+
+    def fail_next_submit(self) -> None:
+        """Arm a genuine submit failure (test 3c) and persist the arm
+        so the next process's submit raises before storing anything."""
+        self._broker.fail_next_submit = True
+        self._save()
+
+    def attach_trailing_stop(self, symbol: str, qty: float, trail_pct: float) -> dict:
+        """Attach a trailing-stop SELL (B16 correction) and persist
+        it: a real broker order in its own store, not a strategy
+        submission."""
+        try:
+            return self._broker.attach_trailing_stop(symbol, qty, trail_pct)
+        finally:
+            self._save()
+
+    def trigger_trailing_stop(self, client_order_id: str, price: float) -> dict:
+        """Elect a trailing stop and persist the fill (test 3): the
+        stop sells, capped at the shares actually held."""
+        try:
+            return self._broker.trigger_trailing_stop(client_order_id, price)
+        finally:
+            self._save()
+
+    def list_stops(self) -> list[dict]:
+        return self._broker.list_stops()
+
     def order_count(self) -> int:
         return self._broker.order_count()
 
@@ -253,8 +311,11 @@ class FakeLeg:
         # B15: a cancelled order's FILLED shares are still a holding
         # (real Alpaca reports them in /v2/positions) — only rejected
         # orders (never filled by construction) are skipped.
+        # B16 correction: a trailing stop's fills are holdings too
+        # (negative — the stop sold shares), so stops are netted here
+        # alongside strategy orders.
         net: dict[str, float] = {}
-        for order in self._store.list_orders():
+        for order in self._store.list_orders() + self._store.list_stops():
             if str(order.get("status", "")).lower() in {"rejected"}:
                 continue
             filled = float(order.get("filled_qty") or 0.0)
@@ -283,7 +344,11 @@ class FakeLeg:
         if self.mode != "paper":
             return []
         out = []
-        for order in self._store.list_orders():
+        # B16 correction: working trailing stops are open orders too
+        # (the strategy's exit must be able to see and cancel them),
+        # so they are merged in here — with their order_type, which
+        # is how the strategy tells a stop from a strategy order.
+        for order in self._store.list_orders() + self._store.list_stops():
             # B16: expired / done_for_day orders are excluded, like
             # Alpaca's QueryOrderStatus.OPEN — an expired order's
             # remaining qty must not be counted as an open position
@@ -294,11 +359,13 @@ class FakeLeg:
                 continue
             out.append({
                 "id": str(order.get("id")),
+                "client_order_id": str(order.get("client_order_id")),
                 "symbol": str(order.get("symbol")),
                 "side": str(order.get("side", "")).lower(),
                 "qty": float(order.get("qty") or 0.0),
                 "filled_qty": float(order.get("filled_qty") or 0.0),
                 "status": str(order.get("status", "")).lower(),
+                "order_type": str(order.get("order_type", "")).lower(),
                 # B15: pass the stored prices through (limit_price was
                 # stored at submit; filled_avg_price is maintained by
                 # apply_partial_fill). Either may be None — the sizing
@@ -365,6 +432,8 @@ class FakeLeg:
         order (disabled leg, or already gone — success: nothing
         remains to fill). The caller confirms via an open-orders
         re-fetch, so a None here is never the sole confirmation.
+        Trailing stops are cancellable the same way (by id or
+        client_order_id) — the exit cancels the stop before selling.
         """
         if self.mode != "paper":
             return None
@@ -372,7 +441,7 @@ class FakeLeg:
         if client_order_id is not None:
             target = self._store.get_by_client_order_id(client_order_id)
         elif order_id is not None:
-            for candidate in self._store.list_orders():
+            for candidate in self._store.list_orders() + self._store.list_stops():
                 if str(candidate.get("id")) == str(order_id):
                     target = candidate
                     break
@@ -381,11 +450,13 @@ class FakeLeg:
         cancelled = self._store.cancel(target["client_order_id"])
         return {
             "id": str(cancelled.get("id")),
+            "client_order_id": str(cancelled.get("client_order_id")),
             "symbol": str(cancelled.get("symbol")),
             "side": str(cancelled.get("side", "")).lower(),
             "qty": float(cancelled.get("qty") or 0.0),
             "filled_qty": float(cancelled.get("filled_qty") or 0.0),
             "status": str(cancelled.get("status", "")).lower(),
+            "order_type": str(cancelled.get("order_type", "")).lower(),
             "limit_price": (float(cancelled["limit_price"])
                             if cancelled.get("limit_price") is not None else None),
             "filled_avg_price": (float(cancelled["filled_avg_price"])
@@ -393,12 +464,22 @@ class FakeLeg:
         }
 
     def attach_trailing_stop(self, symbol: str, qty: float, trail_pct: float) -> Optional[dict]:
+        """Attach a trailing-stop SELL (B16 correction): a REAL broker
+        order in the fake broker's stop store — not just a recorded
+        call — so the strategy's exit can cancel it, reconcile can
+        see its fills, and a test can elect it. The trail_calls list
+        is kept as the attach audit trail (B13 asserts its length).
+        A disabled leg (live) attaches nothing, like the real leg."""
+        if not self.enabled:
+            return None
+        stop = self._store.attach_trailing_stop(symbol, qty, trail_pct)
         self._store.trail_calls.append(
             {"symbol": symbol, "qty": float(qty), "trail_pct": float(trail_pct)}
         )
         self._store.save()
         return {
-            "id": f"fake-trail-{len(self._store.trail_calls):04d}",
+            "id": str(stop["id"]),
+            "client_order_id": str(stop["client_order_id"]),
             "symbol": symbol,
             "trail_pct": trail_pct,
         }

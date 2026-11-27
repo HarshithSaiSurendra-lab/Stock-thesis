@@ -2240,3 +2240,349 @@ research-historical. $0 spend, no LLM calls, no orders. Command:
   sma_timing.py / test_sma_timing.py were restored byte-identical
   from research-historical (the Form 4 replay imports the SMA
   harness); no tracked file was modified by the Form 4 work.
+
+### 2026-11-26 — Finding: 20 (actually 41) of 370 backtest entries have no positive buy signal
+
+Read-only trace, at the user's request (Nov 26, 2026). NO baseline
+change. Logged here BEFORE any change so the completed experiments
+stay reproducible. Traced by a subagent, verified by Milo (see
+Verification below). Full note: /tmp/zero_signal_finding.md;
+diagnostics in /tmp (diag_zero_signal.py, diag_count20.py,
+diag_split20.py, diag_filing.py, diag_filing_check.py, diag_form4.py,
+diag_pairs.py; outputs /tmp/diag_out*.txt, /tmp/f4_out_real,
+/tmp/f4_out_supp, /tmp/nosignal_pairs.json).
+
+- (a) INTENTIONAL OR ACCIDENT? — ACCIDENT, an unexamined edge case.
+  The rule is `backtest.py` `signal_to_weights` (line 93; guard at
+  line 112): `top = valid.nlargest(min(cfg.max_positions, len(valid)))`;
+  `if (top > 0).any(): top = top[top > 0]` (comment: "only take
+  genuinely positive signals"); `if top.empty: continue`. The guard
+  defeats the stated intent exactly on all-zero days: when no top-5
+  signal is positive, the filter is skipped and all five zero-signal
+  names get equal weight (0.2 each). The `if top.empty: continue`
+  is DEAD CODE in the long-only branch whenever any symbol has data
+  — the author expected the filter to be able to empty `top`.
+  Arrived in the very first commit (5d1c46b) with no design note, no
+  justifying comment, no test asserting it; `git log -L` shows nobody
+  has ever revisited the guard. No design doc states an
+  always-invested rule. Phase 0 diagnosed the behaviour as a DEFECT
+  symptom, not a rule (experiments/diagnosis/phase0-diagnosis.md:46):
+  "Exposure is 99.8% invested on 99.8% of days, ~5 positions always
+  — the system is never in cash and never rests."
+- Sharpest fact (measured): ALL 247 all-zero sessions are
+  regime-blocked days; ZERO are regime-allowed-but-no-signal. The
+  panel is zeroed by the regime mask on blocked days
+  (research_runner._regime_mask), so the rule is exactly "the regime
+  mask is defeated" — on every regime-blocked day the engine buys 5
+  names with zero signal. The picks are alphabetical, not ranked: on
+  an all-zero row `nlargest(5)` returns the first five symbols in
+  column order — AAPL, ABBV, ABT, ADBE, AEP every time.
+- CORRECTION TO THE "20 OF 370" FIGURE: the SMA design doc's 20
+  counts only the subset the entry-gate check buckets (prev close
+  <= SMA50). The direct count — deciding selection day all-zero —
+  is 41 of 370 (11.1%): 20 with prev close <= SMA50 plus 21 with
+  prev close above it. The 41 pairs are in /tmp/nosignal_pairs.json,
+  clustered on 9 regime-blocked rebalance days (2024-04-22,
+  2024-07-25, 2024-08-08, 2024-12-23, 2025-03-03, 2025-11-24,
+  2026-02-06, 2026-03-02, 2026-07-24), symbols only AAPL/ABBV/ABT/
+  ADBE/AEP.
+- (b) DEPENDENCY TABLE — real vs suppressed (diagnostic only, nothing
+  rewritten; suppression = the one-line change: apply the positive
+  filter unconditionally, plus the same change in
+  sma_timing._daily_selection for re-entry selections):
+  - SMA baseline (open fills): 41/370 inside. Suppressed: -7.82% ->
+    -6.01% @10bps (+1.81pp); -20.50% -> -17.70% @20bps. Entries
+    370 -> 332; exposure 0.9955 -> 0.6232; time invested 0.9985 ->
+    0.6261 (= the regime-allowed fraction — suppression makes the
+    mask finally work).
+  - SMA variant (strict): same 41 in its baseline. -6.11% -> -4.75%
+    @10bps; net timing effect +1.71pp -> +1.26pp. Verdict NEITHER
+    unchanged.
+  - Form 4 (same replay): 41/370 in baseline; 3 of the 28 matched
+    exits were no-signal entries (ADBE 2024-04-22, AAPL 2024-08-08,
+    ADBE 2024-12-23). Suppressed: baseline -7.82% -> -6.01%;
+    variant -4.57% -> -1.65%; diff +3.25pp -> +4.36pp. IC FLIPS
+    SIGN: -0.0423 (t -0.57) -> +0.0332 (t +0.50), still ~0;
+    triggers 54 -> 49; direct price effect +$10.54 -> +$23.03
+    (bootstrap still covers zero). DROP unchanged — under
+    suppression it is DROP on both clauses (~0 AND wrong sign).
+  - Registered v2 train (close-to-close): 42/364 (11.5%).
+    Suppressed: -14.01% -> -12.48% @10bps (+1.53pp); -25.62% ->
+    -23.08% @20bps. Gate stays FAILED.
+  - Registered v2 holdout: 13/46 (28.3%). Suppressed: -3.40% ->
+    -3.83% @10bps (-0.43pp). Suppression HURTS on the holdout —
+    the no-signal picks won there. Gate stays FAILED.
+  - Fresh-validation v4 base: (a) rounds-1/2 construction: train
+    103/1057, holdout 26/115. (b) runbook construction: train
+    38/339, holdout 9/39. (a) train -25.86% -> -21.30% (+4.55pp);
+    holdout -4.33% -> -4.75% (-0.42pp). (b) train +3.69% ->
+    +10.72% (+7.03pp); holdout +0.01% -> +1.31% (+1.30pp). Either
+    way the January base WILL contain the behaviour unless the
+    runbook is amended.
+  - Filing-delta: 0 all-zero selection days in either arm (the Haiku
+    panel always has a positive score). Only exposure: 10 warm-up
+    rows — the cohort ffill's leading days before each cohort's first
+    grid day, where the engine buys 60 zero-valued names. Baseline
+    +53.86% -> +55.08%; experiment +47.64% -> +48.52%; diff -6.22pp
+    -> -6.56pp; trades 798 -> 594. The PRIMARY (IC change -0.0126)
+    never goes through signal_to_weights — untouched. DROP unchanged.
+  - Everything else via `run_backtest` (the only caller of
+    signal_to_weights): Phase 0 diagnosis; evaluate_variants +
+    walk-forward folds; round-1/2 diagnostics; r2_confirm.py; LLM
+    long-horizon v2/v3 (0/1 selection panels — same warm-up-only
+    exposure as filing-delta, not separately quantified);
+    verify_sprint.py; cohort loop. All inherit it. The ML ranker
+    is not built yet; its January run uses "the same execution", so
+    it inherits the behaviour too unless the runbook is amended.
+- FLAG — THE JANUARY v4 BASE CONSTRUCTION IS AMBIGUOUS. The runbook
+  (Step 4) says both "Same construction as rounds 1/2"
+  (`backtest.py` / `r2_panels.py` inputs, `exp-technical-v2` panel,
+  long-hold) — construction (a) is the `v4_regime_quality_risk`
+  panel, rebalance 1, min hold 1 (verified: it reproduces the
+  frozen -4.33%/-8.45% exactly), while construction (b) is the v2
+  panel, rebalance 5, min hold 10 (the gate reader's v4_base.json
+  `experiment_id: "exp-technical-v2"` supports (b)). The two differ
+  by ~7pp on train. This needs resolving before the January run
+  REGARDLESS of the suppression question.
+- (c) DAILY RUNNER — DOES NOT BEHAVE THE SAME WAY. `run_daily`
+  never calls `signal_to_weights` (grep: only backtest.py:156 and
+  test_integrity.py reference it). Its selection is per-symbol
+  gating, then top-N by a different score: (1) hard regime gate
+  first (filters.py:23 `market_regime`; strategy_runner.py:1125):
+  `if not regime.ok` -> status `regime_blocked`, zero orders, no
+  symbol even evaluated — this is the mask the backtest defeats.
+  (2) Per symbol (strategy_runner.py:1325): `if direction ==
+  "no_trade"` -> skipped ("no trade signal"). No signal => never
+  a candidate. Ever. (3) Further gates: momentum, trend quality,
+  63d relative strength, valid quote, `downside_ok`, memory check;
+  then (:1339) `if rank["decision_score"] < cfg.signals.min_decision_score`
+  (default 10.25) -> skipped. (4) `selected = candidates[:cfg.sizing.target_n_positions]`
+  (:1387, default 5). A day with no qualifying symbol yields zero
+  candidates and zero orders. So a live/paper run can NEVER enter a
+  position with no buy signal — the opposite of the backtest. The
+  difference is intentional in the sense that the live loop was
+  built as a separate trend engine with its own gates
+  (LIVE_DESIGN_ID = "live-trend"), but it was never reconciled with
+  the backtest: the backtest that "validates" the signals invests on
+  regime-blocked days and on alphabetical zero-signal picks, while
+  the live runner it supposedly previews never would. Every backtest
+  number is therefore a lower-fidelity preview of live behaviour
+  than assumed — the backtest is systematically more invested (time
+  invested 0.9985 vs ~0.63 on the same days) and holds 41 positions
+  the live runner would never take.
+- (d) RECOMMENDATION — a baseline change needing a NEW REGISTRATION,
+  not a silent bug fix. Suppressing zero-signal picks changes every
+  registered number it touches (v2 train +1.53pp, SMA baseline
+  +1.81pp, Form 4 baseline +1.81pp AND its IC sign, January v4 base
+  +1.3 to +7.0pp depending on construction), and it changes the
+  engine's semantics (the regime mask becomes a real off-switch;
+  time invested 0.9985 -> ~0.63). That is a different strategy, not
+  a typo correction. But it is also the behaviour the live runner
+  already implements, so the honest framing is "align the backtest
+  with the live engine's stated rules", registered as a new
+  experiment (e.g. `exp-technical-v3`: v2 panel + positive-only
+  selection), with the January v4 base recomputed under the same
+  rule if adopted. WHAT WOULD HAVE TO BE RE-RUN: the v2 train/
+  holdout numbers, the SMA baseline + variant (NEITHER stands,
+  numbers move), the Form 4 baseline + variant (DROP stands, IC
+  flips sign), the filing-delta portfolio comparison (IC primary
+  untouched; diff -6.22 -> -6.56pp), the round-1/2 v4 base numbers,
+  and — most importantly — the January fresh-validation v4 base,
+  whose (a)-vs-(b) construction ambiguity must be resolved first
+  regardless. The frozen holdout must not be re-tuned against; a
+  re-run under the new rule is a new registration with its own
+  design doc. The live runner needs no change. One related decision
+  for the same moment: the suppression also removes the 10 warm-up
+  rows in the cohort loop (filing-delta trades 798 -> 594) — if the
+  cohort machinery is kept, its warm-up handling (ffill from an
+  empty selection) deserves the same explicit rule rather than
+  inheriting it from signal_to_weights.
+- Milo's verification (Nov 27, 2026): read `backtest.py`
+  signal_to_weights lines 93-130 in full (the guard and the dead
+  `if top.empty: continue` are exactly as reported); read the
+  /tmp/zero_signal_finding.md note and /tmp/nosignal_pairs.json
+  (41 pairs, 9 entry dates, symbols only AAPL/ABBV/ABT/ADBE/AEP);
+  confirmed the SMA design doc's "20" is the prev-close-<=SMA50
+  bucket (line 79) while the direct all-zero count is 41; confirmed
+  the daily-runner divergence (no signal_to_weights call in
+  run_daily; regime gate at strategy_runner.py:1125, no_trade skip
+  at :1325, decision-score floor at :1339, selection at :1387);
+  confirmed the runbook Step 4 ambiguity (line 93-94 carries both
+  "Same construction as rounds 1/2" and "exp-technical-v2 panel,
+  long-hold"; the gate reader requires experiment_id
+  "exp-technical-v2"); read the agent's diagnostic outputs
+  (/tmp/diag_out*.txt, /tmp/f4_out_real, /tmp/f4_out_supp): the
+  REAL runs reproduce the registered numbers EXACTLY (SMA baseline
+  -0.0782 / 370 entries / 365 exits; v2 train -0.1401 / 364 entries;
+  Form 4 real base -0.0782 / variant -0.0457 / IC -0.0423 / 54
+  triggers), and the suppressed runs are as reported (SMA baseline
+  -0.0601 / 332 entries / 0 no-signal entries; Form 4 suppressed
+  base -0.0601 / variant -0.0165 / IC +0.0332 / 49 triggers, decision
+  DROP). Verification boundary, stated plainly: the code facts, the
+  mechanism, and the reproduction evidence were verified by Milo;
+  the suppressed-replay numbers are the agent's diagnostics, read
+  directly from its output files and not independently re-run by
+  Milo. No baseline change was made. The B16-correction subagent
+  was running in the same tree while this trace ran; the line
+  numbers above are as read Nov 27, 2026 and may shift when it
+  lands (the selection logic quoted is unaffected by it).
+
+### 2026-11-27 — B16 reopen: done_for_day correction + trailing-stop coordination
+
+User instruction Nov 26, 2026 (Alpaca order-lifecycle docs): B16
+wrongly mapped `done_for_day` to CANCELLED. Verified against the
+docs (page updated 2026-11-24): done_for_day = "The order is done
+executing for the day, and will not receive further updates until
+the next trading day" — NOT terminal; canceled / expired / filled
+all say "no further updates will occur". An order may be canceled
+"up until the point it reaches a state of either filled, canceled,
+or expired" — so a done_for_day order can still be canceled. And an
+unfilled order "will continue to count against your available
+buying power until it is either executed or canceled" — so a
+done_for_day order still reserves budget. The correction has four
+parts, all landed:
+
+- (1) DONE_FOR_DAY IS ITS OWN INTENT STATE (order_manager.py). A
+  broker report of done_for_day adopts to DONE_FOR_DAY (non-terminal;
+  RECOVERABLE_STATUSES, BLOCKING_STATUSES = ("UNKNOWN",
+  "DONE_FOR_DAY")). The mirror NEVER touches a DONE_FOR_DAY
+  intent's expected position. From there, the startup lookup each
+  run adopts: filled -> FILLED, expired/canceled -> CANCELLED
+  (releasing the remainder), still done_for_day or inconclusive ->
+  stays DONE_FOR_DAY (no UNKNOWN escalation, no alert: the order
+  was confirmed accepted, so there is nothing ambiguous to resolve).
+  `reconcile_open_intents` now includes DONE_FOR_DAY intents.
+  `submit()` re-submitting a DONE_FOR_DAY intent goes to lookup-only
+  reconcile (never a second attempt).
+- (2) RESERVATION PRESERVED (reconcile.py, strategy_runner.py).
+  B15 sizing counts a DONE_FOR_DAY intent's unfilled qty from the
+  intent store (the broker's OPEN query excludes it), priced by the
+  same chain (limit -> filled average -> last price -> entry price).
+  The merge dedupes by broker order id, preferring the broker list
+  — an order the broker still lists as open is counted once, via the
+  broker list. The filled shares are never in both (reservation uses
+  remaining = qty - filled only). The end-of-run reconcile counts
+  the same remainder (via _open_orders_including_done_for_day, so
+  sizing and reconcile cannot disagree).
+- (3) ORIGINAL RECONCILED BEFORE ANY REPLACEMENT: while a
+  DONE_FOR_DAY intent is unresolved for a symbol, NO new order for
+  that symbol may be submitted — it blocks like UNKNOWN (a second
+  intent is persisted BLOCKED with no place call; re-submitting the
+  SAME intent reconciles by lookup only). The block clears only when
+  the lookup adopts FILLED or CANCELLED. Only a confirmed expired or
+  canceled status releases the unfilled remainder.
+- (4) TRAILING STOP + STRATEGY EXIT COORDINATION (the third test's
+  requirement). The exit now cancels the trailing stop FIRST (on
+  both legs, confirmed by a fresh open-orders re-fetch, fail-closed:
+  if the stop cannot be confirmed cancelled, the exit is skipped and
+  the entry stays open, so the stop remains in place). The exit
+  size is then re-derived from the leg's current position (the stop
+  may have sold shares between the buy-cancel and the stop-cancel)
+  — never more than is held. If the exit then fails to submit (a
+  None result — broker failure, guardian gate, or manager UNKNOWN)
+  after the stop was cancelled, the shares are UNPROTECTED: a
+  CRITICAL alert fires (alerts.log + the intent store, stage
+  `exit_unprotected`), the entry stays open, and the exit retries
+  next run (or a human resolves it). The buy-cancel path also
+  handles the invisible DONE_FOR_DAY order (cancel by client_order_id
+  when the intent is non-terminal) and the tripwire no longer treats
+  done_for_day as confirmation the order is gone (it VETOES). A None
+  cancel result is adopted as CANCELLED only when the per-order
+  lookup ALSO returns None (two independent "not found" answers).
+  The startup mirror syncs trailing stops after state changes: a
+  removed entry's stop is cancelled (an orphaned stop could
+  short-sell); a reduced entry's stop is cancelled and re-attached
+  for the filled qty, with a CRITICAL alert on failure. Entries
+  record `trail_stop_id` + `trail_percent`.
+
+TWO REAL BUGS FOUND + FIXED DURING THIS WORK:
+- Account scoping in reconcile(): the merged list counted the paper
+  DONE_FOR_DAY remainder on the LIVE leg too, producing a
+  `live:NVDA unexpected open position 1.0` drift halt. Fixed by
+  scoping intent-derived orders by account (reconcile() passes
+  account=leg_name; sizing passes account="paper"); pinned by a
+  unit test.
+- `StrategyState` has no `.get()`: the first
+  `_sync_trailing_stops_after_mirror` called
+  `state.get("open_entries")` and crashed two B16 e2e tests. Fixed
+  to `getattr(state, "open_entries", None)`.
+
+THE THREE FAKE-BROKER TESTS (test_b16_done_for_day.py, 26 tests: 20
+unit + 6 e2e; full suite 360 passed, Milo's run):
+- (1) OVERNIGHT RESUMPTION: Run 1 buys NVDA qty 2 @ limit 167.25,
+  fills 1, becomes done_for_day. Run 2: status ok (no drift halt),
+  state_sync [], done_for_day [{NVDA, filled 1.0, remaining 1.0}],
+  intent DONE_FOR_DAY, attempts 1, order count 1, open_buy_reservations
+  167.25, existing_notional 334.51 (1 x 167.26 + 1 x 167.25), expected
+  position stays 2.0. Then the 2nd share fills. Run 3: status ok,
+  done_for_day [], intent FILLED, attempts still 1, order count still
+  1, open_buy_reservations 0.0, existing_notional 334.52, 2 held.
+  Exactly ONE submission attempt; no replacement while unresolved.
+  (1b) With AMD in an uptrend, AMD is sized to 8 shares (vs 13 with
+  no reservation); intended notional 572.87 — B15's 572.88 differs by
+  a cent because the fixture's latest session shifted (ask 71.6092,
+  not 71.61); the test derives it from the fixture and the qty (8)
+  is the proof.
+- (2) FILL DURING CANCELLATION: Run 1 buys NVDA qty 2, fills 1; the
+  2nd share is armed to fill mid-cancel. Run 2 (signal lost): the
+  hook fills the 2nd share, completing the order — the cancel result
+  reports filled 2.0 (status filled, not cancelled: a fill that
+  completes the order before the cancel lands is the broker's
+  correct answer). The exit sells 2 (not the pre-cancel 1); exit
+  intent sell qty 2.0, SUBMITTED, fake-0002; buy status filled,
+  filled 2.0; stop cancelled; entry closed; expected positions {};
+  2 held (sell unfilled).
+- (3) TRAILING STOP + STRATEGY EXIT: (3a) Exit first: stop
+  cancelled, sell qty 2 submitted; after filling the sell,
+  triggering the cancelled stop sells 0 — total sold stays 2.0,
+  held 0. (3b) Stop first: stop sells 2, then Run 2 sees 0 held and
+  submits no sell (order count stays 1), entry closes, total sold
+  2.0, no alert, alerts table empty. (3c) Exit failure: stop
+  cancelled, exit submit fails (never accepted) -> CRITICAL
+  "unprotected" alert in alerts.log + 2 intent-store alerts for the
+  exit intent (the manager's "lookup inconclusive" + the exit's
+  "unprotected", both unresolved), skipped stage exit_unprotected,
+  entry stays open (qty 2.0), no sell submitted, total sold 0.0,
+  exit intent UNKNOWN, attempts 1, broker_order_id None. Run 3:
+  exit NOT re-submitted (UNKNOWN blocks NVDA), order count still 1,
+  total sold 0.0, entry still open, alert persists, still 2 alerts.
+
+REMAINING EXPOSURE (for the user's soak decision — reported, not
+decided):
+- An UNKNOWN exit intent blocks its symbol INDEFINITELY with no
+  admin/resolution path. Test 3c is the case: the exit may or may
+  not have been accepted; the strategy must not submit a second
+  exit, so the position stays unprotected and blocked until a human
+  resolves it. This is the B3 exact-once tradeoff, not a bug — but
+  it needs a human procedure before the soak.
+- A stop firing with no signal-loss exit leaves a STALE ENTRY: the
+  stop is not in the intent store, so nothing mirrors a stop fill
+  into the strategy state; the end-of-run reconcile then halts on
+  drift (fail-closed). The startup sync only handles mirror
+  adjustments (cancelled/expired entries), not stop fills.
+- A stop-fill's P&L is not attributed to the decision: when the
+  stop already sold the shares, the exit records realized_pl 0
+  (exit_qty 0); the stop fill price is not fetched.
+- RESIDUAL RACE: the stop could elect between the cancel
+  confirmation and the exit submit. Only an OCO/bracket order
+  eliminates that; the strategy does not use bracket orders.
+- The LIVE leg's exit has no intent/exact-once protection
+  (pre-existing; the live leg is disabled in the paper-only
+  configuration, so it is unreachable today).
+- The real leg's get_by_client_order_id returns no prices, so a
+  DONE_FOR_DAY market buy's reservation prices from
+  last_price/entry_price (the existing chain), not from a filled
+  average.
+- Milo's verification (Nov 27, 2026): read all diffs in full
+  (order_manager, reconcile, strategy_runner, fake_broker,
+  fake_dual_broker, broker_alpaca, test_b16_cancel_expiry); ran the
+  new tests himself (26/26) and the full suite (360 passed, 0
+  failed); checked the three tests' exact assertions against the
+  user's criteria (all match); verified guardian.submit returns
+  None on failure (so the exit_unprotected path is reachable);
+  verified the real AlpacaLeg.open_orders() gains client_order_id +
+  order_type on both the SDK and REST paths. Count reconciliation:
+  the pre-reopen 371 was measured on a tree that included the
+  research files (Form 4: 27 + SMA: 10 = 37), which now live on
+  research-historical; the agentic-p0 baseline is 334, and 334 + 26
+  new = 360.

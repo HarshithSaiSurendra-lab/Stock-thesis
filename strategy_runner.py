@@ -20,7 +20,7 @@ from indicators import build_feature_frame
 from memory import SignalSnapshot, TradeMemory
 from notifier import Notifier, format_daily
 from order_manager import OrderManager, build_intent, compute_inputs_hash
-from reconcile import _open_orders_for_leg, reconcile
+from reconcile import _open_orders_for_leg, _open_orders_including_done_for_day, reconcile
 from sector_map import sector_benchmark_for, sector_benchmarks_for
 from trade_signal import composite_signal, composite_score, trend_quality_score
 from universe import StaleBarsError, fetch_symbol_frame, select_universe
@@ -236,8 +236,12 @@ def _mirror_cancelled_intents_into_state(state: StrategyState, intents: list[dic
 
     Entries with no recorded intent_id (recorded before B16) are
     skipped — the end-of-run reconcile remains the backstop for them
-    and halts on drift rather than silently guessing. Returns one
-    adjustment dict per entry changed, for the run summary.
+    and halts on drift rather than silently guessing. A DONE_FOR_DAY
+    intent is NEVER mirrored here (B16 correction): the order is
+    still working, so its expected position and its budget
+    reservation are preserved — only a CONFIRMED expired/canceled
+    (which adopts as CANCELLED) releases the unfilled remainder.
+    Returns one adjustment dict per entry changed, for the run summary.
     """
     adjustments = []
     for intent in intents or []:
@@ -274,6 +278,30 @@ def _mirror_cancelled_intents_into_state(state: StrategyState, intents: list[dic
     return adjustments
 
 
+def _adopt_cancel_result(manager, intent, broker_order_id, result):
+    """Adopt a cancel call's confirmed status into the intent store.
+
+    Only the entry intent's own order is adopted (matched by broker
+    order id): a cancel result for another order must never touch
+    this intent's record. A dict result with a terminal status
+    (cancelled / canceled / expired / filled / rejected) is adopted
+    — it is the broker's final view of the order. A None result is
+    NOT adopted here: the broker having no such order is only
+    confirmation when the per-order lookup agrees (see the tripwire
+    in _cancel_working_orders_on_leg); adopting from a lone None
+    would let a leg that cannot find the order clear a working one.
+    """
+    if manager is None or intent is None or not intent.get("intent_id"):
+        return
+    if str(broker_order_id or "") != str(intent.get("broker_order_id") or ""):
+        return
+    if not isinstance(result, dict):
+        return
+    status = str(result.get("status") or "").lower()
+    if status in {"cancelled", "canceled", "expired", "filled", "rejected"}:
+        manager.adopt_lookup(intent["intent_id"], result)
+
+
 def _cancel_working_orders_on_leg(leg, symbol: str, entry_side: str, *,
                                   manager=None, intent_id=None, lookup_fn=None):
     """Cancel the working entry order(s) for `symbol` on one leg, and
@@ -294,6 +322,19 @@ def _cancel_working_orders_on_leg(leg, symbol: str, entry_side: str, *,
     and a lookup that raises vetoes too (fail-closed; the exit retries
     next run). A lookup that returns None relies on the re-fetch (it
     can only veto, never falsely confirm).
+
+    B16 correction: the entry's order may be INVISIBLE to
+    open_orders() — a DONE_FOR_DAY order is excluded from the
+    broker's OPEN query — but it is still working and can still fill
+    tomorrow. When the entry's intent is non-terminal (SUBMITTED /
+    PARTIALLY_FILLED / DONE_FOR_DAY), its order is cancelled by
+    client_order_id explicitly, even when it is not in the visible
+    list. And the tripwire's acceptable set no longer includes
+    done_for_day: a lookup that returns done_for_day means the order
+    is still working, so it VETOES (B16 wrongly treated it as
+    confirmation the order was gone). A terminal lookup result is
+    adopted into the intent store promptly, so a later block check
+    in the same run sees the truth instead of a stale DONE_FOR_DAY.
     """
     try:
         open_orders = leg.open_orders()
@@ -305,14 +346,21 @@ def _cancel_working_orders_on_leg(leg, symbol: str, entry_side: str, *,
         and str(o.get("side", "")).lower() == str(entry_side).lower()
         and float(o.get("qty") or 0.0) - float(o.get("filled_qty") or 0.0) > 0
     ]
+    cancel = getattr(leg, "cancel_order", None)
+    # The entry intent, when non-terminal: its order may be invisible
+    # to open_orders() (the DONE_FOR_DAY case) but it is still working.
+    intent = None
+    if manager is not None and intent_id:
+        intent = manager.get_intent(intent_id)
+    intent_live = (intent is not None
+                   and intent.get("status") in {"SUBMITTED", "PARTIALLY_FILLED", "DONE_FOR_DAY"}
+                   and intent.get("broker_order_id"))
+    if (working or intent_live) and cancel is None:
+        return False, 0.0, "leg has no cancel_order; cannot cancel the entry order"
     filled = 0.0
+    cancelled_broker_ids = set()
     for order in working:
         filled += float(order.get("filled_qty") or 0.0)
-        cancel = getattr(leg, "cancel_order", None)
-        if cancel is None:
-            return False, 0.0, (
-                f"leg has no cancel_order; cannot cancel {order.get('id')}"
-            )
         try:
             result = cancel(order_id=order.get("id"),
                             client_order_id=order.get("client_order_id"))
@@ -321,7 +369,41 @@ def _cancel_working_orders_on_leg(leg, symbol: str, entry_side: str, *,
         if isinstance(result, dict) and result.get("filled_qty") is not None:
             # The cancel result is fresher than the pre-cancel snapshot.
             filled += float(result.get("filled_qty") or 0.0) - float(order.get("filled_qty") or 0.0)
-    if working:
+        if isinstance(result, dict):
+            status = str(result.get("status") or "").lower()
+            if status not in {"cancelled", "canceled", "expired", "filled", "rejected"}:
+                # The cancel did not take effect (the order is still
+                # working) — the re-fetch below would catch a visible
+                # order, but a done_for_day order is invisible to it,
+                # so veto here rather than trusting the re-fetch.
+                return False, 0.0, f"cancel did not take effect for {order.get('id')}: still {status}"
+        cancelled_broker_ids.add(str(order.get("id")))
+        _adopt_cancel_result(manager, intent, order.get("id"), result)
+    cancel_gone = False  # the intent's order could not be found to cancel
+    if intent_live and str(intent.get("broker_order_id")) not in cancelled_broker_ids:
+        # Not visible in open_orders (the DONE_FOR_DAY case): cancel
+        # by client_order_id (== intent_id).
+        try:
+            result = cancel(client_order_id=intent_id)
+        except Exception as exc:  # noqa: BLE001 - fail-closed on any cancel failure
+            return False, 0.0, f"cancel failed for {intent_id}: {exc}"
+        if isinstance(result, dict):
+            if result.get("filled_qty") is not None:
+                filled += float(result.get("filled_qty") or 0.0)
+            else:
+                filled += float(intent.get("filled_qty") or 0.0)
+            status = str(result.get("status") or "").lower()
+            if status not in {"cancelled", "canceled", "expired", "filled", "rejected"}:
+                return False, 0.0, f"cancel did not take effect for {intent_id}: still {status}"
+        else:
+            # None: the broker has no such order (404, already gone).
+            # Nothing remains to fill; the tripwire below decides
+            # whether that is confirmation (lookup also None) or a
+            # veto (lookup says it is still working).
+            cancel_gone = True
+            filled += float(intent.get("filled_qty") or 0.0)
+        _adopt_cancel_result(manager, intent, intent.get("broker_order_id"), result)
+    if working or intent_live:
         try:
             remaining = leg.open_orders()
         except Exception as exc:  # noqa: BLE001 - fail-closed on any fetch failure
@@ -337,6 +419,16 @@ def _cancel_working_orders_on_leg(leg, symbol: str, entry_side: str, *,
                 "cancel did not take effect: "
                 f"{[o.get('id') for o in still_open]} still open"
             )
+        if filled == 0.0:
+            # No visible working order was cancelled and the intent
+            # reported no fills: the entry's fills may be visible
+            # only as a position (a fill landed after the last
+            # reconcile). Fall back to the leg's position.
+            try:
+                positions = leg.positions()
+            except Exception as exc:  # noqa: BLE001 - fail-closed
+                return False, 0.0, f"positions fetch failed: {exc}"
+            filled = abs(float((positions or {}).get(symbol, {}).get("qty", 0.0) or 0.0))
     else:
         # No working entry order: the entry fully filled (or never
         # existed on this leg). The position is the filled quantity.
@@ -347,23 +439,32 @@ def _cancel_working_orders_on_leg(leg, symbol: str, entry_side: str, *,
         filled = abs(float((positions or {}).get(symbol, {}).get("qty", 0.0) or 0.0))
     # Intent-store tripwire (paper leg only): if the entry's intent is
     # still non-terminal, the broker's per-order lookup must agree the
-    # order is gone — a WORKING status vetoes the exit.
-    if manager is not None and intent_id:
-        intent = manager.get_intent(intent_id)
-        if (intent is not None
-                and intent.get("status") in {"SUBMITTED", "PARTIALLY_FILLED"}
-                and intent.get("broker_order_id")):
-            if lookup_fn is None:
-                return False, 0.0, "no lookup to confirm the entry order is gone"
-            try:
-                found = lookup_fn(intent_id)
-            except Exception as exc:  # noqa: BLE001 - fail-closed; exit retries next run
-                return False, 0.0, f"lookup failed for {intent_id}: {exc}"
-            if found is not None:
-                status = str(found.get("status") or "").lower()
-                if status not in {"cancelled", "canceled", "expired", "done_for_day",
-                                  "filled", "rejected"}:
-                    return False, 0.0, f"entry order {intent_id} still {status} after cancel"
+    # order is gone — a WORKING status vetoes the exit. DONE_FOR_DAY
+    # vetoes: the order is still working and can still fill tomorrow.
+    if intent_live:
+        if lookup_fn is None:
+            return False, 0.0, "no lookup to confirm the entry order is gone"
+        try:
+            found = lookup_fn(intent_id)
+        except Exception as exc:  # noqa: BLE001 - fail-closed; exit retries next run
+            return False, 0.0, f"lookup failed for {intent_id}: {exc}"
+        if found is not None:
+            status = str(found.get("status") or "").lower()
+            if status not in {"cancelled", "canceled", "expired", "filled", "rejected"}:
+                return False, 0.0, f"entry order {intent_id} still {status} after cancel"
+            if manager is not None:
+                manager.adopt_lookup(intent_id, found)
+        elif cancel_gone:
+            # The cancel found no such order AND the lookup cannot
+            # find it either: two independent "not found" answers
+            # agree the order is gone — adopt CANCELLED so the store
+            # does not keep blocking the symbol on a vanished order.
+            if manager is not None:
+                manager.adopt_lookup(intent_id, {
+                    "id": intent.get("broker_order_id"),
+                    "status": "cancelled",
+                    "filled_qty": intent.get("filled_qty") or 0.0,
+                })
     return True, filled, ""
 
 
@@ -392,6 +493,160 @@ def _cancel_entry_orders_for_exit(broker, symbol: str, entry_side: str, *,
         if leg_name == "paper":
             filled = leg_filled
     return True, filled, ""
+
+
+def _cancel_trailing_stop_on_leg(leg, symbol, *, trail_stop_id=None):
+    """Cancel the open trailing-stop sell(s) for `symbol` on one leg.
+
+    Returns (ok, reason). ok True also when there is no trailing stop
+    to cancel (never attached, or already filled / cancelled) — there
+    is nothing unprotected then. The confirmation is a fresh
+    open-orders re-fetch: no trailing-stop sell for the symbol may
+    still be open. A cancel that fails, or a stop still open after
+    the cancel, returns False — the exit must NOT proceed, so the
+    stop stays in place protecting the shares (fail-closed).
+    """
+    try:
+        open_orders = leg.open_orders()
+    except Exception as exc:  # noqa: BLE001 - fail-closed on any fetch failure
+        return False, f"open-orders fetch failed: {exc}"
+    stops = [
+        o for o in (open_orders or [])
+        if str(o.get("symbol")) == symbol
+        and str(o.get("order_type") or "").lower() == "trailing_stop"
+        and str(o.get("side", "")).lower() == "sell"
+        and float(o.get("qty") or 0.0) - float(o.get("filled_qty") or 0.0) > 0
+    ]
+    if trail_stop_id is not None:
+        stops = [o for o in stops if str(o.get("id")) == str(trail_stop_id)] or stops
+    if not stops:
+        return True, ""
+    cancel = getattr(leg, "cancel_order", None)
+    if cancel is None:
+        return False, "leg has no cancel_order; cannot cancel the trailing stop"
+    for order in stops:
+        try:
+            result = cancel(order_id=order.get("id"),
+                            client_order_id=order.get("client_order_id"))
+        except Exception as exc:  # noqa: BLE001 - fail-closed on any cancel failure
+            return False, f"trailing-stop cancel failed for {order.get('id')}: {exc}"
+        if isinstance(result, dict):
+            status = str(result.get("status") or "").lower()
+            if status not in {"cancelled", "canceled", "expired", "filled", "rejected"}:
+                return False, (
+                    f"trailing-stop cancel did not take effect for {order.get('id')}: "
+                    f"still {status}"
+                )
+    try:
+        remaining = leg.open_orders()
+    except Exception as exc:  # noqa: BLE001 - fail-closed on any fetch failure
+        return False, f"open-orders re-fetch failed: {exc}"
+    still_open = [
+        o for o in (remaining or [])
+        if str(o.get("symbol")) == symbol
+        and str(o.get("order_type") or "").lower() == "trailing_stop"
+        and str(o.get("side", "")).lower() == "sell"
+        and float(o.get("qty") or 0.0) - float(o.get("filled_qty") or 0.0) > 0
+    ]
+    if still_open:
+        return False, (
+            "trailing-stop cancel did not take effect: "
+            f"{[o.get('id') for o in still_open]} still open"
+        )
+    return True, ""
+
+
+def _cancel_trailing_stops_for_exit(broker, symbol, *, trail_stop_id=None):
+    """Cancel the trailing stop for `symbol` on the paper leg AND the
+    live leg (a no-op while the live leg is disabled). Both legs must
+    confirm; a failure on either vetoes the exit (fail-closed)."""
+    if broker.paper is not None:
+        ok, reason = _cancel_trailing_stop_on_leg(
+            broker.paper, symbol, trail_stop_id=trail_stop_id)
+        if not ok:
+            return False, f"paper: {reason}"
+    if broker.live is not None:
+        ok, reason = _cancel_trailing_stop_on_leg(
+            broker.live, symbol, trail_stop_id=trail_stop_id)
+        if not ok:
+            return False, f"live: {reason}"
+    return True, ""
+
+
+def _sync_trailing_stops_after_mirror(broker, guardian, state, adjustments,
+                                      cfg=None):
+    """Keep trailing stops consistent with the mirror's state changes.
+
+    A trailing stop is a real conditional order sized for the entry's
+    full qty. When the mirror removes an entry (0 filled — the order
+    expired/cancelled unfilled), its stop would be an orphaned order
+    that could short-sell when it fires: cancel it. When the mirror
+    reduces an entry to its filled qty, the old stop is sized for the
+    full qty: cancel it and re-attach for the filled qty with the
+    entry's stored trail percent (falling back to cfg's, when the
+    record has none). A failed cancel or re-attach fires a CRITICAL
+    alert (unprotected shares) and leaves the entry as-is — the
+    end-of-run reconcile remains the backstop. Returns a list of
+    {symbol, action, reason} dicts for the run summary.
+    """
+    synced = []
+    if broker is None or broker.paper is None or guardian is None:
+        return synced
+    for adj in adjustments or []:
+        action = adj.get("action")
+        if action not in {"removed", "reduced_to_filled"}:
+            continue
+        symbol = adj.get("symbol")
+        record = (getattr(state, "open_entries", None) or {}).get(symbol)
+        if record is None:
+            continue
+        trail_pct = record.get("trail_percent")
+        if trail_pct is None and cfg is not None:
+            trail_pct = getattr(getattr(cfg, "exits", None), "trail_percent", None)
+        trail_stop_id = record.get("trail_stop_id")
+        ok, reason = _cancel_trailing_stop_on_leg(
+            broker.paper, symbol, trail_stop_id=trail_stop_id)
+        if not ok:
+            guardian.alerter.send(
+                "critical",
+                f"trailing stop for {symbol} could not be cancelled after the "
+                f"entry was {action} (filled {adj.get('filled_qty')}): {reason}; "
+                "the stop may still fire for shares no longer held")
+            synced.append({"symbol": symbol, "action": "stop_cancel_failed",
+                           "reason": reason})
+            continue
+        if action == "removed":
+            synced.append({"symbol": symbol, "action": "stop_cancelled",
+                           "reason": "entry removed (0 filled)"})
+        else:
+            filled_qty = float(adj.get("filled_qty") or 0.0)
+            if filled_qty <= 0:
+                synced.append({"symbol": symbol, "action": "stop_cancelled",
+                               "reason": "entry reduced to 0 filled"})
+                continue
+            reason = ""
+            try:
+                attach = getattr(broker.paper, "attach_trailing_stop", None)
+                stop = attach(symbol, filled_qty, trail_pct) if attach else None
+            except Exception as exc:  # noqa: BLE001 - fail-closed; alert below
+                stop = None
+                reason = f"re-attach failed: {exc}"
+            else:
+                reason = "" if stop else "re-attach returned no stop"
+            if stop:
+                record["trail_stop_id"] = (
+                    stop.get("id") if isinstance(stop, dict) else None)
+                synced.append({"symbol": symbol, "action": "stop_reattached",
+                               "reason": f"filled_qty {filled_qty}"})
+            else:
+                guardian.alerter.send(
+                    "critical",
+                    f"trailing stop for {symbol} could not be re-attached "
+                    f"for the filled qty {filled_qty} after the entry was "
+                    f"reduced to filled: {reason}; the shares are unprotected")
+                synced.append({"symbol": symbol, "action": "stop_reattach_failed",
+                               "reason": reason})
+    return synced
 
 
 def _trail_percent_for_row(row: pd.Series, cfg: TradingConfig) -> float:
@@ -896,6 +1151,7 @@ def run_daily(
     # submit are mirrored into the strategy state, so a routine DAY
     # expiry does not trip the end-of-run drift halt.
     state_sync: list[dict] = []
+    stop_sync: list[dict] = []
     if manager is not None:
         # Startup reconcile (Loop 5): recover any PENDING / expired-
         # CLAIMED / UNKNOWN intent BEFORE any new submission.
@@ -916,6 +1172,11 @@ def run_daily(
             # A confirmed-accepted order may have been cancelled or
             # expired by the broker since submit; reconcile() never
             # re-checks SUBMITTED intents, so sync them explicitly.
+            # DONE_FOR_DAY intents are included: a fill overnight
+            # adopts to FILLED, a confirmed expired/canceled adopts
+            # to CANCELLED, and a still-done_for_day intent stays
+            # DONE_FOR_DAY (its reservation is preserved; no
+            # replacement is submitted while it is unresolved).
             manager.reconcile_open_intents(lookup_fn=lookup_fn)
             # Dry-run is a preview and must not mutate strategy state.
             if not dry_run:
@@ -924,6 +1185,29 @@ def run_daily(
                 )
                 for adj in state_sync:
                     log.info("startup state sync: %s", adj)
+                # A trailing stop is a real order sized for the
+                # entry's full qty: cancel/re-attach it to match the
+                # mirrored entry (an orphaned stop could short-sell).
+                stop_sync = _sync_trailing_stops_after_mirror(
+                    broker, guardian, state, state_sync, cfg=cfg)
+                for entry in stop_sync:
+                    log.info("startup trailing-stop sync: %s", entry)
+    # B16 correction: intents still DONE_FOR_DAY after the startup
+    # reconcile — unresolved for the day, their unfilled qty stays
+    # reserved and no replacement may be submitted for their symbol.
+    # Listed in the summary so the run shows what it is waiting on.
+    done_for_day: list[dict] = []
+    if manager is not None:
+        done_for_day = [
+            {
+                "symbol": row.get("symbol"),
+                "intent_id": row.get("intent_id"),
+                "filled_qty": row.get("filled_qty"),
+                "remaining_qty": round(
+                    float(row.get("qty") or 0.0) - float(row.get("filled_qty") or 0.0), 4),
+            }
+            for row in manager.done_for_day_intents()
+        ]
 
     benchmark_row = None
     try:
@@ -1136,8 +1420,21 @@ def run_daily(
             continue
         if _price > 0:
             entry_prices[str(_sym)] = _price
+    # B16 correction: a DONE_FOR_DAY buy is excluded from the
+    # broker's OPEN query, so its unfilled qty would otherwise not be
+    # reserved at all — the intent store is the source for that qty.
+    # The merge dedupes by broker order id, so an order the broker
+    # still lists as open is counted once (via the broker list, as
+    # today); a DONE_FOR_DAY intent's remaining qty is counted from
+    # the intent store. Priced with the same chain as any open buy.
+    if manager is not None and broker.paper is not None:
+        _paper_lookup = getattr(broker.paper, "get_by_client_order_id", None)
+        _sizing_orders = _open_orders_including_done_for_day(
+            broker.paper, manager, _paper_lookup, account="paper")
+    else:
+        _sizing_orders = _open_orders_for_leg(broker.paper)
     reservation_total, reservation_detail = _open_buy_reservations(
-        _open_orders_for_leg(broker.paper), strategy_symbols,
+        _sizing_orders, strategy_symbols,
         last_prices, entry_prices)
     if reservation_detail:
         log.info("open buy reservations: %s (total %.2f)",
@@ -1321,10 +1618,21 @@ def run_daily(
             state.expected_positions["live"][symbol] = {"qty": qty, "decision_id": decision_id}
 
         trail_percent = _trail_percent_for_row(row, cfg)
+        # B16 reopen: record the trailing stop's broker id and percent
+        # in the entry, so the startup sync can cancel/re-attach it
+        # when the mirror changes the entry, and the exit can cancel
+        # it by id. None when no stop was attached (dry-run, or the
+        # leg returned no stop).
+        trail_stop_id = None
         if side == "buy" and paper_result is not None and not dry_run:
-            broker.paper.attach_trailing_stop(symbol, qty, trail_percent)
+            paper_stop = broker.paper.attach_trailing_stop(symbol, qty, trail_percent)
+            if isinstance(paper_stop, dict):
+                trail_stop_id = paper_stop.get("id")
         if side == "buy" and live_result is not None and not dry_run:
             broker.live.attach_trailing_stop(symbol, qty, trail_percent)
+        if side == "buy":
+            state.open_entries[symbol]["trail_percent"] = trail_percent
+            state.open_entries[symbol]["trail_stop_id"] = trail_stop_id
 
         orders_preview.append(
             {
@@ -1380,6 +1688,38 @@ def run_daily(
                 })
                 log.info("skipping exit for %s: %s", symbol, cancel_reason)
                 continue
+            # B16 reopen: cancel the trailing stop BEFORE submitting
+            # the exit. The stop and the exit can both sell the same
+            # held share — if the stop is still open when the exit
+            # submits, it may fire later and short-sell shares the
+            # entry no longer holds. If the stop cannot be confirmed
+            # cancelled, the exit is skipped and the entry stays open,
+            # so the stop remains in place protecting the shares.
+            ok, stop_reason = _cancel_trailing_stops_for_exit(
+                broker, symbol, trail_stop_id=record.get("trail_stop_id"))
+            if not ok:
+                skipped.append({
+                    "symbol": symbol,
+                    "stage": "exit_stop_cancel",
+                    "reason": stop_reason,
+                })
+                log.info("skipping exit for %s: %s", symbol, stop_reason)
+                continue
+            # Re-derive the exit size from the leg's current position:
+            # the stop may have sold shares between the buy-cancel
+            # and the stop-cancel. Never sell more than is held.
+            try:
+                _paper_positions = broker.paper.positions() if broker.paper is not None else {}
+            except Exception as exc:  # noqa: BLE001 - fail-closed
+                skipped.append({
+                    "symbol": symbol,
+                    "stage": "exit_positions",
+                    "reason": f"positions fetch failed: {exc}",
+                })
+                log.info("skipping exit for %s: positions fetch failed: %s", symbol, exc)
+                continue
+            _held = abs(float((_paper_positions or {}).get(symbol, {}).get("qty", 0.0) or 0.0))
+            exit_qty = min(float(exit_qty), _held)
         exit_order = _build_order(symbol, exit_side, exit_qty, quote, "mild_up", cfg)
         if dry_run:
             orders_preview.append(
@@ -1393,8 +1733,9 @@ def run_daily(
             continue
         if exit_qty <= 0:
             # Nothing held: the entry never filled (its buy was
-            # cancelled/expired before the exit). No sell to submit —
-            # just close the entry record below.
+            # cancelled/expired before the exit), or the trailing stop
+            # already sold the shares. No sell to submit — just close
+            # the entry record below.
             log.info(
                 "exit for %s: nothing held (entry qty %s, filled 0); "
                 "closing entry without a sell", symbol, entry_qty,
@@ -1405,6 +1746,8 @@ def run_daily(
                 # leave the entry open and retry next run.
                 log.info("skipping exit for %s: blocked by unresolved intent", symbol)
                 continue
+            paper_result = None
+            exit_intent_id = None
             if manager is not None:
                 exit_intent = _live_intent(
                     exit_order,
@@ -1416,12 +1759,34 @@ def run_daily(
                     },
                     today,
                 )
-                guardian.submit(
+                exit_intent_id = exit_intent["intent_id"]
+                paper_result = guardian.submit(
                     exit_order,
                     lambda o, _intent=exit_intent: _submit_paper_via_manager(o, _intent, manager, broker),
                 )
             else:
-                guardian.submit(exit_order, broker.paper.submit)
+                paper_result = guardian.submit(exit_order, broker.paper.submit)
+            if paper_result is None:
+                # The exit did NOT submit (broker failure, guardian
+                # gate, or manager UNKNOWN) — but the trailing stop
+                # was already cancelled above, so these shares are
+                # now UNPROTECTED. Alert loudly (the monitored
+                # critical path + the intent store), leave the entry
+                # open, and do NOT close the decision/tax lot: the
+                # exit retries next run (or a human resolves it).
+                _alert_msg = (
+                    f"exit for {symbol} did not submit after its trailing "
+                    f"stop was cancelled; {exit_qty} shares are unprotected")
+                guardian.alerter.send("critical", _alert_msg)
+                if manager is not None and exit_intent_id is not None:
+                    manager.record_alert(exit_intent_id, "paper", symbol, _alert_msg)
+                skipped.append({
+                    "symbol": symbol,
+                    "stage": "exit_unprotected",
+                    "reason": _alert_msg,
+                })
+                log.info("skipping exit for %s: %s", symbol, _alert_msg)
+                continue
             if not broker.live.floor_tripped():
                 guardian.submit(exit_order, broker.live.submit)
         exit_price = _close_price_from_quote(quote, exit_side)
@@ -1465,6 +1830,8 @@ def run_daily(
             "orders": orders_preview,
             "skipped": skipped,
             "state_sync": state_sync,
+            "stop_sync": stop_sync,
+            "done_for_day": done_for_day,
         }
         _write_strategy_outputs(summary, cfg)
         return summary
@@ -1473,7 +1840,7 @@ def run_daily(
     state.save(cfg.paths.strategy_state_path)
     broker.save_state()
 
-    reconcile_result = reconcile(broker, memory, cfg, guardian=guardian)
+    reconcile_result = reconcile(broker, memory, cfg, guardian=guardian, manager=manager)
     summary = memory.daily_summary()
     status = broker.status()
     title, body = format_daily(summary, status)
@@ -1502,6 +1869,8 @@ def run_daily(
         "orders": orders_preview,
         "skipped": skipped,
         "state_sync": state_sync,
+        "stop_sync": stop_sync,
+        "done_for_day": done_for_day,
         "summary": summary,
         "broker": status,
         "reconcile": reconcile_result,

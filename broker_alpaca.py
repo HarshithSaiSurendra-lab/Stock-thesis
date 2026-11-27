@@ -287,22 +287,33 @@ class AlpacaLeg:
                     GetOrdersRequest(status=QueryOrderStatus.OPEN))
                 return [{
                     "id": str(o.id),
+                    "client_order_id": str(getattr(o, "client_order_id", "") or ""),
                     "symbol": str(o.symbol),
                     "side": str(o.side.value if hasattr(o.side, "value") else o.side).lower(),
                     "qty": float(o.qty),
                     "filled_qty": float(o.filled_qty or 0.0),
                     "status": str(o.status.value if hasattr(o.status, "value") else o.status).lower(),
+                    # B16 correction: order_type lets the strategy tell
+                    # a trailing stop from a strategy order (the exit
+                    # cancels the stop before selling); client_order_id
+                    # lets it cancel by idempotency key.
+                    "order_type": str(
+                        o.order_type.value
+                        if hasattr(getattr(o, "order_type", None), "value")
+                        else getattr(o, "order_type", "") or "").lower(),
                     "limit_price": _opt_float(getattr(o, "limit_price", None)),
                     "filled_avg_price": _opt_float(getattr(o, "filled_avg_price", None)),
                 } for o in raw]
             raw = self._rest_json("GET", f"{self._base_url}/v2/orders?status=open")
             return [{
                 "id": str(o.get("id")),
+                "client_order_id": str(o.get("client_order_id") or ""),
                 "symbol": str(o.get("symbol")),
                 "side": str(o.get("side", "")).lower(),
                 "qty": float(o.get("qty") or 0.0),
                 "filled_qty": float(o.get("filled_qty") or 0.0),
                 "status": str(o.get("status", "")).lower(),
+                "order_type": str(o.get("type", "") or "").lower(),
                 "limit_price": _opt_float(o.get("limit_price")),
                 "filled_avg_price": _opt_float(o.get("filled_avg_price")),
             } for o in raw]
