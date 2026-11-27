@@ -133,7 +133,13 @@ be checked.
   no gate read), fresh-v4 verification, SG1–SG3 + SG4, H7 AUDIT as a
   fourth verdict (not PASS, not FAIL, excluded from candidacy until an
   audit clears it). NOT run against the real window — gate reads in
-  early January.
+  early January. **Calendar lock added Nov 26, 2026 (B14 amendment,
+  32 tests):** the reader refuses to read the gate before the
+  window's declared end (manifest `window_end`, extension-aware;
+  exit 2, reason `window_not_closed`, no gate report, no candidate,
+  no scores computed); today == window end is allowed; there is
+  deliberately no `--today` CLI flag, so the lock cannot be
+  overridden from the command line.
 - **Stop conditions:** minimums unmet → extend by 10 trading days
   (max 3 extensions, latest end ≈ Jan 29, 2027); still unmet after
   the third → report the shortfall and STOP, do not run the gate.

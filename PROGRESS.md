@@ -1735,3 +1735,47 @@ health_report 300→299, reset_halt 327→325).
   anywhere; all tests offline/deterministic (fake clients only).
 - The soak itself is NOT started — that is a separate decision after
   the January gate review. The daily cron still runs `--dry-run` only.
+
+### 2026-11-26 — B14 amendment: calendar lock on the gate reader
+
+User-flagged gap, verified against the code before building: the
+reader's only uses of the current time were `generated_utc` report
+timestamps — there was NO check comparing today to the window end,
+and none of the 27 tests covered it. A window directory already
+listing 30 trading days + 40 filings would have read the gate
+before Dec 31 (the minimums shortfall only stops insufficient
+samples, not a complete-but-unclosed window).
+
+- The lock sits AFTER the minimums check and BEFORE the v4 base
+  load, so a locked-out run stops before any score is computed.
+  `today < window_end` (UTC dates, manifest `window_end` —
+  extension-aware, never `BASE_END`) → exit 2 with a shortfall-style
+  report (`reason: "window_not_closed"`, with `window_end`,
+  `today_utc`, the met minimums, `gate_read: False`). No gate report,
+  no candidate, no evaluations key. `today == window_end` is allowed
+  (the window has closed); `today > window_end` is allowed. A window
+  failing minimums AND unclosed reports the minimums shortfall (the
+  minimums check precedes the lock); the minimums shortfall now also
+  carries `"reason": "minimums_unmet"` so the two stop states are
+  distinguishable in JSON.
+- "Today" is injectable for tests (`main(..., today=...)` accepting
+  a date, datetime, or ISO string); the CLI always uses the real UTC
+  date, and there is deliberately NO `--today` flag — the lock cannot
+  be overridden from the command line. The test harness pins "today"
+  to 2027-02-01 (the simulated January-run date, after the latest
+  fixture end 2027-01-29) so the lock does not fire on gate-logic
+  tests; the lock tests pass their own today.
+- Tests (5 new, 32 total in test_b14_gate_reader.py): unclosed +
+  minimums met → exit 2, `window_not_closed`, no gate report, no
+  candidate; today == window_end → exit 0, candidate v3; today after
+  window_end → exit 0; extension window (ext 1, ends 2027-01-14)
+  with today 2027-01-10 → exit 2 with the extended end (not Dec 31);
+  minimums fail + unclosed → minimums shortfall, lock does not mask
+  it. Full suite: **291 passed** (was 286; +5 new).
+- Milo verified independently: 32/32 B14 tests; full suite 291/291;
+  CLI on the subagent's synthetic window with the REAL UTC date
+  (2026-11-27, no injection) → exit 2, `window_not_closed`,
+  `gate_read: False`, only the shortfall pair written, no gate
+  report, no candidate. The diff was read in full. No gate criterion,
+  threshold, or design changed; no real window, holdout, or filing
+  touched.

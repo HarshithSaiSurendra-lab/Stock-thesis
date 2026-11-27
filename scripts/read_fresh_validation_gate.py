@@ -20,6 +20,20 @@ Gate rules (design doc, quoted thresholds — no number invented here):
     window itself; it reads the extension number from the window
     manifest, reports it, and refuses a 4th (extension > 3 is an
     invalid window).
+  Calendar lock (checked AFTER minimums, BEFORE any gate
+    evaluation — before the v4 base is even loaded, so no scores
+    are computed): the reader refuses to read the gate when today's
+    UTC date is before the window's declared end from the manifest
+    (extension-aware: an extended window's end, not the Dec 31 base
+    end). Today equal to window_end is allowed — the window has
+    closed. A window failing minimums AND unclosed reports the
+    minimums shortfall (the minimums check precedes the lock). A
+    locked-out run exits 2 with a shortfall-style report (reason
+    "window_not_closed", no gate report, no candidate). "Today" is
+    injectable for tests (a main() parameter, like check_heartbeat's
+    injectable now); the CLI uses the real UTC date, and there is
+    deliberately no --today flag — the lock must not be overridable
+    from the command line.
   SG1: fresh net return @10bps > fresh v4 base @10bps.
   SG2: fresh net return @20bps > fresh v4 base @20bps.
   SG3: fresh net return @10bps > 0.
@@ -108,12 +122,13 @@ files under the window directory (recorded in the result as
 opened_paths, so tests can assert the boundary). It never opens the
 frozen-holdout results, the EDGAR dataset, or the scores files.
 
-Exit codes: 0 = gate read complete, report written. 2 = minimums
-unmet: shortfall report written, STOP, no gate read, no verdict.
-3 = invalid window / data / invocation (bad extension, window
-mismatch, missing files, uncomputable SG4, out-dir inside the
-window dir). Usage errors also exit 3, so 2 means exactly
-"shortfall STOP" and nothing else.
+Exit codes: 0 = gate read complete, report written. 2 = shortfall
+STOP — minimums unmet OR window not yet closed (reason
+"minimums_unmet" / "window_not_closed"): shortfall report written,
+no gate read, no verdict, no candidate. 3 = invalid window / data /
+invocation (bad extension, window mismatch, missing files,
+uncomputable SG4, out-dir inside the window dir). Usage errors also
+exit 3, so 2 means exactly "shortfall STOP" and nothing else.
 
 Usage:
   .venv/bin/python scripts/read_fresh_validation_gate.py \
@@ -216,6 +231,21 @@ def _parse_date(s, what):
         return datetime.strptime(s, "%Y-%m-%d").date()
     except (TypeError, ValueError):
         raise InvalidWindow(f"{what} is not a YYYY-MM-DD date: {s!r}")
+
+
+def _resolve_today(today):
+    """Today's UTC date for the calendar lock. `today` is injectable
+    (tests pass a date, a datetime, or an ISO string); None means the
+    real UTC date, which is what the CLI always gets — there is
+    deliberately no --today flag, so the lock cannot be overridden
+    from the command line."""
+    if today is None:
+        return datetime.now(timezone.utc).date()
+    if isinstance(today, str):
+        return _parse_date(today, "today")
+    if isinstance(today, datetime):
+        return today.date()
+    return today  # a datetime.date
 
 
 def _rank(values):
@@ -611,26 +641,48 @@ def write_shortfall_report(shortfall, out_dir):
     md_path = out_dir / f"{stem}.md"
     shortfall["files"] = {"json": str(json_path), "md": str(md_path)}
     json_path.write_text(json.dumps(_sanitize(shortfall), indent=2) + "\n")
-    lines = [
-        f"# Fresh-validation shortfall — window {shortfall['window_start']}..{shortfall['window_end']}",
-        "",
-        "Minimums NOT met — the gate was NOT read. Per the registered design, "
-        "the window is extended, not run.",
-        "",
-        f"- Trading days: {shortfall['minimums']['trading_days']['have']} / "
-        f"{shortfall['minimums']['trading_days']['required']} "
-        f"({'met' if shortfall['minimums']['trading_days']['ok'] else 'SHORT by ' + str(shortfall['minimums']['trading_days']['required'] - shortfall['minimums']['trading_days']['have'])})",
-        f"- Filings with fresh Haiku scores: {shortfall['minimums']['filings']['have']} / "
-        f"{shortfall['minimums']['filings']['required']} "
-        f"({'met' if shortfall['minimums']['filings']['ok'] else 'SHORT by ' + str(shortfall['minimums']['filings']['required'] - shortfall['minimums']['filings']['have'])})",
-        f"- Extension: {shortfall['extension']} of {MAX_EXTENSIONS} "
-        f"(extend by {EXTENSION_TRADING_DAYS} trading days at a time).",
-        "",
-        shortfall["next_step"],
-        "",
-        "Machine-readable: `" + json_path.name + "`.",
-        "",
-    ]
+    if shortfall.get("reason") == "window_not_closed":
+        # The window is not short, it is not finished: minimums are
+        # met, but today's UTC date is before the declared end.
+        lines = [
+            f"# Fresh-validation not closed — window {shortfall['window_start']}..{shortfall['window_end']}",
+            "",
+            "Window has not closed yet — the gate was NOT read, no verdict, "
+            "no candidate.",
+            "",
+            f"- Window ends: {shortfall['window_end']} (extension "
+            f"{shortfall['extension']} of {MAX_EXTENSIONS}).",
+            f"- Today (UTC): {shortfall['today_utc']}.",
+            f"- Minimums met: {shortfall['minimums']['trading_days']['have']}/"
+            f"{MIN_TRADING_DAYS} trading days, "
+            f"{shortfall['minimums']['filings']['have']}/{MIN_FILINGS} filings.",
+            "",
+            shortfall["next_step"],
+            "",
+            "Machine-readable: `" + json_path.name + "`.",
+            "",
+        ]
+    else:
+        lines = [
+            f"# Fresh-validation shortfall — window {shortfall['window_start']}..{shortfall['window_end']}",
+            "",
+            "Minimums NOT met — the gate was NOT read. Per the registered design, "
+            "the window is extended, not run.",
+            "",
+            f"- Trading days: {shortfall['minimums']['trading_days']['have']} / "
+            f"{shortfall['minimums']['trading_days']['required']} "
+            f"({'met' if shortfall['minimums']['trading_days']['ok'] else 'SHORT by ' + str(shortfall['minimums']['trading_days']['required'] - shortfall['minimums']['trading_days']['have'])})",
+            f"- Filings with fresh Haiku scores: {shortfall['minimums']['filings']['have']} / "
+            f"{shortfall['minimums']['filings']['required']} "
+            f"({'met' if shortfall['minimums']['filings']['ok'] else 'SHORT by ' + str(shortfall['minimums']['filings']['required'] - shortfall['minimums']['filings']['have'])})",
+            f"- Extension: {shortfall['extension']} of {MAX_EXTENSIONS} "
+            f"(extend by {EXTENSION_TRADING_DAYS} trading days at a time).",
+            "",
+            shortfall["next_step"],
+            "",
+            "Machine-readable: `" + json_path.name + "`.",
+            "",
+        ]
     md_path.write_text("\n".join(lines))
     return json_path, md_path
 
@@ -782,6 +834,20 @@ def verdict_block(result):
 
 
 def shortfall_block(shortfall):
+    if shortfall.get("reason") == "window_not_closed":
+        return "\n".join([
+            "",
+            f"=== Fresh-validation NOT CLOSED — {shortfall['window_start']}.."
+            f"{shortfall['window_end']} (extension {shortfall['extension']} of "
+            f"{MAX_EXTENSIONS}) ===",
+            "window has not closed yet — the gate was NOT read, no verdict.",
+            f"window ends: {shortfall['window_end']}",
+            f"today (UTC): {shortfall['today_utc']}",
+            shortfall["next_step"],
+            f"report:       {shortfall['files']['json']}",
+            f"              {shortfall['files']['md']}",
+            "",
+        ])
     m = shortfall["minimums"]
     lines = [
         "",
@@ -802,7 +868,7 @@ def shortfall_block(shortfall):
 
 # ------------------------------------------------------------------ main
 
-def main(argv=None, *, repo=REPO):
+def main(argv=None, *, repo=REPO, today=None):
     parser = _Parser(description="Read the exp-fresh-validation-v1 gate "
                                  "from a January-run window directory.")
     parser.add_argument("--window-dir", default=None,
@@ -857,8 +923,37 @@ def main(argv=None, *, repo=REPO):
             "window_start": window["window_start"],
             "window_end": window["window_end"],
             "extension": window["extension"],
+            "reason": "minimums_unmet",
             "minimums": minimums,
             "next_step": next_step,
+            "gate_read": False,
+        }
+        json_path, md_path = write_shortfall_report(shortfall, out_path)
+        print(shortfall_block(shortfall), flush=True)
+        return EXIT_SHORTFALL
+
+    # Calendar lock: the gate may only be read once the window has
+    # closed. This sits AFTER the minimums check (a window failing
+    # minimums AND unclosed reports the minimums shortfall, never
+    # this one) and BEFORE the v4 base load — a locked-out run stops
+    # before any score is computed or any candidate is named.
+    today = _resolve_today(today)
+    window_end = _parse_date(window["window_end"], "window_end")
+    if today < window_end:
+        shortfall = {
+            "experiment_id": "exp-fresh-validation-v1",
+            "reader": "scripts/read_fresh_validation_gate.py",
+            "generated_utc": datetime.now(timezone.utc).isoformat(),
+            "window_start": window["window_start"],
+            "window_end": window["window_end"],
+            "extension": window["extension"],
+            "reason": "window_not_closed",
+            "today_utc": today.isoformat(),
+            "minimums": minimums,
+            "next_step": (f"Window has not closed yet — it ends "
+                          f"{window['window_end']}. Re-run on or after "
+                          f"{window['window_end']}. No extension is needed: "
+                          "the window is not short, it is not finished."),
             "gate_read": False,
         }
         json_path, md_path = write_shortfall_report(shortfall, out_path)

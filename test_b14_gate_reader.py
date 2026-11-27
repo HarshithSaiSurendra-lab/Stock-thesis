@@ -147,9 +147,15 @@ def _write_window(tmp_path, *, days=BASE_DAYS, n_filings=45, extension=0,
     return window_dir
 
 
-def _run(window_dir, out_dir, extra_args=()):
+def _run(window_dir, out_dir, extra_args=(), today=None):
+    # The harness pins "today" after every fixture window end (the
+    # latest fixture end is 2027-01-29), so the calendar lock does
+    # not fire on gate-logic tests. The lock tests below pass their
+    # own today; the default here is the simulated "January run" date.
+    if today is None:
+        today = date(2027, 2, 1)
     return gate.main(["--window-dir", str(window_dir),
-                      "--out-dir", str(out_dir), *extra_args])
+                      "--out-dir", str(out_dir), *extra_args], today=today)
 
 
 def _read_report(out_dir):
@@ -549,7 +555,8 @@ def test_data_dir_alias_and_disagreement(tmp_path):
     window_dir = _write_window(tmp_path)
     out_dir = tmp_path / "out"
     assert gate.main(["--data-dir", str(window_dir),
-                      "--out-dir", str(out_dir)]) == gate.EXIT_OK
+                      "--out-dir", str(out_dir)],
+                     today=date(2027, 2, 1)) == gate.EXIT_OK
     other = _write_window(tmp_path / "other")
     with pytest.raises(SystemExit) as exc:
         gate.main(["--window-dir", str(window_dir),
@@ -560,3 +567,93 @@ def test_data_dir_alias_and_disagreement(tmp_path):
 def test_missing_window_dir_is_invalid(tmp_path):
     assert gate.main(["--window-dir", str(tmp_path / "nope"),
                       "--out-dir", str(tmp_path / "out")]) == gate.EXIT_INVALID
+
+
+# ------------------------------------------------------------- calendar lock
+#
+# The reader refuses to read the gate before the window's declared
+# end, even when the minimums are already met. "Today" is injected
+# per test (a date, or an ISO string in test 1); the CLI always uses
+# the real UTC date and has no --today override.
+
+def _read_shortfall(out_dir):
+    shorts = sorted(out_dir.glob("exp-fresh-validation-v1-shortfall-*.json"))
+    assert len(shorts) == 1, f"expected exactly one shortfall report, got {[p.name for p in shorts]}"
+    return json.loads(shorts[0].read_text()), shorts[0]
+
+
+def test_calendar_lock_stops_before_gate_when_window_unclosed(tmp_path):
+    # 32 trading days + 45 filings: minimums met, but today (Dec 20)
+    # is before the declared end (Dec 31). "Today" passed as an ISO
+    # string, exercising _resolve_today's string path.
+    window_dir = _write_window(tmp_path)
+    out_dir = tmp_path / "out"
+    rc = _run(window_dir, out_dir, today="2026-12-20")
+    assert rc == gate.EXIT_SHORTFALL == 2
+    shortfall, path = _read_shortfall(out_dir)
+    assert shortfall["reason"] == "window_not_closed"
+    assert shortfall["window_end"] == "2026-12-31"
+    assert shortfall["today_utc"] == "2026-12-20"
+    assert shortfall["gate_read"] is False
+    assert shortfall["minimums"]["met"] is True  # not short — not finished
+    assert "candidate" not in shortfall
+    assert "evaluations" not in shortfall
+    md = path.with_suffix(".md").read_text()
+    assert "has not closed yet" in md
+    assert "Minimums met" in md
+    # No gate report was written: nothing was scored, no verdict,
+    # no candidate.
+    assert list(out_dir.glob("exp-fresh-validation-v1-gate-*")) == []
+
+
+def test_calendar_lock_allows_read_on_window_end_date(tmp_path):
+    window_dir = _write_window(tmp_path)
+    out_dir = tmp_path / "out"
+    rc = _run(window_dir, out_dir, today=date(2026, 12, 31))
+    assert rc == gate.EXIT_OK
+    result, _ = _read_report(out_dir)
+    assert result["candidate"] == "v3"
+
+
+def test_calendar_lock_allows_read_after_window_end(tmp_path):
+    window_dir = _write_window(tmp_path)
+    out_dir = tmp_path / "out"
+    rc = _run(window_dir, out_dir, today=date(2027, 1, 5))
+    assert rc == gate.EXIT_OK
+    result, _ = _read_report(out_dir)
+    assert result["candidate"] == "v3"
+
+
+def test_calendar_lock_uses_extended_end_not_base_end(tmp_path):
+    # Extension 1: the window ends 2027-01-14, not the Dec 31 base
+    # end. Today (Jan 10) is after Dec 31 but before the extended
+    # end — the lock must still fire, on the extended end.
+    days = _trading_days(date(2026, 11, 16), date(2027, 1, 14))
+    assert len(days) == 41, f"fixture ext-1 window has {len(days)} days, expected 41"
+    window_dir = _write_window(tmp_path, days=days, extension=1,
+                               window_end="2027-01-14")
+    out_dir = tmp_path / "out"
+    rc = _run(window_dir, out_dir, today=date(2027, 1, 10))
+    assert rc == gate.EXIT_SHORTFALL == 2
+    shortfall, _ = _read_shortfall(out_dir)
+    assert shortfall["reason"] == "window_not_closed"
+    assert shortfall["window_end"] == "2027-01-14"  # the extended end, not Dec 31
+    assert shortfall["extension"] == 1
+    assert list(out_dir.glob("exp-fresh-validation-v1-gate-*")) == []
+
+
+def test_minimums_shortfall_is_not_masked_by_unclosed_window(tmp_path):
+    # Failing minimums AND unclosed: the minimums check precedes the
+    # lock, so the minimums shortfall is reported (not the lock).
+    window_dir = _write_window(tmp_path, days=BASE_DAYS[:20], n_filings=25,
+                               window_end="2026-12-31")
+    out_dir = tmp_path / "out"
+    rc = _run(window_dir, out_dir, today=date(2026, 12, 20))
+    assert rc == gate.EXIT_SHORTFALL == 2
+    shortfall, path = _read_shortfall(out_dir)
+    assert shortfall["reason"] == "minimums_unmet"
+    assert shortfall["minimums"]["trading_days"]["have"] == 20
+    assert shortfall["minimums"]["filings"]["have"] == 25
+    md = path.with_suffix(".md").read_text()
+    assert "Minimums NOT met" in md
+    assert "has not closed yet" not in md
