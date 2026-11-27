@@ -45,6 +45,35 @@ class FakeBroker:
         # submit failure (the broker raises before storing anything).
         self._fill_during_cancel: dict[str, tuple] = {}
         self.fail_next_submit = False
+        # B17 hooks.
+        # stop_cap_disabled: NO-CAP MODE (Detail 3). When True, a
+        # trailing stop sells its FULL nominal qty when it triggers,
+        # even if that exceeds the shares held — the position goes
+        # negative (a short is visible). The default cap (a stop never
+        # sells more than the position) HIDES an oversized stop, so
+        # the oversized-stop test must run with the cap disabled.
+        # Default False: the cap is the broker-level backstop.
+        self.stop_cap_disabled = False
+        # drop_next_stop_cancel: the next cancel() for a trailing stop
+        # is APPLIED (the stop's status becomes cancelled) but the
+        # RESPONSE is dropped (TimeoutError) — the cancel
+        # confirmation is lost (three-outcome trace (c)). The stop is
+        # also hidden from the open-orders view for the rest of this
+        # process (a broker whose order view lags the cancel), so the
+        # caller's re-fetch cannot confirm it either; the next
+        # process's startup lookup BY ORDER ID finds it cancelled.
+        self.drop_next_stop_cancel = False
+        # _hidden_stop_coids: stops hidden from list_stops() /
+        # open_orders() for this process (see drop_next_stop_cancel).
+        # get_by_client_order_id still finds them — that is the
+        # point: absence from the open-orders list proves nothing.
+        self._hidden_stop_coids: set[str] = set()
+        # _stop_elect_during_submit: symbol -> (stop client_order_id,
+        # fill price). When armed, the next submit() of a SELL for
+        # that symbol first lets the stop elect (B17.4 race: the stop
+        # fires between the cancel confirmation and the exit submit).
+        # Consumed once.
+        self._stop_elect_during_submit: dict[str, tuple] = {}
 
     def _find(self, client_order_id: str) -> Optional[dict]:
         """An order by client_order_id, searching strategy orders
@@ -66,6 +95,50 @@ class FakeBroker:
                 net += filled if order.get("side") == "buy" else -filled
         return net
 
+    def set_stop_cap_disabled(self, disabled: bool = True) -> None:
+        """Enable/disable NO-CAP MODE (Detail 3). When disabled=False
+        (the default), trigger_trailing_stop caps the fill at the
+        shares held. When True, the stop sells its full nominal qty
+        even if that exceeds the holding — the position goes negative
+        and the short is visible. The oversized-stop test runs the
+        SAME broker with the cap disabled before AND after the fix."""
+        with self._lock:
+            self.stop_cap_disabled = bool(disabled)
+
+    def set_fill_during_stop_cancel(self, client_order_id: str, qty: float, price: float) -> None:
+        """Arm a fill on a TRAILING STOP that lands while its
+        cancellation is pending (three-outcome traces (a)/(b)): the
+        next cancel() for this stop applies the fill FIRST, then
+        cancels — so the cancel result reports the final filled qty.
+        A full fill (qty = the stop's remaining qty) is outcome (a)
+        (the stop fills before the cancel confirms); a partial fill
+        is outcome (b) (the stop sells some shares, then the cancel
+        confirms for the remainder). Same mechanism as
+        set_fill_during_cancel, under a stop-specific name. Consumed
+        once."""
+        self.set_fill_during_cancel(client_order_id, qty, price)
+
+    def set_drop_next_stop_cancel(self) -> None:
+        """Arm the dropped-cancel fault (three-outcome trace (c)):
+        the next cancel() for a trailing stop is applied but its
+        response is dropped, and the stop is hidden from the
+        open-orders view for the rest of this process. Consumed once."""
+        with self._lock:
+            self.drop_next_stop_cancel = True
+
+    def set_stop_elect_during_submit(self, client_order_id: str, price: float) -> None:
+        """Arm the B17.4 race: the next submit() of a SELL for the
+        stop's symbol first lets this stop elect at `price` (it sells
+        its qty), then proceeds with the submit. Consumed once. The
+        stop is re-opened first (its cancel had not actually taken
+        effect at the broker when the exit submitted) — that is the
+        race: the cancel confirmation and the stop's election crossed."""
+        with self._lock:
+            stop = self._stops.get(client_order_id)
+            if stop is None:
+                raise KeyError(f"unknown trailing stop {client_order_id}")
+            self._stop_elect_during_submit[str(stop.get("symbol"))] = (client_order_id, float(price))
+
     def submit(self, order: dict) -> dict:
         coid = order.get("client_order_id")
         if not coid:
@@ -78,6 +151,23 @@ class FakeBroker:
                 # blocked until a human resolves it; see test 3c).
                 self.fail_next_submit = False
                 raise ConnectionError("fake broker failure (injected)")
+            # B17.4 race: a stop armed to elect during this submit.
+            # The stop fires FIRST (its cancel had not taken effect
+            # at the broker), then the exit order is stored.
+            elect = None
+            if str(order.get("side", "")).lower() == "sell":
+                elect = self._stop_elect_during_submit.pop(str(order.get("symbol")), None)
+            if elect is not None:
+                stop_coid, elect_price = elect
+                stop = self._stops.get(stop_coid)
+                if stop is not None and str(stop.get("status", "")).lower() in {
+                        "cancelled", "canceled"}:
+                    # The cancel confirmation and the election crossed:
+                    # the stop was still executable when the exit
+                    # submitted. Re-open it so the trigger can fire.
+                    stop["status"] = "submitted"
+                if stop is not None:
+                    self._trigger_trailing_stop_locked(stop_coid, elect_price)
             if coid in self._orders:
                 # Idempotent: return the original, never a second order.
                 return dict(self._orders[coid])
@@ -175,7 +265,15 @@ class FakeBroker:
         done_for_day order CAN still be cancelled (Alpaca docs: an
         order may be canceled up until it reaches filled, canceled,
         or expired) — and a fill armed via set_fill_during_cancel
-        lands first, so the cancel result is the final position."""
+        lands first, so the cancel result is the final position.
+
+        B17 (three-outcome trace (c)): when drop_next_stop_cancel is
+        armed and this is a trailing stop, the cancel is APPLIED but
+        the response is DROPPED (TimeoutError) and the stop is hidden
+        from the open-orders view for the rest of this process — the
+        caller cannot confirm the cancel, so the stop's state stays
+        UNKNOWN and the exit stays blocked; the next process's startup
+        lookup BY ORDER ID finds it cancelled."""
         with self._lock:
             order = self._find(client_order_id)
             if order is None:
@@ -191,6 +289,12 @@ class FakeBroker:
             if str(order.get("status", "")).lower() not in {
                     "filled", "cancelled", "canceled", "rejected"}:
                 order["status"] = "cancelled"
+            if (self.drop_next_stop_cancel
+                    and client_order_id in self._stops):
+                self.drop_next_stop_cancel = False
+                self._hidden_stop_coids.add(client_order_id)
+                raise TimeoutError(
+                    "fake broker cancelled stop but dropped response")
             return dict(order)
 
     def _apply_fill_locked(self, order: dict, client_order_id: str,
@@ -257,17 +361,40 @@ class FakeBroker:
                 order["status"] = "done_for_day"
             return dict(order)
 
-    def attach_trailing_stop(self, symbol: str, qty: float, trail_pct: float) -> dict:
+    def attach_trailing_stop(self, symbol: str, qty: float, trail_pct: float,
+                             client_order_id: str | None = None) -> dict:
         """Attach a trailing-stop SELL for a held position (B16
         correction): a REAL broker order in its own store, so the
         strategy's exit can cancel it, the end-of-run reconcile can
         see its fills, and a test can elect it. Its id sequence is
         separate (fake-trail-NNNN) so it never consumes a strategy
         order id, and order_count()/list_orders() still count
-        strategy submissions only."""
+        strategy submissions only.
+
+        B17: when `client_order_id` is given (the strategy passes a
+        deterministic "<entry intent id>-trail"), the stop is stored
+        under that key, so it can be looked up BY ORDER ID. Re-
+        attaching the same client_order_id while the existing stop is
+        still WORKING returns it (idempotent — the strategy's resize
+        never double-attaches). But when the existing stop with that
+        coid is TERMINAL (cancelled / filled / expired / rejected),
+        the re-attach creates a NEW stop (a new broker id) under the
+        same coid with the new qty — the resize (cancel + re-attach)
+        reuses the deterministic coid, and a real broker likewise
+        lets a client_order_id be reused once the original order is
+        terminal. Returning the old cancelled stop here would make
+        the resize a no-op (the "new" stop would keep the old qty).
+        """
         with self._lock:
+            if client_order_id is not None and client_order_id in self._stops:
+                existing = self._stops[client_order_id]
+                if str(existing.get("status", "")).lower() not in {
+                        "filled", "cancelled", "canceled", "expired", "rejected"}:
+                    return dict(existing)
+                # Terminal: fall through and create a new stop under
+                # the same coid (a new broker id, the new qty).
             self._trail_seq += 1
-            coid = f"trail-{symbol}-{self._trail_seq:04d}"
+            coid = client_order_id or f"trail-{symbol}-{self._trail_seq:04d}"
             stop = {
                 "id": f"fake-trail-{self._trail_seq:04d}",
                 "client_order_id": coid,
@@ -283,43 +410,69 @@ class FakeBroker:
             return dict(stop)
 
     def trigger_trailing_stop(self, client_order_id: str, price: float) -> dict:
-        """Elect a trailing stop (test 3): the stop sells, capped at
-        the shares actually held — a stop must never sell more than
-        the position (the broker-level backstop; the strategy-level
-        guarantee is cancel-before-exit). A stop with nothing to sell
-        fills zero and stays working."""
+        """Elect a trailing stop (test 3): the stop sells. With the
+        cap enabled (the default), the fill is capped at the shares
+        actually held — a stop must never sell more than the position
+        (the broker-level backstop; the strategy-level guarantee is
+        cancel-before-exit). With NO-CAP MODE (stop_cap_disabled,
+        Detail 3), the stop sells its FULL nominal qty even if that
+        exceeds the holding — the position goes negative and the short
+        is visible, so an oversized stop cannot hide behind the cap.
+        A stop with nothing to sell fills zero and stays working."""
         with self._lock:
-            stop = self._stops.get(client_order_id)
-            if stop is None:
-                raise KeyError(f"unknown trailing stop {client_order_id}")
-            if str(stop.get("status", "")).lower() in {
-                    "filled", "cancelled", "canceled", "expired", "rejected"}:
-                return {
-                    "fill_id": f"stop-{client_order_id}-noop",
-                    "client_order_id": client_order_id,
-                    "broker_order_id": stop["id"],
-                    "qty": 0.0,
-                    "cumulative_filled_qty": float(stop["filled_qty"]),
-                    "price": float(price),
-                }
+            return self._trigger_trailing_stop_locked(client_order_id, price)
+
+    def _trigger_trailing_stop_locked(self, client_order_id: str, price: float) -> dict:
+        """The trigger itself, with the lock already held (shared by
+        trigger_trailing_stop and the elect-during-submit hook)."""
+        stop = self._stops.get(client_order_id)
+        if stop is None:
+            raise KeyError(f"unknown trailing stop {client_order_id}")
+        if str(stop.get("status", "")).lower() in {
+                "filled", "cancelled", "canceled", "expired", "rejected"}:
+            return {
+                "fill_id": f"stop-{client_order_id}-noop",
+                "client_order_id": client_order_id,
+                "broker_order_id": stop["id"],
+                "qty": 0.0,
+                "cumulative_filled_qty": float(stop["filled_qty"]),
+                "price": float(price),
+            }
+        remaining = float(stop["qty"]) - float(stop["filled_qty"])
+        if self.stop_cap_disabled:
+            # NO-CAP MODE (Detail 3): the stop sells its full nominal
+            # remaining qty, even if that exceeds the shares held.
+            # The position goes negative — a short is visible.
+            fill_qty = max(0.0, remaining)
+        else:
             held = self._held_qty(str(stop.get("symbol")))
-            remaining = float(stop["qty"]) - float(stop["filled_qty"])
             fill_qty = max(0.0, min(remaining, held))
-            if fill_qty <= 0:
-                return {
-                    "fill_id": f"stop-{client_order_id}-noop",
-                    "client_order_id": client_order_id,
-                    "broker_order_id": stop["id"],
-                    "qty": 0.0,
-                    "cumulative_filled_qty": float(stop["filled_qty"]),
-                    "price": float(price),
-                }
-            return self._apply_fill_locked(
-                stop, client_order_id,
-                f"stop-fill-{client_order_id}-{int(stop['filled_qty'] + fill_qty)}",
-                fill_qty, price)
+        if fill_qty <= 0:
+            return {
+                "fill_id": f"stop-{client_order_id}-noop",
+                "client_order_id": client_order_id,
+                "broker_order_id": stop["id"],
+                "qty": 0.0,
+                "cumulative_filled_qty": float(stop["filled_qty"]),
+                "price": float(price),
+            }
+        return self._apply_fill_locked(
+            stop, client_order_id,
+            f"stop-fill-{client_order_id}-{int(stop['filled_qty'] + fill_qty)}",
+            fill_qty, price)
 
     def list_stops(self) -> list[dict]:
+        with self._lock:
+            # Stops hidden by the dropped-cancel fault (B17, trace
+            # (c)) are absent from this view — the open-orders list
+            # cannot confirm them. get_by_client_order_id still
+            # finds them by order id.
+            return [dict(o) for coid, o in self._stops.items()
+                    if coid not in self._hidden_stop_coids]
+
+    def list_all_stops(self) -> list[dict]:
+        """Every trailing stop, including ones hidden from the
+        open-orders view (test inspection only)."""
         with self._lock:
             return [dict(o) for o in self._stops.values()]
 
@@ -330,6 +483,14 @@ class FakeBroker:
     def list_orders(self) -> list[dict]:
         with self._lock:
             return [dict(o) for o in self._orders.values()]
+
+    def list_all_orders(self) -> list[dict]:
+        """The account's FULL order history (strategy orders AND
+        trailing stops) — the independent check a human resolution
+        uses (B17.1): the broker's own records for the account over
+        the relevant window."""
+        with self._lock:
+            return [dict(o) for o in self._orders.values()] + [dict(o) for o in self._stops.values()]
 
     def order_count(self) -> int:
         with self._lock:

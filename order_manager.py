@@ -140,8 +140,21 @@ CREATE INDEX IF NOT EXISTS idx_intents_symbol_status
     ON intents (symbol, status);
 CREATE INDEX IF NOT EXISTS idx_intents_account_symbol_status
     ON intents (account, symbol, status);
-CREATE INDEX IF NOT EXISTS idx_alerts_symbol_resolved
-    ON alerts (symbol, resolved);
+CREATE TABLE IF NOT EXISTS resolutions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    intent_id TEXT NOT NULL REFERENCES intents(intent_id),
+    resolver TEXT NOT NULL,
+    resolved_at REAL NOT NULL,
+    decision TEXT NOT NULL,
+    reason TEXT NOT NULL,
+    evidence TEXT NOT NULL,
+    previous_status TEXT NOT NULL,
+    new_status TEXT NOT NULL,
+    attempts_at_resolution INTEGER NOT NULL,
+    broker_order_id_at_resolution TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_resolutions_intent
+    ON resolutions (intent_id);
 """
 
 
@@ -163,7 +176,22 @@ def derive_client_order_id(
     order_type: str = "market",
     limit_price=None,
     inputs_hash: str = "",
+    account: str = "paper",
 ) -> str:
+    # B17.5: the account IS part of the idempotency key. The paper and
+    # live legs are separate broker accounts, so the same logical order
+    # on both is TWO broker orders — two intents, two client_order_ids.
+    # Adding "account" to the canonical hash changes EVERY intent id,
+    # paper included, vs pre-B17 (verified by hash: the old and new
+    # digests differ). That is safe only because no production intent
+    # store exists yet — the soak has not started, the daily run is
+    # dry-run/preview, zero orders have ever been submitted — so no
+    # stored intent is orphaned. Do NOT deploy this mid-soak with
+    # open intents: a re-derived order would get a new id and the old
+    # intent would never be reconciled. A live intent for the same
+    # decision gets a different id, so the two legs can never collide
+    # in the intent store (or in a shared fake broker) and each leg
+    # reconciles its own order.
     canonical = _canonical(
         {
             "design_id": design_id,
@@ -174,6 +202,7 @@ def derive_client_order_id(
             "order_type": order_type,
             "limit_price": None if limit_price is None else float(limit_price),
             "inputs_hash": inputs_hash or "",
+            "account": account or "paper",
         }
     )
     return hashlib.sha256(canonical.encode()).hexdigest()[:32]
@@ -192,12 +221,15 @@ def build_intent(
 ) -> dict:
     """Build the intent dict (including its deterministic ID) for an order.
 
-    `account` scopes the symbol block (point 6 in the module docstring);
-    it is NOT part of the client_order_id, so re-deriving the same
-    logical order still yields the same ID."""
+    `account` scopes the symbol block (point 6 in the module docstring)
+    AND is part of the client_order_id (B17.5): the paper and live legs
+    are separate accounts, so the same logical order on both is two
+    broker orders with two idempotency keys. Re-deriving the same
+    logical order for the same account still yields the same ID."""
     return {
         "intent_id": derive_client_order_id(
-            design_id, trading_day, symbol, side, qty, order_type, limit_price, inputs_hash
+            design_id, trading_day, symbol, side, qty, order_type, limit_price, inputs_hash,
+            account=account,
         ),
         "design_id": design_id,
         "trading_day": trading_day,
@@ -231,6 +263,84 @@ def _is_ambiguous(exc: BaseException) -> bool:
 
 class DuplicateClientOrderIdError(RuntimeError):
     """Raised when a broker rejects a submit as a 409 duplicate client_order_id."""
+
+
+class ResolveRefusedError(ValueError):
+    """A human resolution was refused (B17.1): the evidence is
+    insufficient, so the intent stays exactly as it was — still
+    UNKNOWN, still blocking its symbol. A timeout, a dropped
+    response, or repeated 404s from the per-order lookup are NOT
+    evidence the broker never accepted the order; only an independent
+    broker confirmation releases the block, and it must be recorded
+    as a structured evidence reference: what was checked, when, and
+    what it returned."""
+
+
+def _validate_resolution_evidence(evidence, *, intent_id: str, symbol: str,
+                                  broker_order_id=None) -> dict:
+    """Validate a structured evidence reference for a human resolution.
+
+    The reference is a dict {source, scope, result}:
+    - source: where the confirmation came from ("orders_list",
+      "order_history", "dashboard", "support", ...).
+    - scope: what was checked (account, symbol, window, status filter).
+    - result: what it returned.
+    A bare string, or a reference with no scope, is refused: "the
+    orders list came back empty" says nothing about WHAT list was
+    queried — an open-orders-only list, a narrow window, or a failed
+    query all come back empty — so it cannot confirm the order was
+    never accepted. The independent confirmation must name the query
+    and its scope, so the audit trail shows the check actually covered
+    the submission.
+    The reference must also be SPECIFIC to the order being resolved:
+    it must name the symbol AND the order (the client_order_id, or
+    the broker order id when one is known) in the scope or the result.
+    "The orders list came back empty" names neither — it cannot be
+    evidence about THIS order — so it is refused and the block stays.
+    A scoped query ("account orders status=all symbol=NVDA window
+    2026-11-25..2026-11-27" returning "no order with client_order_id
+    <id>") passes.
+    """
+    if not isinstance(evidence, dict):
+        raise ResolveRefusedError(
+            "resolution evidence must be a structured reference "
+            "{source, scope, result} (what was checked, when, and what "
+            "it returned); a bare string cannot be audited"
+        )
+    out = {}
+    for key in ("source", "scope", "result"):
+        value = evidence.get(key)
+        if not isinstance(value, str) or not value.strip():
+            raise ResolveRefusedError(
+                f"resolution evidence has no {key}: the reference must "
+                "name what was checked (source), its scope (account, "
+                "symbol, window, status filter), and what it returned"
+            )
+        out[key] = value.strip()
+    # Extra keys (e.g. the broker status / filled qty the operator
+    # adopted from the broker's records) are kept verbatim.
+    for key, value in evidence.items():
+        if key not in out:
+            out[key] = value
+    searchable = f"{out['scope']} {out['result']}"
+    if symbol not in searchable:
+        raise ResolveRefusedError(
+            "resolution evidence does not name the symbol "
+            f"({symbol}): the reference must be specific to the order "
+            "being resolved — an empty orders list that does not name "
+            "the symbol cannot confirm this order was never accepted"
+        )
+    ids = [intent_id] + ([broker_order_id] if broker_order_id else [])
+    if not any(order_id in searchable for order_id in ids):
+        raise ResolveRefusedError(
+            "resolution evidence does not name the order "
+            f"(client_order_id {intent_id}"
+            + (f" or broker order id {broker_order_id}" if broker_order_id else "")
+            + "): the reference must show the check covered THIS order "
+            "— an empty orders list that does not name the order cannot "
+            "confirm it was never accepted"
+        )
+    return out
 
 
 def _normalize_broker_status(raw) -> str:
@@ -297,6 +407,21 @@ class OrderManager:
                     with self._conn:
                         self._conn.execute(
                             "ALTER TABLE intents ADD COLUMN account TEXT NOT NULL DEFAULT 'paper'"
+                        )
+                # Migration for DB files created before B17.1 (Nov 27,
+                # 2026): the human-resolution audit columns. A
+                # resolution never overwrites the attempt history — it
+                # records who resolved it and why, alongside the
+                # appended resolutions row.
+                if "resolved_by" not in cols:
+                    with self._conn:
+                        self._conn.execute(
+                            "ALTER TABLE intents ADD COLUMN resolved_by TEXT"
+                        )
+                if "resolution_reason" not in cols:
+                    with self._conn:
+                        self._conn.execute(
+                            "ALTER TABLE intents ADD COLUMN resolution_reason TEXT"
                         )
                 return
             except sqlite3.OperationalError as exc:
@@ -739,12 +864,16 @@ class OrderManager:
         grace_seconds: float = 0.0,
         max_polls: int = 3,
         sleep_fn: Callable[[float], None] | None = None,
+        account: str | None = None,
     ) -> list[dict]:
         """Startup reconcile: recover every PENDING / expired-CLAIMED /
         UNKNOWN intent (optionally only for one symbol) before any new
         order for that symbol is accepted. Lookup-only: never submits.
         BLOCKED intents are not picked up here — they wait until their
-        blocking UNKNOWN intent resolves, then a later submit proceeds."""
+        blocking UNKNOWN intent resolves, then a later submit proceeds.
+        When `account` is given, only that account's intents are
+        touched (B17.5: the live leg's startup reconcile must not
+        disturb the paper leg, and vice versa)."""
         now = self._now()
         query = """SELECT * FROM intents WHERE (
             status='UNKNOWN' OR status='PENDING'
@@ -754,6 +883,9 @@ class OrderManager:
         if symbol is not None:
             query += " AND symbol=?"
             params.append(symbol)
+        if account is not None:
+            query += " AND account=?"
+            params.append(account)
         rows = self._conn.execute(query, params).fetchall()
         recovered = []
         for row in rows:
@@ -765,7 +897,8 @@ class OrderManager:
             )
         return recovered
 
-    def reconcile_open_intents(self, lookup_fn=None, symbol: str | None = None) -> list[dict]:
+    def reconcile_open_intents(self, lookup_fn=None, symbol: str | None = None,
+                               account: str | None = None) -> list[dict]:
         """Sync intents the broker may have cancelled/expired/filled
         since submit (B16; extended by the B16 correction to include
         DONE_FOR_DAY).
@@ -781,8 +914,9 @@ class OrderManager:
         submits. An inconclusive lookup (None, or raising) leaves
         the intent untouched (no alert, no block: the order was
         confirmed accepted, so there is nothing ambiguous to resolve —
-        the next run retries). Returns the adopted intents.
-        """
+        the next run retries). Returns the adopted intents. When
+        `account` is given, only that account's intents are touched
+        (B17.5)."""
         query = (
             "SELECT * FROM intents WHERE status IN ('SUBMITTED', 'PARTIALLY_FILLED', 'DONE_FOR_DAY')"
             " AND broker_order_id IS NOT NULL"
@@ -791,6 +925,9 @@ class OrderManager:
         if symbol is not None:
             query += " AND symbol=?"
             params.append(symbol)
+        if account is not None:
+            query += " AND account=?"
+            params.append(account)
         rows = self._conn.execute(query, params).fetchall()
         adopted = []
         for row in rows:
@@ -805,6 +942,188 @@ class OrderManager:
                 continue
             adopted.append(self._adopt_broker_order(intent, found))
         return adopted
+
+    def resolve_intent(self, intent_id: str, *, decision: str, reason: str,
+                       evidence, resolver: str = "operator",
+                       status: str | None = None, filled_qty=None,
+                       lookup_fn=None) -> tuple[str, dict]:
+        """Human resolution of a stuck UNKNOWN intent (B17.1).
+
+        The broker order is looked up FIRST (lookup_fn): if the broker
+        has it, the found state is adopted through the normal reconcile
+        path — no human decision is needed — and the adoption is
+        recorded as a lookup resolution. If the lookup stays
+        inconclusive, the operator may resolve it ONLY with an
+        explicit human decision, recorded with a reason AND a
+        structured evidence reference:
+        - decision "never_accepted": the operator confirms from the
+          broker's OWN records (independent of the per-order lookup)
+          that no such order exists -> REJECTED. A timeout, a dropped
+          response, or repeated 404s alone are INSUFFICIENT and are
+          refused (ResolveRefusedError); the block stays.
+        - decision "accepted": the operator supplies the broker's
+          confirmed status and filled qty from the broker's records
+          -> that state is adopted.
+        The resolution is an APPENDED record (the resolutions table):
+        it never overwrites or erases the intent's attempts,
+        broker_order_id, or prior status — those are preserved in the
+        row and in the resolution entry. The status change is recorded
+        as a human resolution (resolved_by / resolution_reason on the
+        intent), not as if the broker had rejected it.
+        Returns (outcome, intent) where outcome is "adopted_by_lookup"
+        or "resolved". Raises ResolveRefusedError when the resolution
+        is refused (the intent is unchanged) and KeyError when the
+        intent does not exist. This method NEVER submits an order.
+        """
+        intent = self._fetch(intent_id)
+        if intent is None:
+            raise KeyError(f"unknown intent {intent_id}")
+        previous_status = str(intent.get("status"))
+        if previous_status in TERMINAL_STATUSES:
+            raise ResolveRefusedError(
+                f"intent {intent_id} is already {previous_status}; "
+                "there is nothing to resolve"
+            )
+        if previous_status != "UNKNOWN":
+            if previous_status == "BLOCKED":
+                raise ResolveRefusedError(
+                    f"intent {intent_id} is BLOCKED, not UNKNOWN: it was "
+                    "never submitted, so there is no outcome to resolve — "
+                    "resolve its blocking intent instead, then re-submit it"
+                )
+            raise ResolveRefusedError(
+                f"intent {intent_id} is {previous_status}: only an UNKNOWN "
+                "intent can be human-resolved — a confirmed-accepted order "
+                "is reconciled by lookup, never overridden by hand"
+            )
+
+        # Lookup first: the broker may have the order after all.
+        if lookup_fn is not None:
+            try:
+                found = lookup_fn(intent_id)
+            except Exception:
+                found = None
+            if isinstance(found, dict) and found:
+                adopted = self._adopt_broker_order(intent, found)
+                self._record_resolution(
+                    intent_id=intent_id, resolver=resolver,
+                    decision="adopted_by_lookup",
+                    reason="broker lookup found the order; adopted through "
+                           "the normal reconcile path (no human decision)",
+                    evidence={
+                        "source": "broker_lookup",
+                        "scope": f"get_by_client_order_id({intent_id})",
+                        "result": (
+                            f"status={found.get('status')} "
+                            f"filled_qty={found.get('filled_qty')}"
+                        ),
+                    },
+                    previous_status=previous_status,
+                    new_status=str(adopted.get("status")),
+                    attempts=intent.get("attempts") or 0,
+                    broker_order_id=intent.get("broker_order_id"),
+                )
+                return "adopted_by_lookup", adopted
+
+        # Inconclusive lookup: a human decision is required, with a
+        # reason and a structured evidence reference.
+        if decision not in {"never_accepted", "accepted"}:
+            raise ResolveRefusedError(
+                f"unknown decision {decision!r}: expected "
+                "'never_accepted' or 'accepted'"
+            )
+        if not isinstance(reason, str) or not reason.strip():
+            raise ResolveRefusedError(
+                "a human resolution requires a reason (why the operator "
+                "believes this outcome)"
+            )
+        evidence = _validate_resolution_evidence(
+            evidence, intent_id=intent_id, symbol=str(intent.get("symbol") or ""),
+            broker_order_id=intent.get("broker_order_id"),
+        )
+        if decision == "never_accepted":
+            new_status = "REJECTED"
+            self._update(
+                intent_id, status=new_status,
+                resolved_by=resolver, resolution_reason=reason.strip(),
+                claimed_by=None, claim_expires_at=None,
+            )
+            resolved = self._fetch(intent_id)
+        else:
+            if status is None or filled_qty is None:
+                raise ResolveRefusedError(
+                    "decision 'accepted' requires the broker's confirmed "
+                    "status and filled qty from the broker's records"
+                )
+            try:
+                filled_qty = float(filled_qty)
+            except (TypeError, ValueError):
+                raise ResolveRefusedError(
+                    f"filled qty {filled_qty!r} is not a number"
+                ) from None
+            resolved = self._adopt_broker_order(intent, {
+                "id": intent.get("broker_order_id") or intent_id,
+                "status": status,
+                "filled_qty": filled_qty,
+            })
+            new_status = str(resolved.get("status"))
+            self._update(
+                intent_id, resolved_by=resolver,
+                resolution_reason=reason.strip(),
+            )
+            resolved = self._fetch(intent_id)
+        self._record_resolution(
+            intent_id=intent_id, resolver=resolver, decision=decision,
+            reason=reason.strip(), evidence=evidence,
+            previous_status=previous_status, new_status=new_status,
+            attempts=intent.get("attempts") or 0,
+            broker_order_id=intent.get("broker_order_id"),
+        )
+        self._resolve_alerts(intent_id)
+        return "resolved", resolved
+
+    def _record_resolution(self, *, intent_id: str, resolver: str, decision: str,
+                           reason: str, evidence: dict, previous_status: str,
+                           new_status: str, attempts: int, broker_order_id) -> None:
+        """Append one resolution record (B17.1 audit trail). The row
+        preserves the intent's attempt history as it stood at
+        resolution time; nothing here overwrites the intent row's
+        attempts or broker_order_id."""
+        with self._conn:
+            self._conn.execute(
+                """INSERT INTO resolutions
+                   (intent_id, resolver, resolved_at, decision, reason,
+                    evidence, previous_status, new_status,
+                    attempts_at_resolution, broker_order_id_at_resolution)
+                   VALUES (?,?,?,?,?,?,?,?,?,?)""",
+                (
+                    intent_id, resolver, self._now(), decision, reason,
+                    json.dumps(evidence, default=str), previous_status,
+                    new_status, int(attempts or 0), broker_order_id,
+                ),
+            )
+
+    def get_resolutions(self, intent_id: str | None = None) -> list[dict]:
+        """Resolution records (the appended audit trail), optionally
+        for one intent, oldest first."""
+        query = "SELECT * FROM resolutions"
+        params: list = []
+        if intent_id is not None:
+            query += " WHERE intent_id=?"
+            params.append(intent_id)
+        query += " ORDER BY id"
+        return [dict(r) for r in self._conn.execute(query, params).fetchall()]
+
+    def unresolved_intents(self, account: str | None = None) -> list[dict]:
+        """UNKNOWN and BLOCKED intents (the operator's work list),
+        oldest first, optionally for one account."""
+        query = "SELECT * FROM intents WHERE status IN ('UNKNOWN', 'BLOCKED')"
+        params: list = []
+        if account is not None:
+            query += " AND account=?"
+            params.append(account)
+        query += " ORDER BY created_at"
+        return [dict(r) for r in self._conn.execute(query, params).fetchall()]
 
     def cancelled_intents(self, symbol: str | None = None) -> list[dict]:
         """Every CANCELLED intent, optionally for one symbol.

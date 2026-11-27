@@ -119,11 +119,20 @@ class FileBackedFakeBroker:
     file takes the flag from broker_config.json. delayed_visibility_polls
     comes from the config every time — it is a property of the scenario,
     not of the broker's memory.
+
+    B17 hooks (stop_cap_disabled, drop_next_stop_cancel,
+    stop_elect_during_submit, fill_during_cancel) persist the same
+    way, so a test can arm them between runs and the next process
+    hits them. The hidden-stop set (_hidden_stop_coids) is the one
+    exception: it is a PER-PROCESS visibility artefact (a broker
+    whose order view lags the cancel), so _load always clears it — a
+    fresh process sees the broker's true state, and its startup
+    lookup BY ORDER ID finds the cancelled stop.
     """
 
-    def __init__(self, fixture_dir: str | Path):
+    def __init__(self, fixture_dir: str | Path, state_filename: str = "broker_state.json"):
         self.fixture_dir = Path(fixture_dir)
-        self.state_path = self.fixture_dir / "broker_state.json"
+        self.state_path = self.fixture_dir / state_filename
         config = _load_json(self.fixture_dir / "broker_config.json", {})
         self.delayed_visibility_polls = int(config.get("delayed_visibility_polls", 0))
         self.paper_equity = float(config.get("paper_equity", 100000.0))
@@ -161,6 +170,16 @@ class FileBackedFakeBroker:
         # The persisted drop flag wins: a drop consumed by an earlier
         # process must not re-arm on restart.
         broker.drop_next_response = bool(state.get("drop_next_response", False))
+        # B17 hooks (persisted so the next process hits them).
+        broker.stop_cap_disabled = bool(state.get("stop_cap_disabled", False))
+        broker.drop_next_stop_cancel = bool(state.get("drop_next_stop_cancel", False))
+        broker._stop_elect_during_submit = {
+            k: (str(v[0]), float(v[1]))
+            for k, v in state.get("stop_elect_during_submit", {}).items()
+        }
+        # A fresh process sees the broker's true state: the hidden-stop
+        # set (a per-process visibility lag) is always cleared on load.
+        broker._hidden_stop_coids = set()
         self.submit_calls = int(state.get("submit_calls", 0))
         self.live_submit_calls = int(state.get("live_submit_calls", 0))
         self.trail_calls = list(state.get("trail_calls", []))
@@ -181,6 +200,12 @@ class FileBackedFakeBroker:
                 k: [v[0], v[1]] for k, v in broker._fill_during_cancel.items()
             },
             "fail_next_submit": bool(broker.fail_next_submit),
+            "stop_cap_disabled": bool(broker.stop_cap_disabled),
+            "drop_next_stop_cancel": bool(broker.drop_next_stop_cancel),
+            "stop_elect_during_submit": {
+                k: [v[0], v[1]] for k, v in broker._stop_elect_during_submit.items()
+            },
+            "hidden_stop_coids": sorted(broker._hidden_stop_coids),
         }
         self.state_path.write_text(json.dumps(state, indent=2))
 
@@ -253,12 +278,54 @@ class FileBackedFakeBroker:
         self._broker.fail_next_submit = True
         self._save()
 
-    def attach_trailing_stop(self, symbol: str, qty: float, trail_pct: float) -> dict:
+    # -- B17 hooks -------------------------------------------------------
+    def set_stop_cap_disabled(self, disabled: bool = True) -> None:
+        """Enable/disable NO-CAP MODE (Detail 3) and persist it: with
+        the cap disabled, a trailing stop sells its full nominal qty
+        even if that exceeds the shares held — the position goes
+        negative and the short is visible."""
+        self._broker.set_stop_cap_disabled(disabled)
+        self._save()
+
+    def set_fill_during_stop_cancel(self, client_order_id: str, qty: float, price: float) -> None:
+        """Arm a fill on a trailing stop that lands while its
+        cancellation is pending (three-outcome traces (a)/(b)) and
+        persist the arm so the next process's cancel applies it."""
+        self._broker.set_fill_during_stop_cancel(client_order_id, qty, price)
+        self._save()
+
+    def set_drop_next_response(self, value: bool = True) -> None:
+        """Arm (or disarm) a dropped submit response and persist it so
+        the next process's submit is accepted by the broker but its
+        response is dropped (the intent goes UNKNOWN while the broker
+        holds the order)."""
+        self._broker.drop_next_response = bool(value)
+        self._save()
+
+    def set_drop_next_stop_cancel(self) -> None:
+        """Arm the dropped-cancel fault (three-outcome trace (c)) and
+        persist the arm so the next process's stop cancel is applied
+        but its response is dropped."""
+        self._broker.set_drop_next_stop_cancel()
+        self._save()
+
+    def set_stop_elect_during_submit(self, client_order_id: str, price: float) -> None:
+        """Arm the B17.4 race (the stop elects between the cancel
+        confirmation and the exit submit) and persist the arm so the
+        next process's exit submit fires it."""
+        self._broker.set_stop_elect_during_submit(client_order_id, price)
+        self._save()
+
+    def attach_trailing_stop(self, symbol: str, qty: float, trail_pct: float,
+                             client_order_id: str | None = None) -> dict:
         """Attach a trailing-stop SELL (B16 correction) and persist
         it: a real broker order in its own store, not a strategy
-        submission."""
+        submission. B17: when client_order_id is given (the
+        strategy's deterministic "<entry intent id>-trail"), the stop
+        is stored under that key, so it can be looked up BY ORDER ID."""
         try:
-            return self._broker.attach_trailing_stop(symbol, qty, trail_pct)
+            return self._broker.attach_trailing_stop(symbol, qty, trail_pct,
+                                                     client_order_id=client_order_id)
         finally:
             self._save()
 
@@ -273,34 +340,58 @@ class FileBackedFakeBroker:
     def list_stops(self) -> list[dict]:
         return self._broker.list_stops()
 
+    def list_all_stops(self) -> list[dict]:
+        """Every trailing stop, including ones hidden from the
+        open-orders view (test inspection only)."""
+        return self._broker.list_all_stops()
+
     def order_count(self) -> int:
         return self._broker.order_count()
 
     def list_orders(self) -> list[dict]:
         return self._broker.list_orders()
 
+    def list_all_orders(self) -> list[dict]:
+        """The account's FULL order history (strategy orders AND
+        trailing stops) — the independent check a human resolution
+        uses (B17.1)."""
+        return self._broker.list_all_orders()
+
 
 class FakeLeg:
     """One account leg. The paper leg trades on the persistent fake
     broker; the live leg is disabled (ALLOW_LIVE=0 posture): submit is
-    called by the loop but refuses and only records the call."""
+    called by the loop but refuses and only records the call.
 
-    def __init__(self, mode: str, store: FileBackedFakeBroker, data_client: FakeDataClient):
+    B17.5: the live leg can be ENABLED for a test (broker_config.json
+    {"live_enabled": true}) — then it trades on its OWN store
+    (broker_state_live.json, a separate account) and the gates below
+    use `self.enabled`, not the mode. The default (live disabled)
+    behaves exactly as before: the live leg shares the paper store
+    only so its refused submit calls are recorded there (the B13
+    live_submit_calls assertions read them from broker_state.json).
+    """
+
+    def __init__(self, mode: str, store: FileBackedFakeBroker, data_client: FakeDataClient,
+                 enabled: bool | None = None):
         self.mode = mode
         self._store = store
-        self.data = data_client if mode == "paper" else None
+        self.data = data_client
         self.client = None  # no Alpaca client: universe falls back to seed list
         self.data_clock = None
-        self.enabled = mode == "paper"
+        # B17.5: enabled defaults to (mode == "paper") — the paper leg
+        # trades, the live leg does not — unless the caller says
+        # otherwise (a test-only live-enabled configuration).
+        self.enabled = (mode == "paper") if enabled is None else bool(enabled)
 
     # -- account state ----------------------------------------------------
     def equity(self) -> Optional[float]:
-        if self.mode == "paper":
+        if self.enabled:
             return self._store.paper_equity
         return 0.0
 
     def positions(self) -> dict:
-        if self.mode != "paper":
+        if not self.enabled:
             return {}
         # Filled holdings ONLY, like the real Alpaca leg (GET
         # /v2/positions): an accepted-but-unfilled order is NOT a
@@ -341,7 +432,7 @@ class FakeLeg:
         """Open orders for this leg (the unfilled part of each). The
         fake broker never fills on its own, so every submitted order
         is open until cancelled/rejected or filled via fill()."""
-        if self.mode != "paper":
+        if not self.enabled:
             return []
         out = []
         # B16 correction: working trailing stops are open orders too
@@ -408,6 +499,16 @@ class FakeLeg:
             clock.note(out["timestamp"])
         return out
 
+    def list_orders(self) -> list[dict]:
+        """The account's FULL order history (strategy orders AND
+        trailing stops) — the independent check a human resolution
+        uses (B17.1): the broker's own records for the account. Unlike
+        open_orders(), this includes filled/cancelled/expired orders.
+        A disabled leg has no history (it never submits)."""
+        if not self.enabled:
+            return []
+        return self._store.list_all_orders()
+
     # -- orders ---------------------------------------------------------------
     def submit(self, order: dict) -> Optional[dict]:
         if not self.can_trade():
@@ -421,7 +522,7 @@ class FakeLeg:
         return self._store.submit(order)
 
     def get_by_client_order_id(self, client_order_id: str) -> Optional[dict]:
-        if self.mode != "paper":
+        if not self.enabled:
             return None
         return self._store.get_by_client_order_id(client_order_id)
 
@@ -435,7 +536,7 @@ class FakeLeg:
         Trailing stops are cancellable the same way (by id or
         client_order_id) — the exit cancels the stop before selling.
         """
-        if self.mode != "paper":
+        if not self.enabled:
             return None
         target = None
         if client_order_id is not None:
@@ -463,18 +564,24 @@ class FakeLeg:
                                  if cancelled.get("filled_avg_price") is not None else None),
         }
 
-    def attach_trailing_stop(self, symbol: str, qty: float, trail_pct: float) -> Optional[dict]:
+    def attach_trailing_stop(self, symbol: str, qty: float, trail_pct: float,
+                             client_order_id: str | None = None) -> Optional[dict]:
         """Attach a trailing-stop SELL (B16 correction): a REAL broker
         order in the fake broker's stop store — not just a recorded
         call — so the strategy's exit can cancel it, reconcile can
         see its fills, and a test can elect it. The trail_calls list
         is kept as the attach audit trail (B13 asserts its length).
-        A disabled leg (live) attaches nothing, like the real leg."""
+        A disabled leg (live) attaches nothing, like the real leg.
+        B17: the deterministic client_order_id ("<entry intent
+        id>-trail") is passed through, so the stop can be looked up
+        BY ORDER ID."""
         if not self.enabled:
             return None
-        stop = self._store.attach_trailing_stop(symbol, qty, trail_pct)
+        stop = self._store.attach_trailing_stop(symbol, qty, trail_pct,
+                                                client_order_id=client_order_id)
         self._store.trail_calls.append(
-            {"symbol": symbol, "qty": float(qty), "trail_pct": float(trail_pct)}
+            {"symbol": symbol, "qty": float(qty), "trail_pct": float(trail_pct),
+             "client_order_id": str(stop["client_order_id"])}
         )
         self._store.save()
         return {
@@ -499,8 +606,23 @@ class FakeDualBroker:
         self.fixture_dir = fixture_dir
         self._store = FileBackedFakeBroker(fixture_dir)
         self._data = FakeDataClient(fixture_dir)
+        # B17.5: a test-only live-enabled configuration
+        # (broker_config.json {"live_enabled": true}) gives the live
+        # leg its OWN store (broker_state_live.json — a separate
+        # account, as in production). When the live leg is disabled
+        # (the default), it shares the paper store, so its refused
+        # submit calls are recorded there (the B13 live_submit_calls
+        # assertions read them from broker_state.json).
+        config = _load_json(fixture_dir / "broker_config.json", {})
+        live_enabled = bool(config.get("live_enabled", False))
+        if live_enabled:
+            self._live_store = FileBackedFakeBroker(
+                fixture_dir, state_filename="broker_state_live.json")
+        else:
+            self._live_store = self._store
         self.paper = FakeLeg("paper", self._store, self._data)
-        self.live = FakeLeg("live", self._store, self._data)
+        self.live = FakeLeg("live", self._live_store, self._data,
+                            enabled=live_enabled)
         self.data_clock = None
         self.state: dict = {}
 

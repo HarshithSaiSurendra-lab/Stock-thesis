@@ -489,12 +489,22 @@ class AlpacaLeg:
     def get_by_client_order_id(self, client_order_id: str) -> Optional[dict]:
         """Lookup one broker order by its client_order_id (B3 reconcile).
 
-        Returns {"id", "symbol", "status", "filled_qty"} when the broker
-        has the order, or None when it does not (404). A 404 is
-        INCONCLUSIVE for reconcile — it is not proof the broker never
-        accepted the first attempt — so None is the correct return,
-        not an exception. Non-404 errors propagate; OrderManager
-        treats a raising lookup as inconclusive too.
+        Returns {"id", "symbol", "status", "filled_qty", "limit_price",
+        "filled_avg_price"} when the broker has the order, or None
+        when it does not (404). A 404 is INCONCLUSIVE for reconcile —
+        it is not proof the broker never accepted the first attempt —
+        so None is the correct return, not an exception. Non-404
+        errors propagate; OrderManager treats a raising lookup as
+        inconclusive too.
+
+        B17.6: the prices are part of the return on BOTH paths. The
+        sizing reservation prices a DONE_FOR_DAY market buy from its
+        filled average (the best estimate for the unfilled remainder),
+        not from last_price/entry_price — and the stop-fill P&L
+        attribution (B17.3) reads a stop's filled_avg_price through
+        this same lookup. A market order has no limit_price (None);
+        an unfilled order has no filled_avg_price (None) — callers
+        treat None as "no price", never as 0.0.
         """
         if not self.client:
             try:
@@ -512,6 +522,8 @@ class AlpacaLeg:
                 "symbol": result.get("symbol"),
                 "status": str(result.get("status", "")),
                 "filled_qty": float(result.get("filled_qty") or 0.0),
+                "limit_price": _opt_float(result.get("limit_price")),
+                "filled_avg_price": _opt_float(result.get("filled_avg_price")),
             }
         try:
             order = self.client.get_order_by_client_order_id(client_order_id)
@@ -526,7 +538,65 @@ class AlpacaLeg:
             "symbol": order.symbol,
             "status": str(order.status),
             "filled_qty": float(getattr(order, "filled_qty", 0.0) or 0.0),
+            "limit_price": _opt_float(getattr(order, "limit_price", None)),
+            "filled_avg_price": _opt_float(getattr(order, "filled_avg_price", None)),
         }
+
+    def list_orders(self, status: str = "all", limit: int = 500) -> list[dict]:
+        """List the account's orders (B17.1 independent confirmation).
+
+        This is the broker's OWN order history for the account — the
+        independent check a human resolution uses when the per-order
+        lookup is inconclusive. `status="all"` (the default) returns
+        the full history (open, filled, canceled, expired, rejected),
+        which is the only list that can confirm an order was never
+        accepted: an open-orders-only list coming back empty proves
+        nothing (a filled/canceled order is also absent from it).
+        Returns one dict per order in the same shape as
+        get_by_client_order_id (with client_order_id). An empty list
+        is a real answer here — it means the account has no orders
+        matching the query — but the caller must still record the
+        query's scope (status, window) alongside it, so the audit
+        trail shows the check actually covered the submission.
+        """
+        if self.client:
+            from alpaca.trading.requests import GetOrdersRequest
+            from alpaca.trading.enums import QueryOrderStatus
+
+            orders = self.client.get_orders(
+                GetOrdersRequest(status=QueryOrderStatus.ALL if status == "all" else QueryOrderStatus.OPEN,
+                                 limit=limit)
+            )
+            out = []
+            for order in orders or []:
+                out.append({
+                    "id": str(getattr(order, "id", "")),
+                    "client_order_id": getattr(order, "client_order_id", None),
+                    "symbol": getattr(order, "symbol", None),
+                    "status": str(getattr(order, "status", "")),
+                    "filled_qty": float(getattr(order, "filled_qty", 0.0) or 0.0),
+                    "limit_price": _opt_float(getattr(order, "limit_price", None)),
+                    "filled_avg_price": _opt_float(getattr(order, "filled_avg_price", None)),
+                })
+            return out
+        params = {"status": status, "limit": str(limit)}
+        result = self._rest_json("GET", f"{self._base_url}/v2/orders", params=params)
+        if not isinstance(result, list):
+            return []
+        out = []
+        for order in result:
+            if not isinstance(order, dict):
+                continue
+            out.append({
+                "id": str(order.get("id", "")),
+                "client_order_id": order.get("client_order_id"),
+                "symbol": order.get("symbol"),
+                "status": str(order.get("status", "")),
+                "filled_qty": float(order.get("filled_qty") or 0.0),
+                "limit_price": _opt_float(order.get("limit_price")),
+                "filled_avg_price": _opt_float(order.get("filled_avg_price")),
+            })
+        return out
 
     def cancel_order(self, order_id=None, client_order_id=None) -> Optional[dict]:
         """Cancel one open order (B16: an exit cancels the working entry
@@ -621,8 +691,17 @@ class AlpacaLeg:
             "filled_qty": float(result.get("filled_qty") or 0.0),
         }
 
-    def attach_trailing_stop(self, symbol: str, qty: float, trail_pct: float) -> Optional[dict]:
-        """Place a trailing stop SELL to protect an open long position."""
+    def attach_trailing_stop(self, symbol: str, qty: float, trail_pct: float,
+                             client_order_id: str | None = None) -> Optional[dict]:
+        """Place a trailing stop SELL to protect an open long position.
+
+        B17.2 / Detail 1: when `client_order_id` is given (the strategy
+        passes a deterministic "<entry intent id>-trail"), the stop is
+        submitted with that idempotency key, so its final state can be
+        confirmed BY ORDER ID (get_by_client_order_id) — never inferred
+        from its absence in the open-orders list. The returned dict
+        carries the client_order_id so the caller can record it.
+        """
         if not self.can_trade():
             return None
         try:
@@ -635,15 +714,20 @@ class AlpacaLeg:
                     "time_in_force": "gtc",
                     "trail_percent": str(trail_pct),
                 }
+                if client_order_id:
+                    payload["client_order_id"] = str(client_order_id)
                 result = self._rest_json("POST", f"{self._base_url}/v2/orders", payload)
-                return {"id": str(result.get("id")), "symbol": symbol, "trail_pct": trail_pct}
+                return {"id": str(result.get("id")), "symbol": symbol, "trail_pct": trail_pct,
+                        "client_order_id": client_order_id}
 
             req = TrailingStopOrderRequest(
                 symbol=symbol, qty=qty, side=OrderSide.SELL,
                 time_in_force=TimeInForce.GTC, trail_percent=trail_pct,
+                **({"client_order_id": str(client_order_id)} if client_order_id else {}),
             )
             result = self.client.submit_order(req)
-            return {"id": str(result.id), "symbol": symbol, "trail_pct": trail_pct}
+            return {"id": str(result.id), "symbol": symbol, "trail_pct": trail_pct,
+                    "client_order_id": client_order_id}
         except Exception as e:
             log.error(f"[{self.cfg.mode}] trailing stop failed for {symbol}: {e}")
             return None

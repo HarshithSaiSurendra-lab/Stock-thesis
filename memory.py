@@ -110,12 +110,24 @@ class TradeMemory:
         self.conn.commit()
         return cur.lastrowid
 
-    def close_decision(self, decision_id: int, exit_price: float,
-                       realized_pl: float, holding_days: float) -> None:
+    def close_decision(self, decision_id: int, exit_price: float | None,
+                       realized_pl: float | None, holding_days: float) -> None:
+        # B17.3: exit_price / realized_pl may be None — UNKNOWN,
+        # explicitly not 0. That is the case when an entry's shares
+        # were already sold by its trailing stop and the stop's fill
+        # price could not be fetched: the exit records that the P&L
+        # is unknown rather than recording a zero. actually_up is
+        # likewise None (unknown) when the exit price is unknown.
+        # The columns are nullable, so NULL is representable; the
+        # daily summary's COALESCE(SUM(realized_pl),0) already treats
+        # a NULL as contributing nothing (not as a zero trade).
         row = self.conn.execute(
             "SELECT intended_price FROM decisions WHERE id=?", (decision_id,)
         ).fetchone()
-        actually_up = 1 if (row and exit_price > row["intended_price"]) else 0
+        if row and exit_price is not None and row["intended_price"] is not None:
+            actually_up = 1 if exit_price > row["intended_price"] else 0
+        else:
+            actually_up = None
         self.conn.execute(
             """UPDATE decisions SET closed=1, exit_ts=?, exit_price=?,
                realized_pl=?, holding_days=?, actually_up=? WHERE id=?""",
@@ -189,11 +201,18 @@ class TradeMemory:
         self.conn.commit()
         return cur.lastrowid
 
-    def close_tax_lot(self, lot_id: int, proceeds: float) -> dict:
+    def close_tax_lot(self, lot_id: int, proceeds: float | None) -> dict:
+        # B17.3: proceeds may be None — UNKNOWN, explicitly not 0
+        # (the shares were sold by the trailing stop and its fill
+        # price could not be fetched). The gain is then unknown too
+        # (NULL in the table, None in the returned dict).
         row = self.conn.execute("SELECT * FROM tax_lots WHERE id=?", (lot_id,)).fetchone()
         if not row:
             return {}
-        gain = proceeds - row["cost_basis"]
+        if proceeds is None:
+            gain = None
+        else:
+            gain = proceeds - row["cost_basis"]
         open_dt = datetime.fromisoformat(row["open_ts"])
         held_days = (datetime.now(timezone.utc) - open_dt).days
         term = "long" if held_days > 365 else "short"
@@ -202,7 +221,9 @@ class TradeMemory:
             (datetime.now(timezone.utc).isoformat(), proceeds, gain, term, lot_id),
         )
         self.conn.commit()
-        return {"symbol": row["symbol"], "realized_gain": round(gain, 2), "term": term}
+        return {"symbol": row["symbol"],
+                "realized_gain": None if gain is None else round(gain, 2),
+                "term": term}
 
     def tax_summary(self, year: Optional[int] = None) -> dict:
         rows = self.conn.execute(

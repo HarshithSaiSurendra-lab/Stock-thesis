@@ -2611,3 +2611,394 @@ stays separate. No B16 code changed in this closure — it is a
 status decision on the work already landed (agentic-p0 b20fb52 /
 remote 475496d) and verified (26/26 new tests, full suite 360
 passed, Milo's run).
+
+### 2026-11-27 — B17: remaining-exposure fixes (simulation only)
+
+B17 closes the six remaining-exposure items from the B16 reopen,
+plus the three-outcome simulator traces, the unfilled-exit
+measurement, and the oversized-stop interval the user pinned down
+for sign-off. Fake broker only; daily job stays in preview
+(dry-run); no strategy/threshold/cost/config change; OCO/bracket
+stays DEFERRED per the user's Nov 27, 2026 decision. B16 itself is
+already closed as passed in simulation; overall SOAK READINESS
+stays OPEN for the user's call after this report. No B17 item
+touches the January gate, the frozen holdout, or any registered
+design.
+
+**B17.1 — Operator resolution path for UNKNOWN/BLOCKED intents.**
+New `scripts/resolve_intent.py` + `OrderManager.resolve_intent`
+(17 tests: 11 unit + 5 CLI + 1 e2e). Lookup FIRST via
+`get_by_client_order_id`; if the broker has the order it is adopted
+through the normal reconcile path. If inconclusive, a human
+decision is required (`never_accepted` -> REJECTED, or `accepted`
+with the broker's confirmed status/filled qty), with a reason AND a
+structured evidence reference `{source, scope, result}`. A timeout
+or repeated 404 alone is INSUFFICIENT — refused, block stays. An
+empty orders list ALONE is explicitly insufficient — the reference
+must name the symbol AND the client_order_id (or broker order id)
+in its scope/result; "the orders list came back empty" names
+neither and is refused. `--check-orders-list` builds the evidence
+from the leg's full-history list (`list_orders(status="all")`) and,
+if that list HAS the order, flips the decision to `accepted` and
+adopts it instead of recording a false "never accepted". The
+resolution is an APPENDED row in a new `resolutions` table
+(intent, resolver, timestamp, decision, reason, evidence JSON,
+previous/new status, attempts at resolution, broker_order_id at
+resolution) plus `resolved_by`/`resolution_reason` on the intent;
+attempts, broker_order_id, and prior status history are never
+overwritten. Without `--confirm` the CLI only reports and changes
+nothing; it NEVER submits an order (exit codes 0 OK / 1 refused /
+2 usage error). A BLOCKED intent is refused ("never submitted;
+resolve its blocker instead") and unblocks after its blocker
+resolves. E2e (B16 test-3c scenario): UNKNOWN exit REJECTED with
+attempts 1 preserved; Run 3 re-derives the exit with a fresh intent
+id (`exit_attempt=1`), SUBMITTED, attempts 1; order_count 2.
+
+**B17.2 — Startup mirror of trailing-stop fills.** New
+`_stop_fill_state` (stop's status + cumulative filled_qty BY ORDER
+ID, never inferred from absence in the open-orders list; the list
+is used only to FIND the stop) and `_mirror_stop_fills_at_startup`
+(after the intent mirror, before any new submission). If the leg's
+position is lower and the stop's fills account for the shortfall
+exactly, the entry is reduced to held (or removed at 0 held) and
+recorded in `stop_sync`; if the fills do NOT account for it ->
+`unaccounted_shortfall`, genuine drift, the reconcile halts as
+today; higher position -> halt as today. Ambiguous stop state
+(lookup None / raises / unrecognized status) -> the entry is
+marked `stop_state_unknown` and the exit stays BLOCKED across
+restart. When the mirror REMOVES an entry it also closes the
+decision + tax lot with the stop's fill price and realized P&L
+(B17.3 overnight path). E2e: full stop fill 2 @ 160.00 -> entry
+removed, `stop_fill_mirrored_removed`, decision realized_pl -14.53
+(entry 167.26668907752102); partial 1 @ 160.00 -> entry reduced to
+1.0, decision stays open.
+
+**B17.3 — Attribute stop-fill P&L.** When the exit closes an entry
+whose shares the stop already sold (exit_qty 0 after
+re-derivation), the stop's `filled_avg_price` is fetched by
+order-id lookup and realized_pl = (stop price - entry price) x
+stop-sold qty + (exit price - entry price) x exit qty, in the same
+decision/tax-lot fields the normal exit records. If the price
+cannot be fetched, realized_pl is NULL (unknown), explicitly NOT 0,
+plus a CRITICAL alert (`memory.close_decision` / `close_tax_lot`
+now accept None; `actually_up` is None when the exit price is
+unknown). E2e (trace (a)): stop_sold_qty 2.0 @ 160.00, exit_qty
+0.0, decision exit_price 160.00, realized_pl -14.53, no
+unprotected alert.
+
+**B17.4 — Race detection (detection, NOT prevention).** After the
+exit submits, `_check_exit_oversell` re-checks each cancelled stop
+BY ORDER ID; if (stop filled delta since cancel + exit ORDERED
+qty) > held at exit time -> `guardian.manual_halt` + CRITICAL
+alert. An inconclusive post-submit lookup halts the same way
+(fail-closed). Stated plainly in the code comments and alert text:
+the oversell has already happened when it fires. E2e (fake-broker
+hook elects the stop between the cancel confirmation and the
+submit): detection {held 2.0, exit_qty 2.0, stop_filled_qty 2.0,
+total_committed 4.0}; run status `needs_attention`; filling the
+exit takes total sold to 4.0 and held to -2.0 (the short is
+visible — the detection was real, not a false alarm).
+
+**B17.5 — Live-leg exact-once protection.** The live entry AND
+live exit are routed through the OrderManager (account="live",
+live leg's lookup) WHEN THE LIVE LEG IS ENABLED; while disabled
+the direct no-op call stays exactly as today — NO intents are
+created for a disabled leg (a disabled leg's submit returns None,
+which would wrongly become UNKNOWN). Live startup reconcile is
+account-filtered. One real bug found and fixed by the live-exit
+test: the exit loop popped BOTH paper and live expected positions
+even when the live exit did not submit — the live leg still held
+the shares, so the end-of-run reconcile halted on live drift
+(expected 0, actual 2). Now the live expected position is KEPT
+when the live exit is pending and cleared only when it resolves
+(FILLED -> flat; CANCELLED/REJECTED -> entry re-created with its
+expected position). E2e (fake live leg enabled, test-only config,
+separate `broker_state_live.json` store): live entry fail -> live
+intent UNKNOWN attempts 1, live order_count 0, paper SUBMITTED,
+Run 2 still 0/UNKNOWN/attempts 1; live entry drop -> adopted by
+post-submit lookup, 1 live order, Run 2 still 1; live exit fail ->
+paper order_count 2, live order_count 1 (buy only), live exit
+UNKNOWN attempts 1, `pending_exits["live:NVDA"]` exit_unknown,
+status ok (no drift halt after the fix), Run 3 still 1/UNKNOWN/
+attempts 1 with the same exposure_started_at.
+
+**B17.6 — Real-leg lookup returns prices.**
+`AlpacaLeg.get_by_client_order_id` now returns `limit_price` +
+`filled_avg_price` on BOTH the SDK and REST paths (404 still
+None; None means "no price", never 0.0). New
+`list_orders(status="all", limit=500)` — the broker's own full
+order history, the B17.1 independent-confirmation source.
+`attach_trailing_stop` passes a deterministic client_order_id
+through on both paths. Reservation chain (unit): market buy with
+filled_avg 167.20 -> (167.20, "filled_avg_price") (not last_price
+170.00 or entry_price 165.00); without a filled average ->
+(170.00, "last_price"); limit buy -> (167.25, "limit_price").
+Verified only against stubbed SDK/REST responses (B13 tests) —
+NOT against live Alpaca (paper-only, live leg disabled).
+
+**Event traces (all e2e through main.py, fake broker; NVDA entry
+price 167.26668907752102). Rules asserted in all three: the
+strategy exit stays BLOCKED while the stop can still execute; once
+the stop's final state is confirmed, fills are reconciled and any
+exit is sized from the REMAINING position (never the pre-cancel
+qty); total sold never exceeds the position held; the oversell halt
++ CRITICAL alert stay.**
+
+- **(a) Stop FILLS while cancellation is pending.** Run 2: exit
+  loop cancels the stop; the stop sells 2 @ 160.00 before the
+  cancel confirms; exit re-derived -> exit_qty 0, NO sell
+  submitted; order_count 1 (buy only); total sold 2.0; held 0.0;
+  stop attribution 2.0 @ 160.00, decision realized_pl -14.53; no
+  unprotected alert. Unprotected window: none — the shares were
+  sold by the stop itself.
+- **(b) Stop PARTIALLY FILLS before cancellation is confirmed.**
+  Run 2: stop sells 1 @ 160.00, then the cancel confirms; exit
+  re-derived -> sell SUBMITTED qty 1.0 (not the pre-cancel 2.0);
+  order_count 2; total sold 1.0 (the stop's 1; the sell unfilled);
+  held 1.0; attribution stop_sold_qty 1 @ 160.00, stop_realized_pl
+  -7.27, exit_qty 1; pending record `paper:NVDA` qty 1, filled 0,
+  exposure_uncertain False; protection held=1, exit-pending=1,
+  protected=0, unprotected=1. Filling the exit -> total sold 2.0,
+  held 0.0.
+- **(c) Cancellation status UNKNOWN across restart.** Run 2: exit
+  loop asks to cancel the stop; the broker applies the cancel but
+  DROPS the response (TimeoutError) and hides the stop from the
+  open-orders view for the rest of the process; lookup
+  inconclusive; NO exit submitted; run ends skipped stage
+  `exit_stop_cancel`; entry stays qty 2; order_count 1; total sold
+  0.0; held 2.0; `stop_cancel_requested_at` persisted on the entry
+  (2026-11-27T08:06:23.930013+00:00). Run 3: startup reconcile
+  looks the stop up BY ORDER ID -> status cancelled, filled 0;
+  records `stop_cancel_confirmed` with the unprotected window
+  start 08:06:23.93 -> end 08:06:25.83 (~1.90s), uncertain=True
+  ("the exact moment the stop stopped protecting is unknowable
+  while its status was unknown — the true unprotected duration is
+  bounded by the cancel-request time and the confirmation time");
+  then the exit is derived and sell SUBMITTED qty 2.0; order_count
+  2; held 2.0.
+
+**Unfilled-exit trace (Detail 2) — exposure record DURABLE across
+restart.** Stop confirmed cancelled, replacement exit ACCEPTED but
+UNFILLED. The record lives in `StrategyState.pending_exits`
+(persisted in the state file), not in memory. Run 2 (exit
+accepted): held 2.0, exit-pending 2.0, protected 0.0, unprotected
+2.0, exposure_started_at 2026-11-27T08:05:08.992074+00:00. Run 3
+(restart): SAME values, SAME exposure start — not reset, not zero;
+order_count stays 2 (no duplicate exit). Run 4 (exit partially
+fills 1): held 1.0, exit-pending 1.0, unprotected 1.0 — reduced by
+EXACTLY the quantity sold. Run 5 (remaining 1 fills): held 0.0,
+unprotected 0.0, exposure ended 08:05:14.532702 reason "sold",
+record removed, total sold 2.0. Each share's exposure interval
+ends when it is sold OR protection is confirmed restored. Wording
+corrected everywhere (Detail 2): for an UNKNOWN exit, the next run
+retries the LOOKUP only — the exit itself is never re-submitted
+(exact-once); a new exit can only be derived after the UNKNOWN
+intent resolves. (B16 test 3c now also asserts the UNKNOWN exit's
+exposure record survives restart: same exposure_started_at, still
+2 unprotected shares in Run 3.)
+
+**Oversized-stop interval (Detail 3) — SAME no-cap fake broker
+before AND after the fix.** Before fix (reproduced the short):
+entry qty 2, only 1 share filled, stop attached at qty 2 (the
+entry qty); trigger before any resize with the cap disabled
+(`stop_cap_disabled` — the stop sells its full nominal qty):
+stop sells 2.0 against 1 held share -> position -1.0, a visible
+short; stop filled_qty 2.0. After fix — per-step table (resize
+order is cancel-old-then-attach-new, chosen so two independently
+executable stops never protect the same shares twice; the cost is
+a brief unprotected window, recorded explicitly). Attach (stop
+sized to the FILLED qty only, 1, not the entry qty 2): step 1
+attach_start_no_working_stop sellable 0.0 / held 1.0 /
+unprotected 1.0; step 2 new_stop_attached sellable 1.0 / held 1.0
+/ unprotected 0.0. Unprotected window start 08:05:16.77 (bounded
+by the last run — the exact fill time is unknowable from the
+store) -> end 08:05:18.36, ~1.58s, uncertain=True, 1 share. 2nd
+share fills -> resize (old stop qty 1 cancelled BY ORDER ID, new
+stop attached qty 2 — a NEW broker id under the same deterministic
+coid): step 1 resize_start_old_stop_working sellable 1.0 / held
+2.0 / unprotected 1.0; step 2 old_stop_cancel_confirmed sellable
+0.0 / held 2.0 / unprotected 2.0; step 3 new_stop_attached
+sellable 2.0 / held 2.0 / unprotected 0.0. Unprotected window
+(step 2 -> step 3): 08:05:20.147562 -> 08:05:20.147728, 0.0s
+in-simulation (sub-millisecond), uncertain=False, 2 shares.
+Sellable never exceeds held at any step (max 2.0 vs 2.0 held).
+The double-protection window (old stop qty 1 still working when a
+new stop qty 2 attaches -> sellable 3 vs held 2) does NOT occur
+under cancel-first ordering — that is exactly what
+attach-new-then-cancel-old would create, and why it was rejected:
+both stops could fire and oversell (the B17.4 failure), which is
+worse than the brief unprotected gap. Protective quantity
+verified at attach and as fills arrive: at attach the stop is
+sized to the filled qty (1); the startup size sync attaches it
+when the first fill arrives (an unfilled limit buy gets NO stop —
+this deliberately changed the B13 `trail_calls` assertion 1 -> 0
+and the B16 3a/3b/3c setups, which now need an intermediate resize
+run); if the old cancel cannot be confirmed by order id, the
+resize is DEFERRED (old stop stays working, possibly undersized —
+no new stop is attached, so two live stops can never protect the
+same shares twice). A bug the after-fix test caught and fixed: the
+size sync originally read `held` from the entry record's qty (the
+entry qty for a partially-filled buy), which would have attached
+an oversized stop (2) for 1 held share — it now reads held from
+`positions()` (the shares actually held); if positions() cannot be
+fetched it logs a warning and returns without resizing
+(fail-closed). Orphaned stops (0 held) are cancelled.
+
+**The protection tradeoff.** What the stop protects: adverse price
+moves while the position is held — it sells automatically at the
+trail without any runner decision; its cost is that it can fire on
+noise and it can fire while the runner is mid-exit (the oversell).
+What the exit protects: signal loss — the thesis is gone, so the
+position should be closed even if the price has not fallen to the
+trail; its cost is that it only protects once it executes — an
+accepted-but-unfilled exit leaves shares held with no stop (the
+unfilled-exit trace: 2 shares unprotected from the stop-cancel
+confirmation until the exit fills). Cancel-stop-then-exit (B17's
+order): a brief unprotected gap between the stop's cancel
+confirmation and the exit's submission/confirmation — measured and
+recorded (trace (c): ~1.90s, 2 shares, bounded/uncertain; resize:
+0.0s in-simulation, 2 shares). Exit-then-cancel-stop: no
+unprotected gap, but the stop can fire while the exit is in flight
+— the oversell (4.0 committed vs 2.0 held in the B17.4 test,
+ending at held -2.0). B17 chooses cancel-first because an oversell
+(a short) is worse than a brief unprotected gap, and the gap is
+measured, bounded, and recorded per share. The stop-first path
+(stop fills during cancel) costs nothing in protection — the
+shares were sold by the stop itself — and the exit is re-derived
+from the remaining position with the stop's P&L attributed.
+
+**Intervals where the runner could only alert (detection, not
+prevention).** (1) B17.4 oversell: detection fires after the exit
+submitted and the stop also filled — the oversell (4.0 committed
+vs 2.0 held) has already happened; 2 shares beyond the position;
+the fill then takes held to -2.0. The runner halts + CRITICAL
+alert; it cannot undo the sells. Prevention (OCO/bracket) is
+deferred by the user. (2) Trace (c) unprotected window: ~1.90s, 2
+shares, uncertain=True (bounded by cancel-request and confirmation
+times). The runner records it; it cannot know the exact moment
+the stop stopped protecting while its status was unknown. (3)
+Oversized-stop attach window: ~1.58s, 1 share, uncertain=True
+(bounded by the last run; the exact fill time is unknowable from
+the store). The runner records it; it cannot retroactively protect
+shares between a fill arriving and the next run's startup sync.
+(4) Resize gap (cancel-old-then-attach-new): 0.0s in-simulation, 2
+shares, uncertain=False — but in production this is the real
+broker round-trip between the cancel confirmation and the attach
+(network latency + broker processing). The runner cannot eliminate
+it; cancel-first was chosen because the alternative
+(attach-new-then-cancel-old) creates a double-protection window
+(sellable 3 vs held 2) where both stops could fire. (5)
+Unfilled-exit exposure: 2 shares unprotected from the stop-cancel
+confirmation until the exit fills (in the test, 08:05:08.99 ->
+08:05:14.53, ~5.5s in-simulation; in production this is however
+long the exit sits unfilled — minutes to a session). The runner
+records it durably and reduces it exactly as fills arrive; it
+cannot shorten it.
+
+**Milo's verification (Nov 27, 2026):** read all diffs in full
+(order_manager, broker_alpaca, memory, fake_broker,
+fake_dual_broker, strategy_runner (1,688 diff lines),
+scripts/resolve_intent.py, both new test files, the B13/B16 test
+changes); ran the full suite himself (399 passed, 0 failed,
+226.90s) and re-ran the four affected test files after a
+comment-only fix (83 passed); checked every criterion against the
+user's requirements: B17.1 (lookup-first; no change without
+--confirm; timeout/404 alone AND empty-list alone both refused;
+evidence reference recorded; attempt history preserved; never
+submits — confirmed by reading the CLI: no submit call anywhere);
+B17.2 (stop state BY ORDER ID via _stop_fill_state; ambiguous ->
+exit blocked; mirror only when the stop's fills account for the
+shortfall; unaccounted shortfall / higher position still halt);
+B17.3 (stop fill price attributed; NULL not 0 when unfetchable,
+with CRITICAL alert); B17.4 (post-submit oversell -> halt +
+CRITICAL, detection wording in code and alert); B17.5 (live entry
++ exit through the manager only when enabled; no intents while
+disabled — verified in the code and the e2e tests); B17.6
+(limit_price + filled_avg_price on both SDK and REST lookup paths,
+404 still None — stub-tested only, NOT against live Alpaca);
+traces (a)/(b)/(c) assertions read and matched to the user's
+criteria exactly; unfilled-exit case (durable record, 2
+unprotected after restart, partial fill reduces by exactly 1);
+oversized-stop before/after on the SAME no-cap broker (short
+reproduced before: net -1.0; after: per-step sellable vs held,
+sellable never exceeds held); wording ("retries the LOOKUP only"
+— grep confirms zero "retries next run" remnants in
+strategy_runner.py/order_manager.py). Two real findings in
+verification: (1) the subagent's comment claimed the default
+"paper" account keeps existing paper intent ids unchanged — FALSE.
+Adding "account" to the canonical hash changes EVERY intent id
+(Milo computed it: old 6456fc7093677ae4be78a0900b2a2ae5 vs new
+671a24452d2fb4d7f45d3a57d9cd57b9). Milo corrected the comment in
+both places (order_manager.py, strategy_runner.py) to state the
+truth: safe only because no production intent store exists yet
+(soak not started, daily run dry-run/preview, zero orders ever
+submitted) — do NOT deploy mid-soak with open intents, or a
+re-derived order would get a new id and the old intent would
+never be reconciled. (2) The B13 trail_calls 1 -> 0 change is a
+real behavior change (an unfilled adopted order now gets NO stop
+until the startup size sync attaches one on the first fill) —
+justified by Detail 3 and asserted explicitly in the updated
+test, and it is the source of the ~1.58s attach window above.
+Files changed: strategy_runner.py +1,407; order_manager.py +332;
+fake_broker.py +233; fake_dual_broker.py +160; broker_alpaca.py
++104; memory.py +33; test_b13_soak_readiness.py +25;
+test_b16_done_for_day.py +79; new scripts/resolve_intent.py,
+test_resolve_intent.py (17 tests), test_b17_remaining_exposure.py
+(22 tests). Full suite 399 passed (360 baseline + 17 + 22),
+Milo's run. `data/edgar_excerpts_v2/manifest.json` modified by
+the daily run as usual — excluded from the commit.
+
+**REMAINING EXPOSURE / OPEN ITEMS (for the user's soak decision —
+reported, not decided):**
+- B17.4 is DETECTION, not prevention. The oversell has already
+  happened when it fires; only OCO/bracket eliminates the race.
+  OCO/bracket stays DEFERRED per the user's Nov 27, 2026 decision.
+- SAME-DAY RE-ENTRY INTENT-ID COLLISION (found Nov 27, 2026, NOT
+  fixed — B17 scope): the intent id has no attempt/sequence
+  component for ENTRIES, so a same-day re-entry after a close
+  reuses the old intent id and the manager returns the old FILLED
+  intent, creating a phantom position (expected 2, actual 0 ->
+  drift halt). Exits got the fix (`exit_attempts` in the inputs,
+  first attempt omits the field so its id is unchanged). Blocked in
+  production by `submitted_today`, but needs a decision on whether
+  the entry id needs an attempt component too.
+- LIVE-LEG STOP NEVER SIZED: the size sync is paper-only, and the
+  live stop is attached only in the entry loop if
+  `live_filled_qty > 0` at submit time (0 for an unfilled limit
+  buy). B17.5's brief was only exact-once protection for the live
+  entry/exit; live stop sizing is a separate gap (unreachable
+  today — live disabled).
+- LIVE-LEG OVERSELL CHECK IS PAPER-ONLY: `_check_exit_oversell`
+  re-checks only the paper stop after the exit submits; a live
+  stop electing in the same window would not be detected the same
+  way (unreachable today — live disabled).
+- `pending_exit_filled` snapshot blemish (cosmetic, not fixed):
+  the snapshot still shows exit-pending 1.0 because the pending
+  record's `filled_qty` is only updated in the
+  SUBMITTED/PARTIALLY_FILLED branch — the record itself is removed
+  and unprotected is correctly 0. One-line fix in a later pass if
+  wanted.
+- Trace (b) P&L quirk (PRE-EXISTING, not a B17 change): the
+  decision's realized_pl mixes the stop's real fill price (160.00)
+  with the exit's unfilled order price (the fixture's dummy last
+  price) because the decision is closed at exit-SUBMISSION time.
+  The P&L is only final when the exit fills; the stop's attribution
+  (-7.27) is recorded separately in `stop_attribution`. Closing a
+  decision at submission rather than at fill predates B17.
+- After a resize re-attach, the OLD stop's record under the
+  deterministic coid is REPLACED by the new stop (new broker id,
+  same coid). The old stop's cancel was confirmed by its cancel
+  response + the pre-cancel order-ID lookup + the re-fetch before
+  the re-attach — but it cannot be re-read by coid afterwards. The
+  real Alpaca leg has the same shape (a coid is reusable once the
+  original order is terminal; the old order stays retrievable by
+  its broker id, which the fake broker's coid-keyed dict does not
+  model).
+- B17.6 prices and the B17.5 live path are verified against
+  STUBS / the fake live leg only — never against live Alpaca
+  (paper-only, live leg disabled). Same caveat as B13.
+- The five alert-only intervals above (B17.4 oversell; trace (c)
+  ~1.90s; attach ~1.58s; resize round-trip; unfilled-exit
+  exposure) are inherent to the cancel-first design, not bugs to
+  fix inside B17 — they are the cost side of the protection
+  tradeoff the user asked to see.

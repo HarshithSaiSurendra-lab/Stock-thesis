@@ -352,7 +352,14 @@ def test_e2e_fault_injection_through_main(tmp_path):
     state3 = _broker_state(fixture)
     assert _order_count(state3) == 1 and state3["submit_calls"] == 1, "still exactly one attempt, one order"
     assert state3["live_submit_calls"] == 2, state3
-    assert len(state3["trail_calls"]) == 1, "adopted order flows through the normal post-submit path"
+    # B17 / Detail 3: the adopted order is UNFILLED, so no trailing
+    # stop is attached at entry time — the stop is sized to the
+    # FILLED qty (the protective quantity), not the entry qty, and
+    # nothing is held yet. The startup size sync attaches it when the
+    # first fill arrives. The adopted order still flows through the
+    # normal post-submit path (the intent / order assertions above).
+    assert len(state3["trail_calls"]) == 0, (
+        "an unfilled adopted order gets no stop yet (B17: stop sized to filled qty)")
 
 
 def test_exit_goes_through_manager_after_entry(tmp_path):
@@ -643,9 +650,12 @@ def test_alpaca_lookup_by_client_order_id_sdk(monkeypatch):
     leg.client = SimpleNamespace(
         get_order_by_client_order_id=lambda cid: SimpleNamespace(
             id="ord-1", symbol="NVDA", status="filled",
-            filled_qty="3", qty="3", limit_price="167.18"))
+            filled_qty="3", qty="3", limit_price="167.18",
+            filled_avg_price="167.20"))
+    # B17.6: the lookup returns limit_price + filled_avg_price too.
     assert leg.get_by_client_order_id("x") == {
-        "id": "ord-1", "symbol": "NVDA", "status": "filled", "filled_qty": 3.0}
+        "id": "ord-1", "symbol": "NVDA", "status": "filled", "filled_qty": 3.0,
+        "limit_price": 167.18, "filled_avg_price": 167.20}
 
 
 def test_alpaca_lookup_by_client_order_id_404_returns_none(monkeypatch):
@@ -673,9 +683,14 @@ def test_alpaca_lookup_by_client_order_id_rest_fallback(monkeypatch):
     leg = AlpacaLeg(AccountConfig("paper", 100_000.0, 0.10, True), 0.25, {})
     leg.client = None
     leg._rest_json = lambda method, path: {
-        "id": "ord-9", "symbol": "AAPL", "status": "new", "filled_qty": "0"}
+        "id": "ord-9", "symbol": "AAPL", "status": "new", "filled_qty": "0",
+        "limit_price": None, "filled_avg_price": None}
+    # B17.6: the lookup returns limit_price + filled_avg_price too
+    # (None here — a market order has no limit, and an unfilled order
+    # has no filled average; None means "no price", never 0.0).
     assert leg.get_by_client_order_id("cid-9") == {
-        "id": "ord-9", "symbol": "AAPL", "status": "new", "filled_qty": 0.0}
+        "id": "ord-9", "symbol": "AAPL", "status": "new", "filled_qty": 0.0,
+        "limit_price": None, "filled_avg_price": None}
 
 
 def test_alpaca_lookup_rest_404_returns_none(monkeypatch):

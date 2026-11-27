@@ -606,15 +606,16 @@ def test_stop_cancel_helper(tmp_path):
     _write_fixture(fixture)
     broker = FakeDualBroker(fixture)
     # No stop yet: nothing to cancel -> ok.
-    ok, reason = _cancel_trailing_stop_on_leg(broker.paper, "NVDA")
-    assert ok and reason == ""
+    ok, reason, fills = _cancel_trailing_stop_on_leg(broker.paper, "NVDA")
+    assert ok and reason == "" and fills == []
     stop = broker.paper.attach_trailing_stop("NVDA", 2.0, 0.05)
     assert stop["id"] == "fake-trail-0001"
     open_orders = broker.paper.open_orders()
     stops = [o for o in open_orders if o.get("order_type") == "trailing_stop"]
     assert len(stops) == 1 and stops[0]["qty"] == 2.0
-    ok, reason = _cancel_trailing_stop_on_leg(broker.paper, "NVDA")
+    ok, reason, fills = _cancel_trailing_stop_on_leg(broker.paper, "NVDA")
     assert ok and reason == "", reason
+    assert len(fills) == 1 and fills[0]["status"] == "cancelled" and fills[0]["filled_qty"] == 0.0
     assert broker.paper.open_orders() == []
     assert _stops(fixture)[stop["client_order_id"]]["status"] == "cancelled"
 
@@ -630,7 +631,7 @@ def test_stop_cancel_helper(tmp_path):
         def cancel_order(self, order_id=None, client_order_id=None):
             return {"id": order_id, "status": "submitted", "filled_qty": 0.0}
 
-    ok, reason = _cancel_trailing_stop_on_leg(_NoopCancelLeg(), "NVDA")
+    ok, reason, fills = _cancel_trailing_stop_on_leg(_NoopCancelLeg(), "NVDA")
     assert not ok and "did not take effect" in reason
 
 
@@ -688,9 +689,12 @@ def test_sync_trailing_stops_after_mirror(tmp_path):
     assert broker.paper.open_orders() == []
 
     # Reduced to filled (1 of 2): the old stop is cancelled and a new
-    # one is attached for the filled qty with the same percent.
+    # one is attached for the filled qty with the same percent. In
+    # production the intent mirror runs first and sets the record qty
+    # to the filled qty (1.0); the sync re-attaches for the record's
+    # CURRENT qty.
     stop2 = broker.paper.attach_trailing_stop("NVDA", 2.0, 0.05)
-    state.open_entries["NVDA"] = {"symbol": "NVDA", "qty": 2.0,
+    state.open_entries["NVDA"] = {"symbol": "NVDA", "qty": 1.0,
                                   "trail_percent": 0.05,
                                   "trail_stop_id": stop2["id"]}
     synced = _sync_trailing_stops_after_mirror(
@@ -921,8 +925,18 @@ def test_e2e_exit_fires_first_then_stop(tmp_path):
     from fake_dual_broker import FileBackedFakeBroker
     store = FileBackedFakeBroker(fixture)
     store.fill(coid, "fill-1", 2, limit)
+    # B17 / Detail 3: Run 1 attaches NO stop (the buy was unfilled at
+    # submit time — the stop is sized to the FILLED qty). The next
+    # run's startup size sync attaches it for the filled qty (2).
+    _reset_submitted_today(home)
+    rc, out = _run_main(home, fixture, ["--mode", "regular", "--broker", "fake"],
+                        exit_on_signal_loss=1)
+    assert rc == 0, out
+    log15 = _latest_decision_log(home)
+    assert log15["status"] == "ok", out
     stop_coid = _stop_coid_for(fixture, "NVDA")
     assert _stops(fixture)[stop_coid]["status"] == "submitted"
+    assert _stops(fixture)[stop_coid]["qty"] == 2.0
 
     _reset_submitted_today(home)
     _write_fixture(fixture, nvda_cycle=NVDA_FALLING)
@@ -965,7 +979,20 @@ def test_e2e_stop_fires_first_then_exit(tmp_path):
     from fake_dual_broker import FileBackedFakeBroker
     store = FileBackedFakeBroker(fixture)
     store.fill(coid, "fill-1", 2, limit)
+    # B17 / Detail 3: Run 1 attaches NO stop (the buy was unfilled at
+    # submit time). The next run's startup size sync attaches it for
+    # the filled qty (2), so it can fire before the exit run.
+    _reset_submitted_today(home)
+    rc, out = _run_main(home, fixture, ["--mode", "regular", "--broker", "fake"],
+                        exit_on_signal_loss=1)
+    assert rc == 0, out
+    log15 = _latest_decision_log(home)
+    assert log15["status"] == "ok", out
     stop_coid = _stop_coid_for(fixture, "NVDA")
+    assert _stops(fixture)[stop_coid]["qty"] == 2.0
+    # Fresh store instance: the stop was created by Run 1.5 (a separate
+    # process); the pre-Run-1.5 instance is stale.
+    store = FileBackedFakeBroker(fixture)
     triggered = store.trigger_trailing_stop(stop_coid, limit)
     assert triggered["qty"] == 2.0
     assert _total_sold(fixture, "NVDA") == 2.0
@@ -983,6 +1010,11 @@ def test_e2e_stop_fires_first_then_exit(tmp_path):
     assert _strategy_state(home)["open_entries"] == {}
     assert "unprotected" not in _alerts_log(home)
     assert _read_alerts(home) == []
+    # B17.2: the startup mirror saw the stop's fills account for the
+    # whole shortfall and removed the entry (no drift halt).
+    assert any(e.get("action") == "stop_fill_mirrored_removed"
+               and e.get("stop_filled_qty") == 2.0
+               for e in log2.get("stop_sync", [])), log2.get("stop_sync")
 
 
 def test_e2e_exit_failure_leaves_unprotected_alert(tmp_path):
@@ -1003,7 +1035,21 @@ def test_e2e_exit_failure_leaves_unprotected_alert(tmp_path):
     from fake_dual_broker import FileBackedFakeBroker
     store = FileBackedFakeBroker(fixture)
     store.fill(coid, "fill-1", 2, limit)
+    # B17 / Detail 3: Run 1 attaches NO stop (the buy was unfilled at
+    # submit time). The next run's startup size sync attaches it for
+    # the filled qty (2), so the exit run can cancel it.
+    _reset_submitted_today(home)
+    rc, out = _run_main(home, fixture, ["--mode", "regular", "--broker", "fake"],
+                        exit_on_signal_loss=1)
+    assert rc == 0, out
+    log15 = _latest_decision_log(home)
+    assert log15["status"] == "ok", out
     stop_coid = _stop_coid_for(fixture, "NVDA")
+    assert _stops(fixture)[stop_coid]["qty"] == 2.0
+    # Fresh store instance: the stop was created by Run 1.5 (a separate
+    # process); the pre-Run-1.5 instance is stale and its _save would
+    # wipe the stop from the state file.
+    store = FileBackedFakeBroker(fixture)
     store.fail_next_submit()
 
     _reset_submitted_today(home)
@@ -1039,9 +1085,20 @@ def test_e2e_exit_failure_leaves_unprotected_alert(tmp_path):
     assert any("unprotected" in a["reason"] for a in stored_alerts)
     assert all(a["resolved"] == 0 for a in stored_alerts)
 
+    # B17.2 / Detail 2: the UNKNOWN exit's exposure record is DURABLE
+    # (persisted in the state file): the same exposure start survives
+    # the restart, and the run still reports 2 unprotected shares.
+    _pending2 = _strategy_state(home).get("pending_exits", {})
+    assert "paper:NVDA" in _pending2, _pending2
+    assert _pending2["paper:NVDA"]["exit_unknown"] is True
+    assert _pending2["paper:NVDA"]["qty"] == 2.0
+    _prot2 = [p for p in log2.get("protection", []) if p.get("symbol") == "NVDA"]
+    assert _prot2 and _prot2[0]["unprotected"] == 2.0, log2.get("protection")
+
     # Run 3: the exit is NOT re-submitted (the UNKNOWN exit intent
     # blocks NVDA — exact-once), the entry stays open, the alert
-    # persists, and nothing was sold.
+    # persists, and nothing was sold. The next run retries the LOOKUP
+    # only — the exit itself is never re-submitted.
     _reset_submitted_today(home)
     rc, out = _run_main(home, fixture, ["--mode", "regular", "--broker", "fake"],
                         exit_on_signal_loss=1)
@@ -1050,6 +1107,14 @@ def test_e2e_exit_failure_leaves_unprotected_alert(tmp_path):
     assert log3["status"] == "ok", out
     assert _order_count(fixture) == 1
     assert _total_sold(fixture, "NVDA") == 0.0
+    _pending3 = _strategy_state(home).get("pending_exits", {})
+    assert "paper:NVDA" in _pending3, _pending3
+    assert _pending3["paper:NVDA"]["exposure_started_at"] == \
+        _pending2["paper:NVDA"]["exposure_started_at"], "exposure start survives the restart"
+    _prot3 = [p for p in log3.get("protection", []) if p.get("symbol") == "NVDA"]
+    assert _prot3 and _prot3[0]["unprotected"] == 2.0, log3.get("protection")
+    assert _prot3[0]["exposure_started_at"] == \
+        _pending2["paper:NVDA"]["exposure_started_at"]
     assert _strategy_state(home)["open_entries"]["NVDA"]["qty"] == 2.0
     assert _intent_by_id(home, exit_intent["intent_id"])["status"] == "UNKNOWN"
     assert "unprotected" in _alerts_log(home)

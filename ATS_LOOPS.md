@@ -135,7 +135,43 @@ be checked.
   confirmation and the exit submit (only an OCO/bracket eliminates
   it); a never-filled buy's tax lot would close at 0 proceeds only if
   the live leg is ever enabled (lot_id is None in the paper-only
-  path).
+  path). **Closed Nov 27, 2026 (B17):** (1) the operator resolution
+  path (`scripts/resolve_intent.py` + `OrderManager.resolve_intent`)
+  — lookup first, then a human decision with a reason AND a
+  structured evidence reference; a timeout/404 alone, or an empty
+  orders list alone, is refused and the block stays; the resolution
+  is an appended record, attempt history preserved; it never
+  submits. (2) the startup mirror of stop fills (by order ID —
+  never inferred from absence in open orders; ambiguous -> exit
+  blocked across restart; mirror only when the stop's fills account
+  for the shortfall). (3) stop-fill P&L attribution (NULL, not 0,
+  when the fill price cannot be fetched). (4) post-submit oversell
+  detection — halt + CRITICAL alert, DETECTION not prevention
+  (OCO/bracket stays deferred). (5) live-leg entry + exit through
+  the OrderManager when the live leg is enabled; no intents while
+  disabled. (6) the real leg's lookup returns limit_price +
+  filled_avg_price. Plus the three-outcome traces ((a) stop fills
+  during cancel, (b) partial fill, (c) cancel unknown across
+  restart, ~1.90s bounded/uncertain unprotected window), the
+  durable unfilled-exit record (2 unprotected shares survive a
+  restart; a partial fill reduces the count by exactly what sold),
+  and the oversized-stop interval on the SAME no-cap fake broker
+  (before: short reproduced, position -1.0; after: stop sized to
+  the FILLED qty at attach and resized as fills arrive,
+  cancel-old-then-attach-new, sellable never exceeding held; the
+  double-protection window — sellable 3 vs held 2 — does not occur
+  under cancel-first ordering). The stop is now sized to the
+  FILLED qty everywhere: an unfilled limit buy gets NO stop until
+  the startup size sync attaches one on the first fill. Remaining
+  (not in B17): the oversell race can only be detected, not
+  prevented (OCO deferred); the same-day re-entry intent-id
+  collision for ENTRIES (exits got `exit_attempts`; entries did
+  not — blocked in production by `submitted_today`); live-leg stop
+  sizing and the live-leg oversell check are paper-only gaps;
+  B17.6/B17.5 are stub/fake-leg verified only, never against live
+  Alpaca. Full traces, numbers, and the protection tradeoff are in
+  PROGRESS.md (B17 section, Nov 27, 2026). Overall soak readiness
+  stays OPEN for the user's call after the B17 report.
 - **Stop conditions:** any step rc != 0; safety preflight fails;
   regime_blocked / halted / kill switch present; `StaleBarsError`
   ("benchmark data stale") — the run stops, it does not trade on old
@@ -265,7 +301,20 @@ be checked.
   inconclusive lookup leaves the intent untouched.
   The live loop then mirrors CANCELLED intents into the strategy
   state (Loop 1) and cancels the working entry order before an
-  exit, sizing the sell to the filled qty.
+  exit, sizing the sell to the filled qty. **Nov 27, 2026 (B17.1):**
+  an UNKNOWN intent now has a human resolution path —
+  `scripts/resolve_intent.py` (lookup first, then `--confirm` +
+  `--reason` + structured evidence `{source, scope, result}`; a
+  timeout/404 alone, or an empty orders list alone, is refused;
+  the resolution is appended, never overwriting attempts or the
+  broker_order_id; it never submits). **Nov 27, 2026 (B17.5):** the
+  account is part of the idempotency key — the paper and live legs
+  are separate broker accounts, so the same logical order on both
+  is two broker orders with two client_order_ids, and each leg's
+  startup reconcile is account-filtered. Adding "account" changes
+  EVERY intent id vs pre-B17 (verified by hash); that is safe only
+  because no production intent store exists yet — do not deploy
+  mid-soak with open intents.
 - **Stop conditions:** reconcile() is LOOKUP-ONLY — it has no
   place_order_fn parameter at all, so there is no resubmit path in
   the module. A 404 "not found" is inconclusive, not proof the
