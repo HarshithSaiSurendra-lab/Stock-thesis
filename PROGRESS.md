@@ -2112,7 +2112,9 @@ regime gate, or January criteria change; no real or paper orders.
   is safe by intent determinism (the next run re-derives the same
   exit intent and submit() returns the existing SUBMITTED intent
   — no second sell); a raising per-order lookup in the exit
-  tripwire vetoes the exit (fail-closed, retries next run); a
+  tripwire vetoes the exit (fail-closed; the exit decision is re-made
+  next run — no exit intent exists yet at the tripwire stage, so
+  nothing is re-submitted); a
   never-filled buy's tax lot would close at 0 proceeds only if
   the live leg is ever enabled (lot_id is None in the paper-only
   path, so the close is skipped today); mirror matches by
@@ -2482,8 +2484,12 @@ parts, all landed:
   None result — broker failure, guardian gate, or manager UNKNOWN)
   after the stop was cancelled, the shares are UNPROTECTED: a
   CRITICAL alert fires (alerts.log + the intent store, stage
-  `exit_unprotected`), the entry stays open, and the exit retries
-  next run (or a human resolves it). The buy-cancel path also
+  `exit_unprotected`), the entry stays open, and the next run retries
+  the LOOKUP only — the exit itself is never re-submitted (exact-once);
+  a new exit can only be derived after the UNKNOWN intent resolves
+  (lookup adoption or human resolution). [Wording corrected Nov 27,
+  2026: the earlier text said "the exit retries next run", which is
+  wrong for an UNKNOWN exit.] The buy-cancel path also
   handles the invisible DONE_FOR_DAY order (cancel by client_order_id
   when the intent is non-terminal) and the tripwire no longer treats
   done_for_day as confirmation the order is gone (it VETOES). A None
@@ -2586,3 +2592,22 @@ decided):
   research files (Form 4: 27 + SMA: 10 = 37), which now live on
   research-historical; the agentic-p0 baseline is 334, and 334 + 26
   new = 360.
+
+### 2026-11-27 — B16 CLOSED as passed in simulation (user decision)
+
+B16 (cancel/expiry state feedback + the done_for_day reopen) is
+closed as PASSED in simulation, per the user's decision Nov 27,
+2026. The overnight reservation trace (1 share reserved overnight,
+167.25; attempts 1; final 2 held / 0 reserved; no replacement while
+unresolved) and the fill-during-cancel trace (exit sells the final
+confirmed 2, not the pre-cancel 1) answer the original B16
+questions. Overall SOAK READINESS stays OPEN for B17 (operator
+resolution path, stop-fill startup mirror, stop-fill P&L
+attribution, race detection, live-leg exact-once, real-leg lookup
+prices; plus the three-outcome traces, the unprotected-shares
+measurement, and the oversized-stop interval). OCO/bracket stays
+DEFERRED; the daily job stays in preview; the January decision
+stays separate. No B16 code changed in this closure — it is a
+status decision on the work already landed (agentic-p0 b20fb52 /
+remote 475496d) and verified (26/26 new tests, full suite 360
+passed, Milo's run).
