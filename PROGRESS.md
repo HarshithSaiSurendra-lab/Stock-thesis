@@ -2121,3 +2121,212 @@ research-historical. $0 spend, no LLM calls, no orders. Command:
   sma_timing.py / test_sma_timing.py were restored byte-identical
   from research-historical (the Form 4 replay imports the SMA
   harness); no tracked file was modified by the Form 4 work.
+### 2026-11-26 — Finding: 20 (actually 41) of 370 backtest entries have no positive buy signal
+
+Read-only trace, at the user's request (Nov 26, 2026). NO baseline
+change. Logged here BEFORE any change so the completed experiments
+stay reproducible. Traced by a subagent, verified by Milo (see
+Verification below). Full note: /tmp/zero_signal_finding.md;
+diagnostics in /tmp (diag_zero_signal.py, diag_count20.py,
+diag_split20.py, diag_filing.py, diag_filing_check.py, diag_form4.py,
+diag_pairs.py; outputs /tmp/diag_out*.txt, /tmp/f4_out_real,
+/tmp/f4_out_supp, /tmp/nosignal_pairs.json).
+
+- (a) INTENTIONAL OR ACCIDENT? — ACCIDENT, an unexamined edge case.
+  The rule is `backtest.py` `signal_to_weights` (line 93; guard at
+  line 112): `top = valid.nlargest(min(cfg.max_positions, len(valid)))`;
+  `if (top > 0).any(): top = top[top > 0]` (comment: "only take
+  genuinely positive signals"); `if top.empty: continue`. The guard
+  defeats the stated intent exactly on all-zero days: when no top-5
+  signal is positive, the filter is skipped and all five zero-signal
+  names get equal weight (0.2 each). The `if top.empty: continue`
+  is DEAD CODE in the long-only branch whenever any symbol has data
+  — the author expected the filter to be able to empty `top`.
+  Arrived in the very first commit (5d1c46b) with no design note, no
+  justifying comment, no test asserting it; `git log -L` shows nobody
+  has ever revisited the guard. No design doc states an
+  always-invested rule. Phase 0 diagnosed the behaviour as a DEFECT
+  symptom, not a rule (experiments/diagnosis/phase0-diagnosis.md:46):
+  "Exposure is 99.8% invested on 99.8% of days, ~5 positions always
+  — the system is never in cash and never rests."
+- Sharpest fact (measured): ALL 247 all-zero sessions are
+  regime-blocked days; ZERO are regime-allowed-but-no-signal. The
+  panel is zeroed by the regime mask on blocked days
+  (research_runner._regime_mask), so the rule is exactly "the regime
+  mask is defeated" — on every regime-blocked day the engine buys 5
+  names with zero signal. The picks are alphabetical, not ranked: on
+  an all-zero row `nlargest(5)` returns the first five symbols in
+  column order — AAPL, ABBV, ABT, ADBE, AEP every time.
+- CORRECTION TO THE "20 OF 370" FIGURE: the SMA design doc's 20
+  counts only the subset the entry-gate check buckets (prev close
+  <= SMA50). The direct count — deciding selection day all-zero —
+  is 41 of 370 (11.1%): 20 with prev close <= SMA50 plus 21 with
+  prev close above it. The 41 pairs are in /tmp/nosignal_pairs.json,
+  clustered on 9 regime-blocked rebalance days (2024-04-22,
+  2024-07-25, 2024-08-08, 2024-12-23, 2025-03-03, 2025-11-24,
+  2026-02-06, 2026-03-02, 2026-07-24), symbols only AAPL/ABBV/ABT/
+  ADBE/AEP.
+- (b) DEPENDENCY TABLE — real vs suppressed (diagnostic only, nothing
+  rewritten; suppression = the one-line change: apply the positive
+  filter unconditionally, plus the same change in
+  sma_timing._daily_selection for re-entry selections):
+  - SMA baseline (open fills): 41/370 inside. Suppressed: -7.82% ->
+    -6.01% @10bps (+1.81pp); -20.50% -> -17.70% @20bps. Entries
+    370 -> 332; exposure 0.9955 -> 0.6232; time invested 0.9985 ->
+    0.6261 (= the regime-allowed fraction — suppression makes the
+    mask finally work).
+  - SMA variant (strict): same 41 in its baseline. -6.11% -> -4.75%
+    @10bps; net timing effect +1.71pp -> +1.26pp. Verdict NEITHER
+    unchanged.
+  - Form 4 (same replay): 41/370 in baseline; 3 of the 28 matched
+    exits were no-signal entries (ADBE 2024-04-22, AAPL 2024-08-08,
+    ADBE 2024-12-23). Suppressed: baseline -7.82% -> -6.01%;
+    variant -4.57% -> -1.65%; diff +3.25pp -> +4.36pp. IC FLIPS
+    SIGN: -0.0423 (t -0.57) -> +0.0332 (t +0.50), still ~0;
+    triggers 54 -> 49; direct price effect +$10.54 -> +$23.03
+    (bootstrap still covers zero). DROP unchanged — under
+    suppression it is DROP on both clauses (~0 AND wrong sign).
+  - Registered v2 train (close-to-close): 42/364 (11.5%).
+    Suppressed: -14.01% -> -12.48% @10bps (+1.53pp); -25.62% ->
+    -23.08% @20bps. Gate stays FAILED.
+  - Registered v2 holdout: 13/46 (28.3%). Suppressed: -3.40% ->
+    -3.83% @10bps (-0.43pp). Suppression HURTS on the holdout —
+    the no-signal picks won there. Gate stays FAILED.
+  - Fresh-validation v4 base: (a) rounds-1/2 construction: train
+    103/1057, holdout 26/115. (b) runbook construction: train
+    38/339, holdout 9/39. (a) train -25.86% -> -21.30% (+4.55pp);
+    holdout -4.33% -> -4.75% (-0.42pp). (b) train +3.69% ->
+    +10.72% (+7.03pp); holdout +0.01% -> +1.31% (+1.30pp). Either
+    way the January base WILL contain the behaviour unless the
+    runbook is amended.
+  - Filing-delta: 0 all-zero selection days in either arm (the Haiku
+    panel always has a positive score). Only exposure: 10 warm-up
+    rows — the cohort ffill's leading days before each cohort's first
+    grid day, where the engine buys 60 zero-valued names. Baseline
+    +53.86% -> +55.08%; experiment +47.64% -> +48.52%; diff -6.22pp
+    -> -6.56pp; trades 798 -> 594. The PRIMARY (IC change -0.0126)
+    never goes through signal_to_weights — untouched. DROP unchanged.
+  - Everything else via `run_backtest` (the only caller of
+    signal_to_weights): Phase 0 diagnosis; evaluate_variants +
+    walk-forward folds; round-1/2 diagnostics; r2_confirm.py; LLM
+    long-horizon v2/v3 (0/1 selection panels — same warm-up-only
+    exposure as filing-delta, not separately quantified);
+    verify_sprint.py; cohort loop. All inherit it. The ML ranker
+    is not built yet; its January run uses "the same execution", so
+    it inherits the behaviour too unless the runbook is amended.
+- FLAG — THE JANUARY v4 BASE CONSTRUCTION IS AMBIGUOUS. The runbook
+  (Step 4) says both "Same construction as rounds 1/2"
+  (`backtest.py` / `r2_panels.py` inputs, `exp-technical-v2` panel,
+  long-hold) — construction (a) is the `v4_regime_quality_risk`
+  panel, rebalance 1, min hold 1 (verified: it reproduces the
+  frozen -4.33%/-8.45% exactly), while construction (b) is the v2
+  panel, rebalance 5, min hold 10 (the gate reader's v4_base.json
+  `experiment_id: "exp-technical-v2"` supports (b)). The two differ
+  by ~7pp on train. This needs resolving before the January run
+  REGARDLESS of the suppression question.
+- (c) DAILY RUNNER — DOES NOT BEHAVE THE SAME WAY. `run_daily`
+  never calls `signal_to_weights` (grep: only backtest.py:156 and
+  test_integrity.py reference it). Its selection is per-symbol
+  gating, then top-N by a different score: (1) hard regime gate
+  first (filters.py:23 `market_regime`; strategy_runner.py:1125):
+  `if not regime.ok` -> status `regime_blocked`, zero orders, no
+  symbol even evaluated — this is the mask the backtest defeats.
+  (2) Per symbol (strategy_runner.py:1325): `if direction ==
+  "no_trade"` -> skipped ("no trade signal"). No signal => never
+  a candidate. Ever. (3) Further gates: momentum, trend quality,
+  63d relative strength, valid quote, `downside_ok`, memory check;
+  then (:1339) `if rank["decision_score"] < cfg.signals.min_decision_score`
+  (default 10.25) -> skipped. (4) `selected = candidates[:cfg.sizing.target_n_positions]`
+  (:1387, default 5). A day with no qualifying symbol yields zero
+  candidates and zero orders. So a live/paper run can NEVER enter a
+  position with no buy signal — the opposite of the backtest. The
+  difference is intentional in the sense that the live loop was
+  built as a separate trend engine with its own gates
+  (LIVE_DESIGN_ID = "live-trend"), but it was never reconciled with
+  the backtest: the backtest that "validates" the signals invests on
+  regime-blocked days and on alphabetical zero-signal picks, while
+  the live runner it supposedly previews never would. Every backtest
+  number is therefore a lower-fidelity preview of live behaviour
+  than assumed — the backtest is systematically more invested (time
+  invested 0.9985 vs ~0.63 on the same days) and holds 41 positions
+  the live runner would never take.
+- (d) RECOMMENDATION — a baseline change needing a NEW REGISTRATION,
+  not a silent bug fix. Suppressing zero-signal picks changes every
+  registered number it touches (v2 train +1.53pp, SMA baseline
+  +1.81pp, Form 4 baseline +1.81pp AND its IC sign, January v4 base
+  +1.3 to +7.0pp depending on construction), and it changes the
+  engine's semantics (the regime mask becomes a real off-switch;
+  time invested 0.9985 -> ~0.63). That is a different strategy, not
+  a typo correction. But it is also the behaviour the live runner
+  already implements, so the honest framing is "align the backtest
+  with the live engine's stated rules", registered as a new
+  experiment (e.g. `exp-technical-v3`: v2 panel + positive-only
+  selection), with the January v4 base recomputed under the same
+  rule if adopted. WHAT WOULD HAVE TO BE RE-RUN: the v2 train/
+  holdout numbers, the SMA baseline + variant (NEITHER stands,
+  numbers move), the Form 4 baseline + variant (DROP stands, IC
+  flips sign), the filing-delta portfolio comparison (IC primary
+  untouched; diff -6.22 -> -6.56pp), the round-1/2 v4 base numbers,
+  and — most importantly — the January fresh-validation v4 base,
+  whose (a)-vs-(b) construction ambiguity must be resolved first
+  regardless. The frozen holdout must not be re-tuned against; a
+  re-run under the new rule is a new registration with its own
+  design doc. The live runner needs no change. One related decision
+  for the same moment: the suppression also removes the 10 warm-up
+  rows in the cohort loop (filing-delta trades 798 -> 594) — if the
+  cohort machinery is kept, its warm-up handling (ffill from an
+  empty selection) deserves the same explicit rule rather than
+  inheriting it from signal_to_weights.
+- Milo's verification (Nov 27, 2026): read `backtest.py`
+  signal_to_weights lines 93-130 in full (the guard and the dead
+  `if top.empty: continue` are exactly as reported); read the
+  /tmp/zero_signal_finding.md note and /tmp/nosignal_pairs.json
+  (41 pairs, 9 entry dates, symbols only AAPL/ABBV/ABT/ADBE/AEP);
+  confirmed the SMA design doc's "20" is the prev-close-<=SMA50
+  bucket (line 79) while the direct all-zero count is 41; confirmed
+  the daily-runner divergence (no signal_to_weights call in
+  run_daily; regime gate at strategy_runner.py:1125, no_trade skip
+  at :1325, decision-score floor at :1339, selection at :1387);
+  confirmed the runbook Step 4 ambiguity (line 93-94 carries both
+  "Same construction as rounds 1/2" and "exp-technical-v2 panel,
+  long-hold"; the gate reader requires experiment_id
+  "exp-technical-v2"); read the agent's diagnostic outputs
+  (/tmp/diag_out*.txt, /tmp/f4_out_real, /tmp/f4_out_supp): the
+  REAL runs reproduce the registered numbers EXACTLY (SMA baseline
+  -0.0782 / 370 entries / 365 exits; v2 train -0.1401 / 364 entries;
+  Form 4 real base -0.0782 / variant -0.0457 / IC -0.0423 / 54
+  triggers), and the suppressed runs are as reported (SMA baseline
+  -0.0601 / 332 entries / 0 no-signal entries; Form 4 suppressed
+  base -0.0601 / variant -0.0165 / IC +0.0332 / 49 triggers, decision
+  DROP). Verification boundary, stated plainly: the code facts, the
+  mechanism, and the reproduction evidence were verified by Milo;
+  the suppressed-replay numbers are the agent's diagnostics, read
+  directly from its output files and not independently re-run by
+  Milo. No baseline change was made. The B16-correction subagent
+  was running in the same tree while this trace ran; the line
+  numbers above are as read Nov 27, 2026 and may shift when it
+  lands (the selection logic quoted is unaffected by it).
+
+
+### 2026-11-27 — 10-K-only filing-delta hypothesis registered (not run)
+
+`exp-filing-delta-10k-only-v1` registered as its own hypothesis, kept
+separate from exp-filing-delta-v1's DROP (user instruction Nov 26,
+2026). Design doc: experiments/exp-filing-delta-10k-only-v1-design.md.
+Frozen: 10-K filings only, YoY vs the prior-year 10-K (the actual
+Lazy Prices design); minimum-sentence rule (>= 10 sentences on BOTH
+the current and prior risk sections); same tilt (0.25) and cohort
+machinery as the parent; train only; primary = IC change (experiment
+minus baseline) with paired NW t + issuer-cluster bootstrap.
+Motivation (post-hoc, from the parent's results — NOT evidence for
+this run): 10-K-only delta IC -0.0219 (NW t -1.59, n=269, n=611 days),
+the literature's direction, weak; the >=10-sentence cut stayed
+positive (+0.0351, t +1.78). A train-only pass carries a
+multiple-comparison discount (the same window already pointed this
+way) that must be stated in the results. Decision rule: DROP if the
+IC change <= 0 or the net return difference <= 0 @10bps; COLLECT if
+the direction is right but the CIs include 0 / a sensitivity flips /
+< 10 known filings; REGISTER FOR A PROSPECTIVE TEST only if the IC
+change is positive with the CI excluding 0 AND the net difference is
+positive @10bps AND both sensitivities keep the sign AND >= 10 known
+filings. NOT RUN — awaiting the user's go-ahead. $0 spend; no LLM calls.
