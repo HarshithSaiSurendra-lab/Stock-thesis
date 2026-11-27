@@ -83,10 +83,23 @@ be checked.
   unfilled limit order would trip the drift halt, because the
   strategy records the expected position at submit time while
   `positions()` only reflects fills. An open order the strategy does
-  NOT expect is still drift. Known follow-up before the soak (not in
-  B13): sizing's `existing_strategy_notional` still uses filled
-  positions only, so unfilled open orders don't count toward deployed
-  capital.
+  NOT expect is still drift. **Closed Nov 26, 2026 (B15):** sizing
+  now reserves budget for open buy orders — `existing_strategy_notional`
+  includes remaining qty × reservation price (limit → filled average →
+  current last price → entry price; no price is ever invented; an order
+  with no usable price reserves nothing and logs a warning). Two buys
+  that each fit alone but exceed the cap together now size the second
+  down; a partial fill counts exactly once; a confirmed cancellation
+  releases only the unfilled portion; an open sell reserves nothing.
+  **Open before the soak (B15 observations, not in B15):** (1) the
+  startup reconcile marks an expired/cancelled broker order CANCELLED
+  in the intent store but nothing feeds that back into the strategy
+  state — `expected_positions` still holds the full qty, so the next
+  run's end-of-run reconcile trips the drift halt on the routine case
+  of an unfilled DAY limit order expiring at close; (2) the exit
+  branch sells the full entry qty without cancelling a working buy
+  limit for the symbol — if that buy fills after the exit, the
+  position re-opens.
 - **Stop conditions:** any step rc != 0; safety preflight fails;
   regime_blocked / halted / kill switch present; `StaleBarsError`
   ("benchmark data stale") — the run stops, it does not trade on old

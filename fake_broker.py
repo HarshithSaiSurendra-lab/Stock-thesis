@@ -90,8 +90,22 @@ class FakeBroker:
             order = self._orders[client_order_id]
             if fill_id in self._fills:
                 return dict(self._fills[fill_id])
-            filled = float(order["filled_qty"]) + float(qty)
+            prev_filled = float(order["filled_qty"])
+            prev_avg = order.get("filled_avg_price")
+            new_qty = float(qty)
+            filled = prev_filled + new_qty
             order["filled_qty"] = min(filled, float(order["qty"]))
+            # B15: keep the volume-weighted average fill price on the
+            # stored order, so open_orders() can price the unfilled
+            # remainder (the filled_avg_price fallback). A zero-qty
+            # fill leaves the average untouched.
+            if new_qty > 0:
+                if prev_filled > 0 and prev_avg is not None:
+                    order["filled_avg_price"] = (
+                        float(prev_avg) * prev_filled + float(price) * new_qty
+                    ) / (prev_filled + new_qty)
+                else:
+                    order["filled_avg_price"] = float(price)
             order["status"] = "filled" if order["filled_qty"] >= float(order["qty"]) else "partially_filled"
             fill = {
                 "fill_id": fill_id,
@@ -103,6 +117,18 @@ class FakeBroker:
             }
             self._fills[fill_id] = fill
             return dict(fill)
+
+    def cancel(self, client_order_id: str) -> dict:
+        """Cancel an open order (B15): the unfilled remainder stops
+        working, but shares already filled stay filled — they are a
+        position, not part of the cancelled order. Cancelling a filled
+        or already-cancelled order is a no-op (idempotent)."""
+        with self._lock:
+            order = self._orders[client_order_id]
+            if str(order.get("status", "")).lower() not in {
+                    "filled", "cancelled", "canceled", "rejected"}:
+                order["status"] = "cancelled"
+            return dict(order)
 
     def duplicate_fill_delivery(self, fill: dict) -> dict:
         """Replay the exact same fill (same fill_id) — a duplicate delivery."""

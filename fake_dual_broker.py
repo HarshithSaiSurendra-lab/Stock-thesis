@@ -191,6 +191,22 @@ class FileBackedFakeBroker:
             # next process resumes the count, not the scenario.
             self._save()
 
+    def fill(self, client_order_id: str, fill_id: str, qty: float, price: float) -> dict:
+        """Apply a (partial) fill and persist it, so a later process
+        sees the filled quantity (B15)."""
+        try:
+            return self._broker.apply_partial_fill(client_order_id, fill_id, qty, price)
+        finally:
+            self._save()
+
+    def cancel(self, client_order_id: str) -> dict:
+        """Cancel an open order and persist it (B15): the unfilled
+        remainder stops working; filled shares stay filled."""
+        try:
+            return self._broker.cancel(client_order_id)
+        finally:
+            self._save()
+
     def order_count(self) -> int:
         return self._broker.order_count()
 
@@ -226,9 +242,12 @@ class FakeLeg:
         # open_orders() and reconcile() counts it there — so the
         # strategy's expected position (recorded on submit) is not
         # flagged as drift while the order is still working.
+        # B15: a cancelled order's FILLED shares are still a holding
+        # (real Alpaca reports them in /v2/positions) — only rejected
+        # orders (never filled by construction) are skipped.
         net: dict[str, float] = {}
         for order in self._store.list_orders():
-            if str(order.get("status", "")).lower() in {"cancelled", "canceled", "rejected"}:
+            if str(order.get("status", "")).lower() in {"rejected"}:
                 continue
             filled = float(order.get("filled_qty") or 0.0)
             if filled == 0:
@@ -251,8 +270,8 @@ class FakeLeg:
 
     def open_orders(self) -> list[dict]:
         """Open orders for this leg (the unfilled part of each). The
-        fake broker never fills, so every submitted order is open
-        until cancelled/rejected."""
+        fake broker never fills on its own, so every submitted order
+        is open until cancelled/rejected or filled via fill()."""
         if self.mode != "paper":
             return []
         out = []
@@ -267,6 +286,14 @@ class FakeLeg:
                 "qty": float(order.get("qty") or 0.0),
                 "filled_qty": float(order.get("filled_qty") or 0.0),
                 "status": str(order.get("status", "")).lower(),
+                # B15: pass the stored prices through (limit_price was
+                # stored at submit; filled_avg_price is maintained by
+                # apply_partial_fill). Either may be None — the sizing
+                # reservation treats None as "no price", never as 0.0.
+                "limit_price": (float(order["limit_price"])
+                                if order.get("limit_price") is not None else None),
+                "filled_avg_price": (float(order["filled_avg_price"])
+                                     if order.get("filled_avg_price") is not None else None),
             })
         return out
 

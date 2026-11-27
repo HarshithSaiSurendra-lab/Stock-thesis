@@ -1779,3 +1779,68 @@ samples, not a complete-but-unclosed window).
   report, no candidate. The diff was read in full. No gate criterion,
   threshold, or design changed; no real window, holdout, or filing
   touched.
+
+### 2026-11-26 — B15: sizing reservations for open buy orders
+
+The user's check #1 on the B13 report, built next as he directed
+("I'd do the sizing fix next"). The daily job stayed in preview
+throughout (all live runs through the fake broker in temp dirs).
+
+- `AlpacaLeg.open_orders()` entries now carry `limit_price` +
+  `filled_avg_price` (SDK + REST fallback; `_opt_float` helper —
+  None when unset, never 0.0). Same fields on the fake leg's open
+  orders (`fake_dual_broker.py`); `fake_broker.py` maintains a
+  volume-weighted `filled_avg_price` on partial fills and gains an
+  idempotent `cancel()` (filled shares stay filled); the file-backed
+  fake gains `fill()`/`cancel()` passthroughs that persist across
+  subprocess restarts.
+- `run_daily` sizing (`strategy_runner.py`) now adds open-BUY
+  reservations to `existing_strategy_notional`: remaining = qty −
+  filled_qty, priced by `_reservation_price_for_order` — limit first
+  (a limit buy can only fill at or below its limit, so the limit IS
+  the worst-case cost), then filled average (a market buy has no
+  limit), then the run's current last price, then the entry price
+  recorded in the strategy state at submit (the normal case, since a
+  submitted symbol is deduped out of the candidate list). No price
+  is ever invented; an order with no usable price reserves nothing
+  and logs a warning (fail-open but visible — the pre-B15 behaviour
+  for that order). Filled qty counts once in `paper_positions` at
+  market notional; the reservation counts the unfilled part once
+  alongside it. Sells never reserve; non-strategy symbols are
+  ignored. The data source is reconcile's `_open_orders_for_leg`,
+  so sizing and reconcile cannot disagree about what the broker
+  holds. The decision log's budget blocks now carry
+  `open_buy_reservations` + per-order `buy_reservations` detail.
+- Acceptance tests (16 new in `test_b15_sizing_reservations.py`,
+  cap = max_deployed 1000, NVDA last 167.26, limit 167.25): (1) two
+  buys, one cap — Run 1 buys NVDA (reservation 334.50); Run 2 sizes
+  AMD down to 8 shares / 572.88 (334.50 + 572.88 = 907.38 ≤ 1000),
+  while the no-open-order control sizes AMD at 13 shares / 930.93
+  (334.50 + 930.93 = 1265.43 > 1000 — the cap would have been
+  exceeded without the fix). (2) Partial fill counts exactly once —
+  1 of 2 shares filled: existing 334.51 = 1×167.26 (filled) +
+  1×167.25 (remaining @ limit); the double-count 501.76 is asserted
+  against. (3) Confirmed cancellation releases only the unfilled
+  portion — existing drops to 167.26 (filled share only), AMD rises
+  to 11 shares / 787.71. (4) Open sell reserves nothing — exit path,
+  existing 0.0, AMD gets the full cap (13 shares). (5) Regression:
+  no open orders → sizing identical to before. Full suite: **315
+  passed** (286 B13 + 5 B14 amendment + 8 concurrent filing-delta
+  tests + 16 B15).
+- Milo verified independently: 16/16 B15 tests; full suite 315/315;
+  the diffs were read in full. `entry_price` (the 4th fallback) was
+  checked: it is the fill price observed from the leg at submit
+  (strategy_runner.py line ~1120), not a target. One test bug was
+  caught by the run itself (`intended_notional` uses the ask, last
+  close + 0.01) and fixed in the assertion.
+- Two B15 observations for the parent, NOT fixed (out of scope) —
+  open before the soak: (1) after a cancel/expiry, the startup
+  reconcile marks the intent CANCELLED in the intent store but
+  nothing feeds that back into the strategy state, so
+  `expected_positions` still holds the full qty and the next run's
+  end-of-run reconcile trips the drift halt — fail-closed by design,
+  but it fires on the ROUTINE case of an unfilled DAY limit order
+  expiring at close, so the soak needs a fix or a runbook procedure,
+  not just an operator note. (2) The exit branch sells the full
+  entry qty without cancelling a working buy limit for the symbol —
+  if that buy fills after the exit, the position re-opens.

@@ -114,6 +114,21 @@ def _time_in_force_enum(value: str):
     return TimeInForce.DAY
 
 
+def _opt_float(value) -> Optional[float]:
+    """float(value) or None when the broker leaves the field unset.
+
+    Alpaca returns prices as strings, Decimals, or null depending on
+    the path (SDK vs REST) and the order type (a market order has no
+    limit_price). Callers treat None as "no price", never as 0.0.
+    """
+    if value is None:
+        return None
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
 class AlpacaLeg:
     """One account (paper or live) wrapped with the capital floor."""
 
@@ -241,7 +256,12 @@ class AlpacaLeg:
         failure (fail-closed: reconcile then sees the unfilled order
         as missing and halts, rather than masking drift).
         Each entry: {"id", "symbol", "side", "qty", "filled_qty",
-        "status"}.
+        "status", "limit_price", "filled_avg_price"}. The price fields
+        are None when the broker leaves them unset (a market order has
+        no limit_price; an unfilled order has no filled_avg_price) —
+        never 0.0. B15: sizing needs them to price the reservation for
+        an open buy order's unfilled quantity (limit first, then
+        filled average, then the current last price).
         """
         if not self.cfg.enabled:
             return []
@@ -259,6 +279,8 @@ class AlpacaLeg:
                     "qty": float(o.qty),
                     "filled_qty": float(o.filled_qty or 0.0),
                     "status": str(o.status.value if hasattr(o.status, "value") else o.status).lower(),
+                    "limit_price": _opt_float(getattr(o, "limit_price", None)),
+                    "filled_avg_price": _opt_float(getattr(o, "filled_avg_price", None)),
                 } for o in raw]
             raw = self._rest_json("GET", f"{self._base_url}/v2/orders?status=open")
             return [{
@@ -268,6 +290,8 @@ class AlpacaLeg:
                 "qty": float(o.get("qty") or 0.0),
                 "filled_qty": float(o.get("filled_qty") or 0.0),
                 "status": str(o.get("status", "")).lower(),
+                "limit_price": _opt_float(o.get("limit_price")),
+                "filled_avg_price": _opt_float(o.get("filled_avg_price")),
             } for o in raw]
         except Exception as e:  # noqa: BLE001 - any fetch failure is fail-closed
             log.error(f"[{self.cfg.mode}] open orders fetch failed: {e}")

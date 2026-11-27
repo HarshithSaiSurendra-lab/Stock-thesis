@@ -20,7 +20,7 @@ from indicators import build_feature_frame
 from memory import SignalSnapshot, TradeMemory
 from notifier import Notifier, format_daily
 from order_manager import OrderManager, build_intent, compute_inputs_hash
-from reconcile import reconcile
+from reconcile import _open_orders_for_leg, reconcile
 from sector_map import sector_benchmark_for, sector_benchmarks_for
 from trade_signal import composite_signal, composite_score, trend_quality_score
 from universe import StaleBarsError, fetch_symbol_frame, select_universe
@@ -268,6 +268,98 @@ def _positions_notional(positions: dict, symbols: Optional[set[str]] = None) -> 
         except (TypeError, ValueError):
             continue
     return total
+
+
+def _reservation_price_for_order(order: dict, last_prices: dict, entry_prices: dict) -> tuple[Optional[float], Optional[str]]:
+    """Price one open buy order's unfilled quantity for its budget
+    reservation. The chain is deliberate — no price is ever invented:
+
+    1. limit_price — a limit buy can only fill at or below its limit,
+       so the limit IS the worst-case cost of the remainder.
+    2. filled_avg_price — a market buy has no limit; the average price
+       its filled shares actually got is the best estimate for the
+       rest.
+    3. last_price — the symbol's current price from data already
+       fetched in this run (the candidate's last_price).
+    4. entry_price — the price recorded in the strategy state when the
+       order was submitted (the fill/entry price observed then). Used
+       only when the symbol is not a candidate this run — which is the
+       normal case for an open order, since a symbol submitted today is
+       deduped out of the candidate list.
+
+    Returns (price, source) or (None, None) when no price in the chain
+    is usable; the caller then reserves nothing for that order and
+    logs a warning (fail-open, but visible — the pre-B15 behaviour for
+    that order, not a silent success).
+    """
+    for key, source in (("limit_price", "limit_price"),
+                        ("filled_avg_price", "filled_avg_price")):
+        try:
+            value = float(order.get(key)) if order.get(key) is not None else None
+        except (TypeError, ValueError):
+            value = None
+        if value is not None and value > 0:
+            return value, source
+    symbol = str(order.get("symbol"))
+    for prices, source in ((last_prices, "last_price"), (entry_prices, "entry_price")):
+        try:
+            value = float(prices.get(symbol)) if prices.get(symbol) is not None else None
+        except (TypeError, ValueError):
+            value = None
+        if value is not None and value > 0:
+            return value, source
+    return None, None
+
+
+def _open_buy_reservations(open_orders: list, symbols: Optional[set[str]],
+                           last_prices: dict, entry_prices: dict) -> tuple[float, list]:
+    """Budget already committed to open BUY orders (B15).
+
+    A filled position is counted once, in `paper_positions` at market
+    notional; the same order's UNFILLED quantity is counted once here,
+    at the reservation price from `_reservation_price_for_order`. The
+    filled shares are never in both: the reservation uses remaining =
+    qty - filled_qty only. Sells never reserve buy budget (an open
+    sell reduces exposure; it does not commit buy capital), and orders
+    for symbols the strategy does not own are ignored, exactly like
+    `_positions_notional`.
+
+    Returns (total_reservation, detail) where detail is one dict per
+    reserved order: symbol, order_id, remaining_qty, price,
+    price_source, notional. Orders with no usable price contribute
+    nothing and are logged.
+    """
+    total = 0.0
+    detail: list[dict] = []
+    for order in open_orders or []:
+        if str(order.get("side", "")).lower() != "buy":
+            continue
+        symbol = str(order.get("symbol"))
+        if symbols is not None and symbol not in symbols:
+            continue
+        try:
+            remaining = float(order.get("qty") or 0.0) - float(order.get("filled_qty") or 0.0)
+        except (TypeError, ValueError):
+            continue
+        if remaining <= 0:
+            continue
+        price, source = _reservation_price_for_order(order, last_prices, entry_prices)
+        if price is None:
+            log.warning(
+                "open buy order %s for %s has no usable price; reserving nothing for it",
+                order.get("id"), symbol)
+            continue
+        notional = remaining * price
+        total += notional
+        detail.append({
+            "symbol": symbol,
+            "order_id": str(order.get("id")),
+            "remaining_qty": remaining,
+            "price": round(price, 2),
+            "price_source": source,
+            "notional": round(notional, 2),
+        })
+    return total, detail
 
 
 def _position_payload_for_validation(positions: dict, symbols: Optional[set[str]] = None) -> dict:
@@ -828,6 +920,39 @@ def run_daily(
     live_positions = broker.live.positions()
     strategy_symbols = _strategy_owned_symbols(state)
     existing_strategy_notional = _positions_notional(paper_positions, strategy_symbols)
+    # B15: reserve budget for open buy orders (paper leg). A filled
+    # position is already in existing_strategy_notional at market
+    # notional; an open buy's unfilled quantity can still fill, so it
+    # reserves remaining * reservation price. Without this, a second
+    # buy is sized as if the first order's capital were still free.
+    # Same data source as reconcile() (_open_orders_for_leg), so the
+    # two views of "what the broker holds" cannot disagree. Sells
+    # never reserve; non-strategy symbols are ignored. The reservation
+    # is part of existing_strategy_notional from here on, so the
+    # decision log's existing_notional is the honest committed number.
+    last_prices: dict[str, float] = {}
+    for _item in candidates:
+        try:
+            _price = float(_item.get("last_price"))
+        except (TypeError, ValueError):
+            continue
+        if _price > 0:
+            last_prices[str(_item["symbol"])] = _price
+    entry_prices: dict[str, float] = {}
+    for _sym, _rec in state.open_entries.items():
+        try:
+            _price = float(_rec.get("entry_price"))
+        except (TypeError, ValueError):
+            continue
+        if _price > 0:
+            entry_prices[str(_sym)] = _price
+    reservation_total, reservation_detail = _open_buy_reservations(
+        _open_orders_for_leg(broker.paper), strategy_symbols,
+        last_prices, entry_prices)
+    if reservation_detail:
+        log.info("open buy reservations: %s (total %.2f)",
+                 reservation_detail, reservation_total)
+    existing_strategy_notional += reservation_total
     max_deployed = equity * cfg.sizing.max_deployed_pct
     remaining_budget = max(0.0, max_deployed - existing_strategy_notional)
     blocked_symbols = set(state.open_entries) | set(paper_positions) | set(live_positions)
@@ -1096,6 +1221,8 @@ def run_daily(
                 "sizing_equity": equity,
                 "max_deployed": round(max_deployed, 2),
                 "existing_notional": round(existing_strategy_notional, 2),
+                "open_buy_reservations": round(reservation_total, 2),
+                "buy_reservations": reservation_detail,
                 "remaining_budget": round(remaining_budget, 2),
                 "target_positions": cfg.sizing.target_n_positions,
                 "max_position_pct": cfg.sizing.max_position_pct,
@@ -1135,6 +1262,8 @@ def run_daily(
             "sizing_equity": equity,
             "max_deployed": round(max_deployed, 2),
             "existing_notional": round(existing_strategy_notional, 2),
+            "open_buy_reservations": round(reservation_total, 2),
+            "buy_reservations": reservation_detail,
             "remaining_budget": round(remaining_budget, 2),
         },
         "decision_report": [_decision_report_item(item) for item in candidates],
