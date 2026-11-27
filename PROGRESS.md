@@ -2002,3 +2002,122 @@ definition frozen (close back above its SMA50 within 5 sessions).
   exp-technical-v2.json train); the +6.19pp gap to the open-fill
   baseline (-7.82%) is the overnight-fill effect, as the design
   anticipated. Tests 10/10; full suite 325 passed.
+### 2026-11-26 — exp-form4-insider-exit-v1: DROP
+
+Research extension part 2 (user's §2 + §3 spec), train period only
+(2024-01-02..2026-08-17), registered BEFORE any return was computed
+(`experiments/exp-form4-insider-exit-v1-design.md`). Built by a
+subagent, verified by Milo independently (re-ran the runner to a
+separate out-dir — the JSON matches the reported results exactly
+except run_at_utc/runtime_seconds), committed to
+research-historical. $0 spend, no LLM calls, no orders. Command:
+`.venv/bin/python scripts/run_form4_exit.py` (58s).
+
+- Question: do unusual insider sales (Form 4, code S, non-derivative
+  common stock) identify holdings where an earlier exit improves the
+  outcome after costs? Frozen feature: stake fraction sold
+  (shares_sold / (shares_sold + shares_owned_following)) at or above
+  the 75th percentile of the SAME insider's own prior 12-month
+  sales (same issuer/owner/capacity/security, >= 3 known priors,
+  only history public by the filing date). Amendments resolve to
+  the latest filing; multi-owner accessions excluded (198);
+  price-band splits collapse to one observation. First eligible
+  action: the first session open strictly after the filing became
+  public (acceptance timestamp from the submissions API, or the
+  filing-date close as fallback). Baseline = the SMA experiment's
+  v2 engine replay (open fills); the variant adds the Form 4 exit
+  only, re-entry via a fresh engine selection, freed cash stays
+  in cash. Horizon 20d, sector-relative (peer-mean).
+- Baseline anchor verified: the empty-trigger run reproduces the
+  SMA numbers exactly (net -7.82% @10bps, 370 entries, 365 exits).
+- Coverage: 15 bulk quarters 2023q1-2026q3 (155.6 MB, cached in
+  .cache/form4/); 39,543 Form 4/4A submissions in scope -> 11,044
+  sale observations, ALL with a known stake (0 unknown);
+  2,890 unusual (insufficient history 4,781; not unusual 3,373).
+  Acceptance timestamps for 9,970/11,044 (90.3%), 1,074 on the
+  filing-date fallback. 54 trigger events (18 issuers, 44 event
+  dates, 28 insiders; 33 fired, 29 exits). Excluded: never held
+  835, filing predates holding 1,915, no first action 86, action
+  after window 0. 41 of the 54 triggers (76%) are 10b5-1 plan
+  sales — the own-history percentile does NOT separate plan sales
+  from opportunistic ones.
+- Results (@10bps): baseline -7.82% vs variant -4.57% (net
+  portfolio difference +3.25pp; +2.92pp @20bps). Max drawdown
+  -22.26% vs -16.67%. Turnover 0.2333 vs 0.2299. Exposure 0.9955
+  vs 0.8992. 29 Form 4 exits (21 min-hold overrides, 26 whipsaws
+  by the SMA definition — reported for comparability only, weak
+  for Form 4 exits).
+- Primary (trigger IC): mean daily Spearman IC -0.0423 over 35
+  trigger days, Newey-West t -0.57, issuer-cluster 95% CI
+  [-0.3502, +0.298] (62.6% of draws negative) — ~0 by the frozen
+  DROP clause. The project's evidence bar elsewhere is |IC| >=
+  0.30; this is one-seventh of it.
+- Direct exit-price effect: +$10.54 on the $1,000 book (14 losses
+  avoided $84.10 vs 11 gains forfeited -$73.56); trade-level
+  bootstrap 5th/95th [-$61.63, +$74.19]. Portfolio block bootstrap
+  95% CI [-10.16pp, +20.84pp] (70.4% positive). Added trading cost
+  -$2.24. The +3.25pp is EXPOSURE, not exit skill (the SMA
+  pattern): the variant holds less of a negative-return book and
+  underperforms its own exposure-matched benchmark by 58pp
+  (variant -4.57% vs benchmark +53.68%; baseline underperforms
+  its own by 73pp).
+- Sensitivities keep the sign but keep the sign of an exposure
+  effect, not of a ranking signal: ex-largest contributor (ABBV
+  -$24.12) -> +4.99pp, IC -0.0643; exit delayed one session ->
+  +5.53pp, 26 exits.
+- VERDICT: DROP the feature in its registered form. Judgment-call
+  transparency: the frozen rule's DROP clause ("trigger IC is ~0")
+  and COLLECT clause ("direction is right but uncertainty too
+  wide") overlap when the IC is negative-but-null, and the
+  design's Limits section says a null IC with a positive
+  portfolio difference is a COLLECT outcome, not a pass — so
+  REGISTER was never available. The choice was DROP vs COLLECT.
+  The agent operationalized "~0" as |mean IC| < 0.10 OR |NW t| <
+  1.0, with precedence DROP > COLLECT > REGISTER, and recorded it
+  in the results JSON (decision_rule_note, ic_about_zero: true).
+  Milo accepts DROP: the point estimate is 1/7 of the evidence
+  bar, the economic gain is exposure rather than exit skill, the
+  direct price effect is +$10.54 +/- ~$68, and 76% of triggers
+  are plan sales — the feature as defined does not isolate what
+  it was supposed to isolate. The honest thread left open is the
+  10b5-1-EXCLUDED trigger (a new registration, not a rescue).
+- Three real bugs found by the agent's verification, all fixed +
+  regression-tested (decision unchanged either way): (a) the
+  panels' sessions are 05:00 timestamps while trade entries are
+  midnight date strings — a same-session action compared as
+  strictly later, so the ICE 2024-04-08 event wrongly became a
+  trigger, and exit-session actions were wrongly excluded; (b)
+  the fallback first-action returned the filing date's own
+  session on 05:00 data (a lookahead error for the 1,074
+  fallback observations) — now compares by DATE; (c) event_id
+  collisions (same accession/date/owner, different capacity)
+  collapsed 2,890 unusual events to 2,620 in the events file —
+  the id now includes capacity + security. Net effect of the
+  fixes: 52 -> 54 triggers, IC -0.0296 -> -0.0423.
+- Also verified by Milo: the timing code (first_eligible_action
+  with real timestamps uses each session's ET open strictly after
+  the acceptance timestamp; the fallback takes the next session
+  by date), the unusual-flag priors (same identity, trans_date
+  in [d-365, d), filing_date strictly before, >= 3 priors, 75th
+  percentile), the baseline anchor, and the coverage counts in
+  the results JSON. 27 new tests in test_form4_exit.py (fixtures
+  a-d plus stake math, unusual flag, capacity identity,
+  empty-trigger identity vs the SMA baseline, trigger exit +
+  strict re-entry, IC sign); full suite 371 passed on Milo's run
+  (357 + 4 new Form 4 tests + 10 restored SMA tests — the
+  earlier one-off KeyError in test_multi_owner_accession_excluded
+  did not reproduce). The SEC moved the 2026q2/q3 bulk files to
+  a new path; the downloader tries the new path, then the old.
+  Typo'd years (0024/0025/2027-2029) in the bulk data are treated
+  as unparseable and counted (3 rows). One Form 4 exit (of 29)
+  has no baseline counterfactual price (n_unmatched: 1).
+- Queued follow-ups (document only, NOT built): the 10b5-1-excluded
+  trigger (most urgent, given 41/54 plan sales); the
+  Cohen-Malloy-Pomorski routine/opportunistic calendar rule;
+  the purchase (P) entry tilt; 90th-percentile threshold variants.
+- Files (research-historical only): experiments/exp-form4-insider-exit-v1-design.md,
+  form4_exit.py, scripts/run_form4_exit.py, test_form4_exit.py,
+  experiments/results/exp-form4-insider-exit-v1.{json,md,-events.json,-observations.json}.
+  sma_timing.py / test_sma_timing.py were restored byte-identical
+  from research-historical (the Form 4 replay imports the SMA
+  harness); no tracked file was modified by the Form 4 work.

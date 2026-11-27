@@ -1,0 +1,861 @@
+{
+  "experiment_id": "exp-form4-insider-exit-v1",
+  "run_at_utc": "2026-11-27T02:23:33.194600+00:00",
+  "runtime_seconds": 59.9,
+  "train_window": [
+    "2024-01-02",
+    "2026-08-17"
+  ],
+  "horizon_sessions": 20,
+  "costs_bps": [
+    10,
+    20
+  ],
+  "baseline_anchor": {
+    "net10": -0.0782,
+    "net20": -0.205,
+    "n_entries": 370,
+    "n_baseline_exits": 365
+  },
+  "baseline": {
+    "10.0": {
+      "total_return": -0.0782,
+      "max_drawdown": -0.2226,
+      "avg_daily_turnover": 0.2333,
+      "avg_gross_exposure": 0.9955,
+      "time_invested": 0.9985,
+      "n_entries": 370,
+      "n_baseline_exits": 365,
+      "n_min_hold_overrides": 0,
+      "n_whipsaws": 0,
+      "n_insufficient": 0,
+      "n_missing_open": 0,
+      "n_block_cleared_signal": 0,
+      "n_block_cleared_all_zero": 0,
+      "n_block_refused_all_zero": 0,
+      "n_reentries_signal": 0,
+      "n_reentries_all_zero": 0,
+      "extra_reentries_by_clearing_kind": {
+        "signal": 0,
+        "all_zero": 0,
+        "untagged": 0
+      },
+      "net_timing_effect_pp": 0.0,
+      "n_form4_exits": 0
+    },
+    "20.0": {
+      "total_return": -0.205,
+      "max_drawdown": -0.2965,
+      "avg_daily_turnover": 0.2332,
+      "avg_gross_exposure": 0.9955,
+      "time_invested": 0.9985,
+      "n_entries": 370,
+      "n_baseline_exits": 365,
+      "n_min_hold_overrides": 0,
+      "n_whipsaws": 0,
+      "n_insufficient": 0,
+      "n_missing_open": 0,
+      "n_block_cleared_signal": 0,
+      "n_block_cleared_all_zero": 0,
+      "n_block_refused_all_zero": 0,
+      "n_reentries_signal": 0,
+      "n_reentries_all_zero": 0,
+      "extra_reentries_by_clearing_kind": {
+        "signal": 0,
+        "all_zero": 0,
+        "untagged": 0
+      },
+      "net_timing_effect_pp": 0.0,
+      "n_form4_exits": 0
+    }
+  },
+  "variant": {
+    "10.0": {
+      "total_return": -0.0457,
+      "max_drawdown": -0.1667,
+      "avg_daily_turnover": 0.2299,
+      "avg_gross_exposure": 0.8992,
+      "time_invested": 0.9985,
+      "n_entries": 366,
+      "n_baseline_exits": 332,
+      "n_min_hold_overrides": 21,
+      "n_whipsaws": 26,
+      "n_insufficient": 0,
+      "n_missing_open": 0,
+      "n_block_cleared_signal": 18,
+      "n_block_cleared_all_zero": 0,
+      "n_block_refused_all_zero": 44,
+      "n_reentries_signal": 18,
+      "n_reentries_all_zero": 0,
+      "extra_reentries_by_clearing_kind": {
+        "signal": 3,
+        "all_zero": 0,
+        "untagged": 0
+      },
+      "net_timing_effect_pp": 3.25,
+      "n_form4_exits": 29
+    },
+    "20.0": {
+      "total_return": -0.1758,
+      "max_drawdown": -0.2441,
+      "avg_daily_turnover": 0.2298,
+      "avg_gross_exposure": 0.8994,
+      "time_invested": 0.9985,
+      "n_entries": 366,
+      "n_baseline_exits": 332,
+      "n_min_hold_overrides": 21,
+      "n_whipsaws": 26,
+      "n_insufficient": 0,
+      "n_missing_open": 0,
+      "n_block_cleared_signal": 18,
+      "n_block_cleared_all_zero": 0,
+      "n_block_refused_all_zero": 44,
+      "n_reentries_signal": 18,
+      "n_reentries_all_zero": 0,
+      "extra_reentries_by_clearing_kind": {
+        "signal": 3,
+        "all_zero": 0,
+        "untagged": 0
+      },
+      "net_timing_effect_pp": 2.92,
+      "n_form4_exits": 29
+    }
+  },
+  "net_portfolio_difference_pp": {
+    "10bps": 3.25,
+    "20bps": 2.92
+  },
+  "trigger_ic": {
+    "n_days": 35,
+    "mean_ic": -0.0423,
+    "nw_se": 0.0739,
+    "t_stat": -0.57,
+    "issuer_cluster_bootstrap": {
+      "n_draws": 500,
+      "ci_low": -0.3502,
+      "ci_high": 0.298,
+      "share_negative": 0.626
+    },
+    "n_trigger_days": 35,
+    "daily_ic": [
+      {
+        "day": "2024-01-11",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": -0.3536
+      },
+      {
+        "day": "2024-01-12",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": -0.3536
+      },
+      {
+        "day": "2024-01-16",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": -0.3536
+      },
+      {
+        "day": "2024-01-17",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": -0.3536
+      },
+      {
+        "day": "2024-01-26",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": 0.7071
+      },
+      {
+        "day": "2024-02-12",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": 0.0
+      },
+      {
+        "day": "2024-02-14",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": 0.0
+      },
+      {
+        "day": "2024-02-21",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": -0.7071
+      },
+      {
+        "day": "2024-03-06",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": -0.7071
+      },
+      {
+        "day": "2024-03-07",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": 0.3536
+      },
+      {
+        "day": "2024-05-06",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": -0.7071
+      },
+      {
+        "day": "2024-05-09",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": -0.7071
+      },
+      {
+        "day": "2024-07-05",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": -0.7071
+      },
+      {
+        "day": "2024-07-22",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": 0.7071
+      },
+      {
+        "day": "2024-08-14",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": -0.3536
+      },
+      {
+        "day": "2024-08-20",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": 0.0
+      },
+      {
+        "day": "2024-11-25",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": 0.0
+      },
+      {
+        "day": "2024-12-17",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": 0.7071
+      },
+      {
+        "day": "2024-12-19",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": 0.7071
+      },
+      {
+        "day": "2024-12-20",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": 0.7071
+      },
+      {
+        "day": "2025-01-29",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": -0.7071
+      },
+      {
+        "day": "2025-02-25",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": 0.0
+      },
+      {
+        "day": "2025-02-28",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": 0.3536
+      },
+      {
+        "day": "2025-08-18",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": 0.7071
+      },
+      {
+        "day": "2025-11-05",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": -0.7071
+      },
+      {
+        "day": "2025-11-11",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": -0.3536
+      },
+      {
+        "day": "2025-11-12",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": -0.3536
+      },
+      {
+        "day": "2025-12-04",
+        "n_held": 5,
+        "n_triggered": 2,
+        "ic": 0.2887
+      },
+      {
+        "day": "2026-01-27",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": 0.0
+      },
+      {
+        "day": "2026-02-25",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": 0.0
+      },
+      {
+        "day": "2026-05-26",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": 0.0
+      },
+      {
+        "day": "2026-05-28",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": -0.7071
+      },
+      {
+        "day": "2026-07-14",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": 0.7071
+      },
+      {
+        "day": "2026-07-16",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": 0.7071
+      },
+      {
+        "day": "2026-07-20",
+        "n_held": 5,
+        "n_triggered": 1,
+        "ic": 0.0
+      }
+    ],
+    "hypothesized_direction": "negative"
+  },
+  "exit_economics_10bps": {
+    "losses_avoided_usd": 84.1,
+    "gains_forfeited_usd": -73.56,
+    "n_avoided": 14,
+    "n_forfeited": 11,
+    "net_price_effect_usd": 10.54,
+    "n_unmatched": 1,
+    "added_trading_cost_usd": -2.24,
+    "trade_level_bootstrap": {
+      "n_effects": 28,
+      "mean": 10.19,
+      "p5": -61.63,
+      "p95": 74.19
+    },
+    "matched_records": [
+      {
+        "symbol": "CRM",
+        "entry_date": "2024-01-10",
+        "entry_price": 264.58,
+        "timing_exit_date": "2024-01-11",
+        "timing_exit_price": 268.42,
+        "baseline_exit_date": "2024-01-18",
+        "baseline_exit_price": 273.42,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": -3.75,
+        "whipsaw": true,
+        "min_hold_override": true
+      },
+      {
+        "symbol": "SNOW",
+        "entry_date": "2024-01-25",
+        "entry_price": 206.375,
+        "timing_exit_date": "2024-01-26",
+        "timing_exit_price": 202.8,
+        "baseline_exit_date": "2024-02-01",
+        "baseline_exit_price": 197.195,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": 5.59,
+        "whipsaw": true,
+        "min_hold_override": true
+      },
+      {
+        "symbol": "AMZN",
+        "entry_date": "2024-02-08",
+        "entry_price": 169.75,
+        "timing_exit_date": "2024-02-12",
+        "timing_exit_price": 174.8,
+        "baseline_exit_date": "2024-02-15",
+        "baseline_exit_price": 170.57,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": 5.11,
+        "whipsaw": true,
+        "min_hold_override": true
+      },
+      {
+        "symbol": "EQIX",
+        "entry_date": "2024-02-08",
+        "entry_price": 843.04,
+        "timing_exit_date": "2024-02-14",
+        "timing_exit_price": 833.23,
+        "baseline_exit_date": "2024-02-23",
+        "baseline_exit_price": 884.745,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": -12.53,
+        "whipsaw": true,
+        "min_hold_override": true
+      },
+      {
+        "symbol": "EQIX",
+        "entry_date": "2024-03-01",
+        "entry_price": 882.23,
+        "timing_exit_date": "2024-03-06",
+        "timing_exit_price": 902.45,
+        "baseline_exit_date": "2024-03-08",
+        "baseline_exit_price": 912.44,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": -2.45,
+        "whipsaw": true,
+        "min_hold_override": true
+      },
+      {
+        "symbol": "AMZN",
+        "entry_date": "2024-03-01",
+        "entry_price": 176.75,
+        "timing_exit_date": "2024-03-07",
+        "timing_exit_price": 174.87,
+        "baseline_exit_date": "2024-03-08",
+        "baseline_exit_price": 176.3,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": -1.75,
+        "whipsaw": true,
+        "min_hold_override": true
+      },
+      {
+        "symbol": "ADBE",
+        "entry_date": "2024-04-22",
+        "entry_price": 470.215,
+        "timing_exit_date": "2024-05-06",
+        "timing_exit_price": 488.15,
+        "baseline_exit_date": "2024-05-28",
+        "baseline_exit_price": 471.74,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": 6.88,
+        "whipsaw": false,
+        "min_hold_override": false
+      },
+      {
+        "symbol": "AMZN",
+        "entry_date": "2024-07-03",
+        "entry_price": 199.885,
+        "timing_exit_date": "2024-07-05",
+        "timing_exit_price": 198.625,
+        "baseline_exit_date": "2024-07-11",
+        "baseline_exit_price": 200.12,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": -1.46,
+        "whipsaw": true,
+        "min_hold_override": true
+      },
+      {
+        "symbol": "ABBV",
+        "entry_date": "2024-07-11",
+        "entry_price": 167.93,
+        "timing_exit_date": "2024-07-22",
+        "timing_exit_price": 173.245,
+        "baseline_exit_date": "2024-09-06",
+        "baseline_exit_price": 193.58,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": -24.12,
+        "whipsaw": true,
+        "min_hold_override": false
+      },
+      {
+        "symbol": "AAPL",
+        "entry_date": "2024-08-08",
+        "entry_price": 213.09,
+        "timing_exit_date": "2024-08-14",
+        "timing_exit_price": 220.51,
+        "baseline_exit_date": "2024-09-06",
+        "baseline_exit_price": 223.94,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": -3.01,
+        "whipsaw": true,
+        "min_hold_override": true
+      },
+      {
+        "symbol": "GILD",
+        "entry_date": "2024-11-01",
+        "entry_price": 88.42,
+        "timing_exit_date": "2024-11-08",
+        "timing_exit_price": 96.01,
+        "baseline_exit_date": "2024-11-08",
+        "baseline_exit_price": 96.01,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": 0.0,
+        "whipsaw": true,
+        "min_hold_override": false
+      },
+      {
+        "symbol": "CRM",
+        "entry_date": "2024-11-22",
+        "entry_price": 338.755,
+        "timing_exit_date": "2024-11-25",
+        "timing_exit_price": 344.5,
+        "baseline_exit_date": "2024-12-02",
+        "baseline_exit_price": 332.555,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": 7.4,
+        "whipsaw": true,
+        "min_hold_override": true
+      },
+      {
+        "symbol": "META",
+        "entry_date": "2024-12-16",
+        "entry_price": 628.85,
+        "timing_exit_date": "2024-12-17",
+        "timing_exit_price": 626.17,
+        "baseline_exit_date": "2024-12-23",
+        "baseline_exit_price": 589.6,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": 12.45,
+        "whipsaw": true,
+        "min_hold_override": true
+      },
+      {
+        "symbol": "CRM",
+        "entry_date": "2024-12-16",
+        "entry_price": 351.5,
+        "timing_exit_date": "2024-12-23",
+        "timing_exit_price": 342.23,
+        "baseline_exit_date": "2024-12-23",
+        "baseline_exit_price": 342.23,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": 0.0,
+        "whipsaw": true,
+        "min_hold_override": false
+      },
+      {
+        "symbol": "ADBE",
+        "entry_date": "2024-12-23",
+        "entry_price": 447.56,
+        "timing_exit_date": "2025-01-29",
+        "timing_exit_price": 440.84,
+        "baseline_exit_date": "2025-02-07",
+        "baseline_exit_price": 436.42,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": 2.07,
+        "whipsaw": false,
+        "min_hold_override": false
+      },
+      {
+        "symbol": "CSCO",
+        "entry_date": "2025-02-14",
+        "entry_price": 63.825,
+        "timing_exit_date": "2025-02-25",
+        "timing_exit_price": 64.535,
+        "baseline_exit_date": "2025-03-03",
+        "baseline_exit_price": 64.455,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": 0.27,
+        "whipsaw": true,
+        "min_hold_override": false
+      },
+      {
+        "symbol": "GM",
+        "entry_date": "2025-08-01",
+        "entry_price": 52.2,
+        "timing_exit_date": "2025-08-08",
+        "timing_exit_price": 53.41,
+        "baseline_exit_date": "2025-08-08",
+        "baseline_exit_price": 53.41,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": 0.0,
+        "whipsaw": true,
+        "min_hold_override": false
+      },
+      {
+        "symbol": "AVGO",
+        "entry_date": "2025-08-08",
+        "entry_price": 303.97,
+        "timing_exit_date": "2025-08-18",
+        "timing_exit_price": 302.38,
+        "baseline_exit_date": "2025-08-22",
+        "baseline_exit_price": 291.38,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": 7.4,
+        "whipsaw": true,
+        "min_hold_override": false
+      },
+      {
+        "symbol": "AMZN",
+        "entry_date": "2025-11-03",
+        "entry_price": 255.555,
+        "timing_exit_date": "2025-11-05",
+        "timing_exit_price": 248.56,
+        "baseline_exit_date": "2025-11-10",
+        "baseline_exit_price": 248.34,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": 0.18,
+        "whipsaw": true,
+        "min_hold_override": true
+      },
+      {
+        "symbol": "MAR",
+        "entry_date": "2025-11-10",
+        "entry_price": 292.475,
+        "timing_exit_date": "2025-11-11",
+        "timing_exit_price": 291.275,
+        "baseline_exit_date": "2025-11-17",
+        "baseline_exit_price": 286.345,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": 3.63,
+        "whipsaw": true,
+        "min_hold_override": true
+      },
+      {
+        "symbol": "AMAT",
+        "entry_date": "2025-12-02",
+        "entry_price": 255.625,
+        "timing_exit_date": "2025-12-04",
+        "timing_exit_price": 268.335,
+        "baseline_exit_date": "2026-01-08",
+        "baseline_exit_price": 290.775,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": -18.91,
+        "whipsaw": true,
+        "min_hold_override": true
+      },
+      {
+        "symbol": "COF",
+        "entry_date": "2025-12-02",
+        "entry_price": 221.465,
+        "timing_exit_date": "2025-12-04",
+        "timing_exit_price": 227.04,
+        "baseline_exit_date": "2025-12-09",
+        "baseline_exit_price": 230.0,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": -2.87,
+        "whipsaw": true,
+        "min_hold_override": true
+      },
+      {
+        "symbol": "GILD",
+        "entry_date": "2026-01-23",
+        "entry_price": 131.29,
+        "timing_exit_date": "2026-01-27",
+        "timing_exit_price": 138.43,
+        "baseline_exit_date": "2026-01-30",
+        "baseline_exit_price": 139.08,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": -1.1,
+        "whipsaw": true,
+        "min_hold_override": true
+      },
+      {
+        "symbol": "AMAT",
+        "entry_date": "2026-02-23",
+        "entry_price": 373.4,
+        "timing_exit_date": "2026-02-25",
+        "timing_exit_price": 386.035,
+        "baseline_exit_date": "2026-03-02",
+        "baseline_exit_price": 366.15,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": 11.93,
+        "whipsaw": true,
+        "min_hold_override": true
+      },
+      {
+        "symbol": "CVX",
+        "entry_date": "2026-05-19",
+        "entry_price": 194.93,
+        "timing_exit_date": "2026-05-26",
+        "timing_exit_price": 190.0,
+        "baseline_exit_date": "2026-05-27",
+        "baseline_exit_price": 181.76,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": 8.44,
+        "whipsaw": false,
+        "min_hold_override": true
+      },
+      {
+        "symbol": "GM",
+        "entry_date": "2026-05-27",
+        "entry_price": 81.425,
+        "timing_exit_date": "2026-05-28",
+        "timing_exit_price": 83.78,
+        "baseline_exit_date": "2026-06-03",
+        "baseline_exit_price": 80.5,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": 7.57,
+        "whipsaw": true,
+        "min_hold_override": true
+      },
+      {
+        "symbol": "CRWD",
+        "entry_date": "2026-07-10",
+        "entry_price": 196.53,
+        "timing_exit_date": "2026-07-14",
+        "timing_exit_price": 190.24,
+        "baseline_exit_date": "2026-07-24",
+        "baseline_exit_price": 184.725,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": 5.18,
+        "whipsaw": true,
+        "min_hold_override": true
+      },
+      {
+        "symbol": "AMGN",
+        "entry_date": "2026-08-07",
+        "entry_price": 405.34,
+        "timing_exit_date": "2026-08-10",
+        "timing_exit_price": 408.6,
+        "baseline_exit_date": "2026-08-14",
+        "baseline_exit_price": 412.045,
+        "baseline_exit_reason": "baseline",
+        "effect_usd": -1.61,
+        "whipsaw": true,
+        "min_hold_override": true
+      }
+    ]
+  },
+  "exposure_matched_benchmark": {
+    "variant_10bps": {
+      "total_return": 0.5368,
+      "max_drawdown": -0.1576,
+      "avg_exposure": 0.8992
+    },
+    "baseline_10bps": {
+      "total_return": 0.6509,
+      "max_drawdown": -0.1898,
+      "avg_exposure": 0.9955
+    },
+    "spy_buy_and_hold_registered": 0.6348
+  },
+  "portfolio_bootstrap_10bps": {
+    "n_draws": 500,
+    "ci_low_pp": -10.16,
+    "ci_high_pp": 20.84,
+    "share_positive": 0.704
+  },
+  "sensitivities": {
+    "ex_largest_contributor": {
+      "event_id": "ABBV|0000897069-24-001526|0001239127|2024-07-17|D||common stock 0 01 par value",
+      "symbol": "ABBV",
+      "effect_usd": -24.12,
+      "net_diff_pp": 4.99,
+      "trigger_ic_mean": -0.0643,
+      "n_triggers_remaining": 53
+    },
+    "exit_delay_one_session": {
+      "net_diff_pp": 5.53,
+      "n_form4_exits": 26
+    }
+  },
+  "coverage": {
+    "train_window": [
+      "2024-01-02",
+      "2026-08-17"
+    ],
+    "input_dates": {
+      "bulk_quarters": [
+        "2023q1",
+        "2023q2",
+        "2023q3",
+        "2023q4",
+        "2024q1",
+        "2024q2",
+        "2024q3",
+        "2024q4",
+        "2025q1",
+        "2025q2",
+        "2025q3",
+        "2025q4",
+        "2026q1",
+        "2026q2",
+        "2026q3"
+      ],
+      "bulk_filing_range": [
+        "2023-01-03",
+        "2026-09-30"
+      ],
+      "bulk_data_note": "2026q3 bulk file covers filings through 2026-09-30, past the train end; the window is fully covered. Filings after 2026-08-17 cannot become triggers."
+    },
+    "ingestion": {
+      "n_submissions_4_4a": 39543,
+      "n_accessions_multi_owner": 198,
+      "n_trans_rows_total": 78615,
+      "n_purchase_rows_P": 831,
+      "n_sale_rows_S": 32548,
+      "n_rows_excluded_not_common": 868,
+      "n_rows_excluded_form_type": 12,
+      "n_observations": 11044,
+      "n_amendment_superseded": 24,
+      "n_rows_excluded_bad_dates": 3,
+      "n_stake_known": 11044,
+      "n_stake_unknown_by_reason": {}
+    },
+    "unusual_counts": {
+      "n_unusual": 2890,
+      "n_insufficient_history": 4781,
+      "n_not_unusual": 3373,
+      "n_unknown_stake": 0
+    },
+    "timestamp_coverage": {
+      "n_ciks": 125,
+      "n_accessions_mapped": 69518,
+      "n_observations_with_ts": 9970,
+      "n_observations_fallback": 1074
+    },
+    "triggers_10bps": {
+      "n_unusual": 2890,
+      "n_triggers": 54,
+      "n_action_after_window": 0,
+      "n_filing_predates_holding": 1915,
+      "n_never_held": 835,
+      "n_no_first_action": 86
+    },
+    "triggers_20bps": {
+      "n_unusual": 2890,
+      "n_triggers": 54,
+      "n_action_after_window": 0,
+      "n_filing_predates_holding": 1915,
+      "n_never_held": 835,
+      "n_no_first_action": 86
+    },
+    "n_trigger_events": 54,
+    "distinct_trigger_issuers": 18,
+    "distinct_trigger_dates": 44,
+    "distinct_insiders_selling_trigger": 28,
+    "plan_status_of_triggers": {
+      "plan_10b5_1": 41,
+      "not_plan": 10,
+      "unknown": 3
+    },
+    "direct_indirect_of_triggers": {
+      "D": 47,
+      "I": 7
+    },
+    "distinct_unusual_issuers": 87,
+    "distinct_unusual_event_dates": 857,
+    "distinct_unusual_insiders": 352,
+    "n_purchases_P_rows": 831
+  },
+  "decision": "DROP",
+  "decision_reason": "trigger IC is ~0 (mean -0.0423, Newey-West t -0.57) or of the wrong sign - no detectable ranking signal",
+  "decision_rule_note": "~0 means |mean IC| < 0.10 or |NW t| < 1.0; precedence DROP > COLLECT > REGISTER",
+  "ic_about_zero": true
+}
